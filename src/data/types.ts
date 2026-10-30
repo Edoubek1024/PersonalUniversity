@@ -8,6 +8,7 @@
  *   exercise : "<lessonId>#ex:<exerciseSlug>"
  *   resource : "<lessonId>#res:<n>"
  *   project  : "<moduleId>#project:<slug>" or "<subjectId>#capstone:<slug>"
+ *   coursework: "<subjectId>#mp:<slug>" or "<subjectId>#final:<slug>"
  *
  * Authors write slugs; IDs are computed. Slugs must be kebab-case and unique
  * within their parent. Never rename a slug once progress may exist for it.
@@ -184,9 +185,90 @@ export interface SubjectInput {
   masteryChecklist: string[];
 }
 
+/** How to build a machine problem or final project in VS Code. */
+export interface VsCodeSetup {
+  /** Marketplace extension IDs, e.g. "ms-vscode.cpptools". */
+  extensions: string[];
+  /** What to install besides VS Code, with Windows notes where they differ (e.g. WSL). */
+  toolchain: string[];
+  /** Suggested repository layout, shown as a code block. */
+  structure: string;
+  /** Terminal commands the learner runs in VS Code's integrated terminal. */
+  commands: { label: string; command: string }[];
+}
+
+interface CourseworkBase {
+  slug: string;
+  title: string;
+  /** One or two sentences shown on cards and in lists. */
+  summary: string;
+  /** Markdown. What you build, why it matters, and the design constraints. */
+  overview: string;
+  /** Primary language and version, e.g. "C++20" or "Python 3.12". */
+  language: string;
+  estimatedHours: number;
+  setup: VsCodeSetup;
+  /** Concrete, checkable requirements. Each one becomes a progress checkbox. */
+  requirements: string[];
+  /** Specific inputs and expected results the learner's own tests must include. */
+  acceptanceTests: string[];
+  /** Optional real links, held to the same rules as lesson resources. */
+  resources?: ResourceInput[];
+  stretchGoals?: string[];
+}
+
+export interface MachineProblemInput extends CourseworkBase {
+  /** Slug of the module this follows. It may use nothing taught after that module. */
+  afterModule: string;
+  /** Slugs of the modules this practises; all must come at or before afterModule. */
+  coversModules: string[];
+  /** True when this expands the afterModule's project, which is then hidden. */
+  supersedesProject?: boolean;
+}
+
+export interface FinalProjectInput extends CourseworkBase {
+  /** Suggested GitHub repository name. */
+  repoName: string;
+  /** One entry for every module, saying what in the project proves that module. */
+  coverage: { module: string; demonstrates: string }[];
+  /** Steps that make the repository worth showing to someone. Each is a checkbox. */
+  portfolio: string[];
+}
+
+export interface CourseworkInput {
+  subjectId: string;
+  machineProblems: MachineProblemInput[];
+  finalProject: FinalProjectInput;
+}
+
+export interface MachineProblem extends MachineProblemInput {
+  kind: 'mp';
+  id: string;
+  subjectId: string;
+  /** 1-based position within the course, used for the "MP 1" label. */
+  number: number;
+}
+
+export interface FinalProject extends FinalProjectInput {
+  kind: 'final';
+  id: string;
+  subjectId: string;
+}
+
+export type CourseworkItem = MachineProblem | FinalProject;
+
+export interface Coursework {
+  machineProblems: MachineProblem[];
+  finalProject: FinalProject;
+  /** Machine problems in course order, then the final project. */
+  items: CourseworkItem[];
+}
+
 export interface Subject extends Omit<SubjectInput, 'modules' | 'capstone'> {
   modules: Module[];
   capstone: Project;
+  /** Machine problems and the final project. When present, finalProject replaces capstone in the UI. */
+  coursework?: Coursework;
   /** Flattened lessons in curriculum order. */
   lessons: Lesson[];
   lessonCount: number;

@@ -958,7 +958,7 @@ Finally the **CMB** (module 6) measures the baryon density from the acoustic pea
             },
             {
               title: 'SPARC: Spitzer Photometry and Accurate Rotation Curves',
-              url: 'http://astroweb.cwru.edu/SPARC/',
+              url: 'https://astroweb.case.edu/SPARC/',
               type: 'dataset',
               cost: 'free',
               provider: 'Case Western Reserve University',

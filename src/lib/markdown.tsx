@@ -19,7 +19,7 @@ export function Inline({ children }: { children: string }) {
       rehypePlugins={rehypePlugins}
       components={{
         p: ({ children }) => <>{children}</>,
-        code: ({ children }) => <code className="rounded bg-surface-2 px-1 font-mono text-[0.9em]">{children}</code>,
+        code: ({ children }) => <code className="rounded bg-surface-2 px-1 font-mono text-[0.9em] [overflow-wrap:anywhere]">{children}</code>,
       }}
     >
       {children}

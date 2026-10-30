@@ -1,6 +1,10 @@
 import type {
+  Coursework,
+  CourseworkInput,
+  FinalProject,
   Lesson,
   LessonInput,
+  MachineProblem,
   Module,
   ModuleInput,
   Project,
@@ -86,5 +90,66 @@ export function defineSubject(input: SubjectInput): Subject {
     lessons,
     lessonCount: lessons.length,
     completeLessonCount: lessons.filter((l) => l.status === 'complete').length,
+  };
+}
+
+/** Identity helper so a coursework file gets type-checked against the contract. */
+export function defineCoursework(input: CourseworkInput): CourseworkInput {
+  return input;
+}
+
+/**
+ * Attach machine problems and the final project to a subject. Throws when a machine
+ * problem relies on a later module or the final project skips one, so that a project
+ * can never ask for something the learner has not been taught yet.
+ */
+export function attachCoursework(subject: Subject, input: CourseworkInput): Subject {
+  const where = `coursework for ${subject.id}`;
+  const order = new Map(subject.modules.map((m, i) => [m.slug, i]));
+  const position = (slug: string, context: string): number => {
+    const i = order.get(slug);
+    if (i === undefined) throw new Error(`Unknown module "${slug}" in ${context} of ${where}`);
+    return i;
+  };
+
+  const seen = new Set<string>();
+  const claim = (slug: string) => {
+    assertSlug(slug, where);
+    if (seen.has(slug)) throw new Error(`Duplicate coursework slug "${slug}" in ${where}`);
+    seen.add(slug);
+  };
+
+  const machineProblems: MachineProblem[] = [...input.machineProblems]
+    .sort((a, b) => position(a.afterModule, a.slug) - position(b.afterModule, b.slug))
+    .map((mp, i) => {
+      claim(mp.slug);
+      const limit = position(mp.afterModule, mp.slug);
+      for (const covered of mp.coversModules) {
+        if (position(covered, mp.slug) > limit) {
+          throw new Error(`${mp.slug} in ${where} covers "${covered}", which comes after "${mp.afterModule}"`);
+        }
+      }
+      return { ...mp, kind: 'mp', id: `${subject.id}#mp:${mp.slug}`, subjectId: subject.id, number: i + 1 };
+    });
+
+  claim(input.finalProject.slug);
+  const covered = new Set(input.finalProject.coverage.map((c) => c.module));
+  for (const c of covered) position(c, input.finalProject.slug);
+  const skipped = subject.modules.filter((m) => !covered.has(m.slug)).map((m) => m.slug);
+  if (skipped.length) throw new Error(`Final project in ${where} does not cover: ${skipped.join(', ')}`);
+
+  const finalProject: FinalProject = {
+    ...input.finalProject,
+    kind: 'final',
+    id: `${subject.id}#final:${input.finalProject.slug}`,
+    subjectId: subject.id,
+  };
+  const coursework: Coursework = { machineProblems, finalProject, items: [...machineProblems, finalProject] };
+
+  const hidden = new Set(machineProblems.filter((mp) => mp.supersedesProject).map((mp) => mp.afterModule));
+  return {
+    ...subject,
+    coursework,
+    modules: subject.modules.map((m) => (hidden.has(m.slug) ? { ...m, project: undefined } : m)),
   };
 }

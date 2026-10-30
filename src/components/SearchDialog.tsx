@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, FileText, Route, Search as SearchIcon } from 'lucide-react';
+import { BookOpen, FileText, Hammer, Route, Search as SearchIcon } from 'lucide-react';
 import { search } from '@/lib/search';
 
-const icons = { subject: BookOpen, lesson: FileText, path: Route };
+const icons = { subject: BookOpen, lesson: FileText, project: Hammer, path: Route };
 
 export function SearchDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [q, setQ] = useState('');

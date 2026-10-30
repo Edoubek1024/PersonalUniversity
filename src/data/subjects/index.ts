@@ -1,3 +1,5 @@
+import { attachCoursework } from '../define';
+import { courseworkBySubject } from '../coursework';
 import type { Lesson, Subject } from '../types';
 
 /**
@@ -9,7 +11,10 @@ const modules = import.meta.glob<{ default: Subject }>('./*.ts', { eager: true }
 
 export const subjects: Subject[] = Object.entries(modules)
   .filter(([path]) => !path.endsWith('/index.ts'))
-  .map(([, m]) => m.default)
+  .map(([, m]) => {
+    const coursework = courseworkBySubject.get(m.default.id);
+    return coursework ? attachCoursework(m.default, coursework) : m.default;
+  })
   .sort((a, b) => a.title.localeCompare(b.title));
 
 export const subjectById: Map<string, Subject> = new Map(subjects.map((s) => [s.id, s]));

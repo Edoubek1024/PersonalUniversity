@@ -12,9 +12,11 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-import type { Subject } from '../src/data/types';
+import { attachCoursework } from '../src/data/define';
+import type { CourseworkInput, CourseworkItem, Subject } from '../src/data/types';
 
 const SUBJECT_DIR = resolve(__dirname, '../src/data/subjects');
+const COURSEWORK_DIR = resolve(__dirname, '../src/data/coursework');
 const KNOWN_SUBJECT_IDS = [
   'programming-fundamentals',
   'discrete-mathematics',
@@ -47,6 +49,10 @@ const KNOWN_SUBJECT_IDS = [
   'stellar-astrophysics',
   'galaxies-cosmology',
   'high-energy-astrophysics',
+  'cpp-programming',
+  'typescript-web',
+  'go-programming',
+  'bash-scripting',
 ];
 
 type Level = 'ERROR' | 'WARN';
@@ -79,11 +85,49 @@ async function loadSubjects(): Promise<{ subjects: Subject[]; files: Map<string,
       fileOf.set(mod.default.id, f);
       if (f !== `${mod.default.id}.ts`) err(mod.default.id, 'file', `file name should be ${mod.default.id}.ts (got ${f})`);
     } catch (e) {
-      err(f, 'module', `failed to load: ${(e as Error).message}`);
+      err(f.replace(/.ts$/, ''), 'module', `failed to load: ${(e as Error).message}`);
     }
   }
   return { subjects, files: fileOf };
 }
+
+/** Machine problems per course, and the extensions a spec may name. */
+const MP_COUNT = 2;
+const KNOWN_EXTENSIONS = new Set([
+  'ms-vscode.cpptools',
+  'ms-vscode.cpptools-extension-pack',
+  'ms-vscode.cmake-tools',
+  'llvm-vs-code-extensions.vscode-clangd',
+  'vadimcn.vscode-lldb',
+  'ms-python.python',
+  'ms-python.vscode-pylance',
+  'ms-python.debugpy',
+  'charliermarsh.ruff',
+  'ms-toolsai.jupyter',
+  'rust-lang.rust-analyzer',
+  'golang.go',
+  'dbaeumer.vscode-eslint',
+  'esbenp.prettier-vscode',
+  'timonwong.shellcheck',
+  'foxundermoon.shell-format',
+  'ms-azuretools.vscode-docker',
+  'ms-vscode-remote.remote-wsl',
+  'ms-vscode-remote.remote-containers',
+  'mtxr.sqltools',
+  'mtxr.sqltools-driver-sqlite',
+  'mtxr.sqltools-driver-pg',
+  'qwtel.sqlite-viewer',
+  'platformio.platformio-ide',
+  'wokwi.wokwi-vscode',
+  'mshr-h.veriloghdl',
+  'marus25.cortex-debug',
+  'redhat.vscode-yaml',
+  'github.vscode-github-actions',
+  'tamasfe.even-better-toml',
+  'james-yu.latex-workshop',
+  'humao.rest-client',
+  'ms-vscode.hexeditor',
+]);
 
 function wordCount(s: string): number {
   return s.trim().split(/\s+/).filter(Boolean).length;
@@ -154,13 +198,96 @@ function checkSubject(s: Subject, allLessonIds: Set<string>, presentSubjects: Se
   }
 }
 
+async function loadCoursework(): Promise<Map<string, CourseworkInput>> {
+  const out = new Map<string, CourseworkInput>();
+  for (const f of readdirSync(COURSEWORK_DIR).filter((n) => n.endsWith('.ts') && n !== 'index.ts')) {
+    try {
+      const mod = (await import(pathToFileURL(join(COURSEWORK_DIR, f)).href)) as { default: CourseworkInput };
+      out.set(mod.default.subjectId, mod.default);
+      if (f !== `${mod.default.subjectId}.ts`) err(mod.default.subjectId, 'file', `coursework file should be ${mod.default.subjectId}.ts (got ${f})`);
+    } catch (e) {
+      err(f.replace(/.ts$/, ''), 'coursework', `failed to load: ${(e as Error).message}`);
+    }
+  }
+  return out;
+}
+
+function checkItem(s: Subject, item: CourseworkItem) {
+  const id = s.id;
+  const w = item.id;
+  const minWords = item.kind === 'final' ? 100 : 70;
+  if (!item.summary) err(id, w, 'summary missing');
+  if (wordCount(item.overview) < minWords) err(id, w, `overview too short (${wordCount(item.overview)} words; need ${minWords}+)`);
+  if (!item.language) err(id, w, 'language missing');
+  if (!(item.estimatedHours > 0)) err(id, w, 'estimatedHours must be > 0');
+  if (item.requirements.length < 6) err(id, w, `only ${item.requirements.length} requirements (need 6+)`);
+  if (item.acceptanceTests.length < 4) err(id, w, `only ${item.acceptanceTests.length} acceptance tests (need 4+)`);
+  for (const r of item.requirements) if (wordCount(r) < 6) warn(id, w, `requirement is very short: "${r}"`);
+  if (item.setup.extensions.length === 0) err(id, w, 'setup needs at least one VS Code extension');
+  for (const e of item.setup.extensions) if (!KNOWN_EXTENSIONS.has(e)) err(id, w, `unknown VS Code extension "${e}"`);
+  if (item.setup.toolchain.length === 0) err(id, w, 'setup.toolchain is empty');
+  if (!item.setup.structure.trim()) err(id, w, 'setup.structure is empty');
+  if (item.setup.commands.length < 2) err(id, w, 'setup.commands needs at least build/run and test');
+  for (const r of item.resources ?? []) {
+    if (!r.url.startsWith('http')) err(id, w, `resource "${r.title}" has invalid url "${r.url}"`);
+  }
+}
+
+function checkCoursework(s: Subject) {
+  const id = s.id;
+  const cw = s.coursework;
+  if (!cw) {
+    if (s.category === 'cs') err(id, 'coursework', 'CS subject has no machine problems or final project');
+    return;
+  }
+  if (cw.machineProblems.length !== MP_COUNT) err(id, 'coursework', `has ${cw.machineProblems.length} machine problems (need ${MP_COUNT})`);
+
+  // Even spacing: the gaps from the start, between MPs, and to the final project must be level.
+  const n = s.modules.length;
+  const stops = [0, ...cw.machineProblems.map((mp) => s.modules.findIndex((m) => m.slug === mp.afterModule) + 1), n];
+  const widest = Math.ceil(n / (MP_COUNT + 1));
+  stops.slice(1).forEach((stop, i) => {
+    const gap = stop - stops[i];
+    if (gap < 1 || gap > widest) err(id, 'coursework', `uneven spacing: module stops ${stops.join(', ')} of ${n} (gaps must be 1-${widest})`);
+  });
+
+  cw.items.forEach((item) => checkItem(s, item));
+  const f = cw.finalProject;
+  if (f.estimatedHours < Math.max(...cw.machineProblems.map((mp) => mp.estimatedHours))) {
+    err(id, f.id, 'final project should be at least as large as the largest machine problem');
+  }
+  if (!/^[A-Za-z0-9._-]+$/.test(f.repoName)) err(id, f.id, `invalid repoName "${f.repoName}"`);
+  if (f.portfolio.length < 4) err(id, f.id, `only ${f.portfolio.length} portfolio steps (need 4+)`);
+  for (const c of f.coverage) if (wordCount(c.demonstrates) < 5) warn(id, f.id, `coverage for "${c.module}" is very short`);
+  for (const mp of cw.machineProblems) {
+    if (mp.coversModules.length === 0) err(id, mp.id, 'coversModules is empty');
+  }
+}
+
 async function main() {
   const only = process.argv.slice(2);
-  const { subjects } = await loadSubjects();
+  const loaded = await loadSubjects();
+  const courseworkInputs = await loadCoursework();
+  const subjects = loaded.subjects.map((s) => {
+    const input = courseworkInputs.get(s.id);
+    if (!input) return s;
+    try {
+      return attachCoursework(s, input);
+    } catch (e) {
+      err(s.id, 'coursework', (e as Error).message);
+      return s;
+    }
+  });
+  for (const id of courseworkInputs.keys()) {
+    if (!subjects.some((s) => s.id === id)) err(id, 'coursework', 'no subject with this id');
+  }
   const presentSubjects = new Set(subjects.map((s) => s.id));
   const allLessonIds = new Set(subjects.flatMap((s) => s.lessons.map((l) => l.id)));
 
-  for (const s of subjects) checkSubject(s, allLessonIds, presentSubjects);
+  for (const s of subjects) {
+    checkSubject(s, allLessonIds, presentSubjects);
+    checkCoursework(s);
+  }
 
   // learning paths
   try {

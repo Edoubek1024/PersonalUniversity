@@ -18,7 +18,7 @@ export default defineConfig(({ command, isPreview }) => ({
       output: {
         manualChunks(id) {
           const p = id.split(String.fromCharCode(92)).join('/');
-          if (p.includes('/src/data/subjects/')) return 'curriculum';
+          if (p.includes('/src/data/subjects/') || p.includes('/src/data/coursework/')) return 'curriculum';
           if (p.includes('/node_modules/katex/')) return 'katex';
           if (p.includes('/node_modules/')) return 'vendor';
         },

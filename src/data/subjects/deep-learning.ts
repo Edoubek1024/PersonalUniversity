@@ -27,7 +27,7 @@ Every lesson has you train something on real data (MNIST, CIFAR-10, Imagenette, 
       slug: 'neural-network-foundations',
       title: 'Neural Network Foundations',
       description:
-        'From logistic regression to multilayer perceptrons, backpropagation derived and implemented from scratch as an autograd engine, and the PyTorch training loop that every later lesson reuses.',
+        'From logistic regression to multilayer perceptrons, backpropagation derived and implemented from scratch as an autograd engine, and the PyTorch training loop that every later lesson reuses. A couple of exercises use a small CNN before Module 3 explains convolution: treat it as a ready-made black box for now.',
       lessons: [
         {
           slug: 'from-linear-models-to-neural-networks',
@@ -481,7 +481,7 @@ For **imbalance**, weight classes in the loss (\`weight=\`) or use the **focal l
       slug: 'training-deep-networks',
       title: 'Training Deep Networks',
       description:
-        'Why deep networks are hard to train and the techniques that make it work: initialisation and normalisation, optimizers and learning-rate schedules, regularization, and a systematic recipe for debugging training.',
+        'Why deep networks are hard to train and the techniques that make it work: initialisation and normalisation, optimizers and learning-rate schedules, regularization, and a systematic recipe for debugging training. Some exercises use a small CNN or ResNet before Module 3 explains convolution: treat those models as ready-made black boxes, because the training technique is the point here.',
       lessons: [
         {
           slug: 'initialization-and-normalization',
@@ -919,7 +919,7 @@ Learn to read curves: a loss that is \`nan\` means a numerical blow-up (rate too
         slug: 'cifar10-from-scratch-with-ablations',
         title: 'Module project: CIFAR-10 from scratch to 94% with ablations',
         description:
-          'Train a CNN on CIFAR-10 from scratch with everything in this module: Kaiming init, batch norm, SGD+momentum with one-cycle, weight decay, augmentation, label smoothing. Reach at least 93-94% test accuracy within a fixed budget (e.g. 30 epochs on one GPU) and produce an ablation table attributing the accuracy to each component, with tracked runs.',
+          'Convolution comes in Module 3, so use a ready-made CIFAR-style ResNet-18 as a black box and focus on training it. Train it on CIFAR-10 from scratch with everything in this module: Kaiming init, batch norm, SGD+momentum with one-cycle, weight decay, augmentation, label smoothing. Reach at least 93-94% test accuracy within a fixed budget (e.g. 30 epochs on one GPU) and produce an ablation table attributing the accuracy to each component, with tracked runs.',
         deliverables: [
           'Training code with config files and tracked runs for every ablation',
           'Ablation table (cumulative and leave-one-out) with mean and standard deviation over 3 seeds',

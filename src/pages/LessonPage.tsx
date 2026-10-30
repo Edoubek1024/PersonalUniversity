@@ -9,23 +9,19 @@ import {
   ChevronDown,
   Circle,
   Clock,
-  ExternalLink,
   Link2,
 } from 'lucide-react';
 import { lessonById, subjectById } from '@/data/subjects';
-import type { Exercise, Resource, SelfCheck } from '@/data/types';
+import type { Exercise, SelfCheck } from '@/data/types';
 import { useProgress } from '@/store/progress';
 import { Inline, Markdown } from '@/lib/markdown';
 import { hours } from '@/lib/format';
 import { accentFor } from '@/components/ui';
+import { CourseworkRow } from '@/components/CourseworkRow';
+import { ResourceItem } from '@/components/ResourceItem';
+import { machineProblemsAfter } from '@/lib/coursework';
 import { NotFound } from './NotFound';
 
-const costLabel = { free: 'Free', paid: 'Paid', freemium: 'Freemium' } as const;
-const costStyle = {
-  free: 'text-emerald-600 dark:text-emerald-300 bg-emerald-500/10',
-  paid: 'text-rose-600 dark:text-rose-300 bg-rose-500/10',
-  freemium: 'text-amber-600 dark:text-amber-300 bg-amber-500/10',
-} as const;
 const kindLabel: Record<Exercise['kind'], string> = {
   problem: 'Problem',
   coding: 'Code',
@@ -229,6 +225,21 @@ export function LessonPage() {
         />
       </section>
 
+      {(() => {
+        const currentModule = subject.modules.find((x) => x.id === lesson.moduleId);
+        const lastInModule = currentModule?.lessons[currentModule.lessons.length - 1]?.id === lesson.id;
+        if (!lastInModule || !currentModule) return null;
+        const due = [...machineProblemsAfter(subject, currentModule.slug), ...(next || !subject.coursework ? [] : [subject.coursework.finalProject])];
+        if (due.length === 0) return null;
+        return (
+          <section aria-label="Project due now" className="space-y-2">
+            <p className="text-sm font-medium text-ink-2">You have finished this module. Build this next:</p>
+            {due.map((item) => (
+              <CourseworkRow key={item.id} item={item} />
+            ))}
+          </section>
+        );
+      })()}
       <footer className="flex flex-col gap-3 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
         {prev ? (
           <Link to={`/subjects/${prev.id}`} className="btn-outline">
@@ -275,26 +286,6 @@ function LessonLink({ id, title }: { id: string; title?: string }) {
       <Link2 size={14} aria-hidden /> {title}
       {s && <span className="text-xs text-ink-3">· {s.title}</span>}
     </Link>
-  );
-}
-
-function ResourceItem({ r }: { r: Resource }) {
-  return (
-    <li className={`card flex items-start gap-3 p-3 ${r.primary ? 'border-accent/40' : ''}`}>
-      <div className="min-w-0 flex-1">
-        <a href={r.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-sm font-medium text-ink hover:text-accent">
-          {r.title}
-          <ExternalLink size={12} className="shrink-0 text-ink-3" aria-label="(opens in a new tab)" />
-        </a>
-        <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-ink-3">
-          {r.provider && <span>{r.provider}</span>}
-          <span className="chip">{r.type}</span>
-          <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${costStyle[r.cost]}`}>{costLabel[r.cost]}</span>
-          {r.primary && <span className="text-accent">Primary</span>}
-        </div>
-        {r.note && <p className="mt-1 text-sm text-ink-2">{r.note}</p>}
-      </div>
-    </li>
   );
 }
 

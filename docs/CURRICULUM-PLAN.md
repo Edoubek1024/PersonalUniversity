@@ -1,6 +1,6 @@
 # Curriculum plan
 
-Three categories, 25 core tracks, 6 additional recommended subjects. Each subject file in
+Three categories, 25 core tracks, 10 additional recommended subjects. Each subject file in
 `src/data/subjects/` is the source of truth for its own content; this document fixes the
 subject IDs, categories, prerequisite graph and the module outline each subject must cover.
 Subject IDs below are final and are referenced by `src/data/paths.ts` and by
@@ -29,6 +29,14 @@ Legend: **Diff** = difficulty, **Hrs** = estimated hours, **Core** = one of the 
 | `cybersecurity` | Cybersecurity | advanced | 90 | computer-networks, operating-systems, systems-programming | additional |
 | `embedded-systems-iot` | Embedded Systems and IoT | intermediate | 90 | systems-programming, computer-architecture | additional |
 | `distributed-systems` | Distributed Systems | advanced | 90 | operating-systems, computer-networks, databases | additional |
+| `cpp-programming` | Modern C++ | intermediate | 130 | programming-fundamentals | additional |
+| `typescript-web` | TypeScript for the Web | intermediate | 30 | programming-fundamentals | additional |
+| `go-programming` | Go for Backend Services | intermediate | 32 | programming-fundamentals | additional |
+| `bash-scripting` | Bash and the Command Line | beginner | 28 | programming-fundamentals | additional |
+
+Every CS subject also has two machine problems and a final project in `src/data/coursework/`.
+In the UI the final project replaces the subject's capstone; the `capstone` data stays in the
+subject file. See "Coursework" in `docs/AUTHORING.md`.
 
 ## Physics (`physics`)
 
@@ -189,26 +197,30 @@ Capstone: analyse a real X-ray or gravitational-wave dataset and interpret it ph
 
 ## Completion status
 
-All 31 subjects are written. Every lesson is fully populated: none is marked `outline`.
+All 35 subjects are written. Every lesson is fully populated: none is marked `outline`.
 `npm run validate` reports no errors and no warnings.
 
 | Category | Subjects | Lessons |
 |---|---|---|
-| Computer Science | 17 | 457 |
+| Computer Science | 21 | 522 |
 | Physics | 8 | 221 |
 | Astronomy | 6 | 158 |
-| **Total** | **31** | **836** |
+| **Total** | **35** | **901** |
 
 Run `npm run validate` for the per-subject table (modules, lessons, hours).
 
+All 21 CS subjects have coursework: 42 machine problems and 21 final projects, about 1,705 hours
+on top of the subject hours. Specs were checked by script, by reasoning or on sample runs. Almost
+none has been built end to end, so treat numeric targets and timings as estimates.
+
 ### Resource links
 
-The last full `npm run check-links` run covered 1,825 unique URLs (3,225 references).
+The last full `npm run check-links` run covered 2,170 unique URLs (3,811 references): 2,004 OK.
 All true 404s found were replaced. Remaining non-OK results fall into two groups:
 
-- **Unverified (about 150).** Sites such as the Feynman Lectures, NASA ADS, Wiley and some
+- **Unverified (156).** Sites such as the Feynman Lectures, NASA ADS, Wiley and some
   university pages return 403 or 429 to scripts but work in a browser.
-- **Unreachable from the authoring machine (about 12).** Requests to gnu.org, SIMBAD,
+- **Unreachable from the authoring machine (10).** Requests to gnu.org, SIMBAD, NASA GISTEMP,
   in-the-sky.org, LIGO, Penn State STAT courses, Fourmilab and a few others failed at the
   network level. These are long-standing sites and are expected to work in a normal browser.
 

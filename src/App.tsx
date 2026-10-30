@@ -4,6 +4,7 @@ import { Dashboard } from '@/pages/Dashboard';
 import { SubjectsPage } from '@/pages/SubjectsPage';
 import { SubjectPage } from '@/pages/SubjectPage';
 import { LessonPage } from '@/pages/LessonPage';
+import { CourseworkPage } from '@/pages/CourseworkPage';
 import { PathPage, PathsPage } from '@/pages/PathsPage';
 import { BookmarksPage } from '@/pages/BookmarksPage';
 import { NotesPage } from '@/pages/NotesPage';
@@ -17,6 +18,7 @@ export default function App() {
         <Route index element={<Dashboard />} />
         <Route path="subjects" element={<SubjectsPage />} />
         <Route path="subjects/:subjectId" element={<SubjectPage />} />
+        <Route path="subjects/:subjectId/coursework/:slug" element={<CourseworkPage />} />
         <Route path="subjects/:subjectId/:moduleSlug/:lessonSlug" element={<LessonPage />} />
         <Route path="paths" element={<PathsPage />} />
         <Route path="paths/:pathId" element={<PathPage />} />

@@ -1,11 +1,14 @@
+import { Fragment } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Bookmark, BookmarkCheck, Clock, Layers, Lock, RotateCcw, Route } from 'lucide-react';
+import { Bookmark, BookmarkCheck, Clock, Hammer, Layers, Lock, RotateCcw, Route } from 'lucide-react';
 import { subjectById, subjects } from '@/data/subjects';
 import { learningPaths } from '@/data/paths';
 import { categoryById } from '@/data/categories';
 import { moduleCompletion, subjectCompletion, useProgress } from '@/store/progress';
 import { Inline, Markdown } from '@/lib/markdown';
 import { nextLessonIn } from '@/lib/recommend';
+import { courseworkHours, courseworkProgress, machineProblemsAfter } from '@/lib/coursework';
+import { CourseworkRow } from '@/components/CourseworkRow';
 import { LessonRow } from '@/components/LessonRow';
 import { CategoryBadge, Checkbox, DifficultyBadge, ProgressBar, ProgressRing, SectionTitle, accentFor } from '@/components/ui';
 import { NotFound } from './NotFound';
@@ -25,6 +28,11 @@ export function SubjectPage() {
   const outline = subject.lessonCount - subject.completeLessonCount;
   const bookmarked = !!bookmarks[subject.id];
   const masteryDone = subject.masteryChecklist.filter((_, i) => checks[`${subject.id}#mastery:${i}`]).length;
+  const coursework = subject.coursework;
+  const projectsDone = coursework?.items.filter((item) => {
+    const p = courseworkProgress(item, checks);
+    return p.total > 0 && p.done === p.total;
+  }).length;
 
   return (
     <article className="space-y-10 animate-rise">
@@ -48,6 +56,11 @@ export function SubjectPage() {
               <span className="inline-flex items-center gap-1.5">
                 <Clock size={14} aria-hidden /> ≈ {subject.estimatedHours} hours
               </span>
+              {coursework && (
+                <span className="inline-flex items-center gap-1.5">
+                  <Hammer size={14} aria-hidden /> plus ≈ {courseworkHours(subject)} project hours
+                </span>
+              )}
               <span className="inline-flex items-center gap-1.5">
                 <Layers size={14} aria-hidden /> {subject.modules.length} modules · {subject.lessonCount} lessons
               </span>
@@ -62,6 +75,7 @@ export function SubjectPage() {
               </div>
               <div className="text-xs text-ink-3">
                 Mastery {masteryDone}/{subject.masteryChecklist.length}
+                {coursework && ` · Projects ${projectsDone}/${coursework.items.length}`}
               </div>
               <div className="mt-2 flex flex-wrap gap-2">
                 {next ? (
@@ -94,7 +108,8 @@ export function SubjectPage() {
               {subject.modules.map((m, mi) => {
                 const mc = moduleCompletion(m, completedLessons);
                 return (
-                  <li key={m.id} className="card overflow-hidden">
+                  <Fragment key={m.id}>
+                  <li className="card overflow-hidden">
                     <div className="border-b border-line p-4">
                       <div className="flex items-start justify-between gap-4">
                         <div>
@@ -128,11 +143,23 @@ export function SubjectPage() {
                       </div>
                     )}
                   </li>
+                  {machineProblemsAfter(subject, m.slug).map((mp) => (
+                    <li key={mp.id}>
+                      <CourseworkRow item={mp} />
+                    </li>
+                  ))}
+                  </Fragment>
                 );
               })}
+              {coursework && (
+                <li>
+                  <CourseworkRow item={coursework.finalProject} />
+                </li>
+              )}
             </ol>
           </section>
 
+          {!coursework && (
           <section aria-labelledby="capstone" className="card p-5">
             <div className="text-xs font-semibold uppercase tracking-widest text-ink-3">Capstone project · ≈ {subject.capstone.estimatedHours} h</div>
             <h2 id="capstone" className="mt-1 text-xl font-semibold tracking-tight">
@@ -158,6 +185,7 @@ export function SubjectPage() {
               </>
             )}
           </section>
+          )}
 
           <section aria-labelledby="mastery" className="card p-5">
             <SectionTitle id="mastery">Mastery checklist</SectionTitle>
@@ -171,6 +199,21 @@ export function SubjectPage() {
         </div>
 
         <aside className="space-y-6 lg:sticky lg:top-6 lg:self-start">
+          {coursework && (
+            <section aria-labelledby="projects" className="card p-4">
+              <h2 id="projects" className="text-sm font-semibold">
+                Projects
+              </h2>
+              <ul className="mt-2 space-y-1">
+                {coursework.items.map((item) => (
+                  <li key={item.id}>
+                    <CourseworkRow item={item} compact />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
           <section aria-labelledby="prereqs" className="card p-4">
             <h2 id="prereqs" className="text-sm font-semibold">
               Prerequisites

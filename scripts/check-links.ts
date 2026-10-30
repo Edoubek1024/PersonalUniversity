@@ -13,9 +13,10 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-import type { Subject } from '../src/data/types';
+import type { CourseworkInput, Subject } from '../src/data/types';
 
 const SUBJECT_DIR = resolve(__dirname, '../src/data/subjects');
+const COURSEWORK_DIR = resolve(__dirname, '../src/data/coursework');
 const CONCURRENCY = 8;
 const TIMEOUT_MS = 15000;
 
@@ -33,6 +34,19 @@ async function loadTargets(only: string[]): Promise<Target[]> {
     const s = mod.default;
     if (only.length && !only.includes(s.id)) continue;
     for (const l of s.lessons) for (const r of l.resources) targets.push({ url: r.url, lessonId: l.id, title: r.title });
+  }
+  const courseworkFiles = readdirSync(COURSEWORK_DIR).filter((f) => f.endsWith('.ts') && f !== 'index.ts');
+  for (const f of courseworkFiles) {
+    const mod = (await import(pathToFileURL(join(COURSEWORK_DIR, f)).href)) as { default: CourseworkInput };
+    const c = mod.default;
+    if (only.length && !only.includes(c.subjectId)) continue;
+    for (const item of [...c.machineProblems, c.finalProject]) {
+      const where = `${c.subjectId}#${item.slug}`;
+      for (const r of item.resources ?? []) targets.push({ url: r.url, lessonId: where, title: r.title });
+      for (const e of item.setup.extensions) {
+        targets.push({ url: `https://marketplace.visualstudio.com/items?itemName=${e}`, lessonId: where, title: e });
+      }
+    }
   }
   return targets;
 }

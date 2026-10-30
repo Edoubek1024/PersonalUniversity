@@ -1087,8 +1087,8 @@ When it does not work: a logic analyser with the I2C decoder shows immediately w
               provider: 'SparkFun',
             },
             {
-              title: 'Bosch BME280 humidity/pressure/temperature sensor (datasheet page)',
-              url: 'https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/',
+              title: 'Bosch BME280 humidity/pressure/temperature sensor datasheet',
+              url: 'https://cdn.sparkfun.com/assets/5/3/0/f/7/BME280_Datasheet.pdf',
               type: 'documentation',
               cost: 'free',
               provider: 'Bosch Sensortec',
@@ -1289,12 +1289,12 @@ Raw readings are integers in odd units. Convert with **fixed-point** arithmetic 
 Every driver call can fail (NACK, timeout, implausible value). Return an error code, never hang waiting for a flag, and let the application decide whether to retry, reset the device or raise an alarm. Read the Embedded Artistry articles on driver design and the BME280 datasheet, then build the exercises; the host test with the datasheet's worked example is the acceptance test.`,
           resources: [
             {
-              title: 'Bosch BME280 datasheet and reference driver',
-              url: 'https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/',
+              title: 'Bosch BME280 reference driver',
+              url: 'https://github.com/boschsensortec/BME280_SensorAPI',
               type: 'documentation',
               cost: 'free',
               provider: 'Bosch Sensortec',
-              note: 'The reference driver on GitHub (boschsensortec/BME280_SensorAPI) is a model of the bus-interface pattern.',
+              note: 'Bosch\'s own driver is a model of the bus-interface pattern.',
               primary: true,
             },
             {

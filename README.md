@@ -1,10 +1,12 @@
 # Teach Me — a personal university for CS, Physics and Astronomy
 
 A self-directed learning system: a course catalog, a learning-management dashboard and a personal
-knowledge base in one local web app. Thirty-one subjects (25 core tracks plus 6 additional
-subjects, 836 lessons, about 2,670 study hours), each with a full curriculum of modules, lessons, learning objectives, curated free
-resources, exercises, projects, a capstone and a mastery checklist. Progress, notes and bookmarks
-are stored in your browser; nothing leaves your machine.
+knowledge base in one local web app. Thirty-five subjects (25 core tracks plus 10 additional
+subjects, 901 lessons, about 2,890 study hours), each with a full curriculum of modules, lessons,
+learning objectives, curated free resources, exercises, projects and a mastery checklist. Physics
+and astronomy subjects end in a capstone. All 21 CS subjects have two machine problems and a final
+project for GitHub, 63 projects in all, adding about 1,700 hours. Progress, notes and bookmarks are
+stored in your browser; nothing leaves your machine.
 
 ## Running it
 
@@ -40,7 +42,11 @@ progress. Use Settings > Export / Import to move it between them.
 - **Subjects**: filter by category, difficulty and status; sort; or switch to the prerequisite map,
   which arranges subjects in tiers so you can see what unlocks what.
 - **Subject page**: description, prerequisites with your completion in each, the full module and
-  lesson list, module projects, the capstone with deliverable checkboxes, and the mastery checklist.
+  lesson list, module projects, the capstone or CS coursework, and the mastery checklist.
+- **Machine problems and final projects** (CS subjects): a spec you can build from in VS Code, with
+  setup, requirement checkboxes, acceptance tests and, for final projects, GitHub publishing steps.
+  MPs appear between the modules they follow, and each course's last lesson links to its final
+  project.
 - **Lesson page**: objectives, concepts, a real explanation, resources (free/paid marked), exercises
   with checkboxes and hints, a self-assessment with reveal-and-rate, your notes (Markdown + LaTeX),
   previous/next navigation and links to canonical lessons in other subjects.

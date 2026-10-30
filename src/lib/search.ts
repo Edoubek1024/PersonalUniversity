@@ -1,9 +1,11 @@
 import { subjects } from '@/data/subjects';
 import { learningPaths } from '@/data/paths';
+import { courseworkHref, courseworkLabel } from '@/lib/coursework';
 
 export type SearchHit =
   | { kind: 'subject'; id: string; title: string; subtitle: string; href: string; score: number }
   | { kind: 'lesson'; id: string; title: string; subtitle: string; href: string; score: number }
+  | { kind: 'project'; id: string; title: string; subtitle: string; href: string; score: number }
   | { kind: 'path'; id: string; title: string; subtitle: string; href: string; score: number };
 
 interface Entry {
@@ -22,6 +24,13 @@ function build(): Entry[] {
       haystack: [s.title, s.tagline, s.tags.join(' '), s.description].join(' ').toLowerCase(),
       titleLower: s.title.toLowerCase(),
     });
+    for (const item of s.coursework?.items ?? []) {
+      entries.push({
+        hit: { kind: 'project', id: item.id, title: item.title, subtitle: `${s.title} · ${courseworkLabel(item)}`, href: courseworkHref(item) },
+        haystack: [item.title, item.summary, item.language, courseworkLabel(item)].join(' ').toLowerCase(),
+        titleLower: item.title.toLowerCase(),
+      });
+    }
     for (const m of s.modules) {
       for (const l of m.lessons) {
         entries.push({
