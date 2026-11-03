@@ -13,7 +13,7 @@ import { defineSubject } from '../define';
 export default defineSubject({
   id: 'operating-systems',
   title: 'Operating Systems',
-  category: 'cs',                       // 'cs' | 'data-science' | 'physics' | 'astronomy' | 'misc'
+  category: 'cs',                       // 'cs' | 'data-science' | 'math' | 'physics' | 'astronomy' | 'misc'
   tagline: 'One sentence shown on the subject card.',
   description: `Markdown, 2-4 paragraphs.`,
   difficulty: 'advanced',               // beginner | intermediate | advanced | expert
@@ -57,7 +57,9 @@ export default defineSubject({
    Fourier series or probability distributions, keep the lesson short and point to the
    canonical lesson via `relatedLessons: ['math-methods/linear-algebra/eigenvalues-and-eigenvectors']`
    while explaining the subject-specific application. Canonical homes:
-   - calculus, linear algebra, ODE/PDE, vector calculus, Fourier -> `math-methods`
+   - calculus, linear algebra, ODE/PDE, vector calculus, Fourier -> `math-methods`, for physics
+     subjects. The `math` category teaches these properly from the start, so a first course in
+     that category does not lean on `math-methods`.
    - probability, distributions, estimation, hypothesis testing, Bayes, MCMC -> `probability-statistics`
    - Big-O, recursion, graphs, dynamic programming -> `data-structures-algorithms`
    - logic, proofs, sets, counting -> `discrete-mathematics`

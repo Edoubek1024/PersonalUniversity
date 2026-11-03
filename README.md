@@ -1,12 +1,12 @@
-# Teach Me — a personal university for CS, Data Science, Physics and Astronomy
+# Teach Me — a personal university for CS, Data Science, Mathematics, Physics and Astronomy
 
 A self-directed learning system: a course catalog, a learning-management dashboard and a personal
-knowledge base in one local web app. Forty-four subjects (25 core tracks plus 19 additional
-subjects, 1,161 lessons, about 3,530 study hours), each with a full curriculum of modules, lessons,
-learning objectives, curated free resources, exercises, projects and a mastery checklist. Physics
-and astronomy subjects end in a capstone. The 21 CS subjects, 8 data science subjects and the
-startup course each have two machine problems and a final project for GitHub, 90 projects in all,
-adding about 2,370 hours. Progress, notes and bookmarks are stored in your browser; nothing leaves
+knowledge base in one local web app. Sixty-nine subjects (25 core tracks plus 44 additional
+subjects, 1,766 lessons, about 5,440 study hours), each with a full curriculum of modules, lessons,
+learning objectives, curated free resources, exercises, projects and a mastery checklist.
+Mathematics, physics and astronomy subjects end in a capstone. The 22 CS subjects, 8 data science
+subjects and the startup course each have two machine problems and a final project for GitHub, 93
+projects in all, adding about 2,460 hours. Progress, notes and bookmarks are stored in your browser; nothing leaves
 your machine.
 
 ## Running it
@@ -51,7 +51,7 @@ progress. Use Settings > Export / Import to move it between them.
 - **Lesson page**: objectives, concepts, a real explanation, resources (free/paid marked), exercises
   with checkboxes and hints, a self-assessment with reveal-and-rate, your notes (Markdown + LaTeX),
   previous/next navigation and links to canonical lessons in other subjects.
-- **Learning paths**: eight suggested orders through the catalog. Progress is per subject, so a
+- **Learning paths**: ten suggested orders through the catalog. Progress is per subject, so a
   subject that appears in several paths is only ever completed once.
 - **Bookmarks** and **Notes** pages collect what you saved.
 - **Settings**: theme, export/import of all progress as JSON (merge or replace), and reset.

@@ -35,6 +35,7 @@ export const learningPaths: LearningPath[] = [
       'computer-architecture',
       'systems-programming',
       'cpp-programming',
+      'rust-programming',
       'operating-systems',
       'theory-of-computation',
       'compilers',
@@ -96,6 +97,41 @@ export const learningPaths: LearningPath[] = [
     ],
     outcome:
       'You can run a data science project from question to report: collect and clean data, model it, explain the results, reproduce the work and answer for its ethics.',
+  },
+  {
+    id: 'mathematics-minor',
+    title: 'Mathematics Minor Route',
+    description:
+      'The calculus sequence, then five electives that count toward the University of Illinois mathematics minor, chosen so that each one prepares you for the next.',
+    subjectIds: [
+      'calculus-1',
+      'calculus-2',
+      'calculus-3',
+      'linear-algebra-computational',
+      'differential-equations',
+      'higher-mathematics',
+      'abstract-algebra',
+      'real-analysis',
+    ],
+    outcome:
+      'You can compute fluently in several variables, solve differential equations, write rigorous proofs, and work in both algebra and analysis.',
+  },
+  {
+    id: 'university-physics',
+    title: 'University Physics Sequence',
+    description:
+      'The four-course calculus-based introduction to physics, alongside the calculus it depends on. This is the on-ramp to the upper-level physics subjects.',
+    subjectIds: [
+      'calculus-1',
+      'calculus-2',
+      'physics-mechanics',
+      'calculus-3',
+      'physics-electricity-magnetism',
+      'physics-thermal',
+      'physics-quantum',
+    ],
+    outcome:
+      'You can model mechanical, electrical, thermal and quantum systems with calculus, and you are ready for upper-level physics.',
   },
   {
     id: 'embedded-iot',

@@ -312,7 +312,7 @@ function ExerciseItem({ ex, n, checked, onToggle }: { ex: Exercise; n: number; c
               <button type="button" onClick={() => setShowHint((s) => !s)} className="text-xs text-accent hover:underline" aria-expanded={showHint}>
                 {showHint ? 'Hide hint' : 'Show hint'}
               </button>
-              {showHint && <p className="mt-1 rounded-lg bg-surface-2 p-2 text-sm text-ink-2 animate-fade">{ex.hint}</p>}
+              {showHint && <Markdown className="mt-1 rounded-lg bg-surface-2 p-2 text-sm text-ink-2 animate-fade">{ex.hint}</Markdown>}
             </div>
           )}
         </div>

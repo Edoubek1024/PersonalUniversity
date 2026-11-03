@@ -26,7 +26,7 @@ export function Dashboard() {
           <p className="text-xs font-semibold uppercase tracking-widest text-ink-3">Your personal university</p>
           <h1 className="mt-1 text-3xl font-semibold tracking-tight">Dashboard</h1>
           <p className="mt-2 max-w-xl text-sm text-ink-2">
-            {subjects.length} subjects, {totalLessonCount.toLocaleString()} lessons and about {totalHours.toLocaleString()} hours of study across computer science, data science, physics, astronomy and more.
+            {subjects.length} subjects, {totalLessonCount.toLocaleString()} lessons and about {totalHours.toLocaleString()} hours of study across computer science, data science, mathematics, physics, astronomy and more.
           </p>
         </div>
         <div className="card flex items-center gap-4 px-5 py-4">
@@ -43,7 +43,7 @@ export function Dashboard() {
 
       <section aria-labelledby="categories">
         <SectionTitle id="categories">Categories</SectionTitle>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((c) => {
             const subs = subjects.filter((s) => s.category === c.id);
             const total = subs.reduce((n, s) => n + s.lessonCount, 0);

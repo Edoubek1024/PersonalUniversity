@@ -16,6 +16,13 @@ export const categories: Category[] = [
     accent: 'teal',
   },
   {
+    id: 'math',
+    title: 'Mathematics',
+    description:
+      'From Calculus I to proofs, algebra and analysis. Learn the methods, then learn why they work, with enough electives to cover a mathematics minor.',
+    accent: 'rose',
+  },
+  {
     id: 'physics',
     title: 'Physics',
     description:

@@ -62,6 +62,31 @@ const KNOWN_SUBJECT_IDS = [
   'data-management-reproducibility',
   'data-ethics-and-policy',
   'startup-founding-and-funding',
+  'calculus-1',
+  'calculus-2',
+  'calculus-3',
+  'linear-algebra-computational',
+  'differential-equations',
+  'higher-mathematics',
+  'abstract-linear-algebra',
+  'ode-theory',
+  'partial-differential-equations',
+  'abstract-algebra',
+  'real-analysis',
+  'complex-variables',
+  'number-theory',
+  'graph-theory',
+  'combinatorics',
+  'probability-theory',
+  'optimization',
+  'differential-geometry',
+  'physics-mechanics',
+  'physics-electricity-magnetism',
+  'physics-thermal',
+  'physics-quantum',
+  'applied-linear-algebra',
+  'statistics-and-probability-2',
+  'rust-programming',
 ];
 
 type Level = 'ERROR' | 'WARN';
@@ -148,7 +173,7 @@ function checkSubject(s: Subject, allLessonIds: Set<string>, presentSubjects: Se
   const id = s.id;
   if (!KNOWN_SUBJECT_IDS.includes(id)) warn(id, 'id', 'subject id is not in the curriculum plan (docs/CURRICULUM-PLAN.md)');
   if (!s.title) err(id, 'title', 'missing');
-  if (!['cs', 'data-science', 'physics', 'astronomy', 'misc'].includes(s.category)) err(id, 'category', `invalid "${s.category}"`);
+  if (!['cs', 'data-science', 'math', 'physics', 'astronomy', 'misc'].includes(s.category)) err(id, 'category', `invalid "${s.category}"`);
   if (!s.tagline) err(id, 'tagline', 'missing');
   if (wordCount(s.description) < 60) warn(id, 'description', `short (${wordCount(s.description)} words; aim for 2-4 paragraphs)`);
   if (!(s.estimatedHours > 0)) err(id, 'estimatedHours', 'must be > 0');

@@ -27,6 +27,23 @@ export function Inline({ children }: { children: string }) {
   );
 }
 
+/**
+ * remark-math renders `$$...$$` written on one line as inline math. Give each such line its own
+ * `$$` fences so it renders as display math, as the author meant. Code blocks are left alone.
+ */
+export function fenceDisplayMath(src: string): string {
+  if (!src.includes('$$')) return src;
+  let inCode = false;
+  return src
+    .split('\n')
+    .map((line) => {
+      if (/^\s*(```|~~~)/.test(line)) inCode = !inCode;
+      const m = inCode ? null : /^(\s*)\$\$((?:(?!\$\$).)+)\$\$\s*$/.exec(line);
+      return m ? `${m[1]}$$\n${m[1]}${m[2]}\n${m[1]}$$` : line;
+    })
+    .join('\n');
+}
+
 /** Renders curriculum Markdown with GFM tables and LaTeX math. */
 export function Markdown({ children, className = '' }: { children: string; className?: string }) {
   return (
@@ -47,7 +64,7 @@ export function Markdown({ children, className = '' }: { children: string; class
           ),
         }}
       >
-        {children}
+        {fenceDisplayMath(children)}
       </ReactMarkdown>
     </div>
   );

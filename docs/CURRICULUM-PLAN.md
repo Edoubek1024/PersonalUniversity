@@ -1,6 +1,6 @@
 # Curriculum plan
 
-Five categories, 25 core tracks, 19 additional recommended subjects. Each subject file in
+Six categories, 25 core tracks, 44 additional recommended subjects. Each subject file in
 `src/data/subjects/` is the source of truth for its own content; this document fixes the
 subject IDs, categories, prerequisite graph and the module outline each subject must cover.
 Subject IDs below are final and are referenced by `src/data/paths.ts` and by
@@ -29,6 +29,7 @@ Legend: **Diff** = difficulty, **Hrs** = estimated hours, **Core** = one of the 
 | `cybersecurity` | Cybersecurity | advanced | 90 | computer-networks, operating-systems, systems-programming | additional |
 | `embedded-systems-iot` | Embedded Systems and IoT | intermediate | 90 | systems-programming, computer-architecture | additional |
 | `distributed-systems` | Distributed Systems | advanced | 90 | operating-systems, computer-networks, databases | additional |
+| `rust-programming` | Rust Programming | intermediate | 80 | programming-fundamentals | additional |
 | `cpp-programming` | Modern C++ | intermediate | 130 | programming-fundamentals | additional |
 | `typescript-web` | TypeScript for the Web | intermediate | 30 | programming-fundamentals | additional |
 | `go-programming` | Go for Backend Services | intermediate | 32 | programming-fundamentals | additional |
@@ -60,6 +61,43 @@ subjects. These are practical, applied courses. They lead into `probability-stat
 `machine-learning`, `data-structures-algorithms` and `math-methods`, which go deeper, and they
 link to those courses instead of competing with them.
 
+## Mathematics (`math`)
+
+These follow University of Illinois Urbana-Champaign MATH courses, chosen to cover the calculus
+sequence and all the groups of the mathematics minor (MATH 241 plus five electives, 2026-27
+catalog). Topics come from public catalog descriptions, and the content here is original. It is
+not affiliated with Illinois. Math subjects use module projects and a capstone, like the physics
+subjects, and do not have machine problems.
+
+| ID | Title | Follows | Minor group | Diff | Hrs | Prerequisites |
+|---|---|---|---|---|---|---|
+| `calculus-1` | Calculus I | MATH 220/221 | prerequisite | beginner | 100 | — |
+| `calculus-2` | Calculus II | MATH 231 | prerequisite | beginner | 80 | calculus-1 |
+| `calculus-3` | Calculus III | MATH 241 | required | intermediate | 100 | calculus-2 |
+| `linear-algebra-computational` | Linear Algebra with Computational Applications | MATH 257 | algebra | intermediate | 70 | calculus-1 |
+| `differential-equations` | Introduction to Differential Equations | MATH 285 | analysis | intermediate | 80 | calculus-3 |
+| `higher-mathematics` | Introduction to Higher Mathematics | MATH 314 | fundamentals | intermediate | 90 | calculus-3 |
+| `abstract-linear-algebra` | Abstract Linear Algebra | MATH 416 | algebra | advanced | 80 | higher-mathematics, linear-algebra-computational |
+| `ode-theory` | Differential Equations | MATH 441 | analysis | advanced | 70 | differential-equations, higher-mathematics |
+| `partial-differential-equations` | Introduction to Partial Differential Equations | MATH 442 | analysis | advanced | 70 | differential-equations |
+| `abstract-algebra` | Introduction to Abstract Algebra | MATH 417 | algebra | advanced | 80 | higher-mathematics |
+| `real-analysis` | Elementary Real Analysis | MATH 444 | analysis | advanced | 90 | higher-mathematics |
+| `complex-variables` | Applied Complex Variables | MATH 446 | analysis | advanced | 70 | calculus-3 |
+| `number-theory` | Number Theory | MATH 453 | algebra | intermediate | 60 | higher-mathematics |
+| `graph-theory` | Graph Theory | MATH 412 | discrete | intermediate | 60 | higher-mathematics |
+| `combinatorics` | Introduction to Combinatorics | MATH 413 | discrete | intermediate | 60 | higher-mathematics |
+| `probability-theory` | Probability Theory | MATH 461 | probability | intermediate | 70 | calculus-3 |
+| `optimization` | Linear and Nonlinear Programming | MATH 482, 484 | discrete, analysis | advanced | 80 | calculus-3, linear-algebra-computational |
+| `differential-geometry` | Differential Geometry | MATH 423 | geometry | advanced | 70 | calculus-3, linear-algebra-computational |
+| `applied-linear-algebra` | Applied Linear Algebra | MATH 415 | algebra | intermediate | 70 | calculus-3 |
+| `statistics-and-probability-2` | Statistics and Probability II | STAT 410 | probability | advanced | 80 | probability-theory, calculus-3 |
+
+`optimization` merges MATH 482 and 484 into one course. `applied-linear-algebra` (MATH 415) is
+the engineering route, with equilibrium problems and linear dynamical systems, worked mostly by
+hand. `linear-algebra-computational` (MATH 257) is the computing route, and the two overlap. `calculus-for-data-science` and
+`linear-algebra-for-data-science` remain as the data-driven versions, and `math-methods` remains
+the fast physics-oriented review.
+
 ## Physics (`physics`)
 
 | ID | Title | Diff | Hrs | Prerequisites | Core |
@@ -72,6 +110,10 @@ link to those courses instead of competing with them.
 | `quantum-mechanics` | Quantum Mechanics | advanced | 110 | waves-optics, math-methods | yes |
 | `relativity` | Special and General Relativity | expert | 100 | electromagnetism, classical-mechanics | yes |
 | `computational-physics` | Computational Physics | advanced | 80 | programming-fundamentals, classical-mechanics, math-methods | yes |
+| `physics-mechanics` | University Physics: Mechanics (PHYS 211) | beginner | 100 | calculus-1 | additional |
+| `physics-electricity-magnetism` | University Physics: Electricity and Magnetism (PHYS 212) | intermediate | 100 | physics-mechanics, calculus-2 | additional |
+| `physics-thermal` | University Physics: Thermal Physics (PHYS 213) | intermediate | 50 | physics-mechanics | additional |
+| `physics-quantum` | University Physics: Quantum Physics (PHYS 214) | intermediate | 50 | physics-electricity-magnetism | additional |
 
 ## Astronomy (`astronomy`)
 
@@ -269,6 +311,231 @@ default and an honest account of the odds. Education, not legal, tax or investme
 8. Running a private company: boards and fiduciary duties, hiring and employment, option plans and 409A valuations, taxes and compliance, investor updates, secondary sales
 9. Exits and endings: acquisitions, IPOs, liquidation waterfalls, down rounds, pivots, shutting a company down well
 
+### calculus-1 (MATH 220/221)
+A complete first course, starting from algebra and assuming no calculus. Geometric and physical
+reasoning, with every technique practised by hand.
+1. Functions and precalculus review: functions, graphs, trigonometry, exponentials, logarithms, inverse functions
+2. Limits and continuity: the intuitive limit, limit laws, one-sided and infinite limits, continuity, the intermediate value theorem, the epsilon-delta definition
+3. The derivative: rates of change, definition, rules, trigonometric functions, the chain rule
+4. More differentiation: implicit differentiation, inverse, exponential and logarithmic functions, related rates, linear approximation
+5. Applications of the derivative: extrema, the mean value theorem, curve sketching, optimisation, L'Hopital's rule, Newton's method
+6. The integral: antiderivatives, Riemann sums, the definite integral, the fundamental theorem, substitution
+7. Applications of the integral: area, volumes, average value, work
+
+### calculus-2 (MATH 231)
+1. Techniques of integration: by parts, trigonometric integrals, trigonometric substitution, partial fractions, strategy
+2. Improper integrals and numerical methods: improper integrals, comparison, the trapezoid and Simpson rules, error
+3. More applications: arc length, surface area, moments, probability, simple differential equations
+4. Sequences and series: sequences, series, the integral, comparison, ratio and root tests, alternating series, absolute convergence
+5. Power series: radius of convergence, Taylor and Maclaurin series, Taylor's theorem and error, the binomial series, applications
+6. Parametric and polar curves: conic sections, parametric curves, calculus in polar coordinates
+
+### calculus-3 (MATH 241)
+1. Vectors and geometry of space: vectors, dot and cross products, lines and planes, surfaces, cylindrical and spherical coordinates
+2. Vector functions: curves, derivatives and integrals, arc length, curvature, motion in space
+3. Partial derivatives: limits, partials, tangent planes, the chain rule, directional derivatives, the gradient
+4. Optimisation in several variables: critical points, the second derivative test, Lagrange multipliers
+5. Multiple integrals: double integrals, polar coordinates, triple integrals, change of variables and Jacobians
+6. Vector fields and line integrals: vector fields, line integrals, conservative fields, Green's theorem
+7. Surface integrals and the integral theorems: parametric surfaces, flux, curl and divergence, Stokes' theorem, the divergence theorem
+
+### linear-algebra-computational (MATH 257)
+Concepts with computation throughout, in Python. Proof-based linear algebra is in `abstract-linear-algebra`.
+1. Linear systems: Gaussian elimination, matrix arithmetic, LU, computing with NumPy and floating point
+2. Vector spaces: subspaces, span, independence, basis, dimension, the four fundamental subspaces
+3. Linear transformations and determinants: matrices of maps, change of basis, determinants
+4. Orthogonality: inner products, projections, Gram-Schmidt, QR, least squares and regression
+5. Eigenvalues: eigenvectors, diagonalisation, the power method, linear dynamical systems, Markov chains
+6. Symmetric matrices and the SVD: the spectral theorem, positive definite matrices, the singular value decomposition, low-rank approximation, applications
+
+### differential-equations (MATH 285)
+Assumes Calculus III. Introduces just enough linear algebra for systems.
+1. First-order equations: modeling, separable and linear equations, direction fields, existence, autonomous equations, Euler's method
+2. Second-order linear equations: homogeneous equations, characteristic roots, undetermined coefficients, variation of parameters, oscillators and resonance
+3. Higher-order equations and series: linear independence, series solutions near ordinary points
+4. Laplace transforms: definition, solving initial value problems, step functions, impulses, convolution
+5. Systems: matrices and eigenvalues, linear systems, phase portraits, a first look at non-linear stability
+6. Fourier series and boundary value problems: eigenvalue problems, Fourier series, sine and cosine series, convergence
+7. Introduction to PDEs: separation of variables for heat, wave and Laplace equations
+
+### higher-mathematics (MATH 314)
+The gateway to proof. Every later proof course assumes it.
+1. Logic and how to read mathematics: statements, quantifiers, negation, implication
+2. Proof techniques: direct proof, contrapositive, contradiction, cases, counterexamples, writing proofs well
+3. Induction: weak and strong induction, well-ordering, recursive definitions
+4. Sets, functions and relations: set operations, functions, injections and surjections, equivalence relations, orders
+5. Number systems: divisibility, modular arithmetic, the integers, the rationals, irrationality
+6. Cardinality: finite and infinite sets, countability, Cantor's theorem
+7. Real numbers and limits: least upper bounds, sequences, epsilon arguments, the first analysis proofs
+
+### abstract-linear-algebra (MATH 416)
+Proof-oriented.
+1. Vector spaces over fields: axioms, subspaces, bases and dimension
+2. Linear maps: rank-nullity, matrices of maps, duality, quotients
+3. Determinants and eigenvalues: multilinear forms, the characteristic polynomial, invariant subspaces
+4. Diagonalisation and canonical forms: minimal polynomial, generalised eigenspaces, Jordan form
+5. Inner product spaces: orthonormal bases, adjoints, the spectral theorems, positive operators
+6. Further structure: singular values, bilinear forms, applications
+
+### ode-theory (MATH 441)
+Rigorous theory, with an eye to dynamics.
+1. Existence and uniqueness: the initial value problem, Picard iteration, Gronwall's inequality, continuous dependence
+2. Linear systems: the matrix exponential, fundamental matrices, variation of constants, Floquet theory
+3. Stability: equilibria, Lyapunov functions, linearisation, the Hartman-Grobman statement
+4. Phase plane analysis: limit cycles, Poincare-Bendixson, bifurcations
+5. Boundary value problems: Sturm-Liouville theory, eigenfunction expansions, Green's functions
+
+### partial-differential-equations (MATH 442)
+1. Modeling and first-order equations: conservation laws, derivations, characteristics, classification
+2. The wave equation: d'Alembert's solution, energy, domains of dependence, reflections
+3. The diffusion equation: the maximum principle, the heat kernel, uniqueness
+4. Separation of variables and Fourier series: boundary conditions, convergence, eigenfunction expansions
+5. Laplace's equation: harmonic functions, the mean value property, the Poisson formula, Green's identities
+6. Fourier transforms and higher dimensions: transforms, circular and spherical domains, Bessel functions, numerical methods
+
+### abstract-algebra (MATH 417)
+1. Groups: definitions, examples, subgroups, cyclic and symmetric groups
+2. Homomorphisms: cosets, Lagrange's theorem, normal subgroups, quotients, isomorphism theorems
+3. Group actions: orbits and stabilisers, Burnside's lemma, conjugacy, the Sylow theorems
+4. Rings: ideals, quotients, homomorphisms, integral domains
+5. Polynomials and factorisation: polynomial rings, Euclidean domains, unique factorisation, irreducibility
+6. Fields: extensions, finite fields, an application to coding or constructions
+
+### real-analysis (MATH 444)
+1. The real numbers: completeness, supremum, density, the Archimedean property
+2. Sequences and series: limits, monotone sequences, Bolzano-Weierstrass, Cauchy sequences, convergence tests
+3. Limits and continuity: topology of the line, compactness, continuous functions, uniform continuity
+4. Differentiation: the mean value theorem, Taylor's theorem, L'Hopital's rule proved
+5. The Riemann integral: Darboux sums, integrability, the fundamental theorem
+6. Sequences of functions: uniform convergence, power series, Weierstrass approximation, metric spaces
+
+### complex-variables (MATH 446)
+Applied emphasis, as MATH 446 is. Assumes Calculus III.
+1. Complex numbers and functions: arithmetic, polar form, elementary functions, branches
+2. Analytic functions: complex differentiation, Cauchy-Riemann equations, harmonic functions
+3. Contour integration: line integrals, Cauchy's theorem and formula, Liouville's theorem
+4. Series: Taylor and Laurent series, zeros and singularities
+5. Residues: the residue theorem, real integrals, the argument principle
+6. Conformal maps and applications: Mobius transformations, potential flow, heat and electrostatics, transforms
+
+### number-theory (MATH 453)
+1. Divisibility: the Euclidean algorithm, primes, unique factorisation
+2. Congruences: modular arithmetic, linear congruences, the Chinese remainder theorem
+3. Fermat and Euler: Euler's theorem, Wilson's theorem, RSA
+4. Primitive roots: orders, the existence of primitive roots, discrete logarithms
+5. Quadratic reciprocity: residues, the Legendre symbol, the law and its proof
+6. Further topics: arithmetic functions, sums of squares, continued fractions, Diophantine equations
+
+### graph-theory (MATH 412)
+Proof-based, going beyond `discrete-mathematics`.
+1. Fundamentals: definitions, degree, paths, Eulerian circuits, isomorphism
+2. Trees: characterisations, spanning trees, Cayley's formula, optimisation on trees
+3. Connectivity and matching: Menger's theorem, Hall's theorem, Konig's theorem, Tutte's theorem
+4. Colouring: greedy bounds, Brooks' theorem, chromatic polynomials, edge colouring and Vizing's theorem
+5. Planarity: Euler's formula, Kuratowski's theorem, the five colour theorem
+6. Further topics: Hamiltonian cycles, Ramsey theory, extremal graphs
+
+### combinatorics (MATH 413)
+1. Basic counting: permutations, combinations, multisets, binomial identities, bijective proof
+2. Inclusion-exclusion and the pigeonhole principle: derangements, Euler's function, Mobius inversion
+3. Generating functions: ordinary and exponential, partitions, Catalan numbers
+4. Recurrences: linear recurrences, solving by generating functions
+5. Symmetry and designs: Burnside and Polya counting, block designs, Latin squares, finite geometries
+6. Ramsey theory and the probabilistic method: Ramsey numbers, expectation arguments
+
+### probability-theory (MATH 461)
+Calculus-based and proof-aware. `probability-statistics` is aimed at scientists and goes on to statistics.
+1. Foundations: axioms, counting, conditional probability, independence, Bayes
+2. Discrete random variables: expectation, variance, standard distributions, generating functions
+3. Continuous random variables: densities, standard distributions, transformations
+4. Joint distributions: covariance, conditional distributions and expectation, sums of random variables
+5. Inequalities and limit theorems: Markov, Chebyshev, laws of large numbers, moment generating functions, the central limit theorem
+6. Further topics: Markov chains, Poisson processes, a first look at simulation
+
+### optimization (MATH 482 and 484)
+1. Linear programming: modeling, geometry, standard form, the simplex method
+2. Duality: weak and strong duality, complementary slackness, sensitivity
+3. Network and integer programming: flows, total unimodularity, branch and bound, cutting planes
+4. Unconstrained non-linear optimisation: optimality conditions, gradient and Newton methods, line search
+5. Constrained optimisation: Lagrange multipliers, the Karush-Kuhn-Tucker theorem, penalty and barrier methods
+6. Convex programming: convex sets and functions, duality, applications to machine learning
+
+### differential-geometry (MATH 423)
+1. Curves: arc length, curvature, torsion, the Frenet frame, the fundamental theorem of curves
+2. Surfaces: regular surfaces, the first fundamental form, area
+3. Curvature of surfaces: the Gauss map, the second fundamental form, Gaussian and mean curvature
+4. Intrinsic geometry: Gauss's Theorema Egregium, geodesics
+5. The Gauss-Bonnet theorem: local and global forms, Euler characteristic
+6. Differential forms: vector fields, forms, a modern view of curvature
+
+### rust-programming
+A full course in Rust for someone who can already program. `systems-programming` has one module of
+Rust basics; this course goes much further and links to it rather than repeating it.
+1. Getting started: Cargo, the syntax, types, control flow, functions, rustfmt, Clippy and tests
+2. Ownership and borrowing: moves, Copy and Clone, references, slices, String and str, how the borrow checker reasons
+3. Modelling data: structs, enums, pattern matching, Option and Result, errors and the ? operator, modules and crates
+4. Generics, traits and lifetimes: generic functions and types, trait bounds, trait objects, lifetime annotations, the common standard traits
+5. Collections, iterators and smart pointers: Vec and HashMap, iterator adapters, closures and the Fn traits, Box, Rc, RefCell and interior mutability
+6. Concurrency: threads, Send and Sync, channels, Arc and Mutex, async and await with Tokio
+7. Beyond safe Rust: unsafe code and its contract, FFI with C, declarative macros, benchmarks, documentation and publishing a crate
+
+### applied-linear-algebra (MATH 415)
+Linear algebra for engineering and science, as MATH 415 is. Worked mainly by hand, with short
+computational checks. Applications are physical: structures, circuits, networks, vibrations.
+1. Matrices and linear systems: Gaussian elimination, matrix algebra, inverses, LU factorisation, pivoting and its cost
+2. Vector spaces: subspaces, independence, basis, dimension, the four fundamental subspaces
+3. Linear transformations and determinants: matrix representations, change of basis, determinant properties and uses
+4. Inner products, norms and orthogonality: norms, inner products, orthogonal bases, Gram-Schmidt, QR, least squares
+5. Equilibrium: minimisation principles, positive definite systems, mass-spring chains, electrical networks, trusses
+6. Eigenvalues and eigenvectors: diagonalisation, symmetric matrices and the spectral theorem, the SVD in outline
+7. Linear dynamical systems: iterative systems, Markov processes, linear systems of ODEs, the matrix exponential, stability, vibrations and normal modes
+
+### statistics-and-probability-2 (STAT 410)
+A continuation of STAT 400: the mathematical theory of estimation and testing. Assumes probability
+at the level of `probability-theory`. Module 1 reviews the STAT 400 statistics it needs.
+1. Review and moment-generating functions: point estimates, intervals and tests from STAT 400, moment-generating functions, uniqueness, sums of independent variables
+2. Transformations of random variables: one-to-one and many-to-one transformations, Jacobians, order statistics
+3. Normal sampling theory: chi-square, t and F distributions, independence of sample mean and variance, limiting distributions
+4. Sufficiency and best estimators: sufficiency, factorisation, exponential families, completeness, Rao-Blackwell, Lehmann-Scheffe, the Cramer-Rao bound
+5. Maximum likelihood: likelihood, Fisher information, consistency and asymptotic normality, the delta method, numerical maximisation
+6. Confidence intervals: pivots, exact and large-sample intervals, intervals from likelihood
+7. Hypothesis testing: the Neyman-Pearson lemma, uniformly most powerful and unbiased tests, likelihood ratio tests, chi-square tests
+
+### physics-mechanics (PHYS 211)
+Calculus-based. Assumes Calculus I, with Calculus II alongside. `classical-mechanics` is the next step.
+1. Kinematics: vectors, motion in one and two dimensions, relative motion
+2. Newton's laws: forces, free-body diagrams, friction, circular motion
+3. Work and energy: work, kinetic and potential energy, conservation, power
+4. Momentum and systems of particles: impulse, collisions, centre of mass
+5. Rotation: rotational kinematics and dynamics, torque, angular momentum, statics
+6. Gravitation and fluids: universal gravitation, orbits, pressure, buoyancy, Bernoulli's equation
+7. Oscillations and waves: simple harmonic motion, damping, waves on strings, sound
+
+### physics-electricity-magnetism (PHYS 212)
+Calculus-based. Assumes PHYS 211 and Calculus II, with Calculus III alongside. `electromagnetism` is the next step.
+1. Electric fields: charge, Coulomb's law, fields, continuous distributions
+2. Gauss's law and electric potential: flux, Gauss's law, potential, conductors
+3. Capacitance and circuits: capacitors, dielectrics, current, resistance, Kirchhoff's rules, RC circuits
+4. Magnetism: magnetic force, the Biot-Savart law, Ampere's law
+5. Induction: Faraday's law, Lenz's law, inductors, RL and LC circuits, alternating current
+6. Electromagnetic waves and optics: Maxwell's equations in outline, electromagnetic waves, reflection, refraction, lenses and mirrors
+
+### physics-thermal (PHYS 213)
+Calculus-based, and led by the statistical view of entropy. `thermodynamics-statistical-mechanics` is the next step.
+1. Temperature and energy: temperature, heat, the first law, heat capacity
+2. Kinetic theory: the ideal gas, equipartition, the Maxwell-Boltzmann distribution
+3. Entropy and the second law: microstates, counting, entropy, irreversibility
+4. Heat engines: Carnot limits, refrigerators, real cycles
+5. Free energy and statistical ideas: the Boltzmann factor, free energy, equilibrium, phase changes
+
+### physics-quantum (PHYS 214)
+Calculus-based. `quantum-mechanics` is the next step.
+1. Waves and interference: superposition, double slits, diffraction, interferometers
+2. Photons: the photoelectric effect, Compton scattering, wave-particle duality
+3. Matter waves: de Broglie waves, electron diffraction, the uncertainty principle
+4. Wave mechanics: the Schrodinger equation, particle in a box, tunnelling
+5. Atoms and applications: the Bohr atom, atomic structure, spin, lasers and semiconductors in outline
+
 ### math-methods
 1. `single-variable-calculus` 2. `multivariable-calculus` 3. `linear-algebra` 4. `ordinary-differential-equations` 5. `vector-calculus` 6. `fourier-and-complex-analysis` 7. `partial-differential-equations-and-special-functions`
 Capstone: a solutions portfolio plus a notebook that numerically checks every major derivation.
@@ -327,33 +594,38 @@ Capstone: analyse a real X-ray or gravitational-wave dataset and interpret it ph
 
 ## Completion status
 
-All 44 subjects are written. Every lesson is fully populated: none is marked `outline`.
+All 69 subjects are written. Every lesson is fully populated: none is marked `outline`.
 `npm run validate` reports no errors and no warnings.
 
 | Category | Subjects | Lessons |
 |---|---|---|
-| Computer Science | 21 | 522 |
+| Computer Science | 22 | 551 |
 | Data Science | 8 | 225 |
-| Physics | 8 | 221 |
+| Mathematics | 20 | 497 |
+| Physics | 12 | 300 |
 | Astronomy | 6 | 158 |
 | Miscellaneous | 1 | 35 |
-| **Total** | **44** | **1,161** |
+| **Total** | **69** | **1,766** |
 
 Run `npm run validate` for the per-subject table (modules, lessons, hours).
 
-The CS, data science and startup subjects have coursework: 60 machine problems and 30 final
-projects, about 2,370 hours on top of the subject hours. Specs were checked by script, by reasoning
+The CS, data science and startup subjects have coursework: 62 machine problems and 31 final
+projects, about 2,460 hours on top of the subject hours. Mathematics subjects use module projects
+and a capstone instead. Specs were checked by script, by reasoning
 or on sample runs. Almost none has been built end to end, so treat numeric targets and timings as
 estimates.
 
 ### Resource links
 
-The last full `npm run check-links` run covered 2,674 unique URLs (4,733 references): 2,491 OK.
+The last full `npm run check-links` run covered 3,281 unique URLs (6,392 references): 3,078 OK.
+The Rust course was written afterwards; its 97 URLs were checked separately and all returned 200.
 All true 404s found were replaced. Remaining non-OK results fall into two groups:
 
-- **Unverified (166).** Sites such as the Feynman Lectures, NASA ADS, Wiley and some
+- **Unverified (170).** Sites such as the Feynman Lectures, NASA ADS, Wiley and some
   university pages return 403 or 429 to scripts but work in a browser.
-- **Unreachable from the authoring machine (12).** Requests to gnu.org, SIMBAD, DAMTP Cambridge,
+- **Unreachable from the authoring machine (33).** About a dozen are web.stanford.edu pages,
+  whose server sends an incomplete certificate chain that browsers repair and scripts do not.
+  Others: gnu.org, SIMBAD, DAMTP Cambridge,
   in-the-sky.org, LIGO, Penn State STAT courses, Fourmilab and a few others failed at the
   network level. These are long-standing sites and are expected to work in a normal browser.
 
