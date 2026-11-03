@@ -13,7 +13,7 @@ import { defineSubject } from '../define';
 export default defineSubject({
   id: 'operating-systems',
   title: 'Operating Systems',
-  category: 'cs',                       // 'cs' | 'data-science' | 'math' | 'physics' | 'astronomy' | 'misc'
+  category: 'cs',                       // 'cs' | 'data-science' | 'math' | 'statistics' | 'physics' | 'astronomy' | 'misc'
   tagline: 'One sentence shown on the subject card.',
   description: `Markdown, 2-4 paragraphs.`,
   difficulty: 'advanced',               // beginner | intermediate | advanced | expert
@@ -92,7 +92,7 @@ default-exports `defineCoursework({...})`. It is discovered automatically. The t
 `src/data/coursework/systems-programming.ts` is the reference for length, tone and specificity.
 Match it.
 
-Coursework is optional for `misc` subjects, and validated the same way when present. A final
+Coursework is optional for `statistics` and `misc` subjects, and validated the same way when present. A final
 project replaces the subject's `capstone` in the UI. Do not edit the capstone in the
 subject file.
 

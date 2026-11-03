@@ -23,6 +23,13 @@ export const categories: Category[] = [
     accent: 'rose',
   },
   {
+    id: 'statistics',
+    title: 'Statistics',
+    description:
+      'Probability models, estimation and testing: how to learn from data and how sure to be. From applied statistics for scientists to the mathematical theory behind it.',
+    accent: 'lime',
+  },
+  {
     id: 'physics',
     title: 'Physics',
     description:

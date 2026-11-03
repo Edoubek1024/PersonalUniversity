@@ -59,7 +59,7 @@ const scipyStats = (note: string): ResourceInput => ({
 export default defineSubject({
   id: 'statistics-and-probability-2',
   title: 'Statistics and Probability II',
-  category: 'math',
+  category: 'statistics',
   tagline:
     'The mathematical theory of estimation and testing: transformations, normal sampling theory, sufficiency, maximum likelihood, confidence intervals and optimal tests, each checked by derivation and by simulation.',
   description: `This course follows the topics of STAT 410 (Statistics and Probability II) at the University of Illinois Urbana-Champaign, the continuation of STAT 400. Its public catalog description lists moment-generating functions, transformations of random variables, normal sampling theory, sufficiency, best estimators, maximum likelihood estimators, confidence intervals, most powerful tests, likelihood ratio tests and chi-square tests. Everything here, including the lessons, examples and exercises, is original. The course is not affiliated with, endorsed by, or a substitute for the Illinois course.

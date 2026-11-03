@@ -3,7 +3,7 @@ import { defineSubject } from '../define';
 export default defineSubject({
   id: 'probability-statistics',
   title: 'Probability and Statistics for Scientists',
-  category: 'cs',
+  category: 'statistics',
   tagline:
     'Probability theory, distributions, estimation, hypothesis tests, Bayesian inference and MCMC: how to reason quantitatively under uncertainty and extract conclusions from data.',
   description: `Every measurement has noise, every simulation has randomness, and every scientific claim is a statement about what the data can and cannot support. Probability is the mathematics of uncertainty; statistics is the discipline of turning data into justified conclusions. Together they are the foundation of experimental physics, observational astronomy, machine learning and every form of data analysis, and this subject is the canonical home for them: other subjects link here whenever they need a distribution, a likelihood, a confidence interval or a sampler.

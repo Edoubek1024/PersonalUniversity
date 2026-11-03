@@ -1,6 +1,6 @@
 # Curriculum plan
 
-Six categories, 25 core tracks, 44 additional recommended subjects. Each subject file in
+Seven categories, 25 core tracks, 44 additional recommended subjects. Each subject file in
 `src/data/subjects/` is the source of truth for its own content; this document fixes the
 subject IDs, categories, prerequisite graph and the module outline each subject must cover.
 Subject IDs below are final and are referenced by `src/data/paths.ts` and by
@@ -23,7 +23,6 @@ Legend: **Diff** = difficulty, **Hrs** = estimated hours, **Core** = one of the 
 | `compilers` | Compilers and Programming Languages | advanced | 110 | data-structures-algorithms, computer-architecture, theory-of-computation | yes |
 | `machine-learning` | Machine Learning | advanced | 100 | programming-fundamentals, math-methods, probability-statistics | yes |
 | `deep-learning` | Deep Learning | advanced | 90 | machine-learning | yes |
-| `probability-statistics` | Probability and Statistics for Scientists | intermediate | 70 | math-methods | additional |
 | `systems-programming` | Systems Programming in C and Rust | intermediate | 80 | programming-fundamentals, computer-architecture | additional |
 | `theory-of-computation` | Theory of Computation | advanced | 70 | discrete-mathematics | additional |
 | `cybersecurity` | Cybersecurity | advanced | 90 | computer-networks, operating-systems, systems-programming | additional |
@@ -90,13 +89,22 @@ subjects, and do not have machine problems.
 | `optimization` | Linear and Nonlinear Programming | MATH 482, 484 | discrete, analysis | advanced | 80 | calculus-3, linear-algebra-computational |
 | `differential-geometry` | Differential Geometry | MATH 423 | geometry | advanced | 70 | calculus-3, linear-algebra-computational |
 | `applied-linear-algebra` | Applied Linear Algebra | MATH 415 | algebra | intermediate | 70 | calculus-3 |
-| `statistics-and-probability-2` | Statistics and Probability II | STAT 410 | probability | advanced | 80 | probability-theory, calculus-3 |
 
 `optimization` merges MATH 482 and 484 into one course. `applied-linear-algebra` (MATH 415) is
 the engineering route, with equilibrium problems and linear dynamical systems, worked mostly by
 hand. `linear-algebra-computational` (MATH 257) is the computing route, and the two overlap. `calculus-for-data-science` and
 `linear-algebra-for-data-science` remain as the data-driven versions, and `math-methods` remains
 the fast physics-oriented review.
+
+## Statistics (`statistics`)
+
+Moved out of Computer Science and Mathematics on 2026-11-03. IDs did not change, so progress is
+unaffected. `probability-statistics` keeps its machine problems and final project.
+
+| ID | Title | Follows | Diff | Hrs | Prerequisites | Core |
+|---|---|---|---|---|---|---|
+| `probability-statistics` | Probability and Statistics for Scientists | — | intermediate | 70 | math-methods | additional |
+| `statistics-and-probability-2` | Statistics and Probability II | STAT 410 | advanced | 80 | probability-theory, calculus-3 | additional |
 
 ## Physics (`physics`)
 
@@ -599,9 +607,10 @@ All 69 subjects are written. Every lesson is fully populated: none is marked `ou
 
 | Category | Subjects | Lessons |
 |---|---|---|
-| Computer Science | 22 | 551 |
+| Computer Science | 21 | 524 |
 | Data Science | 8 | 225 |
-| Mathematics | 20 | 497 |
+| Mathematics | 19 | 468 |
+| Statistics | 2 | 56 |
 | Physics | 12 | 300 |
 | Astronomy | 6 | 158 |
 | Miscellaneous | 1 | 35 |
@@ -609,7 +618,7 @@ All 69 subjects are written. Every lesson is fully populated: none is marked `ou
 
 Run `npm run validate` for the per-subject table (modules, lessons, hours).
 
-The CS, data science and startup subjects have coursework: 62 machine problems and 31 final
+The CS and data science subjects, `probability-statistics` and the startup course have coursework: 62 machine problems and 31 final
 projects, about 2,460 hours on top of the subject hours. Mathematics subjects use module projects
 and a capstone instead. Specs were checked by script, by reasoning
 or on sample runs. Almost none has been built end to end, so treat numeric targets and timings as
