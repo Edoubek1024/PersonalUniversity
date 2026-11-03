@@ -116,6 +116,13 @@ $$Q(t) = 20\\left(1 - e^{-t/20}\\right).$$
 
 As $t \\to \\infty$, $Q \\to 20$ kg, which matches a concentration of 0.2 kg/L in 100 L. The salt reaches half that value when $e^{-t/20} = 1/2$, at $t = 20\\ln 2 \\approx 13.9$ minutes.
 
+The interactive below draws the slope $1 - Q/20$ at many points of the $(t, Q)$ plane. Every member of the family $20 + Ce^{-t/20}$ follows those slopes.
+
+\`\`\`interactive
+direction-field
+{"title": "The tank equation Q' = 1 − Q/20", "f": "1 - Q/20", "vars": ["t", "Q"], "view": [0, 100, -5, 40], "start": [0, 0], "curves": [[0, 35], [0, 10]], "caption": "The red curve starts at the initial point (0, 0) and is Q = 20(1 − e^(−t/20)). It passes Q = 10 near t = 13.9. Tap anywhere to add another member of the general solution, or drag the red point to change the initial salt. Curves starting above 20 kg fall towards 20 and curves starting below rise towards it, so the limit is 20 kg whatever the initial value."}
+\`\`\`
+
 Notice the three checks: substitution, the limiting value, and the units (both sides of the equation are in kg/min). An equation together with a starting value is an **initial value problem**. Writing the model is usually the hard part, and it deserves more care than the integration that follows.`,
           resources: [
             lebl('The introductory chapter on classification and on what a solution is.'),
@@ -210,6 +217,11 @@ $$y(t) = \\frac{1}{1 - t^2/2} = \\frac{2}{2 - t^2}.$$
 Check: $y' = \\frac{4t}{(2 - t^2)^2}$, and $ty^2 = \\frac{4t}{(2 - t^2)^2}$. They agree.
 
 The formula is defined for $t > \\sqrt{2}$ too, but the solution through $(0, 1)$ cannot cross the vertical asymptotes at $t = \\pm\\sqrt{2}$. Its interval of validity is the one containing the initial time: $-\\sqrt{2} < t < \\sqrt{2}$. The solution blows up in finite time even though the right side $ty^2$ is perfectly smooth. Linear equations never do that, as you will see in the next lesson.
+
+\`\`\`interactive
+direction-field
+{"title": "Blow-up of y' = ty²", "f": "t*y^2", "view": [-2.5, 2.5, -2, 6], "start": [0, 1], "curves": [[0, 0], [0, -1]], "caption": "The red curve is y = 2/(2 − t²) through (0, 1). It runs off the top of the picture as t approaches ±√2 ≈ ±1.414 and never reaches the other side. Drag the red point upwards: the larger y(0) is, the sooner the curve blows up. The flat line y = 0 is the constant solution that dividing by y² loses. Curves below it (tap there) stay negative and exist for all t."}
+\`\`\`
 
 The same technique solves **Newton's law of cooling**, $T' = -k(T - A)$, where $A$ is the ambient temperature. Separating gives $T(t) = A + (T_0 - A)e^{-kt}$. The **logistic equation** $P' = rP(1 - P/K)$ also separates, with partial fractions on the left. Here $r$ is the small-population growth rate and $K$ is the carrying capacity.
 
@@ -316,6 +328,11 @@ The condition $y(1) = 2$ gives $C = 1$, so $y = t^2 + t^{-2}$ on $t > 0$. Check:
 
 The interval is decided by the coefficients, and you can read it off before solving. Here $p = 2/t$ and $g = 4t$ are continuous on $t > 0$, which is the interval that contains $t = 1$. This is a general theorem: if $p$ and $g$ are continuous on an open interval containing $t_0$, the initial value problem has exactly one solution on that **whole** interval. So a linear equation cannot blow up in the middle of an interval where its coefficients are continuous, in contrast to $y' = ty^2$.
 
+\`\`\`interactive
+direction-field
+{"title": "Solutions of ty' + 2y = 4t²", "f": "4*t - 2*y/t", "view": [0, 3, -2, 10], "start": [1, 2], "curves": [[1, 1], [1, 0.5], [1, 3], [1, -0.5]], "caption": "The equation in standard form is y' = 4t − 2y/t. The red curve is the worked solution y = t² + t^(−2) through (1, 2). Every curve is y = t² + C/t². Each one is defined on the whole interval t > 0 and only blows up at t = 0, where p = 2/t is discontinuous. As t grows the C/t² transient fades and the curves crowd onto y = t². Drag the red point to change C."}
+\`\`\`
+
 For constant $p > 0$ the solution splits into a **transient**, $Ce^{-pt}$, which dies away and remembers the initial condition, and a **steady-state** part driven by $g$. The number $1/p$ is the **time constant**, the time for the transient to shrink by a factor of $e$.`,
           resources: [
             lebl('The section on linear equations and the integrating factor.'),
@@ -413,9 +430,21 @@ With $h = 0.25$:
 
 The error is now $0.1030$. Halving $h$ cut the error by a factor of about 2.3, and the ratio approaches 2 as $h$ shrinks.
 
+You can repeat this experiment in the interactive below. Each notch of the slider halves $h$.
+
+\`\`\`interactive
+direction-field
+{"title": "Euler's method for y' = t − y", "f": "t - y", "view": [-0.25, 2.5, -0.25, 1.75], "start": [0, 1], "euler": true, "span": 1, "hs": [0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625], "h": 0.5, "caption": "With h = 0.5 the red Euler steps end at 0.5, an error of 0.2358, and with h = 0.25 at 0.63281, as in the table. The green curve is the exact solution, y(1) = 2/e ≈ 0.7358. Keep halving h and watch the ratio of successive errors: 2.29, then 2.14, 2.07, ..., approaching 2, which is first-order accuracy. Each step follows the slope at its left end, and here the solution curves upwards, so Euler always lands below it. Drag the red point to try another initial value."}
+\`\`\`
+
 In code the method takes a few lines, and you should always run a **convergence study**: repeat with $h, h/2, h/4$, and confirm the error behaves as predicted. That is how you find bugs, and it is how you decide whether to trust a number for a problem with no exact solution.
 
-Small steps also matter for stability. For $y' = -\\lambda y$ with $\\lambda > 0$, Euler gives $y_{n+1} = (1 - h\\lambda)y_n$, and if $h > 2/\\lambda$ the numbers grow without bound although the true solution decays. Library routines such as \`solve_ivp\` use higher-order formulas and adjust the step automatically, but they rest on the same idea.`,
+Small steps also matter for stability. For $y' = -\\lambda y$ with $\\lambda > 0$, Euler gives $y_{n+1} = (1 - h\\lambda)y_n$, and if $h > 2/\\lambda$ the numbers grow without bound although the true solution decays. Library routines such as \`solve_ivp\` use higher-order formulas and adjust the step automatically, but they rest on the same idea.
+
+\`\`\`interactive
+direction-field
+{"title": "Euler on the stiff decay y' = −20y", "f": "-20*y", "view": [0, 1.5, -2, 2], "start": [0, 1], "euler": true, "span": 1.5, "hs": [0.15, 0.1, 0.05, 0.01], "h": 0.15, "caption": "Here λ = 20, so 2/λ = 0.1. With h = 0.15 each step multiplies y by 1 − 20h = −2: the red path flips sign and doubles every step, and it ends at 1024 instead of almost 0. With h = 0.1 the factor is −1, so it bounces between ±1 for ever. With h = 0.05 the factor is 0, and with h = 0.01 it is 0.8. Only these last two decay like the true solution e^(−20t)."}
+\`\`\``,
           resources: [
             lebl('The sections on slope fields and on numerical methods.'),
             paul('DirectionFields', 'Direction Fields', 'How to sketch a field and read long-term behaviour from it.'),
@@ -511,7 +540,14 @@ The equilibria are $P = 1/4$ and $P = 3/4$. For $P$ between them, $P' > 0$. Outs
 
 The meaning is practical. A population above $1/4$ settles at $3/4$. A population below $1/4$ falls to zero in finite time and the fishery collapses.
 
-For general harvest $h$, the equilibria solve $P^2 - P + h = 0$, so they exist only for $h \\leq 1/4$. As $h$ grows they approach each other, merge at $P = 1/2$ when $h = 1/4$, and vanish. For $h > 1/4$, $P' < 0$ everywhere, and every population collapses. This sudden change in behaviour is a **bifurcation**.`,
+For general harvest $h$, the equilibria solve $P^2 - P + h = 0$, so they exist only for $h \\leq 1/4$. As $h$ grows they approach each other, merge at $P = 1/2$ when $h = 1/4$, and vanish. For $h > 1/4$, $P' < 0$ everywhere, and every population collapses. This sudden change in behaviour is a **bifurcation**.
+
+Drag the harvest slider in the interactive below to watch the bifurcation happen.
+
+\`\`\`interactive
+direction-field
+{"title": "Harvested fish: P' = P(1 − P) − h", "f": "P*(1 - P) - h", "vars": ["t", "P"], "sliders": {"h": [0.1875, 0, 0.35, 0.0025]}, "view": [0, 12, -0.25, 1.25], "start": [0, 0.5], "curves": [[0, 0.2], [0, 1.1], [0, 0.3]], "phaseLine": true, "caption": "At h = 3/16 the phase line on the right shows the unstable equilibrium P = 1/4 (hollow) and the stable P = 3/4 (filled). The arrows point up between them and down outside. Curves starting above 1/4 settle at 3/4, and those below fall through zero. Slide h up to 1/4: the two equilibria meet at P = 1/2, where f′ = 0 and the point is semistable. Past 1/4 they vanish and every curve falls. Solution curves never cross the dashed equilibrium lines, as uniqueness requires."}
+\`\`\``,
           resources: [
             lebl('The sections on existence and uniqueness and on autonomous equations.'),
             paul('EquilibriumSolutions', 'Equilibrium Solutions', 'Phase-line reasoning, with sketches.'),
@@ -733,7 +769,14 @@ a wave of angular frequency 2 inside the shrinking envelope $\\pm\\sqrt{2}\\,e^{
 
 A common mistake is to get $\\delta$ from $\\arctan(c_2/c_1)$ without looking at the signs. The arctangent returns an angle in $(-\\pi/2, \\pi/2)$, which is wrong by $\\pi$ whenever $c_1 < 0$. Plot the point $(c_1, c_2)$ to choose the correct quadrant.
 
-The sign of the real parts controls the long-term behaviour. All solutions decay exactly when both roots have negative real part, which for $a > 0$ means $b > 0$ and $c > 0$.`,
+The sign of the real parts controls the long-term behaviour. All solutions decay exactly when both roots have negative real part, which for $a > 0$ means $b > 0$ and $c > 0$.
+
+The interactive below treats $ay'' + by' + cy = 0$ as a mass $a$ on a spring of stiffness $c$ with damping $b$, and plots the two roots in the complex plane.
+
+\`\`\`interactive
+oscillator
+{"title": "Characteristic roots of ay'' + by' + cy = 0", "mode": "free", "var": "y", "names": ["a", "b", "c"], "m": 1, "c": 2, "k": 5, "x0": 1, "v0": 1, "tMax": 10, "ranges": {"m": [0.5, 3], "c": [-1, 8], "k": [0.5, 10]}, "caption": "The start is the worked example y'' + 2y' + 5y = 0 with y(0) = y'(0) = 1. The roots are −1 ± 2i, and the graph is √2 e^(−t) cos(2t − π/4). Increase b and the roots slide round the dashed circle of radius √(c/a) until they meet on the real axis at b = 2√5 ≈ 4.47, the repeated root. Beyond that they split along the axis and the oscillation is gone. Drag b below 0 and the roots cross into the right half-plane (unshaded), so the solution grows. Press Play to watch the mass."}
+\`\`\``,
           resources: [
             lebl('The sections on constant-coefficient equations, including complex roots.'),
             paul('IntroSecondOrder', 'Second Order Differential Equations', 'Separate pages for real, complex and repeated roots, each with several examples.'),
@@ -1043,11 +1086,21 @@ $$A(\\omega_r) = \\frac{1}{\\sqrt{0.0064 + 0.6272}} = \\frac{1}{\\sqrt{0.6336}} 
 
 Compared with the static deflection $F_0/k = 0.25$, the amplitude is about 5 times larger. Light damping gives a tall, narrow peak.
 
+\`\`\`interactive
+oscillator
+{"title": "Forced damped oscillator", "m": 1, "c": 0.4, "k": 4, "F0": 1, "omega": 1.5, "tMax": 40, "caption": "These are the worked example's values, starting from rest. The graph shows the transient dying away until x(t) lies on the dashed green steady state, which oscillates at the driving frequency ω. Slide ω to 1.98: the amber dot climbs to the top of the response curve, and A(ω_r) ≈ 1.256. Now raise c. The peak gets lower and wider, moves left, and disappears once c² ≥ 2mk, that is c ≥ 2.83. The readouts also show the regime changing to critically damped at c = 2√(mk) = 4."}
+\`\`\`
+
 With no damping, take $x(0) = x'(0) = 0$ and $\\omega \\neq \\omega_0$. Then
 
 $$x = \\frac{F_0/m}{\\omega_0^2 - \\omega^2}(\\cos\\omega t - \\cos\\omega_0 t) = \\frac{2F_0/m}{\\omega_0^2 - \\omega^2}\\sin\\frac{(\\omega_0 - \\omega)t}{2}\\sin\\frac{(\\omega_0 + \\omega)t}{2}.$$
 
-For $\\omega$ near $\\omega_0$ this is a fast oscillation in a slow envelope, called **beats**. Letting $\\omega \\to \\omega_0$ gives **pure resonance**, $x = \\frac{F_0}{2m\\omega_0}t\\sin\\omega_0 t$, which grows linearly until the model breaks down.`,
+For $\\omega$ near $\\omega_0$ this is a fast oscillation in a slow envelope, called **beats**. Letting $\\omega \\to \\omega_0$ gives **pure resonance**, $x = \\frac{F_0}{2m\\omega_0}t\\sin\\omega_0 t$, which grows linearly until the model breaks down.
+
+\`\`\`interactive
+oscillator
+{"title": "Beats and pure resonance (no damping)", "m": 1, "c": 0, "k": 4, "F0": 1, "omega": 1.8, "tMax": 80, "response": false, "ranges": {"c": [0, 1]}, "caption": "With c = 0, ω₀ = 2 and ω = 1.8, the motion is a fast oscillation inside the slow dashed envelope ±(2F₀/m)|sin((ω₀ − ω)t/2)|/(ω₀² − ω²). Its beats repeat every 2π/(ω₀ − ω) ≈ 31.4 time units. Move ω closer to 2: the beats get slower and taller. At ω = 2 exactly the envelope becomes the straight lines ±t/4 of pure resonance. Add a little damping and the growth stops at a finite steady amplitude."}
+\`\`\``,
           resources: [
             lebl('The sections on mechanical vibrations and forced oscillations.'),
             paul('Vibrations', 'Mechanical Vibrations', 'Each damping and forcing case with a graph.'),
@@ -1696,6 +1749,11 @@ Check continuity at $t = \\pi$: the first piece gives $2$ and the second gives $
 
 After the force is removed, the mass swings with amplitude 2, because the release happens at the moment of largest displacement. Had the force been switched off at $t = 2\\pi$, when the mass was back at rest, there would have been no motion afterwards. The timing of a switch matters, and the transform handles it with no need to match pieces by hand.
 
+\`\`\`interactive
+laplace-response
+{"title": "y'' + y = 1 − u_c(t): switching the force off", "mode": "switch", "a": 1, "b": 0, "c": 1, "F": 1, "on": 0, "off": "pi", "tMax": "4*pi", "caption": "The top strip is the force and the bottom plot is y(t). With the switch at c = π the mass is released at y = 2 with zero velocity, so it swings with amplitude 2, as in the worked example. Press 'Off at 2π' and the mass is released at rest at y = 0, so nothing moves afterwards. Drag the switch-off time between them: y and y′ stay continuous at the switch (only y″ jumps), and the amplitude afterwards is 2|sin(c/2)|."}
+\`\`\`
+
 Solving by hand would mean solving on each interval and matching $y$ and $y'$ at the switch. The transform does that bookkeeping for you, and the fact that $y$ and $y'$ stay continuous is automatic.
 
 A **periodic** function with period $T$ has transform
@@ -1802,7 +1860,12 @@ Nothing happens until $t = 1$. Then $y$ is continuous, but $y'$ jumps. Different
 
 To see this from the equation, integrate it from $1 - \\epsilon$ to $1 + \\epsilon$. The left side gives $[y' + 2y]_{1-\\epsilon}^{1+\\epsilon} + 5\\int y\\,dt$. As $\\epsilon \\to 0$, $y$ stays continuous, and only the jump in $y'$ survives, equal to the integral of the delta, namely 1. In general, for $ay'' + by' + cy = J\\delta(t - c_0)$ the jump in $y'$ is $J/a$. In mechanics, this is momentum: $m\\,\\Delta v = J$.
 
-The response of a system at rest to $\\delta(t)$ is called the **impulse response** $h(t)$. Its transform is the transfer function, $H(s) = 1/P(s)$. Here that gives $h(t) = \\frac12 e^{-t}\\sin 2t$. Once you know $h$, you can find the response to any forcing, and this is the subject of the next lesson.`,
+The response of a system at rest to $\\delta(t)$ is called the **impulse response** $h(t)$. Its transform is the transfer function, $H(s) = 1/P(s)$. Here that gives $h(t) = \\frac12 e^{-t}\\sin 2t$. Once you know $h$, you can find the response to any forcing, and this is the subject of the next lesson.
+
+\`\`\`interactive
+laplace-response
+{"title": "A unit impulse at t = 1", "mode": "impulse", "a": 1, "b": 2, "c": 5, "J": 1, "at": 1, "tMax": 6, "caption": "With ε = 0 the input is δ(t − 1), and the response is ½ u₁(t) e^(−(t−1)) sin 2(t − 1). Nothing happens before t = 1, then y′ jumps by J/a = 1 and y starts from 0 with a corner. Raise the pulse width ε: the input becomes the pulse d_ε of height 1/ε and area 1, and its response (solid) lags behind the impulse response (dashed). Shrink ε back towards 0 and the gap readout falls to 0, which is the sense in which d_ε tends to δ."}
+\`\`\``,
           resources: [
             lebl('The section on Dirac delta and impulse response.'),
             paul('DiracDeltaFunction', 'Dirac Delta Function', 'The definition, the limit and solved problems.'),
@@ -1904,6 +1967,11 @@ Integrate by parts with $u = \\tau$ and $dv = \\sin(t - \\tau)\\,d\\tau$, so $v 
 $$y(t) = \\Big[\\tau\\cos(t - \\tau)\\Big]_0^t - \\int_0^t \\cos(t - \\tau)\\,d\\tau = t - \\sin t.$$
 
 Check: $y'' + y = \\sin t + t - \\sin t = t$, with $y(0) = 0$ and $y'(0) = 1 - 1 = 0$. You can also get it from transforms: $\\frac{1}{s^2}\\cdot\\frac{1}{s^2 + 1} = \\frac{1}{s^2} - \\frac{1}{s^2 + 1}$.
+
+\`\`\`interactive
+laplace-response
+{"title": "Duhamel's principle for y'' + y = g(t)", "mode": "convolution", "a": 1, "b": 0, "c": 1, "g": "t", "tMax": 10, "caption": "The upper plot shows the integrand at the chosen time t: the forcing g(τ) = τ, the impulse response h(t − τ) = sin(t − τ) run backwards from t, and their product. Its signed shaded area is y(t). Move t or press Play: the area readout matches t − sin t, which is also the directly solved y(t). Type another forcing, such as cos(t) for resonance or 1 for a step, and the two readouts still agree."}
+\`\`\`
 
 Convolution solves some **integral equations** as well. If $y(t) = f(t) + \\int_0^t k(t - \\tau)y(\\tau)\\,d\\tau$, then $Y = F + KY$, so $Y = F/(1 - K)$.
 
@@ -2148,7 +2216,12 @@ $$x_1 = e^{3t} + e^{-t}, \\qquad x_2 = 2e^{3t} - 2e^{-t}.$$
 
 Check: $x_1' = 3e^{3t} - e^{-t}$, and $x_1 + x_2 = 3e^{3t} - e^{-t}$. It matches, and likewise $x_2' = 6e^{3t} + 2e^{-t} = 4x_1 + x_2$.
 
-For large $t$, the $e^{3t}$ term dominates, so the solution lines up with $(1, 2)^T$. The direction of the fastest-growing mode wins for almost every starting point. The exceptions are the points on the line through $(1, -2)^T$, where $c_1 = 0$.`,
+For large $t$, the $e^{3t}$ term dominates, so the solution lines up with $(1, 2)^T$. The direction of the fastest-growing mode wins for almost every starting point. The exceptions are the points on the line through $(1, -2)^T$, where $c_1 = 0$.
+
+\`\`\`interactive
+phase-portrait
+{"title": "x' = Ax with A = (1, 1; 4, 1)", "A": [[1, 1], [4, 1]], "probe": [2, 0], "traceDet": false, "caption": "The red probe sits at the worked example's initial point (2, 0), and the red curve is x₁ = e^(3t) + e^(−t), x₂ = 2e^(3t) − 2e^(−t). The dashed lines are the eigenvector directions: (1, 2) with λ = 3 (red, growing) and (1, −2) with λ = −1 (green, decaying). Every trajectory turns to run parallel to (1, 2) as t grows. Drag the probe onto the green line, where c₁ = 0, and the solution slides straight into the origin instead. Change the entries to see the eigenvectors move."}
+\`\`\``,
           resources: [
             lebl('The systems chapter, on first-order linear systems and the eigenvalue method.'),
             paul('SystemsIntro', 'Systems of Differential Equations', 'The start of the systems chapter.'),
@@ -2233,6 +2306,11 @@ The general solution is $c_1 x^{(1)} + c_2 x^{(2)}$. Do not use the conjugate ei
 
 To check $x^{(1)}$: its first component has derivative $e^{-t}(-5\\cos t - 5\\sin t)$, and $x_1 - 5x_2 = e^{-t}(5\\cos t - 10\\cos t - 5\\sin t)$, which is the same.
 
+\`\`\`interactive
+phase-portrait
+{"title": "Complex eigenvalues: A = (1, −5; 1, −3)", "A": [[1, -5], [1, -3]], "view": [-6, 6, -4, 4], "probe": [5, 2], "traceDet": false, "caption": "The eigenvalues are −1 ± i, so there are no real eigenvector lines. Solutions wind round the origin with angular frequency β = 1 while e^(−t) shrinks them. The probe at (5, 2) is x⁽¹⁾ at t = 0. Its curve is the real solution e^(−t)(5 cos t, 2 cos t + sin t), a tilted ellipse that decays. Drag d to −1 so that the trace is 0: the real part vanishes and the spirals close into ellipses."}
+\`\`\`
+
 **Repeated eigenvalues.** If $\\lambda$ is a double root and has two independent eigenvectors, nothing changes. For a $2 \\times 2$ matrix this happens only if $A = \\lambda I$. Otherwise there is just one eigenvector $v$, the eigenvalue is **defective**, and one solution $e^{\\lambda t}v$ is missing. By analogy with the factor $t$ in the repeated-root case, try $x = e^{\\lambda t}(tv + w)$. Substituting gives
 
 $$(A - \\lambda I)v = 0, \\qquad (A - \\lambda I)w = v.$$
@@ -2244,6 +2322,11 @@ For $A = \\begin{pmatrix} 3 & 1 \\\\ -1 & 1 \\end{pmatrix}$, the trace is 4 and 
 $$x(t) = c_1 e^{2t}\\begin{pmatrix} 1 \\\\ -1 \\end{pmatrix} + c_2 e^{2t}\\left[t\\begin{pmatrix} 1 \\\\ -1 \\end{pmatrix} + \\begin{pmatrix} 1 \\\\ 0 \\end{pmatrix}\\right].$$
 
 Any other choice of $w$ differs by a multiple of $v$, and only changes $c_1$.
+
+\`\`\`interactive
+phase-portrait
+{"title": "A defective eigenvalue: A = (3, 1; −1, 1)", "A": [[3, 1], [-1, 1]], "view": [-3, 3, -3, 3], "probe": [1, 0], "caption": "λ = 2 is a double eigenvalue with the single eigenvector line through (1, −1), shown dashed. The probe at w = (1, 0) follows e^(2t)[t(1, −1) + (1, 0)]: as t grows the t v term takes over, so it bends round to run parallel to v. In the trace-determinant panel the point sits exactly on the parabola D = T²/4 at T = 4. Move b or c a little and it leaves the parabola, giving a node with two eigenvector lines or a spiral."}
+\`\`\`
 
 **Normal modes.** Two equal masses connected by three equal springs satisfy $x'' = Kx$ with $K = \\begin{pmatrix} -2 & 1 \\\\ 1 & -2 \\end{pmatrix}$, in units where $k/m = 1$. Eigenvalues $-1$ and $-3$ of $K$ give frequencies $1$ and $\\sqrt{3}$, for the in-phase and opposite-phase motions.`,
           resources: [
@@ -2349,7 +2432,12 @@ The velocity at a point on the positive $x_1$-axis points downward, so the rotat
 
 To sketch a system, find the type, draw eigenvector lines if the eigenvalues are real, add a few velocity vectors from test points, and fill in curves that respect them.
 
-Physical systems fit this picture directly. The oscillator $mx'' + cx' + kx = 0$ has $T = -c/m$ and $D = k/m$. The condition $T^2 < 4D$ means $c^2 < 4mk$, so underdamped motion is a stable spiral, overdamped motion is a stable node, critical damping sits on the parabola, and no damping is a center. Moving through the plane by changing parameters shows how behaviour changes.`,
+Physical systems fit this picture directly. The oscillator $mx'' + cx' + kx = 0$ has $T = -c/m$ and $D = k/m$. The condition $T^2 < 4D$ means $c^2 < 4mk$, so underdamped motion is a stable spiral, overdamped motion is a stable node, critical damping sits on the parabola, and no damping is a center. Moving through the plane by changing parameters shows how behaviour changes.
+
+\`\`\`interactive
+phase-portrait
+{"title": "Phase portraits and the trace-determinant plane", "A": [[-1, 4], [-2, 3]], "caption": "This is the worked example: T = 2, D = 5, an unstable spiral turning clockwise, as the rotation readout and the test vector A(1, 0) = (−1, −2) say. Drag the blue point in the trace-determinant plane. Its trace moves the diagonal entries and its determinant moves one off-diagonal entry. Cross the T axis to the left and the spiral turns stable. Stop on T = 0 and it becomes a center. Cross the parabola and the dashed eigenvector lines appear. Drop below D = 0 for a saddle."}
+\`\`\``,
           resources: [
             lebl('The section on the phase plane and the two-dimensional classification.'),
             paul('PhasePlane', 'Phase Plane', 'Sketches for each type.'),
@@ -2445,11 +2533,21 @@ At each point:
 
 The picture is **competitive exclusion**: one species always wins, and which one depends on where you start. The stable curve of the saddle at $(1, 1)$, called a **separatrix**, divides the quadrant into the two basins of attraction. Starting at $(1.5, 1)$ leads to $(3, 0)$, and starting at $(1, 1.5)$ leads to $(0, 2)$.
 
+\`\`\`interactive
+phase-portrait
+{"title": "Competing species", "mode": "nonlinear", "f": "x*(3 - x - 2*y)", "g": "y*(2 - x - y)", "view": [-0.3, 3.5, -0.3, 2.8], "starts": [[1.5, 1], [1, 1.5]], "probe": [2.5, 2.2], "caption": "The four equilibria are found numerically and classified from their Jacobians, which match the list above. The blue trajectories start at (1.5, 1) and (1, 1.5), on either side of the purple separatrix through the saddle (1, 1). One ends at (3, 0) and the other at (0, 2). Drag the red probe across the separatrix and watch the winner change. In the trace-determinant panel, point 3 lies below the T axis, the saddle region, and the stable nodes lie to the left under the parabola."}
+\`\`\`
+
 Linearisation failing looks like this. Consider
 
 $$x' = -y + x(x^2 + y^2), \\qquad y' = x + y(x^2 + y^2).$$
 
 At the origin $J = \\begin{pmatrix} 0 & -1 \\\\ 1 & 0 \\end{pmatrix}$, a center. But with $r^2 = x^2 + y^2$, we get $rr' = xx' + yy' = r^4$, so $r' = r^3 > 0$, and solutions spiral **out**. Changing the sign of the cubic terms makes them spiral in. The linear part cannot see the difference.
+
+\`\`\`interactive
+phase-portrait
+{"title": "When linearisation cannot decide", "mode": "nonlinear", "f": "-y + s*x*(x^2 + y^2)", "g": "x + s*y*(x^2 + y^2)", "sliders": {"s": [1, -1, 1, 0.05]}, "view": [-1.5, 1.5, -1.5, 1.5], "starts": [[0.5, 0]], "probe": [0.25, 0.25], "eigen": false, "traceDet": false, "caption": "With s = 1 this is the system above. Its Jacobian at the origin has eigenvalues ±i for every s, and the table reports a center that linearisation cannot decide. The trajectories show the truth: with s > 0 they spiral out (r′ = s r³), with s < 0 they spiral in, and only at s = 0 are they closed circles."}
+\`\`\`
 
 When the linear test is inconclusive, look for a conserved quantity or a function that decreases along solutions. You will see those tools in \`ode-theory\`. In practice, combine the local analysis with a numerical integration from a grid of starting points.`,
           resources: [
@@ -2580,7 +2678,14 @@ These eigenfunctions are **orthogonal**. If $y_m'' = -\\lambda_m y_m$ and $y_n''
 
 $$(\\lambda_m - \\lambda_n)\\int_0^L y_m y_n\\,dx = \\Big[y_m y_n' - y_m' y_n\\Big]_0^L = 0$$
 
-whenever the boundary conditions make the bracket vanish. That is the property behind Fourier series, which come next.`,
+whenever the boundary conditions make the bracket vanish. That is the property behind Fourier series, which come next.
+
+You can find the eigenvalues by shooting. Start every solution with $y(0) = 0$, $y'(0) = 1$, and vary $\\lambda$ until the condition at $x = L$ also holds.
+
+\`\`\`interactive
+bvp-shooting
+{"title": "Shooting for the eigenvalues of y'' + λy = 0", "L": "pi", "right": "neumann", "lambda": 0.6, "caption": "Here L = π and the right-end condition is y′(π) = 0, as in the worked example. Slide λ: the curve sin(√λ x)/√λ is level at x = π only when λ = ((2n − 1)/2)², that is 0.25, 2.25, 6.25 and so on. These are the zeros of the lower plot. Use the eigenvalue buttons to land on them exactly. For λ ≤ 0 the curve never turns back, so nothing can be hit. Switch to y(π) = 0 and the eigenvalues become n² = 1, 4, 9, …"}
+\`\`\``,
           resources: [
             lebl('The section on boundary value problems at the start of the Fourier series chapter.'),
             paul('BoundaryValueProblem', 'Boundary Value Problems', 'Examples with no solution, one and many.'),
@@ -2679,7 +2784,12 @@ So $b_n = 0$ for even $n$, and $b_n = \\frac{4}{n\\pi}$ for odd $n$:
 
 $$f(x) \\sim \\frac{4}{\\pi}\\left(\\sin x + \\frac{\\sin 3x}{3} + \\frac{\\sin 5x}{5} + \\dots\\right).$$
 
-The value $(-1)^n$ for $\\cos n\\pi$ is used constantly. Plot partial sums of this series and watch the corners sharpen as terms are added, with a persistent overshoot near each jump.
+The value $(-1)^n$ for $\\cos n\\pi$ is used constantly. Plot partial sums of this series and watch the corners sharpen as terms are added, with a persistent overshoot near each jump. The interactive below does exactly that.
+
+\`\`\`interactive
+fourier-series
+{"title": "Fourier partial sums on (−π, π)", "preset": "square", "L": "pi", "N": 5, "Nmax": 60, "caption": "The square wave of the worked example. Its bars are b_n = 4/(nπ) for odd n and 0 for even n, and every a_n is 0 because f is odd. The green note compares these numerically computed coefficients with the closed form. Raise N: the corners sharpen, but the overshoot next to each jump stays near 0.18. Switch to |x| and only cosine terms appear, since |x| is even. The sawtooth has a jump at ±π, created by its periodic extension even though x itself is smooth."}
+\`\`\`
 
 If you have a function defined only on $(-L, L)$, the series represents its **periodic extension**, so jumps can arise at $\\pm L$ even if $f$ is smooth. For a piecewise definition, split the integral at the breakpoints. When possible, use symmetry first. It can save half the work.`,
           resources: [
@@ -2793,6 +2903,11 @@ $$x \\sim \\frac{L}{2} - \\frac{4L}{\\pi^2}\\sum_{n\\text{ odd}}\\frac{1}{n^2}\\
 
 Compare them. The odd extension of $x$ is a sawtooth with jumps at $\\pm L$, so its coefficients decay like $1/n$. The even extension is the continuous triangle wave $|x|$, so its coefficients decay like $1/n^2$. The cosine series therefore converges faster here. At $x = L$, the sine series gives 0, the average of the jump from $L$ to $-L$, not $f(L) = L$.
 
+\`\`\`interactive
+fourier-series
+{"title": "Sine and cosine series of f(x) = x on (0, L)", "mode": "sine", "modes": ["sine", "cosine"], "preset": "sawtooth", "L": 1, "N": 6, "Nmax": 60, "caption": "Here L = 1. In the sine series the odd extension of x is a sawtooth, and the partial sums pass through 0 at x = L, the midpoint of the jump. Switch to the cosine series: the even extension is the triangle wave |x|, and with the same N it already hugs the line. Turn on the log-log scale. The sine coefficients follow the slope −1 line (1/n), and the cosine ones the slope −2 line (1/n²). Try the other shapes too: x(L − x) vanishes at both ends, so its sine series converges fastest."}
+\`\`\`
+
 Handy facts about symmetry: the product of two even or two odd functions is even, an even times an odd is odd, and an odd function integrates to zero on a symmetric interval. Any function is the sum of its even part $\\frac12(f(x) + f(-x))$ and its odd part $\\frac12(f(x) - f(-x))$. The cosine terms of its Fourier series represent the first, and the sine terms the second.`,
           resources: [
             lebl('The section on sine and cosine series.'),
@@ -2877,6 +2992,11 @@ So it converges to $f(x)$ at points of continuity, and to the midpoint of the ju
 If $f$ is also continuous everywhere, including across the period boundary, the convergence is uniform. It cannot be uniform if $f$ has a jump, because a uniform limit of continuous functions is continuous. Partial sums near a jump overshoot, and the overshoot does not shrink as $N$ grows. It only moves closer to the jump. This is the **Gibbs phenomenon**: the peak overshoot tends to about 8.95% of the size of the jump. For the square wave with values $\\pm 1$, the partial sums peak near $1.179$.
 
 Smoothness controls decay. A jump gives coefficients of order $1/n$. A continuous $f$ with a jump in $f'$ gives order $1/n^2$. Each further continuous derivative of the periodic extension improves this by one power of $n$.
+
+\`\`\`interactive
+fourier-series
+{"title": "Convergence, Gibbs and Parseval", "preset": "square", "L": "pi", "N": 25, "Nmax": 150, "parseval": true, "caption": "For the ±1 square wave the peak of S_N stays near 1.179 however large N is: the overshoot is about 8.95% of the jump of 2. It only moves closer to the jump. At the jumps themselves the partial sums pass through the hollow midpoints. Switch to the continuous triangle or |x| and the readout becomes the maximum error, which shrinks steadily: that is uniform convergence. On the log-log scale the jump gives 1/n coefficients and the corners give 1/n². The last readouts check Parseval's identity: the sum of squares climbs towards (1/L)∫f²."}
+\`\`\`
 
 **Term-by-term differentiation** is not automatic. The sawtooth series $2\\sum (-1)^{n+1}\\sin(nx)/n$ for $x$ on $(-\\pi, \\pi)$ differentiates to $2\\sum (-1)^{n+1}\\cos nx$, which diverges, since its terms do not tend to 0. It is valid if $f$ is continuous and periodic and $f'$ is piecewise smooth. Integrating term by term is safer, and is allowed for any piecewise smooth $f$.
 
@@ -3006,6 +3126,11 @@ $$u(x, t) = \\frac{8}{\\pi}\\sum_{n\\text{ odd}}\\frac{1}{n^3}e^{-n^2 t}\\sin nx
 
 Each mode decays at its own rate, $e^{-n^2 t}$, so high frequencies vanish first, and $u$ quickly looks like a single sine bump. At $t = 1$ the $n = 3$ term is smaller than the first by a factor of $\\frac{1}{27}e^{-8} \\approx 1.2 \\times 10^{-5}$. The midpoint temperature is then about $\\frac{8}{\\pi}e^{-1} \\approx 0.937$.
 
+\`\`\`interactive
+heat-wave
+{"title": "Heat equation on [0, π]", "equation": "heat", "L": "pi", "alpha": 1, "ic": "parabola", "N": 10, "tMax": 2, "caption": "The initial temperature is x(π − x), the worked example. Drag the time slider to t = 1 and the midpoint readout shows about 0.937. The bars are the decay factors e^(−n²t): by t = 0.1 the n = 10 factor is already e^(−10) ≈ 0.00005, while the first is 0.9. That is why the profile soon looks like a single sine bump. Choose the box shape: its corners vanish at once, because the high modes that build them die first. Sketch your own profile and press Play."}
+\`\`\`
+
 For **insulated ends**, $u_x(0, t) = u_x(L, t) = 0$, the same steps give cosines and
 
 $$u = \\frac{a_0}{2} + \\sum_{n=1}^\\infty a_n e^{-\\alpha(n\\pi/L)^2 t}\\cos\\frac{n\\pi x}{L}.$$
@@ -3126,7 +3251,12 @@ Using $\\sin a\\cos b = \\frac12[\\sin(a + b) + \\sin(a - b)]$, each term of the
 
 $$u(x, t) = \\frac12\\left[\\tilde f(x + ct) + \\tilde f(x - ct)\\right],$$
 
-where $\\tilde f$ is the odd periodic extension of $f$. This is **d'Alembert's form**. It shows that the corners of the plucked string do not smooth out. They travel and reflect at speed $c$. The heat equation smooths at once. The wave equation carries its initial shape along, and all its singularities with it.`,
+where $\\tilde f$ is the odd periodic extension of $f$. This is **d'Alembert's form**. It shows that the corners of the plucked string do not smooth out. They travel and reflect at speed $c$. The heat equation smooths at once. The wave equation carries its initial shape along, and all its singularities with it.
+
+\`\`\`interactive
+heat-wave
+{"title": "Plucked string", "equation": "wave", "L": 1, "c": 1, "ic": "pluck", "height": 1, "pluckAt": 0.5, "N": 15, "caption": "Here L = c = h = 1, so the period is 2L/c = 2. With the pluck at the centre, b₂ = 0 and the odd harmonics have size 8/(n²π²): no even modes appear. Press Play: the bars show each mode's cos(nπct/L) swinging without decay. Turn on the travelling halves: each is half the odd extension of the triangle, one moving right and one moving left. Their sum is the string, and the corners travel and reflect instead of smoothing. Slide the pluck point towards an end and the even harmonics switch on."}
+\`\`\``,
           resources: [
             lebl('The section on the wave equation, and the section on d\'Alembert\'s solution.'),
             paul('VibratingString', 'Vibrating String', 'Separation of variables for the string.'),
@@ -3223,6 +3353,11 @@ $$\\frac{4}{\\pi}\\cdot\\frac{\\sinh(\\pi/2)}{\\sinh\\pi}\\cdot 1 = \\frac{4}{\\
 and the second term subtracts about $0.0038$. The series sums to exactly $\\frac14$. Here is a neat proof. Rotate the problem by 90° four times. By symmetry each version has the same value at the centre. Adding the four gives a harmonic function equal to 1 on the whole boundary (except at the corners), namely the constant 1. So each contributes $\\frac14$.
 
 The factor $\\sinh(n\\pi y)/\\sinh(n\\pi)$ shrinks rapidly away from the top edge for large $n$. Fine boundary details are invisible a short way inside, which is why harmonic functions are smooth.
+
+\`\`\`interactive
+laplace-square
+{"title": "Steady temperature in the unit square", "top": "1", "N": 9, "probe": [0.5, 0.5], "caption": "The top edge is held at 1 and the other three at 0. With N = 1 the centre value is the first term, 0.2537. Raise N and it settles at exactly 1/4. Drag the probe up towards the top edge: the slice through it ripples near the corners like a Fourier partial sum, but just below the edge it is already smooth. Type a top edge with more detail, such as sin(5*pi*x) or a step like (1 + sign(x - 0.5))/2, and watch it fade with depth."}
+\`\`\`
 
 **On a disk**, use polar coordinates, where
 

@@ -114,6 +114,11 @@ The connective that drives proof is the **implication** $P\\Rightarrow Q$. Treat
 
 Three relatives matter. The **contrapositive** $\\neg Q\\Rightarrow\\neg P$ is equivalent to $P\\Rightarrow Q$. The **converse** $Q\\Rightarrow P$ is a different claim. The **negation** is $P\\wedge\\neg Q$, which is not an implication at all. "$P$ if and only if $Q$" means both directions hold. In $P\\Rightarrow Q$, we call $P$ *sufficient* for $Q$ and $Q$ *necessary* for $P$.
 
+\`\`\`interactive
+truth-table
+{"title": "An implication and its relatives", "mode": "compare", "modes": ["compare", "table"], "f": "P => Q", "g": "~Q => ~P", "arrows": "double", "caption": "The contrapositive agrees with P ⇒ Q on all four rows. Change the second formula to Q => P (the converse): the rows P = T, Q = F and P = F, Q = T disagree. Try ~(P => Q) against P & ~Q to see the negation, and note that P ⇒ Q is false on exactly one row, the broken promise."}
+\`\`\`
+
 **Worked example.** For real $x$, take $x>2\\Rightarrow x^2>4$.
 
 - It is true: if $x>2$, then $x^2 = x\\cdot x>2x>4$, using $x>0$ in the first inequality.
@@ -207,6 +212,13 @@ $$A:\\ \\forall x\\ \\exists y,\\ x+y=0\\qquad\\text{and}\\qquad B:\\ \\exists y
 
 *$B$ is false.* Here you must commit to one $y$ before seeing $x$. Suppose such a $y$ exists. Taking $x=0$ gives $y=0$, and taking $x=1$ gives $y=-1$. Since $y$ cannot be both, no such $y$ exists.
 
+The same two statements on the finite domain $\\{-2,-1,0,1,2\\}$: row $x$, column $y$, and a cell is true when $x+y=0$.
+
+\`\`\`interactive
+quantifier-grid
+{"title": "The quantifier game", "domain": [-2, -1, 0, 1, 2], "preset": "x + y = 0", "presets": ["x + y = 0", "y > x", "y >= x", "x = y", "full", "empty"], "statements": ["AxEy", "EyAx"], "caption": "A is true: each row x has its own witness y = −x (ringed), chosen after the opponent picks x. B is false: no column is true all the way down, and for each candidate y the ringed cell shows the x that defeats it. Tap cells to make B true; you need a whole column, which then also makes A true, since ∃y ∀x implies ∀x ∃y."}
+\`\`\`
+
 In general $\\exists y\\,\\forall x\\,P(x,y)$ implies $\\forall x\\,\\exists y\\,P(x,y)$, and the reverse can fail. This distinction is the whole difference between continuity and uniform continuity, which you will meet in analysis.
 
 **A bad proof.** Claim: there is a real $M$ with $x<M$ for all real $x$. "Let $x$ be real and take $M=x+1$. Then $x<M$." The claim is $\\exists M\\,\\forall x$, but this $M$ was chosen after $x$. The writer has proved $\\forall x\\,\\exists M$, a true but different statement, while the original claim is false. A useful check: if your witness mentions a variable, that variable must be quantified earlier in the statement.`,
@@ -279,11 +291,23 @@ Then negate what remains, using De Morgan's laws and $\\neg(P\\Rightarrow Q)\\eq
 
 This is more than symbol-pushing, because the negated form is a plan. It tells you exactly what you must build to prove that something fails.
 
+\`\`\`interactive
+truth-table
+{"title": "Negating connectives", "mode": "compare", "f": "~(P => Q)", "g": "P & ~Q", "arrows": "double", "caption": "¬(P ⇒ Q) and P ∧ ¬Q agree on every row: the only way to break an implication is a true hypothesis with a false conclusion. From Examples, check both De Morgan laws, then the tempting mistake ¬(P ∧ Q) ≡ ¬P ∧ ¬Q, which fails on two rows."}
+\`\`\`
+
 **Worked example.** A function $f:\\mathbb{R}\\to\\mathbb{R}$ is *bounded above* if $\\exists M\\,\\forall x,\\ f(x)\\le M$. Its negation is
 $$\\forall M\\ \\exists x,\\ f(x)>M.$$
 So to show that $f(x)=x^2$ is not bounded above, your opponent names $M$ and you answer with an $x$.
 
 *Proof.* Let $M\\in\\mathbb{R}$ be arbitrary. Take $x=|M|+1$. Since $x\\ge 1$, we have $x^2\\ge x=|M|+1>|M|\\ge M$. So $f(x)>M$. Since $M$ was arbitrary, $f$ is not bounded above. $\\square$
+
+On a finite domain you can watch the plan work. Below, column $y$ plays the role of the bound $M$ and the cell in row $x$ says whether $y > x$. The statement "some $y$ beats every $x$" is $\\exists y\\,\\forall x$, and its negation "for every $y$ some $x$ is not beaten" is $\\forall y\\,\\exists x\\,\\neg P$.
+
+\`\`\`interactive
+quantifier-grid
+{"title": "A negation is a plan", "domain": [1, 2, 3, 4, 5], "preset": "y > x", "presets": ["y > x", "y >= x", "x + y = c", "full", "empty"], "statements": ["EyAx", "AxEy"], "negations": true, "caption": "∃y ∀x (y > x) is false, and the ringed cells are the plan for its negation: for each column y, one row x with ¬(y > x), here x = y works. The negation is evaluated separately and comes out true. Switch to y ≥ x and column 5 becomes a witness, so the statement turns true and its negation false. Toggle cells to break it again."}
+\`\`\`
 
 Now a harder one. The definition $\\lim a_n=L$ reads
 $$\\forall\\varepsilon>0\\ \\exists N\\ \\forall n\\ge N,\\ |a_n-L|<\\varepsilon.$$
@@ -2178,11 +2202,21 @@ The set $\\mathbb{N}$ has the same size as its proper subset $\\{2,4,6,\\dots\\}
 
 *$\\mathbb{N}\\times\\mathbb{N}$.* Define $g(m,n)=2^{m-1}(2n-1)$. Every positive integer factors uniquely as a power of 2 times an odd number: that gives both surjectivity and injectivity. So $g$ is a bijection from $\\mathbb{N}\\times\\mathbb{N}$ to $\\mathbb{N}$.
 
+\`\`\`interactive
+cantor-diagonal
+{"title": "Two bijections N × N → N", "mode": "pairing", "set": "pairs", "start": 1, "order": "power2", "orders": ["power2", "diagonal"], "size": 6, "caption": "Press Play: the cells are visited in increasing g(m, n) = 2^(m−1)(2n − 1), so row 1 holds the odd numbers, row 2 the doubles of odd numbers, and so on; no number appears twice. Switch to Diagonals for the other standard listing, which numbers the finite diagonals m + n = 2, 3, 4, … in turn."}
+\`\`\`
+
 From there, $\\mathbb{Q}$ follows. Each positive rational has a unique lowest-terms form $a/b$, so $a/b\\mapsto(a,b)$ is an injection into $\\mathbb{N}\\times\\mathbb{N}$. An infinite subset of a countable set is countably infinite, because you can list it in the order inherited from the list of the bigger set. Adding 0 and the negatives then works as for $\\mathbb{Z}$.
 
 Likewise, a countable union of countable sets is countable. If $A_i=\\{a_{i1},a_{i2},\\dots\\}$, map $(i,j)\\mapsto a_{ij}$ from a subset of $\\mathbb{N}\\times\\mathbb{N}$ onto the union. A set is countable as soon as a surjection onto it from $\\mathbb{N}$ exists, or an injection from it into $\\mathbb{N}$.
 
-**A bad proof.** "List the positive rationals: $\\frac11,\\frac12,\\frac13,\\dots$, then $\\frac21,\\frac22,\\dots$." The first run never ends, so $\\frac21$ never receives a position. Every element of a list must appear after finitely many steps. The fix is to go through by $a+b$: first sum 2, then sum 3, and so on. Each sum has finitely many fractions. Similarly, "Hilbert's hotel can always shift everyone" works as a map, but only once you give the formula and check bijectivity.`,
+**A bad proof.** "List the positive rationals: $\\frac11,\\frac12,\\frac13,\\dots$, then $\\frac21,\\frac22,\\dots$." The first run never ends, so $\\frac21$ never receives a position. Every element of a list must appear after finitely many steps. The fix is to go through by $a+b$: first sum 2, then sum 3, and so on. Each sum has finitely many fractions. Similarly, "Hilbert's hotel can always shift everyone" works as a map, but only once you give the formula and check bijectivity.
+
+\`\`\`interactive
+cantor-diagonal
+{"title": "The bad listing and its fix", "mode": "pairing", "set": "rationals", "start": 1, "order": "rows", "orders": ["rows", "diagonal"], "size": 6, "caption": "Row by row is the bad proof: Play walks 1/1, 1/2, 1/3, … off the edge and 2/1 never gets a position. Switch to Diagonals, the fix: by a + b = 2, 3, 4, …, each diagonal is finite, and fractions not in lowest terms (2/2, 2/4, 3/3, …) are crossed out because they repeat an earlier value."}
+\`\`\``,
           resources: [
             { ...bookOfProof, primary: true, note: 'The chapter on cardinality of sets, up to countable sets and comparing sizes.' },
             { ...infiniteDescent, note: 'Its chapter on infinity covers countable sets with care.' },
@@ -2250,6 +2284,11 @@ Likewise, a countable union of countable sets is countable. If $A_i=\\{a_{i1},a_
             'Transcendental numbers',
           ],
           explanation: `Not all infinite sets have the same size. Suppose someone claims to list every real number in $(0,1)$ as $x_1,x_2,x_3,\\dots$. Write each in decimal, $x_i=0.d_{i1}d_{i2}d_{i3}\\dots$. Build a new number $y=0.e_1e_2e_3\\dots$ by letting $e_i=5$ if $d_{ii}\\ne5$, and $e_i=6$ if $d_{ii}=5$. Then $y$ differs from $x_i$ in the $i$th digit, for every $i$. Using only digits 5 and 6 matters: decimals are not unique ($0.4999\\dots=0.5$), but two numbers can share a value with different digits only if one ends in repeating 9s, and $y$ has no 0s or 9s. So $y$ is not on the list, and the list was incomplete. Hence $(0,1)$ is **uncountable**.
+
+\`\`\`interactive
+cantor-diagonal
+{"title": "Building y digit by digit", "mode": "diagonal", "digits": "decimal", "start": 1, "rows": 8, "editable": 4, "caption": "Step through the diagonal: e_i is 5 unless d_ii is 5, in which case it is 6, so y differs from x_i in the i-th digit. Here x_1 = 0.5000… has d_11 = 5, so e_1 = 6. Tap digits in the first four rows to change the list, and add y to the top of the list once it is built: the new list has a new diagonal and a new missing number."}
+\`\`\`
 
 **Worked example (Cantor's theorem).** For each set $A$, no function $f:A\\to\\mathcal{P}(A)$ is surjective. So $|A|<|\\mathcal{P}(A)|$.
 
@@ -2443,6 +2482,11 @@ $$\\left|\\frac{3n+1}{n+2}-3\\right|=\\frac5{n+2}<\\frac5n\\le\\frac5N<\\varepsi
 
 Check the structure: arbitrary $\\varepsilon$ first, then $N$ defined from it, then arbitrary $n\\ge N$, and finally a chain ending in $<\\varepsilon$.
 
+\`\`\`interactive
+epsilon-delta
+{"title": "The ε–N game", "examples": [{"label": "(3n+1)/(n+2)", "seq": "(3n + 1)/(n + 2)", "L": 3, "epsilon": 0.2, "N": 10}, {"label": "sin(n)/n", "seq": "sin(n)/n", "L": 0, "epsilon": 0.05, "N": 5}, {"label": "(−1)ⁿ", "seq": "(-1)^n", "L": 1, "epsilon": 0.5, "N": 4}], "caption": "The band is L ± ε and the dashed line marks N. Every term from N on must lie in the band: it shows green if it does and red if it escapes. For (3n + 1)/(n + 2) compare the smallest N that works with the proof's N > 5/ε. The proof's N is larger, and that is fine, since any valid N will do; use this to check the n-for-epsilon exercise. In Game mode the opponent names ε. On the (−1)ⁿ tab no N works once ε ≤ 1, whatever L is: see Divergence below."}
+\`\`\`
+
 For a messier fraction, restrict $n$ first. For $\\frac{n^2+1}{2n^2-3}\\to\\frac12$, the difference is $\\frac5{2(2n^2-3)}$. The minus sign in the denominator is a nuisance, but when $n\\ge2$, $n^2\\ge 4>3$ and so $2n^2-3\\ge n^2$. Thus the difference is at most $\\frac{5}{2n^2}$. Then you need $N$ to be at least 2, as well as large enough for $\\varepsilon$, and the max of the two conditions does both jobs.
 
 **Bad proofs.**
@@ -2614,6 +2658,11 @@ For a limit, $\\lim_{x\\to a}f(x)=L$, replace $f(a)$ with $L$ and require $0<|x-
 $$|x^2-9|=|x-3|\\,|x+3|<7\\delta\\le\\varepsilon.\\ \\square$$
 
 The $\\min$ is the standard pattern: one condition keeps the varying factor bounded, and the other meets the tolerance.
+
+\`\`\`interactive
+epsilon-delta
+{"title": "Continuity of x² at 3", "examples": [{"label": "x² at 3", "f": "x^2", "a": 3, "L": 9, "epsilon": 1, "delta": 0.5, "view": [0, 6, 0, 18]}, {"label": "H at 0", "f": "1 - floor((1 - sign(x))/2)", "a": 0, "L": 1, "epsilon": 0.5, "delta": 0.5, "editL": true, "view": [-2, 2, -1, 2]}], "caption": "For continuity L is f(a), so the band is centred on f(3) = 9. Choose ε and compare the largest δ that works with the proof's min(1, ε/7): the proof's δ is always inside the green range, but smaller than it needs to be. On the H tab, the step function, ε = 1/2 defeats every δ. The red point the widget finds is just left of 0, like the proof's x = −δ/2."}
+\`\`\`
 
 **A bad proof.** "Choose $\\delta=\\frac{\\varepsilon}{|x+3|}$." This makes $\\delta$ depend on $x$, but $\\delta$ has to be chosen before $x$. It looks plausible since the algebra closes up. This is the quantifier-order failure, and it is the most common error in the subject. If $x$ appears in your $\\delta$, then you must bound that factor first.
 

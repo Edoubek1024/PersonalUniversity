@@ -54,7 +54,12 @@ By the end you should be able to read and write proofs confidently (direct, cont
 
 The table for **implication** is the one that surprises everyone: $P \\to Q$ is false only when $P$ is true and $Q$ is false. "If it rains, the ground is wet" is not refuted by a dry day. The consequence is that a false hypothesis makes any implication true (*vacuous truth*), which is exactly what lets a theorem about "all even primes greater than 2" be true. Keep the four related statements straight: the **converse** $Q \\to P$ and **inverse** $\\neg P \\to \\neg Q$ are *not* equivalent to $P \\to Q$; the **contrapositive** $\\neg Q \\to \\neg P$ *is*, and that equivalence is the basis of a whole proof technique.
 
-Two formulas are **logically equivalent** when their truth tables agree on every row. You can check by table, or you can rewrite using laws: De Morgan ($\\neg(P \\wedge Q) \\equiv \\neg P \\vee \\neg Q$), distributivity, double negation, and the key rewrite $P \\to Q \\equiv \\neg P \\vee Q$. A formula true on every row is a **tautology**; false on every row a **contradiction**; true on at least one row **satisfiable**. Deciding satisfiability efficiently is the famous SAT problem, which Theory of Computation returns to.
+Two formulas are **logically equivalent** when their truth tables agree on every row. You can check by table, or you can rewrite using laws: De Morgan ($\\neg(P \\wedge Q) \\equiv \\neg P \\vee \\neg Q$), distributivity, double negation, and the key rewrite $P \\to Q \\equiv \\neg P \\vee Q$. A formula true on every row is a **tautology**; false on every row a **contradiction**; true on at least one row **satisfiable**. Deciding satisfiability efficiently is the famous SAT problem, which Theory of Computation returns to. The table below builds any truth table for you, one column per subformula, and its Equivalence tab compares two formulas row by row.
+
+\`\`\`interactive
+truth-table
+{"title": "Truth tables and equivalence", "mode": "table", "modes": ["table", "compare"], "f": "(P -> Q) & (Q -> R) -> (P -> R)", "g": "Q -> P", "caption": "The formula is the exercise's (P → Q) ∧ (Q → R) → (P → R): read the columns left to right and confirm it is a tautology on all 8 rows. Then open Equivalence and use Examples: P → Q against its converse differs on 2 of 4 rows, against the contrapositive ¬Q → ¬P it agrees everywhere, and De Morgan's laws hold while the tempting ¬(P ∧ Q) ≡ ¬P ∧ ¬Q fails."}
+\`\`\`
 
 Read MCS chapter 3 (sections 3.1-3.4) and forall x chapters on truth tables. Then write the truth-table generator in the exercises: it is twenty lines of Python and it will settle every equivalence question you have for the rest of the subject.`,
           resources: [
@@ -171,6 +176,13 @@ Read MCS chapter 3 (sections 3.1-3.4) and forall x chapters on truth tables. The
 The **negation rules** are the ones you will use daily: $\\neg \\forall x. P(x) \\equiv \\exists x. \\neg P(x)$ and $\\neg \\exists x. P(x) \\equiv \\forall x. \\neg P(x)$. To refute "all swans are white" you exhibit one non-white swan: a **counterexample**. To prove "there is a prime above 100" you exhibit one: a **witness**. Pushing a negation through several quantifiers flips each one and finally negates the predicate; practise until it is mechanical, because "assume the statement is false" in a proof by contradiction means exactly this.
 
 **Order matters** when quantifiers differ. $\\forall x\\, \\exists y.\\, y > x$ ("every number has a bigger one") is true over the integers; $\\exists y\\, \\forall x.\\, y > x$ ("some number is bigger than all numbers") is false. Picture it as a game: the $\\forall$ player moves first and the $\\exists$ player responds knowing that move. Many famous definitions are nested quantifiers: a function is continuous at $a$ when $\\forall \\varepsilon > 0\\, \\exists \\delta > 0\\, \\forall x\\, (|x - a| < \\delta \\to |f(x) - f(a)| < \\varepsilon)$, and "not continuous" is obtained by the mechanical flip.
+
+In the grid below, row $x$ and column $y$ hold the truth value of $P(x, y)$ over $D = \\{1, \\dots, 5\\}$, so $\\forall x\\, \\exists y$ asks for a true cell in every row while $\\exists y\\, \\forall x$ asks for one column that is true all the way down.
+
+\`\`\`interactive
+quantifier-grid
+{"title": "Quantifier order on a finite domain", "domain": [1, 2, 3, 4, 5], "preset": "y > x", "presets": ["y > x", "y >= x", "x + y = c", "x * y = y", "x = y", "full", "empty"], "statements": ["AxEy", "EyAx", "ExAy"], "negations": true, "caption": "With y > x, ∀x ∃y fails only because row x = 5 has no true cell (the exercise's x = 10 over 1..10); every negation, computed separately, has the opposite value. Switch to y ≥ x and both orders become true (column y = 5). Then pick x + y = 6: each row has its own witness, but no single column works, so ∀x ∃y is true and ∃y ∀x is false. Tap cells to build your own relation where the two orders disagree."}
+\`\`\`
 
 Read MCS 3.5-3.6 and Book of Proof chapter 2.7-2.10. The programming exercise builds a checker for quantified statements over small finite domains; it makes the quantifier-order difference tangible.`,
           resources: [
@@ -376,7 +388,12 @@ Writing matters as much as logic. Start by stating what you will prove and which
             'Fallacies: affirming the consequent, denying the antecedent',
             'Informal proof as a sketch of a formal one',
           ],
-          explanation: `Informal proofs are sketches; underneath each one is a sequence of steps each justified by a **rule of inference**. The most basic is **modus ponens**: from $P$ and $P \\to Q$, conclude $Q$. Its partner **modus tollens**: from $\\neg Q$ and $P \\to Q$, conclude $\\neg P$ (this is contrapositive reasoning in one step). **Hypothetical syllogism** chains implications; **disjunctive syllogism** goes from $P \\vee Q$ and $\\neg P$ to $Q$. Two tempting *fallacies* are not rules: from $Q$ and $P \\to Q$ you cannot conclude $P$ (affirming the consequent), and from $\\neg P$ and $P \\to Q$ you cannot conclude $\\neg Q$ (denying the antecedent); check them with a truth table.
+          explanation: `Informal proofs are sketches; underneath each one is a sequence of steps each justified by a **rule of inference**. The most basic is **modus ponens**: from $P$ and $P \\to Q$, conclude $Q$. Its partner **modus tollens**: from $\\neg Q$ and $P \\to Q$, conclude $\\neg P$ (this is contrapositive reasoning in one step). **Hypothetical syllogism** chains implications; **disjunctive syllogism** goes from $P \\vee Q$ and $\\neg P$ to $Q$. Two tempting *fallacies* are not rules: from $Q$ and $P \\to Q$ you cannot conclude $P$ (affirming the consequent), and from $\\neg P$ and $P \\to Q$ you cannot conclude $\\neg Q$ (denying the antecedent); check them with a truth table. An argument form is valid when every row that makes all the premises true also makes the conclusion true; the checker below marks those rows.
+
+\`\`\`interactive
+truth-table
+{"title": "Is this argument form valid?", "mode": "argument", "premises": ["P -> Q", "~Q"], "conclusion": "~P", "caption": "Modus tollens: only one row makes both premises true, and there ¬P is true, so the form is valid. From Examples, load affirming the consequent: the row P = F, Q = T makes both premises true and the conclusion false, which is exactly a countermodel. Try denying the antecedent, then add a premise of your own."}
+\`\`\`
 
 **Natural deduction** organises these into **introduction** and **elimination** rules for each connective. To prove $P \\wedge Q$, prove both ($\\wedge$-intro); from $P \\wedge Q$ you may take either ($\\wedge$-elim). To prove $P \\to Q$, open a **subproof** assuming $P$, derive $Q$, then close it and conclude $P \\to Q$ ($\\to$-intro): this is exactly "assume $P$" in a direct proof, made precise, and it explains *why* assumptions inside a subproof may not be used outside it. Proof by contradiction is $\\neg$-intro: assume $P$, derive $\\bot$, conclude $\\neg P$.
 
@@ -421,7 +438,7 @@ Because a formal proof is a finite object with mechanical rules, a program can *
               slug: 'rule-validity',
               title: 'Validate the rules, refute the fallacies',
               prompt:
-                'Using your truth-table generator, confirm that modus ponens, modus tollens, hypothetical syllogism and disjunctive syllogism are valid (the conjunction of premises implies the conclusion is a tautology), and show affirming the consequent and denying the antecedent are invalid by printing the countermodel rows.',
+                'Using your truth-table generator, confirm that modus ponens, modus tollens, hypothetical syllogism and disjunctive syllogism are valid (the conjunction of premises implies the conclusion is a tautology), and show affirming the consequent and denying the antecedent are invalid by printing the countermodel rows. Compare your printed rows with the ones the argument checker in the lesson highlights.',
               kind: 'coding',
               difficulty: 1,
             },
@@ -510,6 +527,11 @@ Because a formal proof is a finite object with mechanical rules, a program can *
           explanation: `A **set** is an unordered collection of distinct objects; $x \\in A$ says $x$ is an element. $\\{1, 2, 2\\} = \\{1, 2\\}$. The **empty set** $\\emptyset$ has no elements. $A \\subseteq B$ means every element of $A$ is in $B$; two sets are **equal** exactly when each is a subset of the other, which gives the standard proof pattern: to prove $A = B$, prove $A \\subseteq B$ and $B \\subseteq A$, each by taking an arbitrary element. Watch the distinction between $\\in$ and $\\subseteq$: $1 \\in \\{1, 2\\}$, $\\{1\\} \\subseteq \\{1, 2\\}$, $\\{1\\} \\in \\{\\{1\\}, 2\\}$.
 
 **Set-builder notation** $\\{x \\in \\mathbb{Z} : x^2 < 10\\}$ reads "the set of integers $x$ such that $x^2 < 10$" and is exactly a Python comprehension \`{x for x in range(-10, 11) if x*x < 10}\`. The operations are $A \\cup B$, $A \\cap B$, $A \\setminus B$, the complement $\\overline{A}$ relative to a universe, and the symmetric difference $A \\triangle B$; the identities (De Morgan, distributivity, absorption) mirror the logical laws because membership in a union is an *or*, in an intersection an *and*. That correspondence gives a second proof method: a **membership table** with a row for each combination of "in $A$ / in $B$ / in $C$", which is just a truth table.
+
+\`\`\`interactive
+venn
+{"title": "Set identities by picture and membership table", "mode": "shade", "sets": 3, "f": "(A ∪ B)ᶜ", "g": "Aᶜ ∩ Bᶜ", "caption": "Both sides of De Morgan's law shade the same region, so the identity holds. Change the second expression to Aᶜ ∪ Bᶜ and the widget names the regions where they differ. Switch off Compare to see the membership table for one expression; try distributivity, A ∩ (B ∪ C) against (A ∩ B) ∪ (A ∩ C), and the symmetric difference A Δ B = (A \\\\ B) ∪ (B \\\\ A)."}
+\`\`\`
 
 The **power set** $\\mathcal{P}(A)$ is the set of all subsets of $A$; if $|A| = n$ then $|\\mathcal{P}(A)| = 2^n$, because each element is independently in or out. The **Cartesian product** $A \\times B$ is the set of ordered pairs $(a, b)$, with $|A \\times B| = |A| \\cdot |B|$; $\\mathbb{R}^2$ is a Cartesian product and so is every database table.
 
@@ -821,9 +843,19 @@ Read MCS 4.4 and chapter 10 (partial orders), and Book of Proof chapter 11. The 
             'Schroeder-Bernstein (statement)',
             'Programs are countable, functions N -> {0,1} are not',
           ],
-          explanation: `Two sets have the **same cardinality** when a bijection exists between them. For finite sets this is counting; for infinite sets it gives surprises. $\\mathbb{N}$ and the even numbers have the same size ($n \\mapsto 2n$), as do $\\mathbb{N}$ and $\\mathbb{Z}$ (interleave $0, 1, -1, 2, -2, \\dots$). A set is **countable** when it is finite or in bijection with $\\mathbb{N}$, i.e. when its elements can be **listed** $a_0, a_1, a_2, \\dots$ so that every element appears at some finite position. The rationals are countable: arrange $p/q$ in a grid and walk the diagonals, skipping repeats. More generally, a countable union of countable sets is countable, and the set of all finite strings over a finite alphabet is countable (list by length, then alphabetically). Every Python program is a finite string, so **the set of programs is countable**.
+          explanation: `Two sets have the **same cardinality** when a bijection exists between them. For finite sets this is counting; for infinite sets it gives surprises. $\\mathbb{N}$ and the even numbers have the same size ($n \\mapsto 2n$), as do $\\mathbb{N}$ and $\\mathbb{Z}$ (interleave $0, 1, -1, 2, -2, \\dots$). A set is **countable** when it is finite or in bijection with $\\mathbb{N}$, i.e. when its elements can be **listed** $a_0, a_1, a_2, \\dots$ so that every element appears at some finite position. The rationals are countable: arrange $p/q$ in a grid and walk the diagonals, skipping repeats. More generally, a countable union of countable sets is countable, and the set of all finite strings over a finite alphabet is countable (list by length, then alphabetically). Every Python program is a finite string, so **the set of programs is countable**. Walk the grid of fractions below to see why the diagonal order works and the row-by-row order does not.
+
+\`\`\`interactive
+cantor-diagonal
+{"title": "Listing the positive rationals", "mode": "pairing", "set": "rationals", "order": "diagonal", "orders": ["diagonal", "rows"], "size": 6, "caption": "Press Play: the walk goes diagonal by diagonal (p + q = 2, 3, 4, …), crossing out fractions such as 2/2 and 2/4 that repeat an earlier value, and every fraction gets a finite position. Then choose Row by row: the walk runs along 1/1, 1/2, 1/3, … and 2/1 never receives a position, so that is not a listing."}
+\`\`\`
 
 **Cantor's diagonal argument** shows some sets are not. Suppose the infinite binary strings were listed $s_0, s_1, s_2, \\dots$. Build $d$ by making its $i$-th bit the opposite of the $i$-th bit of $s_i$. Then $d$ differs from every $s_i$ at position $i$, so $d$ is not in the list: contradiction. The real numbers in $[0, 1]$ are uncountable by the same argument on decimal expansions (with care about $0.4999\\ldots = 0.5$). The same idea proves **Cantor's theorem**: no function $f : A \\to \\mathcal{P}(A)$ is surjective, because $D = \\{a : a \\notin f(a)\\}$ is not in the image. Hence $|A| < |\\mathcal{P}(A)|$ always, and there is an infinite hierarchy of infinities.
+
+\`\`\`interactive
+cantor-diagonal
+{"title": "The diagonal defeats any listing", "mode": "diagonal", "digits": "binary", "start": 0, "rows": 8, "editable": 4, "caption": "Step builds d one bit at a time: d_i is the opposite of the highlighted bit s_i(i), so d already differs from s_i at position i. Edit the first four rows to make the list cleverer, or press Add d to the list once d is complete: the new list has a new diagonal, and the argument produces a new missing sequence every time."}
+\`\`\`
 
 The consequence for computing is immediate and profound: functions from $\\mathbb{N}$ to $\\{0, 1\\}$ are in bijection with infinite binary strings, hence uncountable, while programs are countable. So **most functions are not computable by any program**. Theory of Computation makes this concrete with the halting problem, whose proof is diagonalisation again.
 
@@ -930,6 +962,13 @@ Read MCS 8.1 (the chapter on infinite sets) and Book of Proof chapter 14. The ex
 The **greatest common divisor** $\\gcd(a, b)$ is the largest integer dividing both. The **Euclidean algorithm** computes it without factoring, using one fact: $\\gcd(a, b) = \\gcd(b, a \\bmod b)$. Proof: any common divisor of $a$ and $b$ divides $a - qb = r$, and any common divisor of $b$ and $r$ divides $qb + r = a$, so the two pairs have the same common divisors. Iterate until the remainder is 0; the last nonzero remainder is the gcd. It terminates because remainders strictly decrease, and it is fast: the number of steps is at most about $\\log_\\phi(b)$ (worst case consecutive Fibonacci numbers, Lamé's theorem), so a 1000-digit gcd takes a few thousand steps.
 
 Running the algorithm backwards, or better, carrying coefficients forward, gives the **extended Euclidean algorithm**: integers $x, y$ with $ax + by = \\gcd(a, b)$ (**Bezout's identity**). This is the workhorse of the module: it finds modular inverses (next lesson), solves $ax + by = c$ (solvable iff $\\gcd(a, b) \\mid c$), and proves the lemma behind unique factorisation: if $a \\mid bc$ and $\\gcd(a, b) = 1$, write $1 = ax + by$, multiply by $c$, and $a$ divides both terms on the right.
+
+The table below carries the coefficients forward: every row keeps the invariant $r_i = s_i a + t_i b$, so the row with the last nonzero remainder hands you Bezout's $x$ and $y$.
+
+\`\`\`interactive
+euclid
+{"title": "Extended Euclidean algorithm", "mode": "gcd", "a": 252, "b": 198, "caption": "Step through gcd(252, 198): each step is one division a = qb + r, and the same quotient updates s and t. The last column checks s·252 + t·198 = r on every row; the green row gives 18 = 4·252 − 5·198. Then enter the exercise's consecutive Fibonacci numbers 1346269 and 832040: every quotient is 1 and it takes 29 steps, the worst case of Lamé's theorem."}
+\`\`\`
 
 Read MCS 9.1-9.2 and Stein chapter 1 or 2. Implement everything in the exercises with a timing table; the contrast between Euclid and factoring is the first lesson of computational number theory, and the extended algorithm you write will be used unchanged in the RSA lesson.`,
           resources: [
@@ -1153,7 +1192,17 @@ Read MCS 9.3-9.4 and Stein chapter 1.2 and 2.4. The exercises make you measure a
 
 **Fast exponentiation**: to compute $a^k \\bmod n$, square repeatedly and multiply in the bits of $k$: about $2 \\log_2 k$ multiplications of numbers below $n$, instead of $k$. Python's \`pow(a, k, n)\` does exactly this; \`pow(3, 10**18, 10**9+7)\` is instant. Implement it once yourself to see why.
 
-Division is the subtle operation. $a$ has a **multiplicative inverse** mod $n$ (a $b$ with $ab \\equiv 1$) iff $\\gcd(a, n) = 1$: Bezout gives $ax + ny = 1$, so $x$ is the inverse; conversely an inverse implies $\\gcd = 1$. Compute it with your extended Euclid. The elements with inverses form the **units** $\\mathbb{Z}_n^*$, of size $\\varphi(n)$ (Euler's totient). Without coprimality, cancellation fails: $2 \\cdot 3 \\equiv 2 \\cdot 0 \\pmod 6$ but $3 \\not\\equiv 0$.
+\`\`\`interactive
+euclid
+{"title": "Square and multiply", "mode": "power", "a": 7, "k": 1000, "n": 13, "caption": "1000 is 1111101000 in binary, so 7^1000 mod 13 needs 9 squarings and 5 multiplications rather than 999. Each row squares the previous power; a 1-bit multiplies it into the result. The answer, 9, agrees with Euler's shortcut (1000 mod 12 = 4). Try k = 1000000 to see the exercise's count: about 2 log₂ k at most."}
+\`\`\`
+
+Division is the subtle operation. $a$ has a **multiplicative inverse** mod $n$ (a $b$ with $ab \\equiv 1$) iff $\\gcd(a, n) = 1$: Bezout gives $ax + ny = 1$, so $x$ is the inverse; conversely an inverse implies $\\gcd = 1$. Compute it with your extended Euclid. The elements with inverses form the **units** $\\mathbb{Z}_n^*$, of size $\\varphi(n)$ (Euler's totient). Without coprimality, cancellation fails: $2 \\cdot 3 \\equiv 2 \\cdot 0 \\pmod 6$ but $3 \\not\\equiv 0$. The clock below draws $x \\mapsto ax \\bmod n$ as arrows around $\\mathbb{Z}_n$: an inverse exists exactly when the arrows form a permutation, since then multiplication by $a$ can be undone.
+
+\`\`\`interactive
+euclid
+{"title": "Inverses mod n", "mode": "inverse", "a": 2, "n": 6, "caption": "a = 2, n = 6 is the lesson's example: 0 and 3 both land on 0 (red), the odd points are never hit (dashed), and 2 has no inverse. Change a to 5: every point is hit once, and the Bézout row gives 5⁻¹ ≡ 5 (mod 6). Try the exercise's n = 97 and n = 100 with a few values of a, and switch on Only the units to see ×a permute the φ(n) units."}
+\`\`\`
 
 The **Chinese remainder theorem**: if $m$ and $n$ are coprime, then for any $a, b$ there is a unique $x \\bmod mn$ with $x \\equiv a \\pmod m$ and $x \\equiv b \\pmod n$. The proof is a bijection $\\mathbb{Z}_{mn} \\to \\mathbb{Z}_m \\times \\mathbb{Z}_n$, $x \\mapsto (x \\bmod m, x \\bmod n)$: it is injective (if two values agree in both coordinates, $m$ and $n$ both divide the difference, so $mn$ does), and the sets have equal size, so it is a bijection. The constructive solution uses inverses: $x = a \\cdot n \\cdot (n^{-1} \\bmod m) + b \\cdot m \\cdot (m^{-1} \\bmod n)$. CRT lets you compute with huge numbers in several small moduli in parallel.
 
@@ -1260,7 +1309,17 @@ Read MCS 9.5-9.8 and Stein 2.1-2.3; the exercises implement all four algorithms 
           ],
           explanation: `**Fermat's little theorem**: if $p$ is prime and $p \\nmid a$, then $a^{p-1} \\equiv 1 \\pmod p$. The proof is a counting argument worth memorising. The numbers $1, 2, \\dots, p-1$, each multiplied by $a$ and reduced mod $p$, are again $1, 2, \\dots, p-1$ in some order (multiplication by a unit is a bijection: it has an inverse). Multiply them all: $a^{p-1}(p-1)! \\equiv (p-1)! \\pmod p$, and cancel $(p-1)!$, which is a unit. **Euler's theorem** is the same argument over the units of $\\mathbb{Z}_n$: $a^{\\varphi(n)} \\equiv 1 \\pmod n$ when $\\gcd(a, n) = 1$, where $\\varphi(n) = |\\mathbb{Z}_n^*|$. For $n = pq$ with distinct primes, $\\varphi(n) = (p-1)(q-1)$ (count the multiples of $p$ and $q$ below $n$ and subtract).
 
+\`\`\`interactive
+euclid
+{"title": "Multiplication by a unit is a bijection", "mode": "inverse", "a": 7, "n": 15, "units": true, "caption": "This is the exercise: the 8 units of Z₁₅ each multiplied by 7. Every unit is hit exactly once, so the product of the images equals the product of the units, which forces 7^φ(15) = 7^8 ≡ 1. Set n = 7 and a = 3 for Fermat's version on 1, …, p − 1; then try a = 5, n = 15 with Only the units off to see a non-unit collapse points together."}
+\`\`\`
+
 **RSA** is Euler's theorem turned into a lock. Choose large primes $p, q$; let $n = pq$ and $\\varphi = (p-1)(q-1)$. Pick $e$ coprime to $\\varphi$ (commonly 65537) and compute $d = e^{-1} \\bmod \\varphi$ with extended Euclid. Publish $(n, e)$; keep $d$ secret. Encrypt a message $m < n$ as $c = m^e \\bmod n$; decrypt as $c^d \\bmod n$. **Correctness**: $ed = 1 + k\\varphi$, so $(m^e)^d = m \\cdot (m^{\\varphi})^k \\equiv m$ by Euler when $\\gcd(m, n) = 1$ (and a CRT argument handles the rare other case). **Signing** reverses the roles: $s = m^d$, and anyone checks $s^e \\equiv m$.
+
+\`\`\`interactive
+rsa-toy
+{"title": "Toy RSA", "p": 61, "q": 53, "e": 17, "m": 65, "text": "HI", "caption": "With p = 61 and q = 53: n = 3233, φ = 3120, and extended Euclid gives d = 2753. Encrypting m = 65 gives 2790, and 2790^2753 mod 3233 is 65 again. Try e = 15 (not coprime to 3120) or q = 51 (not prime) to see the checks, encrypt a word to see the repeated-letter weakness, and press Break it to recover d from (n, e) alone."}
+\`\`\`
 
 **Security** rests on one assumption: computing $d$ from $(n, e)$ requires $\\varphi(n)$, and knowing $\\varphi(n)$ is equivalent to factoring $n$ (you can solve for $p$ and $q$ from $n$ and $p + q$). Since factoring is believed hard, 2048-bit $n$ is considered safe today. Textbook RSA as described is **not** secure in practice: without randomised padding it is deterministic and malleable, and naive implementations leak $d$ through timing. Real systems use OAEP padding and constant-time code; your implementation here is for understanding only.
 
@@ -1499,6 +1558,11 @@ The discipline that makes you reliable: for every count, write a Python enumerat
 
 The identities are best proved by **counting two ways**. Symmetry $\\binom{n}{k} = \\binom{n}{n-k}$: choosing which $k$ to include is the same as choosing which $n-k$ to exclude (a bijection). **Pascal's rule** $\\binom{n}{k} = \\binom{n-1}{k-1} + \\binom{n-1}{k}$: either element $n$ is in the subset (choose $k-1$ more) or it is not (choose all $k$ from the rest); the sum rule applies because the cases are disjoint. Pascal's rule is also a recursive algorithm, and memoised it computes $\\binom{n}{k}$ with only additions, avoiding the overflow that factorials cause in fixed-width languages (Python's big integers hide this, but \`math.comb\` is still the right tool).
 
+\`\`\`interactive
+pascal-triangle
+{"title": "Pascal's triangle", "rows": 10, "n": 6, "k": 2, "caption": "C(6, 2) = 15 is the sum of its two parents C(5, 1) + C(5, 2) = 5 + 10 (the cases 'element 6 is in the subset' and 'it is not'), and its dashed mirror C(6, 4) is the symmetry bijection. Tap other entries; every row sums to 2ⁿ and its alternating sum is 0, the two substitutions in the binomial theorem. Colour mod 2 and add rows to see the Sierpiński pattern."}
+\`\`\`
+
 The **binomial theorem** $(x + y)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^k y^{n-k}$ is itself a counting statement: expanding the product, each term picks $x$ from $k$ of the $n$ factors. Setting $x = y = 1$ gives $\\sum_k \\binom{n}{k} = 2^n$ (all subsets); $x = -1, y = 1$ gives the alternating sum $0$ (as many even-sized subsets as odd). **Multinomial coefficients** $\\binom{n}{k_1, \\dots, k_m} = \\frac{n!}{k_1! \\cdots k_m!}$ count arrangements with repeated items: MISSISSIPPI has $\\frac{11!}{1!\\,4!\\,4!\\,2!} = 34650$ anagrams, by the division rule.
 
 **Stars and bars** counts unordered selections *with* repetition, equivalently non-negative integer solutions of $x_1 + \\cdots + x_k = n$: picture $n$ stars and $k - 1$ bars in a row; the answer is $\\binom{n + k - 1}{k - 1}$. With each $x_i \\ge 1$, substitute $y_i = x_i - 1$ first. Read MCS 15.6-15.8 and Levin 1.2-1.5; the exercises prove identities both ways and check all of them with \`math.comb\`.`,
@@ -1609,6 +1673,11 @@ The **binomial theorem** $(x + y)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^k y^{n-k}$
             'Hash collisions and the birthday bound as pigeonhole in probability',
           ],
           explanation: `The sum rule needs disjoint sets. When sets overlap, **inclusion-exclusion** corrects for the overlap: $|A \\cup B| = |A| + |B| - |A \\cap B|$, and for three sets add the singles, subtract the pairs, add back the triple. In general, $|A_1 \\cup \\cdots \\cup A_n| = \\sum_{\\emptyset \\ne S} (-1)^{|S|+1} |\\bigcap_{i \\in S} A_i|$. The proof counts how often an element in exactly $m$ of the sets is counted: $\\binom{m}{1} - \\binom{m}{2} + \\cdots = 1$ by the alternating binomial sum. In practice you use it to **count by complement**: the number of things with *none* of some properties is the total minus the union of the "bad" sets.
+
+\`\`\`interactive
+venn
+{"title": "Inclusion-exclusion for three sets", "mode": "count", "modes": ["count", "shade"], "sets": 3, "labels": ["multiples of 2", "multiples of 3", "multiples of 5"], "counts": [26, 27, 14, 13, 7, 7, 3, 3], "caption": "The integers 1 to 100 sorted by divisibility: |A| = 50, |B| = 33, |C| = 20, the pairwise intersections are 16, 10 and 6, and the triple is 3. Inclusion-exclusion gives 50 + 33 + 20 − 16 − 10 − 6 + 3 = 74, so the 26 numbers outside all three are exactly those coprime to 30 (counting by complement: 100 − 74). Change any region count and both sides of the formula move together."}
+\`\`\`
 
 Two classic results fall out. **Derangements** (permutations with no fixed point): let $A_i$ be permutations fixing $i$; $|\\bigcap_{i \\in S} A_i| = (n - |S|)!$, so $D_n = n! \\sum_{k=0}^{n} (-1)^k / k!$, which tends to $n!/e$. The probability that a random permutation has no fixed point is about $0.368$ for any $n \\ge 5$: a striking fact you can check by simulation. **Surjections** from an $n$-set onto a $k$-set: $\\sum_{j} (-1)^j \\binom{k}{j} (k - j)^n$, by excluding the functions that miss element $j$. Euler's $\\varphi(n)$ has the same shape over the prime divisors.
 
@@ -1851,6 +1920,11 @@ Store a graph as an **adjacency list** (a dict mapping each vertex to a set of n
 
 The first theorem is the **handshake lemma**: $\\sum_{v} \\deg(v) = 2|E|$, because each edge contributes exactly two to the degree total. It is a double-counting argument (count edge-ends two ways), and its corollary is that the number of odd-degree vertices is even. So no graph has exactly one vertex of odd degree, a 7-vertex graph cannot be 3-regular, and in any party an even number of people shook hands an odd number of times.
 
+\`\`\`interactive
+graph-lab
+{"title": "Degrees and the handshake lemma", "preset": "k4", "presets": ["k4", "k5", "k33", "petersen", "cube", "cycle5", "tree", "empty"], "panels": ["degrees", "adjacency"], "toggles": false, "caption": "Each vertex shows its degree, and the sum is always twice the number of edges. Choose Add and join two vertices: two degrees rise by one and the sum by two. Try to make a graph with exactly one odd-degree vertex; the odd count always stays even. Compare the adjacency list and matrix for the named graphs: Q₃ has 3·2² = 12 edges, K₃,₃ has 9, and K₅ has C(5, 2) = 10."}
+\`\`\`
+
 Learn the **named graphs**: $K_n$ (complete, $\\binom{n}{2}$ edges), $C_n$ (cycle, $n$ edges), $P_n$ (path, $n - 1$ edges), $K_{m,n}$ (complete bipartite, $mn$ edges), and the hypercube $Q_n$ (vertices are $n$-bit strings, adjacent when differing in one bit; $n 2^{n-1}$ edges by the handshake lemma). **Isomorphism** is "the same graph with relabelled vertices": a bijection on vertices preserving adjacency. To prove two graphs are *not* isomorphic, find an **invariant** that differs (vertex count, edge count, degree sequence, number of triangles, connectivity); to prove they *are*, exhibit the bijection. Read MCS 11.1-11.3 and Levin 4.1, then build the small graph library in the exercises; every later lesson extends it.`,
           resources: [
             {
@@ -1957,6 +2031,11 @@ Learn the **named graphs**: $K_n$ (complete, $\\binom{n}{2}$ edges), $C_n$ (cycl
 "$u$ is reachable from $v$" is **reflexive** (empty walk), **symmetric** (reverse the walk; in undirected graphs), and **transitive** (concatenate walks), so it is an equivalence relation and its classes are the **connected components**: a partition of $V$. A graph is **connected** if there is one component. A connected graph on $n$ vertices has at least $n - 1$ edges (induction: removing an edge creates at most two components), and a graph with $k$ components and $n$ vertices has at most $\\binom{n - k + 1}{2}$ edges (cram everything into one big clique).
 
 Connectivity is computed by **traversal**. **Breadth-first search** from $s$ explores by levels using a queue: all vertices at distance 1, then 2, and so on. The invariant "when a vertex is dequeued, its recorded distance is its true shortest distance" is proved by induction on distance, so BFS gives shortest paths in unweighted graphs and the level structure. **Depth-first search** goes as deep as possible using recursion or an explicit stack; it finds the same components but visits in a different order, and that order (discovery and finish times) is what later algorithms exploit for cycle detection, topological sort and strong components. Both run in $O(|V| + |E|)$ with adjacency lists.
+
+\`\`\`interactive
+graph-lab
+{"title": "BFS, DFS and components", "vertices": [[0, 0], [2, 0], [4, 0], [0, 2], [2, 2], [4, 2], [6, 0], [6, 2]], "labels": ["A", "B", "C", "D", "E", "F", "G", "H"], "edges": [["A", "B"], ["A", "D"], ["B", "C"], ["B", "E"], ["D", "E"], ["E", "F"], ["C", "F"], ["G", "H"]], "name": "Two components", "presets": ["custom", "grid", "petersen", "tree", "dag"], "panels": ["components"], "algorithms": ["bfs", "dfs"], "source": "A", "caption": "Step BFS from A: the queue empties level by level (A; B, D; C, E; F), and the distances beside the vertices are shortest distances. G and H are never reached: they are the second component. Switch to DFS for the same graph: it dives A, B, C, F, E, D, records discovery/finish times, and restarts at G when the stack empties. Tap a vertex in Move mode to start from there instead."}
+\`\`\`
 
 In **directed** graphs reachability is not symmetric; "mutually reachable" is the equivalence relation, with **strongly connected components** as classes, and a digraph with no directed cycle is a **DAG**, the structure of every dependency and scheduling problem. Read MCS 11.5-11.7 and 10.1-10.5 (digraphs), Levin 4.2. Implement BFS and DFS in your library; Data Structures and Algorithms is their canonical home, so aim for correctness and the proofs here.`,
           resources: [
@@ -2065,6 +2144,11 @@ In **directed** graphs reachability is not symmetric; "mutually reachable" is th
 
 A **Hamilton cycle** visits every *vertex* exactly once. The definitions look parallel, but the problems are not: no degree condition is both necessary and sufficient, and deciding whether a Hamilton cycle exists is NP-complete (Theory of Computation), so the best known algorithms are exponential. **Dirac's theorem** gives a sufficient condition: if $n \\ge 3$ and every vertex has degree at least $n/2$, a Hamilton cycle exists; the proof extends a longest path into a cycle by a clever counting argument on neighbours. But many graphs with small degrees (the cycle $C_n$ itself) are Hamiltonian, and dense-looking graphs can fail (two cliques joined at a single vertex).
 
+\`\`\`interactive
+graph-lab
+{"title": "Euler and Hamilton", "preset": "konigsberg", "presets": ["konigsberg", "house", "k5", "k4", "cube", "two-k4", "petersen", "empty"], "panels": ["degrees", "euler", "hamilton"], "show": "euler", "toggles": false, "caption": "Königsberg: N, S, K and L all have odd degree, so no walk crosses every bridge once. Choose Delete and remove one bridge: two odd vertices remain and Hierholzer finds an Euler trail between them (edges numbered in order). The House has a trail, K₅ a circuit. For Hamilton cycles no degree count decides: the backtracking search finds one in Q₃, but none in two K₄s sharing a vertex (every degree at least 3) or in the 3-regular Petersen graph."}
+\`\`\`
+
 The lesson is a recurring one: two problems that look alike can sit on opposite sides of the tractability line. Read MCS 11.8 and Levin 4.5 (Euler paths and circuits), then implement Hierholzer and a backtracking Hamilton search and measure the gap.`,
           resources: [
             {
@@ -2165,7 +2249,12 @@ The characterisations are all equivalent for a graph $G$ on $n$ vertices: (1) $G
 
 A **spanning tree** of a connected graph is a subgraph that is a tree containing every vertex. BFS and DFS parent pointers form one, which proves existence constructively; minimum-weight spanning trees are an algorithms topic. **Rooted trees** add a distinguished root and hence parent/child, depth and height; a binary tree of height $h$ has at most $2^{h+1} - 1$ vertices, which is where logarithmic bounds on search trees come from.
 
-How many labelled trees on $n$ vertices are there? **Cayley's formula**: $n^{n-2}$. The neatest proof is a bijection with **Prüfer codes**, sequences of length $n - 2$ over the labels: repeatedly remove the smallest leaf and record its neighbour. Implement both directions and the count verifies itself. Read MCS 11.9-11.10 and Levin 4.2.`,
+How many labelled trees on $n$ vertices are there? **Cayley's formula**: $n^{n-2}$. The neatest proof is a bijection with **Prüfer codes**, sequences of length $n - 2$ over the labels: repeatedly remove the smallest leaf and record its neighbour. Implement both directions and the count verifies itself. Read MCS 11.9-11.10 and Levin 4.2.
+
+\`\`\`interactive
+graph-lab
+{"title": "Trees, spanning trees and Prüfer codes", "preset": "tree", "presets": ["tree", "grid", "k4", "cycle6", "petersen", "empty"], "panels": ["tree"], "algorithms": ["bfs", "dfs"], "toggles": false, "caption": "The tree has n = 7 and 6 = n − 1 edges, and its Prüfer code (B, B, A, C, C) is one of 7⁵ = 16807. Add any edge: a cycle appears. Delete any edge: it disconnects. Choose the 3 × 4 grid and step BFS, then DFS, from A: the blue tree edges are two different spanning trees, BFS's short and bushy (depth 5), DFS's long and thin, as the exercise predicts for the 30 × 30 grid."}
+\`\`\``,
           resources: [
             {
               title: 'Discrete Mathematics: An Open Introduction — 4.2 Trees',
@@ -2277,7 +2366,17 @@ How many labelled trees on $n$ vertices are there? **Cayley's formula**: $n^{n-2
 
 The formula has sharp consequences. Each face is bounded by at least 3 edges and each edge borders at most 2 faces, so $3F \\le 2E$; substituting, $E \\le 3V - 6$ for $V \\ge 3$. $K_5$ has $V = 5$, $E = 10 > 9$: **not planar**. For triangle-free graphs faces have at least 4 edges, giving $E \\le 2V - 4$; $K_{3,3}$ has $E = 9 > 8$: not planar. Remarkably those two are the whole story: **Kuratowski's theorem** says a graph is planar iff it contains no subdivision of $K_5$ or $K_{3,3}$. Another corollary: every planar graph has a vertex of degree at most 5 (else $2E \\ge 6V$), which is the induction step for the easy six-colour theorem.
 
+\`\`\`interactive
+graph-lab
+{"title": "Planarity bounds", "preset": "k4", "presets": ["k4", "k5", "k33", "cube", "petersen", "empty"], "panels": ["planarity"], "toggles": false, "caption": "K₄ is drawn with one crossing; drag a vertex into the middle of the triangle formed by the other three and the crossing disappears, so K₄ is planar. K₅ breaks E ≤ 3V − 6 (10 > 9) and K₃,₃ is triangle-free and breaks E ≤ 2V − 4 (9 > 8), so no amount of dragging can remove all their crossings. The cube passes both bounds and can be drawn without crossings."}
+\`\`\`
+
 A **proper colouring** assigns colours to vertices so adjacent vertices differ; the **chromatic number** $\\chi(G)$ is the minimum number needed. Colouring is scheduling in disguise: vertices are tasks, edges are conflicts, colours are time slots. $\\chi(G) = 2$ exactly when $G$ is **bipartite**, and a graph is bipartite iff it has **no odd cycle**: necessity is immediate (colours alternate around a cycle), sufficiency is BFS: colour by parity of distance, and an edge within a level would close an odd cycle. So 2-colourability is decided in linear time. The **greedy** algorithm (colour vertices in some order with the smallest free colour) uses at most $\\Delta + 1$ colours, but finding $\\chi(G)$ exactly, or even deciding 3-colourability, is NP-complete. The **four colour theorem** says every planar graph has $\\chi \\le 4$; its proof is famously computer-assisted.
+
+\`\`\`interactive
+graph-lab
+{"title": "Bipartite tests and greedy colouring", "preset": "cycle6", "presets": ["cycle6", "cycle5", "cube", "k33", "petersen", "grid", "k4", "empty"], "panels": ["bipartite", "colouring"], "show": "bipartite", "toggles": false, "caption": "C₆ splits into two parts by BFS parity. Switch to C₅: the test returns the odd cycle as its witness. Q₃ and K₃,₃ are bipartite; the Petersen graph is not, and greedy colours it with 3 colours. Press Show on graph under Greedy colouring and change the order: on a graph you draw yourself, a bad order can use more colours than necessary, but never more than Δ + 1."}
+\`\`\`
 
 Read MCS 11.11 (colouring appears early in the chapter as well), Levin 4.3-4.4, and do the exercises, which include the classic exam-scheduling application.`,
           resources: [
@@ -2709,7 +2808,14 @@ A subtlety: for the proof principle to be sound the definition must have **uniqu
 
 **Linear homogeneous recurrences** $a_n = c_1 a_{n-1} + \\cdots + c_k a_{n-k}$ have solutions that are sums of exponentials $r^n$ where $r$ is a root of the **characteristic polynomial** $r^k = c_1 r^{k-1} + \\cdots + c_k$. For Fibonacci, $r^2 = r + 1$, giving Binet again; a repeated root $r$ contributes $r^n$ and $n r^n$. Initial conditions fix the coefficients. An inhomogeneous term (a constant, $n$, $2^n$) is handled by adding a particular solution of the same shape, exactly as for linear ODEs; generating functions (module 4) are the systematic version.
 
-**Divide-and-conquer** recurrences $T(n) = a T(n/b) + f(n)$ are best understood by the **recursion tree**: level $i$ has $a^i$ subproblems of size $n/b^i$, so the work at level $i$ is $a^i f(n/b^i)$ and there are $\\log_b n$ levels. Comparing the per-level work with $n^{\\log_b a}$ (the number of leaves) gives the **master theorem**'s three cases: leaves dominate ($T = \\Theta(n^{\\log_b a})$), all levels equal ($T = \\Theta(n^{\\log_b a} \\log n)$, merge sort), or the root dominates ($T = \\Theta(f(n))$). Karatsuba's $T(n) = 3T(n/2) + n$ gives $n^{\\log_2 3} \\approx n^{1.585}$, a real speed-up over schoolbook multiplication that you can measure. Read MCS chapter 22 and Levin 2.4; the canonical algorithmic treatment lives in Data Structures and Algorithms.`,
+**Divide-and-conquer** recurrences $T(n) = a T(n/b) + f(n)$ are best understood by the **recursion tree**: level $i$ has $a^i$ subproblems of size $n/b^i$, so the work at level $i$ is $a^i f(n/b^i)$ and there are $\\log_b n$ levels. Comparing the per-level work with $n^{\\log_b a}$ (the number of leaves) gives the **master theorem**'s three cases: leaves dominate ($T = \\Theta(n^{\\log_b a})$), all levels equal ($T = \\Theta(n^{\\log_b a} \\log n)$, merge sort), or the root dominates ($T = \\Theta(f(n))$). Karatsuba's $T(n) = 3T(n/2) + n$ gives $n^{\\log_2 3} \\approx n^{1.585}$, a real speed-up over schoolbook multiplication that you can measure.
+
+\`\`\`interactive
+function-explorer
+{"title": "Karatsuba against schoolbook", "f": ["c*x^(log2(3))", "x^2", "x*log2(x)"], "sliders": {"c": [3, 1, 10, 0.5]}, "view": [0, 40, 0, 1200], "caption": "Blue is c·n^(log₂ 3) ≈ c·n^1.585 (Karatsuba with constant c), red is n² (schoolbook), green n log₂ n (merge sort's case 2). The crossover is at n = c^(1/0.415) ≈ c^2.4: about 14 digits when c = 3, about 250 when c = 10, which is why libraries switch to Karatsuba only above a threshold."}
+\`\`\`
+
+Read MCS chapter 22 and Levin 2.4; the canonical algorithmic treatment lives in Data Structures and Algorithms.`,
           resources: [
             {
               title: 'MCS — Chapter 22: Recurrences',
@@ -2822,6 +2928,11 @@ A subtlety: for the proof principle to be sound the definition must have **uniqu
           explanation: `**Asymptotic notation** compares functions by eventual growth, ignoring constants and small inputs. $f(n) = O(g(n))$ means there are constants $c, n_0$ such that $f(n) \\le c\\, g(n)$ for all $n \\ge n_0$: $g$ is an eventual upper bound up to a constant. $\\Omega$ is the lower-bound version, $\\Theta$ both at once, and little-$o$ means $f/g \\to 0$ (strictly smaller growth). To *prove* $f = O(g)$ you exhibit $c$ and $n_0$; to *disprove* it you show that for every $c$, $f(n) > c\\,g(n)$ for infinitely many $n$. The **limit test** is faster when it applies: if $f/g \\to L$ with $0 < L < \\infty$ then $f = \\Theta(g)$; $L = 0$ gives $o$; $L = \\infty$ gives $\\omega$.
 
 The **hierarchy** you must know: $1 \\ll \\log n \\ll \\sqrt{n} \\ll n \\ll n \\log n \\ll n^2 \\ll n^3 \\ll 2^n \\ll n! \\ll n^n$, where $\\ll$ is little-$o$. Every polynomial beats every power of a log; every exponential beats every polynomial (use l'Hôpital or compare $\\log$s). The **base of a logarithm** does not matter ($\\log_a n = \\log_b n / \\log_b a$, a constant), but the base of an exponential does: $3^n$ is not $O(2^n)$.
+
+\`\`\`interactive
+function-explorer
+{"title": "Constants lose to growth rates", "f": ["c*x*log2(x)", "x^2", "2^x"], "sliders": {"c": [10, 1, 30, 1]}, "view": [0, 80, 0, 6000], "caption": "Blue is c·n log₂ n, red n², green 2ⁿ (x plays the role of n). With c = 10 the n log n curve sits above n² until n ≈ 59, and then never again: that is n log n = O(n²) with n₀ ≈ 59. Raise c to 30 and the crossover moves right but does not disappear. 2ⁿ leaves the picture before n = 13 whatever c is."}
+\`\`\`
 
 Two tools estimate the sums and products that appear in analyses. For a monotone $f$, the sum $\\sum_{k=1}^{n} f(k)$ is sandwiched between $\\int_0^n f$ and $\\int_1^{n+1} f$ (or the reverse), which gives the **harmonic sum** $H_n = \\ln n + O(1)$ and $\\sum k^2 = \\Theta(n^3)$. **Stirling's approximation** $n! \\sim \\sqrt{2\\pi n}\\,(n/e)^n$ gives $\\log_2 n! = \\Theta(n \\log n)$, which is the lower bound for comparison sorting, and $\\binom{2n}{n} \\sim 4^n / \\sqrt{\\pi n}$.
 
@@ -2949,6 +3060,11 @@ Abuses to avoid: "$=$" in $f = O(g)$ is one-directional (never write $O(g) = f$)
           explanation: `A **probability space** is a **sample space** $S$ of outcomes with a function $\\Pr$ assigning each outcome a non-negative weight, summing to 1. An **event** is a subset of $S$ and its probability is the sum of its outcomes' weights. That is the whole theory for discrete spaces; everything else is bookkeeping and counting. In a **uniform** space, $\\Pr[E] = |E| / |S|$, so module 4 did most of the work already: the probability of a full house is (number of full houses)/$\\binom{52}{5}$.
 
 MCS's **four-step method** keeps you honest on sequential experiments: (1) find the sample space, usually by a **tree diagram** with one level per stage; (2) define the event of interest as a set of leaves; (3) assign probabilities to outcomes by multiplying along the branches; (4) add up. **Monty Hall** is the canonical example: the tree makes it obvious that switching wins with probability $2/3$, while intuition fails. Modelling is where real mistakes happen; "equally likely" is an assumption, not a law, and two dice summing to 7 is not one of eleven equally likely sums.
+
+\`\`\`interactive
+monty-hall
+{"title": "Monty Hall: play, then simulate", "doors": 3, "caption": "Play a few rounds by hand with each strategy, then simulate 10 000 games: staying wins about 1/3 of the time and switching about 2/3, as the tree says, because switching wins exactly when the first pick was wrong. Raise the number of doors to 10 (the host opens 8): switching now wins 9/10 of the time, which makes the reasoning hard to resist."}
+\`\`\`
 
 The axioms give the rules you use constantly: $\\Pr[\\overline{E}] = 1 - \\Pr[E]$ (compute "at least one" via "none"); the **union bound** $\\Pr[A \\cup B] \\le \\Pr[A] + \\Pr[B]$ (crude but always valid, and the workhorse of randomised-algorithm analysis); and **inclusion-exclusion** when you need exactness. The **birthday problem** uses the complement: $\\Pr[\\text{all distinct}] = \\prod_{i<n} (1 - i/365)$, below $1/2$ at $n = 23$.
 

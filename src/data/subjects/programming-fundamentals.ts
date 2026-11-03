@@ -52,6 +52,18 @@ By the end you will have written several hundred lines of tested, documented Pyt
           ],
           explanation: `Python is an **interpreter**: a program that reads your source text, one statement at a time, and carries it out immediately. There is no separate build step, which is why Python is ideal for learning. You will use it in two modes. The **REPL** (type \`python3\` or \`python\` in a terminal) reads a line, evaluates it, prints the result and loops; it is your calculator and your laboratory. **Script mode** (\`python3 hello.py\`) runs a file from top to bottom and only prints what you ask it to with \`print()\`. A beginner's classic confusion: in the REPL, typing \`2 + 3\` shows \`5\`, but in a script the same line computes 5 and silently discards it.
 
+The cell below runs real Python in your browser, in script mode: it runs the whole file top to bottom and shows only what is printed.
+
+\`\`\`interactive
+python
+{"title": "Script mode: only print() shows anything", "caption": "Press Run. Line 1 computes 5 and throws it away, exactly as a script would; only the two print calls produce output. Change line 1 to print(2 + 3) and run again. Then delete the closing bracket on line 2: the SyntaxError appears before line 1 has run, because Python parses the whole file first."}
+---
+2 + 3
+print("Hello from a script")
+seconds_per_year = 365 * 24 * 60 * 60
+print("Seconds in a year:", seconds_per_year)
+\`\`\`
+
 A program is a sequence of **statements**; many statements contain **expressions**, which are pieces of code that evaluate to a value. \`x = 2 + 3\` is an assignment statement containing the expression \`2 + 3\`. Keeping these two words straight will make every later explanation clearer.
 
 You will make errors constantly, and that is fine; what matters is reading them. A **SyntaxError** means Python could not even parse the text (a missing colon or bracket); it is reported before anything runs. A runtime error such as **NameError** or **TypeError** happens while running. The error message is a **traceback**: read it from the bottom (the error type and message) upward (the line that failed, then the lines that called it). Make a habit of reading the whole thing before touching the code.
@@ -103,8 +115,22 @@ Work through chapter 1 of *Think Python* and the first two sections of the offic
             {
               slug: 'first-script',
               title: 'Write and run a script',
-              prompt:
-                'Create hello.py containing a print of your name, then a line that computes the number of seconds in a 365-day year and prints "Seconds in a year: 31536000". Run it from the terminal. Then delete the closing parenthesis of one print call, run again, and copy the exact SyntaxError message into a notes file with a one-line explanation.',
+              prompt: `Create hello.py containing a print of your name, then a line that computes the number of seconds in a 365-day year and prints "Seconds in a year: 31536000". Run it from the terminal. Then delete the closing parenthesis of one print call, run again, and copy the exact SyntaxError message into a notes file with a one-line explanation.
+
+You can draft the script in the cell below and press Check before saving it as hello.py.
+
+\`\`\`interactive
+python
+{"title": "Exercise: hello.py", "caption": "Write the two lines, press Run, then Check. Then delete a closing bracket and run again: that SyntaxError is the message to copy into your notes."}
+---
+# 1. print your name
+# 2. compute the seconds in a 365-day year and print
+#    Seconds in a year: 31536000
+# --- tests ---
+assert "Seconds in a year: 31536000" in _output, "prints the line: Seconds in a year: 31536000"
+assert len(_output.strip().splitlines()) >= 2, "prints two lines: your name, then the seconds"
+assert "31536000" not in _code, "the number is computed (for example 365 * 24 * 60 * 60), not typed in"
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
@@ -160,11 +186,51 @@ Work through chapter 1 of *Think Python* and the first two sections of the offic
           ],
           explanation: `Every piece of data in Python is an **object** with a **type**. The four you meet first are \`int\` (whole numbers of unlimited size: \`2 ** 1000\` just works), \`float\` (decimal numbers stored as 64-bit IEEE 754 doubles, which is why \`0.1 + 0.2 == 0.30000000000000004\`), \`str\` (text) and \`bool\` (\`True\`/\`False\`). \`None\` is a special object meaning "no value". Ask Python with \`type(x)\`.
 
+\`\`\`interactive
+python
+{"title": "Every value has a type", "caption": "Run it. 2 ** 1000 prints all 302 digits because int has no size limit, while 0.1 + 0.2 shows the tiny representation error of float. Add print(type(7 / 2), type(7 // 2)) and predict both answers before running."}
+---
+print(type(42), type(4.2), type("42"), type(True), type(None))
+print(2 ** 1000)
+print(0.1 + 0.2)
+print(0.1 + 0.2 == 0.3)
+\`\`\`
+
+\`\`\`interactive
+bit-lab
+{"title": "What a float really stores", "mode": "float", "format": "binary64", "value": "0.1", "caption": "A float is 64 bits: a sign, an exponent and a fraction, like scientific notation in binary. 0.1 has no exact binary form, so Python stores the nearest double: read its exact value, 0.1000000000000000055511151231257827…, and the tiny rounding error under it. Type 0.2 and then 0.3: each is off by a different amount, and those errors are why 0.1 + 0.2 prints 0.30000000000000004. Type 0.5 or 0.25 to see numbers that are stored exactly."}
+\`\`\`
+
 The most important mental model in this whole subject is what a **variable** is. In Python a variable is not a box that contains a value; it is a **name bound to an object**. \`x = 5\` makes the name \`x\` refer to the integer object 5. \`x = x + 1\` computes a new object 6 and rebinds \`x\` to it; the 5 is untouched. Two names can refer to the same object (\`y = x\`), and later, with lists, you will see that this matters enormously: changing the object through one name is visible through the other. Ned Batchelder's article on names and values is the clearest explanation ever written of this; read it now and again after the collections module.
+
+The memory diagram below draws exactly this model: names on the left, objects on the right, an arrow for each binding. Small values such as numbers are written next to their names to keep the picture readable.
+
+\`\`\`interactive
+memory-diagram
+{"title": "Names are bound to objects", "caption": "Press Visualise, then Next. At line 3, x = x + 1 rebinds x to a new object 6 while y still refers to 5. From line 4 on, a and b are two arrows into one list, so a.append(3) changes what b sees too: that is aliasing."}
+---
+x = 5
+y = x
+x = x + 1
+a = [1, 2]
+b = a
+a.append(3)
+print(x, y, a, b)
+\`\`\`
 
 Python is **dynamically typed**: names carry no type, objects do. So \`x = 5\` then \`x = "five"\` is legal. This flexibility is convenient but it means type errors surface at run time, which is why you must read tracebacks and, later, write tests.
 
-Conversion functions \`int("42")\`, \`float("3.5")\` and \`str(7)\` create new objects; \`int("4.2")\` raises **ValueError** because the text is not an integer literal. Use \`snake_case\` names that say what the value means (\`seconds_per_day\`, not \`s\`), and never name a variable \`list\`, \`str\` or \`sum\`: you would shadow the built-in and get a confusing TypeError later.`,
+Conversion functions \`int("42")\`, \`float("3.5")\` and \`str(7)\` create new objects; \`int("4.2")\` raises **ValueError** because the text is not an integer literal. Use \`snake_case\` names that say what the value means (\`seconds_per_day\`, not \`s\`), and never name a variable \`list\`, \`str\` or \`sum\`: you would shadow the built-in and get a confusing TypeError later.
+
+\`\`\`interactive
+python
+{"title": "Conversions make new objects", "caption": "Run it: the first three lines work and the last raises ValueError. Read the traceback from the bottom up, then change the last line to int(float(\\"4.2\\")) and explain why that one works."}
+---
+print(int("42") + 1)
+print(float("3.5") * 2)
+print(str(7) + "7")
+print(int("4.2"))
+\`\`\``,
           resources: [
             {
               title: 'Think Python — Chapter 2: Variables and statements',
@@ -211,7 +277,7 @@ Conversion functions \`int("42")\`, \`float("3.5")\` and \`str(7)\` create new o
               slug: 'names-not-boxes',
               title: 'Names are not boxes',
               prompt:
-                'Predict the output, then run: a = 10; b = a; a = a + 5; print(a, b). Then: a = [1, 2]; b = a; a.append(3); print(a, b). Paste both into Python Tutor and draw the name/object diagram at each step. Explain in two sentences why the two programs behave differently.',
+                'Predict the output, then run: a = 10; b = a; a = a + 5; print(a, b). Then: a = [1, 2]; b = a; a.append(3); print(a, b). Paste both into Python Tutor (or into the memory diagram above, with Edit code) and draw the name/object diagram at each step. Explain in two sentences why the two programs behave differently.',
               kind: 'coding',
               difficulty: 2,
               hint: 'In the first case a is rebound to a new object; in the second the shared list object is mutated.',
@@ -219,8 +285,23 @@ Conversion functions \`int("42")\`, \`float("3.5")\` and \`str(7)\` create new o
             {
               slug: 'temperature-converter',
               title: 'Temperature converter script',
-              prompt:
-                'Write a script that stores a Celsius temperature in a variable, computes Fahrenheit (F = C * 9/5 + 32) and Kelvin, and prints all three with two decimal places using an f-string. Test with 0, 100 and -40 (expected: -40 C = -40 F). Then read the input from the keyboard with input() and handle the case where the user types "abc" by catching ValueError and printing a friendly message.',
+              prompt: `Write a script that stores a Celsius temperature in a variable, computes Fahrenheit (F = C * 9/5 + 32) and Kelvin, and prints all three with two decimal places using an f-string. Test with 0, 100 and -40 (expected: -40 C = -40 F). Then read the input from the keyboard with input() and handle the case where the user types "abc" by catching ValueError and printing a friendly message.
+
+The cell below runs the final, keyboard-reading version: type the temperature into its Input box. Check runs your program with 0, 100, -40 and abc.
+
+\`\`\`interactive
+python
+{"title": "Exercise: temperature converter", "stdin": ["-40"], "caption": "Finish the script and press Run with different values in the Input box (try abc). Check reruns it with 0, 100, -40 and abc and looks for the numbers with two decimals."}
+---
+text = input("Temperature in Celsius: ")
+# convert text to a float (catch ValueError if it is not a number),
+# compute Fahrenheit and Kelvin, and print all three with two decimals
+# --- tests ---
+assert "-40.00" in _rerun(["-40"]) and "233.15" in _rerun(["-40"]), "-40 C prints -40.00 (F) and 233.15 (K)"
+assert "212.00" in _rerun(["100"]) and "373.15" in _rerun(["100"]), "100 C prints 212.00 (F) and 373.15 (K)"
+assert "32.00" in _rerun(["0"]) and "273.15" in _rerun(["0"]), "0 C prints 32.00 (F) and 273.15 (K)"
+assert isinstance(_rerun(["abc", "0"]), str), "typing abc prints a message instead of crashing with ValueError"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
@@ -274,9 +355,50 @@ Conversion functions \`int("42")\`, \`float("3.5")\` and \`str(7)\` create new o
 
 Comparisons produce booleans and can be chained: \`0 <= x < 10\` means what a mathematician expects. \`and\` and \`or\` **short-circuit**: \`x != 0 and 10 / x > 1\` never divides by zero because the right side is skipped when the left is false. They also return one of their operands rather than a bare boolean (\`"" or "default"\` evaluates to \`"default"\`), a trick you will see in real code.
 
+\`\`\`interactive
+python
+{"title": "Precedence traps and short-circuiting", "caption": "Predict each line, then Run. The last line puts the division first, so it runs before the guard and raises ZeroDivisionError; set x = 5 and run again to see both orders agree once nothing is zero."}
+---
+print(-2 ** 2, (-2) ** 2)
+print(-7 // 2, -7 % 2)
+print(7 // 2, 7 % 2)
+x = 0
+print(0 <= x < 10)
+print(x != 0 and 10 / x > 1)
+print("" or "default")
+print(10 / x > 1 and x != 0)
+\`\`\`
+
 **Strings** are immutable sequences. \`s[0]\` is the first character, \`s[-1]\` the last, and a slice \`s[2:5]\` gives characters at indices 2, 3, 4 (the stop index is excluded, so \`len(s[a:b]) == b - a\`). \`s[::-1]\` reverses. Because strings are immutable, \`s.upper()\` returns a *new* string; writing \`s.upper()\` on its own line and expecting \`s\` to change is a top-ten beginner bug. The methods you will use constantly: \`split\`, \`join\`, \`strip\`, \`startswith\`, \`find\`, \`replace\`, \`isdigit\`.
 
+\`\`\`interactive
+python
+{"title": "Indexing, slicing and immutable strings", "caption": "Run it. Line 4 calls s.upper() and throws the new string away, so s is unchanged until line 6 rebinds s to the result. Change the slice to s[3:7] and check that its length is 7 - 3."}
+---
+s = "programming"
+print(s[0], s[-1], s[2:5], s[::-1])
+print(len(s[2:5]) == 5 - 2)
+s.upper()
+print(s)
+s = s.upper()
+print(s)
+print("a,b,,c".split(","), "-".join(["x", "y", "z"]))
+\`\`\`
+
 **f-strings** (\`f"{name} is {age} years"\`) are the modern way to format. A format spec after a colon controls width and precision: \`f"{pi:.3f}"\` gives \`3.142\`, \`f"{n:>8}"\` right-aligns in 8 columns, \`f"{x:,}"\` adds thousands separators. Learn these now; every table you print for the rest of your life will use them.
+
+\`\`\`interactive
+python
+{"title": "Format specifiers", "caption": "Run it, then change the specs: .3f to .6f, >8 to <8 or ^8, and add :e to the last value. The square brackets make the padding visible."}
+---
+import math
+name, age, n, x = "Ada", 36, 42, 1234567.891
+print(f"{name} is {age} years")
+print(f"[{math.pi:.3f}]")
+print(f"[{n:>8}]")
+print(f"[{x:,.2f}]")
+print(f"[{1 / 7:.2e}]")
+\`\`\`
 
 Think Python chapters 2 and 8 and the tutorial's "Informal Introduction" section cover all of this; the exercises make you use slicing and formatting until they are automatic.`,
           resources: [
@@ -316,24 +438,77 @@ Think Python chapters 2 and 8 and the tutorial's "Informal Introduction" section
             {
               slug: 'precedence-predictions',
               title: 'Predict then evaluate',
-              prompt:
-                'Without running, evaluate: -3 ** 2, (-3) ** 2, 17 % 5, -17 % 5, 17 // -5, 2 + 3 * 4 ** 2 / 8, 1 < 2 < 3, 3 > 2 > 1 == True, not True or True, "" or 0 or "x". Then run them. Score yourself and write one sentence for each miss explaining the rule you forgot.',
+              prompt: `Without running, evaluate: -3 ** 2, (-3) ** 2, 17 % 5, -17 % 5, 17 // -5, 2 + 3 * 4 ** 2 / 8, 1 < 2 < 3, 3 > 2 > 1 == True, not True or True, "" or 0 or "x". Then run them. Score yourself and write one sentence for each miss explaining the rule you forgot.
+
+Write all ten predictions down first; then the cell below evaluates them.
+
+\`\`\`interactive
+python
+{"title": "Check your predictions", "caption": "Run only after writing your ten answers. Each line prints the expression and its value; for any miss, find the rule in the explanation above."}
+---
+for expr in ['-3 ** 2', '(-3) ** 2', '17 % 5', '-17 % 5', '17 // -5',
+             '2 + 3 * 4 ** 2 / 8', '1 < 2 < 3', '3 > 2 > 1 == True',
+             'not True or True', '"" or 0 or "x"']:
+    print(f"{expr:<20} -> {eval(expr)!r}")
+\`\`\``,
               kind: 'problem',
               difficulty: 1,
             },
             {
               slug: 'slicing-drills',
               title: 'Slicing drills',
-              prompt:
-                'Let s = "programming". Produce, using one slice each: "gram", "prog", "ming", "gnimmargorp", "porm" (every other letter from the start), and the middle character. Then write a function-free script that, given any string in a variable, prints whether it is a palindrome ignoring case and spaces (test "Never odd or even" -> True).',
+              prompt: `Let s = "programming". Produce, using one slice each: "gram", "prog", "ming", "gnimmargorp", "porm" (every other letter from the start), and the middle character. Then write a function-free script that, given any string in a variable, prints whether it is a palindrome ignoring case and spaces (test "Never odd or even" -> True).
+
+\`\`\`interactive
+python
+{"title": "Exercise: slicing drills", "caption": "Replace each s[:] with a single slice (or index), and set is_pal with one expression built from text. Run to see your values, then Check. Try other values of text, such as \\"Step on no pets\\"."}
+---
+s = "programming"
+gram = s[:]
+prog = s[:]
+ming = s[:]
+backwards = s[:]
+every_other = s[:]
+middle = s[:]
+print(gram, prog, ming, backwards, every_other, middle)
+
+text = "Never odd or even"
+is_pal = None   # True if text is a palindrome, ignoring case and spaces
+print(is_pal)
+# --- tests ---
+assert gram == "gram"
+assert prog == "prog"
+assert ming == "ming"
+assert backwards == "gnimmargorp"
+assert every_other == "porm", "every other letter of the first eight: porm"
+assert middle == "a", "the middle character of an 11-letter word is s[5]"
+assert is_pal is True, "is_pal is True for Never odd or even"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'formatted-table',
               title: 'Print a formatted table',
-              prompt:
-                'Print a table of n, n squared, sqrt(n) and 1/n for n = 1..10 with columns right-aligned, square roots to 4 decimal places and reciprocals in scientific notation with 2 decimals. The columns must line up exactly; measure this by checking that every line has the same length with len().',
+              prompt: `Print a table of n, n squared, sqrt(n) and 1/n for n = 1..10 with columns right-aligned, square roots to 4 decimal places and reciprocals in scientific notation with 2 decimals. The columns must line up exactly; measure this by checking that every line has the same length with len().
+
+\`\`\`interactive
+python
+{"title": "Exercise: a formatted table", "caption": "Print the ten rows (a header line is optional), Run, and look at the alignment. Check confirms the values, the formats and that every line has the same length."}
+---
+import math
+
+for n in range(1, 11):
+    print(n, n * n, math.sqrt(n), 1 / n)
+# --- tests ---
+import re
+lines = [ln for ln in _output.splitlines() if ln.strip()]
+rows = [ln for ln in lines if re.search("[0-9]e[-+][0-9][0-9]", ln)]
+assert len(rows) == 10, "ten rows, each with 1/n in scientific notation such as 5.00e-01"
+assert len(set(len(ln) for ln in lines)) == 1, "every line has the same length (right-aligned columns)"
+assert "1.4142" in rows[1] and "5.00e-01" in rows[1], "the n = 2 row shows 1.4142 and 5.00e-01"
+assert "3.1623" in rows[9] and "1.00e-01" in rows[9] and "100" in rows[9], "the n = 10 row shows 100, 3.1623 and 1.00e-01"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
               hint: 'f"{n:>3} {n*n:>5} {n**0.5:>8.4f} {1/n:>10.2e}"',
@@ -384,9 +559,29 @@ Think Python chapters 2 and 8 and the tutorial's "Informal Introduction" section
           ],
           explanation: `Think Python identifies three kinds of error, and knowing which one you face determines what to do. A **syntax error** stops the program before it starts; the fix is purely about the text. A **runtime error** (an exception) stops the program mid-way with a traceback; the fix starts from the traceback. A **semantic error** is the worst: the program runs to completion and produces the wrong answer. Nothing tells you; you must *know what the right answer is* and compare, which is the seed of the idea of testing (module 6).
 
+\`\`\`interactive
+python
+{"title": "A semantic error: no traceback, wrong answer", "caption": "Run it: no error, and the average printed is wrong. Work it out by hand first (the right answer is 77.5), then find the line that makes it 103.33 and fix it. Nothing but your own expected value could have told you."}
+---
+scores = [70, 85, 90, 65]
+total = 0
+for s in scores:
+    total = total + s
+average = total / (len(scores) - 1)
+print("average:", round(average, 2))
+\`\`\`
+
 Debugging is a scientific activity. **Reproduce** the problem reliably with the smallest input that triggers it. **Read** the traceback or the wrong output and state precisely what differs from expectation. **Hypothesise** one cause. **Test** the hypothesis by printing the relevant variable or evaluating the expression in the REPL. **Fix** and re-run the original case. Beginners skip the hypothesis step and change code at random; that works on toy programs and fails completely on real ones. Explaining the problem out loud to a rubber duck (or a text file) works because it forces you to state your assumptions, one of which is wrong.
 
 Python ships with its own manual. \`help(str.split)\` in the REPL prints the docstring; \`dir(s)\` lists what a string can do. The online **Library Reference** (docs.python.org/3/library) is the real reference: find the module (\`math\`, \`random\`, \`string\`), skim the function list, read the one you need. Searching an error message is also legitimate, but paste only the generic part (\`TypeError: can only concatenate str (not "int") to str\`), not your variable names.
+
+\`\`\`interactive
+python
+{"title": "The built-in manual", "caption": "Run it to read the docstring of str.split and the public methods of a string. Replace str.split with str.find, round or len and run again; this is how the help() exercise below is meant to be done."}
+---
+help(str.split)
+print([name for name in dir("") if not name.startswith("_")])
+\`\`\`
 
 Do the exercises below slowly; the point is not the answers but to practise the loop until it is reflexive.`,
           resources: [
@@ -429,15 +624,31 @@ Do the exercises below slowly; the point is not the answers but to practise the 
               slug: 'explore-with-help',
               title: 'Answer questions with help() only',
               prompt:
-                'Without a web search, using only help() and dir() in the REPL, find out: how to round 2.675 to two decimals and why the answer is 2.67; how to get the position of the first "a" in a string; which math module function computes the greatest common divisor; what random.choice does. Write the answers with the exact function names.',
+                'Without a web search, using only help() and dir() in the REPL, find out: how to round 2.675 to two decimals and why the answer is 2.67; how to get the position of the first "a" in a string; which math module function computes the greatest common divisor; what random.choice does. Write the answers with the exact function names. (No terminal yet? Use the "built-in manual" cell in the explanation above as your REPL.)',
               kind: 'coding',
               difficulty: 1,
             },
             {
               slug: 'minimal-reproducer',
               title: 'Write a minimal reproducible example',
-              prompt:
-                'Take the temperature converter from the previous lesson and deliberately introduce a semantic bug (e.g. use 5/9 instead of 9/5). Pretend a friend reported "the Fahrenheit values look wrong". Produce a minimal example: the smallest script (under 5 lines) and the single input that shows the wrong output, plus the expected output. Then fix it.',
+              prompt: `Take the temperature converter from the previous lesson and deliberately introduce a semantic bug (e.g. use 5/9 instead of 9/5). Pretend a friend reported "the Fahrenheit values look wrong". Produce a minimal example: the smallest script (under 5 lines) and the single input that shows the wrong output, plus the expected output. Then fix it.
+
+The cell below already contains such a bug. Run it, find the single input that shows the problem most clearly, then fix the function and press Check.
+
+\`\`\`interactive
+python
+{"title": "Exercise: fix the reported bug", "caption": "The friend's report: the Fahrenheit values look wrong. 100 C should be 212 F. Run, fix to_fahrenheit, then Check."}
+---
+def to_fahrenheit(c):
+    return c * 5 / 9 + 32
+
+print(to_fahrenheit(100))   # expected 212.0
+# --- tests ---
+assert to_fahrenheit(100) == 212, "100 C is 212 F"
+assert to_fahrenheit(0) == 32, "0 C is 32 F"
+assert to_fahrenheit(-40) == -40, "-40 C is -40 F"
+assert abs(to_fahrenheit(37) - 98.6) < 1e-9, "37 C is 98.6 F"
+\`\`\``,
               kind: 'writing',
               difficulty: 2,
             },
@@ -490,7 +701,35 @@ Do the exercises below slowly; the point is not the answers but to practise the 
           ],
           explanation: `A conditional lets a program take different paths. Python uses **indentation** as syntax: the block under \`if x > 0:\` is exactly the lines indented beneath it, and a wrong indent is a logic bug, not a style issue. An \`if / elif / elif / else\` chain tests conditions **in order** and runs only the first true branch, so ordering matters: test the most specific condition first (\`x > 100\` before \`x > 10\`).
 
+\`\`\`interactive
+python
+{"title": "Only the first true branch runs", "caption": "Run it: size(500) says big, as intended. Now swap the first two conditions so x > 10 is tested first and run again: 500 becomes medium, because once a branch is true the rest of the chain is never looked at."}
+---
+def size(x):
+    if x > 100:
+        return "big"
+    elif x > 10:
+        return "medium"
+    else:
+        return "small"
+
+for x in [5, 10, 11, 100, 500]:
+    print(x, size(x))
+\`\`\`
+
 Python treats any value as a condition through **truthiness**: numbers are false when zero, strings and collections when empty, and \`None\` is false. Writing \`if items:\` rather than \`if len(items) > 0:\` is idiomatic. But be careful: \`if x:\` to test "x was given" fails when 0 is a legitimate value; use \`if x is not None:\`.
+
+\`\`\`interactive
+python
+{"title": "Truthiness", "caption": "Run it and note which values count as false. The last two lines show the trap: a discount of 0 is a legitimate value, yet if discount: treats it as missing; the is not None test gets it right."}
+---
+for value in [0, 1, -2, 0.0, "", "0", [], [0], None]:
+    print(repr(value), "->", bool(value))
+
+discount = 0
+print("given" if discount else "missing (wrong!)")
+print("given" if discount is not None else "missing")
+\`\`\`
 
 Deeply nested conditionals are hard to read and hide bugs. Two refactorings fix most of them: **guard clauses** (handle the special case and return early, then write the main case unindented) and **combining conditions** with \`and\`/\`or\`. Also prefer the conditional expression \`sign = "neg" if x < 0 else "non-neg"\` for simple two-way choices.
 
@@ -524,24 +763,87 @@ The classic bugs are boundary errors: writing \`<\` where \`<=\` was meant (is 1
             {
               slug: 'leap-year',
               title: 'Leap year with a decision table',
-              prompt:
-                'Write a script that reads a year and prints whether it is a leap year (divisible by 4, except centuries, except centuries divisible by 400). Before coding, write a decision table with the inputs 1900, 2000, 2023, 2024, 2100 and the expected result (False, True, False, True, False). Then implement with a single boolean expression and verify every row.',
+              prompt: `Write a script that reads a year and prints whether it is a leap year (divisible by 4, except centuries, except centuries divisible by 400). Before coding, write a decision table with the inputs 1900, 2000, 2023, 2024, 2100 and the expected result (False, True, False, True, False). Then implement with a single boolean expression and verify every row.
+
+\`\`\`interactive
+python
+{"title": "Exercise: is_leap", "caption": "Put the single boolean expression in is_leap, Run to print your decision table, then Check it against the five rows (and two more)."}
+---
+def is_leap(year):
+    return False   # replace with one boolean expression
+
+for year in [1900, 2000, 2023, 2024, 2100]:
+    print(year, is_leap(year))
+# --- tests ---
+assert is_leap(1900) is False, "1900: a century not divisible by 400, so not leap"
+assert is_leap(2000) is True, "2000: a century divisible by 400, so leap"
+assert is_leap(2023) is False, "2023: not divisible by 4"
+assert is_leap(2024) is True, "2024: divisible by 4, not a century"
+assert is_leap(2100) is False, "2100: a century not divisible by 400"
+assert is_leap(1600) is True and is_leap(1996) is True and is_leap(1800) is False, "1600 and 1996 are leap years, 1800 is not"
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
             {
               slug: 'grade-boundaries',
               title: 'Grade bands and boundaries',
-              prompt:
-                'Map a score 0-100 to A (>=90), B (>=80), C (>=70), D (>=60), F. Test with 89, 90, 90.0, 59.99, 100, -1, 101 and decide what should happen for out-of-range inputs. Now write the same program with the elif conditions in reverse order and explain why it is wrong.',
+              prompt: `Map a score 0-100 to A (>=90), B (>=80), C (>=70), D (>=60), F. Test with 89, 90, 90.0, 59.99, 100, -1, 101 and decide what should happen for out-of-range inputs. Now write the same program with the elif conditions in reverse order and explain why it is wrong.
+
+\`\`\`interactive
+python
+{"title": "Exercise: grade bands", "caption": "Write grade(score) and Check the in-range boundaries. What -1 and 101 should do is your decision; the checks leave them to you. Then reverse the elif order and watch which checks fail."}
+---
+def grade(score):
+    """Return "A", "B", "C", "D" or "F" for a score from 0 to 100."""
+    pass
+
+for s in [89, 90, 90.0, 59.99, 100, -1, 101]:
+    print(s, grade(s))
+# --- tests ---
+assert grade(89) == "B"
+assert grade(90) == "A", "90 is exactly on the A boundary (>= 90)"
+assert grade(90.0) == "A", "a float score on the boundary behaves the same"
+assert grade(59.99) == "F", "59.99 is just below the D boundary"
+assert grade(100) == "A"
+assert grade(80) == "B" and grade(79.5) == "C" and grade(70) == "C"
+assert grade(60) == "D" and grade(0) == "F"
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
             {
               slug: 'bmi-with-guards',
               title: 'Refactor nested ifs into guard clauses',
-              prompt:
-                'Write a program that classifies a triangle given three side lengths: invalid (any side <= 0 or triangle inequality fails), equilateral, isosceles, scalene, and additionally says whether it is right-angled (use isclose). Write it first with nested ifs, then refactor using guard clauses so no block is indented more than two levels. Both versions must agree on 20 test triples including (3,4,5), (1,1,3), (2,2,2), (0,1,1).',
+              prompt: `Write a program that classifies a triangle given three side lengths: invalid (any side <= 0 or triangle inequality fails), equilateral, isosceles, scalene, and additionally says whether it is right-angled (use isclose). Write it first with nested ifs, then refactor using guard clauses so no block is indented more than two levels. Both versions must agree on 20 test triples including (3,4,5), (1,1,3), (2,2,2), (0,1,1).
+
+\`\`\`interactive
+python
+{"title": "Exercise: classify a triangle", "caption": "Write classify with guard clauses (return early for invalid input). Check tries the four triples above plus right isosceles, permuted and scalene cases; add your own triples to the print loop."}
+---
+import math
+
+def classify(a, b, c):
+    """Return (kind, is_right): kind is "invalid", "equilateral",
+    "isosceles" or "scalene"; is_right is True for a right-angled
+    triangle (compare with math.isclose). Invalid gives ("invalid", False)."""
+    pass
+
+for sides in [(3, 4, 5), (1, 1, 3), (2, 2, 2), (0, 1, 1)]:
+    print(sides, classify(*sides))
+# --- tests ---
+assert classify(3, 4, 5) == ("scalene", True)
+assert classify(1, 1, 3) == ("invalid", False), "1 + 1 < 3 breaks the triangle inequality"
+assert classify(2, 2, 2) == ("equilateral", False)
+assert classify(0, 1, 1) == ("invalid", False), "a side of length 0 is invalid"
+assert classify(-3, 4, 5) == ("invalid", False), "a negative side is invalid"
+assert classify(5, 3, 4) == ("scalene", True), "the longest side may come first"
+assert classify(4, 5, 3) == ("scalene", True), "or in the middle"
+assert classify(1, 1, math.sqrt(2)) == ("isosceles", True), "1, 1, sqrt(2) is a right isosceles triangle (needs isclose)"
+assert classify(2, 2, 3) == ("isosceles", False)
+assert classify(2, 3, 4) == ("scalene", False)
+assert classify(5, 12, 13) == ("scalene", True)
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
@@ -589,7 +891,33 @@ The classic bugs are boundary errors: writing \`<\` where \`<=\` was meant (is 1
 
 Most loops are instances of a few **patterns**. *Accumulate*: start a total at 0 (or an empty string/list), add each item. *Count*: increment on a condition. *Search*: loop and \`break\` when found; the \`else\` clause of a for loop runs only if no \`break\` happened, which is precisely "not found". *Extremum*: keep the best so far and its position. Recognising the pattern lets you write the loop almost without thinking and lets a reader understand it instantly.
 
+\`\`\`interactive
+python
+{"title": "Search with break and for/else", "caption": "Run it with target = 9, then with target = 7: the else line runs only when the loop finished without break. The trace lines are a hand-trace table printed for you; compare them with yours."}
+---
+items = [3, -1, 4, 9, 2]
+target = 9
+for i, x in enumerate(items):
+    print(f"i={i} x={x}")
+    if x == target:
+        print("found at index", i)
+        break
+else:
+    print("not found")
+\`\`\`
+
 Hand-tracing is the skill that catches loop bugs. Make a table with one column per variable and one row per iteration, and fill it in mechanically. Off-by-one errors (one too many, one too few) show up immediately in the table. For while loops, make sure something in the body moves the condition toward false, or you have an infinite loop; Ctrl-C stops it.
+
+\`\`\`interactive
+python
+{"title": "An infinite loop (press Stop)", "caption": "Run it: line 4 computes n - 1 and throws the result away, so the condition never becomes false. Press Stop (the browser's Ctrl-C; it also stops by itself after 10 s), change line 4 to n = n - 1, and run again.", "timeout": 10}
+---
+n = 5
+while n > 0:
+    print(n)
+    n - 1
+print("lift-off")
+\`\`\`
 
 Loops nest: a loop inside a loop runs the inner body $n \\times m$ times, which is your first encounter with the idea that *how* you write code determines how long it runs (module 7). Read Think Python chapter 7 and the tutorial section on \`range\`, then do every exercise; loops are where fluency is built.`,
           resources: [
@@ -628,32 +956,112 @@ Loops nest: a loop inside a loop runs the inner body $n \\times m$ times, which 
             {
               slug: 'collatz',
               title: 'Collatz sequence length',
-              prompt:
-                'Write a while loop that, starting from n, repeatedly applies n -> n/2 if even else 3n+1 until n == 1, counting steps. Verify: 1 -> 0 steps, 6 -> 8 steps, 27 -> 111 steps. Then use a for loop over 1..10000 to find the start with the longest sequence (expected 6171 with 261 steps) and time the whole run with time.perf_counter().',
+              prompt: `Write a while loop that, starting from n, repeatedly applies n -> n/2 if even else 3n+1 until n == 1, counting steps. Verify: 1 -> 0 steps, 6 -> 8 steps, 27 -> 111 steps. Then use a for loop over 1..10000 to find the start with the longest sequence (expected 6171 with 261 steps) and time the whole run with time.perf_counter().
+
+\`\`\`interactive
+python
+{"title": "Exercise: Collatz steps", "caption": "Write the while loop inside collatz_steps (use n // 2 so n stays an int), then the for loop that finds the longest chain. Check tests both; timings in the browser are slower than on your machine, so take the time.perf_counter measurement there."}
+---
+def collatz_steps(n):
+    steps = 0
+    # your while loop here
+    return steps
+
+best_start, best_steps = 1, 0
+# your for loop over 1..10000 here
+
+print(collatz_steps(27), best_start, best_steps)
+# --- tests ---
+assert collatz_steps(1) == 0, "1 is already 1: 0 steps"
+assert collatz_steps(6) == 8, "6 -> 3 -> 10 -> 5 -> 16 -> 8 -> 4 -> 2 -> 1 is 8 steps"
+assert collatz_steps(27) == 111
+assert (best_start, best_steps) == (6171, 261), "the longest chain below 10000 starts at 6171 (261 steps)"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'loop-patterns',
               title: 'Four loop patterns on one list',
-              prompt:
-                'Given data = [3, -1, 4, 1, -5, 9, 2, -6], write (without using sum, max or min) loops that compute: the sum; the number of negatives; the index of the largest value; whether any value equals 9 using break and for/else. Expected: 7, 3, 5, True. Then hand-trace the max loop with a table and include it.',
+              prompt: `Given data = [3, -1, 4, 1, -5, 9, 2, -6], write (without using sum, max or min) loops that compute: the sum; the number of negatives; the index of the largest value; whether any value equals 9 using break and for/else. Expected: 7, 3, 5, True. Then hand-trace the max loop with a table and include it.
+
+\`\`\`interactive
+python
+{"title": "Exercise: four loop patterns", "caption": "Write one loop per pattern, Run, then Check. Change data (for example remove the 9) and predict each result before running again."}
+---
+data = [3, -1, 4, 1, -5, 9, 2, -6]
+
+total = 0          # accumulate
+negatives = 0      # count
+index_of_max = 0   # extremum (the position, not the value)
+has_nine = None    # search: set it with break and for/else
+
+print(total, negatives, index_of_max, has_nine)
+# --- tests ---
+assert total == 7
+assert negatives == 3
+assert index_of_max == 5, "the largest value, 9, is at index 5"
+assert has_nine is True
+assert "sum(" not in _code and "max(" not in _code and "min(" not in _code, "no sum, max or min: the loops do the work"
+assert "else" in _code and "break" in _code, "the search uses break and for/else"
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
             {
               slug: 'multiplication-table',
               title: 'Nested loops and counting work',
-              prompt:
-                'Print a 12x12 multiplication table with aligned columns. Add a counter that increments once per inner iteration and print it at the end (expected 144). Change both bounds to n and tabulate the counter for n = 10, 100, 1000; state the formula and how the run time grew between each step.',
+              prompt: `Print a 12x12 multiplication table with aligned columns. Add a counter that increments once per inner iteration and print it at the end (expected 144). Change both bounds to n and tabulate the counter for n = 10, 100, 1000; state the formula and how the run time grew between each step.
+
+\`\`\`interactive
+python
+{"title": "Exercise: multiplication table", "caption": "Print the twelve rows with aligned columns (an f-string width such as :>4) and count the inner iterations. Check looks at the alignment and the count; then change 12 to n and tabulate the counter."}
+---
+count = 0
+for i in range(1, 13):
+    for j in range(1, 13):
+        pass   # print i * j without a newline, and count
+print()
+print("inner iterations:", count)
+# --- tests ---
+rows = [ln for ln in _output.splitlines() if len(ln.split()) == 12]
+assert count == 144, "the inner body runs 12 x 12 = 144 times"
+assert len(rows) == 12, "twelve rows of twelve numbers"
+assert rows[0].split() == [str(k) for k in range(1, 13)], "the first row is 1 2 ... 12"
+assert rows[11].split()[-1] == "144", "the last row ends with 144"
+assert len(set(len(r.rstrip()) for r in rows)) == 1, "all rows have the same width (aligned columns)"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'newton-sqrt',
               title: 'Square root by Newton iteration',
-              prompt:
-                'Implement sqrt(a) by iterating x = (x + a/x)/2 starting at x = a until abs(x*x - a) < 1e-10, counting iterations. For a = 2, 100, 1e6 report the result, the iteration count and the absolute error versus math.sqrt. Explain why a while loop (not a for loop) is appropriate here.',
+              prompt: `Implement sqrt(a) by iterating x = (x + a/x)/2 starting at x = a until abs(x*x - a) < 1e-10, counting iterations. For a = 2, 100, 1e6 report the result, the iteration count and the absolute error versus math.sqrt. Explain why a while loop (not a for loop) is appropriate here.
+
+\`\`\`interactive
+python
+{"title": "Exercise: Newton's square root", "caption": "Write the while loop, Run to print the report table, then Check. Notice how few iterations even 1e6 needs once x is close: Newton's method doubles the correct digits each step."}
+---
+import math
+
+def newton_sqrt(a):
+    """Return (x, iterations) with x*x within 1e-10 of a."""
+    x = a
+    iterations = 0
+    # your while loop here
+    return x, iterations
+
+for a in [2, 100, 1e6]:
+    x, k = newton_sqrt(a)
+    print(f"{a:>9} {x:.12f} {k:>3} {abs(x - math.sqrt(a)):.2e}")
+# --- tests ---
+import math
+assert all(math.isclose(newton_sqrt(a)[0], math.sqrt(a), rel_tol=1e-9) for a in [2, 100, 1e6]), "agrees with math.sqrt for 2, 100 and 1e6"
+assert all(math.isclose(newton_sqrt(a)[0], math.sqrt(a), rel_tol=1e-9) for a in [0.25, 12345]), "agrees with math.sqrt for 0.25 and 12345 too"
+assert 0 < newton_sqrt(2)[1] < 10, "a = 2 needs a handful of iterations (it is counted, not 0)"
+assert newton_sqrt(1e6)[1] > newton_sqrt(2)[1], "starting at x = a, 1e6 needs more iterations than 2"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
@@ -705,7 +1113,35 @@ Loops nest: a loop inside a loop runs the inner body $n \\times m$ times, which 
 
 **Return, do not print.** A function that prints its answer can only be used by a human reading the screen. A function that returns its answer can be used in an expression, stored, tested automatically, and printed by the caller if desired. Separate the computation (returns) from the presentation (prints) and your programs become testable; module 6 depends on this.
 
+\`\`\`interactive
+python
+{"title": "Return, do not print", "caption": "Run it. area_printed shows its answer but hands back None, so the doubling on line 9 fails with a TypeError. Delete the two area_printed lines: the returning version can be stored, doubled and printed by the caller."}
+---
+def area_printed(r):
+    print(3.14159 * r * r)
+
+def area(r):
+    """Return the area of a circle of radius r."""
+    return 3.14159 * r * r
+
+print("area(2) * 2 =", area(2) * 2)
+print("area_printed(2) * 2 =", area_printed(2) * 2)
+\`\`\`
+
 Parameters can have **defaults** (\`def greet(name, greeting="Hello")\`), and callers can use **keyword arguments** (\`greet(greeting="Hi", name="Ada")\`) for clarity. One trap: default values are evaluated once, at definition time, so \`def f(items=[])\` shares one list between all calls; use \`items=None\` and create the list inside.
+
+\`\`\`interactive
+memory-diagram
+{"title": "One default list for every call", "caption": "Step through. In both calls the name items points at the same list box, created once when def ran, so the second call finds the 1 left by the first, and first and second end up as two names for one list. Edit the code to the items=None version and visualise again: each call then builds its own list."}
+---
+def add_item(item, items=[]):
+    items.append(item)
+    return items
+
+first = add_item(1)
+second = add_item(2)
+print(first, second, first is second)
+\`\`\`
 
 A **docstring** (a string literal as the first line of the body) documents the contract: what the parameters mean, what is returned, what is assumed. \`help(area)\` shows it. Write it before the body; if you cannot state the contract, you do not yet know what the function should do.
 
@@ -740,32 +1176,112 @@ A **docstring** (a string literal as the first line of the body) documents the c
             {
               slug: 'pure-functions',
               title: 'Return, do not print',
-              prompt:
-                'Write is_prime(n) -> bool, nth_prime(k) -> int (using is_prime) and digit_sum(n) -> int. Verify: is_prime(1) is False, is_prime(2) True, is_prime(97) True, nth_prime(100) == 541, digit_sum(2 ** 100) == 115. None of the functions may call print; a separate main() prints the results.',
+              prompt: `Write is_prime(n) -> bool, nth_prime(k) -> int (using is_prime) and digit_sum(n) -> int. Verify: is_prime(1) is False, is_prime(2) True, is_prime(97) True, nth_prime(100) == 541, digit_sum(2 ** 100) == 115. None of the functions may call print; a separate main() prints the results.
+
+\`\`\`interactive
+python
+{"title": "Exercise: pure functions", "caption": "Fill in the three functions (no print inside them) and press Check; main() is the only place that prints."}
+---
+def is_prime(n):
+    pass
+
+def nth_prime(k):
+    """The k-th prime, counting from nth_prime(1) == 2."""
+    pass
+
+def digit_sum(n):
+    pass
+
+def main():
+    print(is_prime(97), nth_prime(100), digit_sum(2 ** 100))
+
+main()
+# --- tests ---
+assert is_prime(1) is False, "1 is not prime"
+assert is_prime(2) is True, "2 is prime"
+assert is_prime(97) is True
+assert [n for n in range(30) if is_prime(n)] == [2, 3, 5, 7, 11, 13, 17, 19, 23, 29], "the primes below 30 (and nothing for 0, 1 or negatives)"
+assert is_prime(91) is False, "91 = 7 * 13"
+assert nth_prime(1) == 2 and nth_prime(100) == 541
+assert digit_sum(2 ** 100) == 115 and digit_sum(0) == 0
+assert _capture(is_prime, 97) + _capture(nth_prime, 10) + _capture(digit_sum, 99) == "", "the functions return their answers and print nothing"
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
             {
               slug: 'mutable-default-bug',
               title: 'The mutable default trap',
-              prompt:
-                'Write def add_item(item, items=[]): items.append(item); return items. Call add_item(1) then add_item(2) and print the results; explain the output. Rewrite with items=None and demonstrate the fix. Then explain in one paragraph when default values are evaluated.',
+              prompt: `Write def add_item(item, items=[]): items.append(item); return items. Call add_item(1) then add_item(2) and print the results; explain the output. Rewrite with items=None and demonstrate the fix. Then explain in one paragraph when default values are evaluated.
+
+\`\`\`interactive
+python
+{"title": "Exercise: fix the mutable default", "caption": "Run the buggy version first and explain the output. Then rewrite add_item with items=None and press Check."}
+---
+def add_item(item, items=[]):
+    items.append(item)
+    return items
+
+print(add_item(1))
+print(add_item(2))
+# --- tests ---
+assert add_item(1) == [1], "a call without a list starts from an empty list"
+assert add_item(2) == [2], "a second such call does not see the first call's item"
+mine = [5]
+assert add_item(6, mine) == [5, 6] and mine == [5, 6], "a list passed in is appended to"
+assert add_item(7, []) == [7]
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'decompose-script',
               title: 'Decompose a script into functions',
-              prompt:
-                'Take the Collatz exercise and restructure it into collatz_steps(n), longest_chain(limit) -> (start, steps) and main(). Each function gets a docstring. Confirm longest_chain(10000) == (6171, 261). Then time longest_chain(100000) and record the result (expected start 77031, 350 steps).',
+              prompt: `Take the Collatz exercise and restructure it into collatz_steps(n), longest_chain(limit) -> (start, steps) and main(). Each function gets a docstring. Confirm longest_chain(10000) == (6171, 261). Then time longest_chain(100000) and record the result (expected start 77031, 350 steps).
+
+\`\`\`interactive
+python
+{"title": "Exercise: decompose Collatz", "caption": "Move your Collatz code into the two functions and give each a docstring; main() only prints. Check tests the functions directly, which is exactly what decomposition makes possible. Do the 100000 timing on your own machine."}
+---
+def collatz_steps(n):
+    pass
+
+def longest_chain(limit):
+    pass
+
+def main():
+    print(longest_chain(10000))
+
+main()
+# --- tests ---
+assert collatz_steps(1) == 0 and collatz_steps(6) == 8 and collatz_steps(27) == 111
+assert longest_chain(10) == (9, 19), "below 10, 9 has the longest chain (19 steps)"
+assert longest_chain(10000) == (6171, 261)
+assert collatz_steps.__doc__ and longest_chain.__doc__, "both functions have docstrings"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'keyword-defaults',
               title: 'A function with sensible defaults',
-              prompt:
-                'Write format_money(amount, currency="USD", decimals=2, thousands=True) returning strings like "USD 1,234.50". Test: format_money(1234.5) == "USD 1,234.50", format_money(1234.5, "EUR", thousands=False) == "EUR 1234.50", format_money(0.005) == "USD 0.01" (check what round does here and document it).',
+              prompt: `Write format_money(amount, currency="USD", decimals=2, thousands=True) returning strings like "USD 1,234.50". Test: format_money(1234.5) == "USD 1,234.50", format_money(1234.5, "EUR", thousands=False) == "EUR 1234.50", format_money(0.005) == "USD 0.01" (check what round does here and document it).
+
+\`\`\`interactive
+python
+{"title": "Exercise: format_money", "caption": "Write the function with its defaults, then Check. Also print round(0.005, 2) and round(2.675, 2) and explain the difference in the docstring."}
+---
+def format_money(amount, currency="USD", decimals=2, thousands=True):
+    pass
+
+print(format_money(1234.5))
+# --- tests ---
+assert format_money(1234.5) == "USD 1,234.50"
+assert format_money(1234.5, "EUR", thousands=False) == "EUR 1234.50"
+assert format_money(0.005) == "USD 0.01"
+assert format_money(1234567.891, decimals=0) == "USD 1,234,568", "decimals=0 rounds to a whole number"
+assert format_money(42, currency="GBP", decimals=3) == "GBP 42.000"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
@@ -817,7 +1333,44 @@ A **docstring** (a string literal as the first line of the body) documents the c
 
 Name lookup follows **LEGB**: Local frame, then Enclosing function frames, then Global (module) names, then Built-ins. Reading a global from inside a function works because lookup falls through. But **assignment** inside a function always creates a *local* name, so \`count = count + 1\` inside a function with a global \`count\` raises \`UnboundLocalError\`: the assignment makes \`count\` local for the whole body, and the right-hand side reads it before it has a value. The \`global\` keyword overrides this, but a function that silently edits module-level variables is hard to test and reason about; pass values in and return results out instead.
 
+\`\`\`interactive
+python
+{"title": "Reading a global versus assigning one", "caption": "Run it: show() reads the global count fine, but bump() fails with UnboundLocalError, because the assignment on line 7 makes count local to bump for the whole body. Fix it the recommended way: def bump(count): return count + 1, then count = bump(count)."}
+---
+count = 0
+
+def show():
+    print("count is", count)
+
+def bump():
+    count = count + 1
+
+show()
+bump()
+\`\`\`
+
 Arguments are passed by **sharing**: the parameter name is bound to the very same object the caller passed. Rebinding the parameter (\`x = x + 1\`) does not affect the caller; mutating the object (\`items.append(1)\`) does. This is the names-not-boxes rule applied to calls, and it is the explanation for 90% of "my function changed my list" and "my function did not change my number" confusions.
+
+\`\`\`interactive
+memory-diagram
+{"title": "Passing by sharing", "caption": "Step through with Next and watch the Frames column. Each call gets a new frame whose parameter points at the caller's object. n += 1 rebinds the local n only; lst.append(1) mutates the shared list, so nums changes; lst = lst + [1] builds a new list and rebinds the local lst, leaving nums alone."}
+---
+def increment(n):
+    n += 1
+
+def append_one(lst):
+    lst.append(1)
+
+def append_one_wrong(lst):
+    lst = lst + [1]
+
+x = 5
+increment(x)
+nums = [0]
+append_one(nums)
+append_one_wrong(nums)
+print(x, nums)
+\`\`\`
 
 Composing Programs' **environment diagrams** make all of this visible: boxes for frames, arrows for bindings. Draw them by hand for the exercises, then check with Python Tutor. Once the model is solid, scope questions stop being mysterious and start being mechanical.`,
           resources: [
@@ -856,16 +1409,60 @@ Composing Programs' **environment diagrams** make all of this visible: boxes for
             {
               slug: 'predict-scope',
               title: 'Predict the output',
-              prompt:
-                'Predict, then run: (1) x = 1; def f(): print(x); f(). (2) x = 1; def g(): x = 2; print(x); g(); print(x). (3) x = 1; def h(): print(x); x = 2; h(). (4) def outer(): y = 1; def inner(): return y + 1; return inner(); print(outer()). Explain each result using LEGB and the frame model, including the exact error in (3).',
+              prompt: `Predict, then run: (1) x = 1; def f(): print(x); f(). (2) x = 1; def g(): x = 2; print(x); g(); print(x). (3) x = 1; def h(): print(x); x = 2; h(). (4) def outer(): y = 1; def inner(): return y + 1; return inner(); print(outer()). Explain each result using LEGB and the frame model, including the exact error in (3).
+
+\`\`\`interactive
+python
+{"title": "Run the four snippets", "caption": "Write your four predictions first. Snippet (3) is last because its error stops the program; the traceback's last line is the exact error to explain."}
+---
+x = 1
+def f():
+    print(x)
+f()                      # (1)
+
+def g():
+    x = 2
+    print(x)
+g()
+print(x)                 # (2)
+
+def outer():
+    y = 1
+    def inner():
+        return y + 1
+    return inner()
+print(outer())           # (4)
+
+def h():
+    print(x)
+    x = 2
+h()                      # (3)
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'draw-stack',
               title: 'Draw the call stack',
-              prompt:
-                'Write a(n) that calls b(n+1) that calls c(n*2) that raises ValueError. Call a(3). Draw the stack with each frame and its local names at the moment of the error, then compare with the traceback Python prints. Mark which frame is on top of the stack and which is printed last.',
+              prompt: `Write a(n) that calls b(n+1) that calls c(n*2) that raises ValueError. Call a(3). Draw the stack with each frame and its local names at the moment of the error, then compare with the traceback Python prints. Mark which frame is on top of the stack and which is printed last.
+
+Draw your diagram on paper first, then check it here: press Last to jump to the moment of the error.
+
+\`\`\`interactive
+memory-diagram
+{"title": "The stack at the moment of the error", "caption": "Press Visualise, then Last. The Frames column lists the stack from the global frame down to c, the top of the stack (the frame where the error happened); compare each frame's names with your drawing, then with the traceback printed below the diagram, where c also comes last."}
+---
+def a(n):
+    return b(n + 1)
+
+def b(n):
+    return c(n * 2)
+
+def c(n):
+    raise ValueError(f"c got {n}")
+
+a(3)
+\`\`\``,
               kind: 'problem',
               difficulty: 1,
             },
@@ -873,7 +1470,7 @@ Composing Programs' **environment diagrams** make all of this visible: boxes for
               slug: 'sharing-vs-rebinding',
               title: 'Sharing versus rebinding in calls',
               prompt:
-                'Write increment(n) that does n += 1 and append_one(lst) that does lst.append(1). Call each with a variable and print the variable afterwards. Then write append_one_wrong(lst) that does lst = lst + [1] and show it does not affect the caller. Explain all three with environment diagrams.',
+                'Write increment(n) that does n += 1 and append_one(lst) that does lst.append(1). Call each with a variable and print the variable afterwards. Then write append_one_wrong(lst) that does lst = lst + [1] and show it does not affect the caller. Explain all three with environment diagrams. Draw yours first, then compare with the "Passing by sharing" memory diagram in the explanation.',
               kind: 'coding',
               difficulty: 2,
             },
@@ -919,9 +1516,46 @@ Composing Programs' **environment diagrams** make all of this visible: boxes for
           ],
           explanation: `A **recursive** function solves a problem by calling itself on a smaller instance. Every correct recursion has a **base case** (an input so small you answer directly) and a **recursive case** that makes progress toward the base case. \`factorial(0) = 1\`; \`factorial(n) = n * factorial(n-1)\`. Each call gets its own frame on the stack, so a call with \`n = 1000\` has a thousand frames alive at the deepest point; Python limits depth (around 1000) and raises \`RecursionError\` beyond it, which is why very deep recursion is written as a loop in Python.
 
+\`\`\`interactive
+memory-diagram
+{"title": "factorial(3), one frame per call", "caption": "Step with Next. Each call adds a new factorial frame with its own n, so at the deepest point four different n's (3, 2, 1 and 0) are alive at once; at factorial(0) the base case returns 1 and the frames come off the stack one by one, each showing its return value (1, 1, 2, 6) just before it disappears."}
+---
+def factorial(n):
+    if n == 0:
+        return 1
+    return n * factorial(n - 1)
+
+result = factorial(3)
+print(result)
+\`\`\`
+
 The way to *write* recursion is the **leap of faith**: assume the recursive call returns the right answer for the smaller input, and ask only how to build the answer for the current input from it. Do not try to trace ten levels in your head. The way to *debug* recursion is the opposite: trace a tiny case (n = 2) on paper, frame by frame.
 
 Some recursions are expensive. Naive \`fib(n) = fib(n-1) + fib(n-2)\` recomputes the same values exponentially often: \`fib(35)\` takes seconds and \`fib(50)\` would take days. Measure it. **Memoisation** stores results in a dictionary (or use \`functools.lru_cache\`) and turns the exponential tree into a linear chain. This is your first algorithmic speed-up and the seed of dynamic programming.
+
+\`\`\`interactive
+python
+{"title": "Counting the calls of naive fib", "caption": "Run it. Each +5 on n multiplies the number of calls by about 11 (1.618 to the 5th), which is exponential growth. Then add 30 to the list (it takes a few seconds here) and compare with fast_fib, which computes fib(300) instantly because each value is computed once."}
+---
+from functools import lru_cache
+
+calls = 0
+
+def fib(n):
+    global calls
+    calls += 1
+    return n if n < 2 else fib(n - 1) + fib(n - 2)
+
+for n in [10, 15, 20, 25]:
+    calls = 0
+    print(f"fib({n}) = {fib(n)} took {calls:,} calls")
+
+@lru_cache(maxsize=None)
+def fast_fib(n):
+    return n if n < 2 else fast_fib(n - 1) + fast_fib(n - 2)
+
+print(fast_fib(300))
+\`\`\`
 
 Recursion shines on **recursively defined data**: a nested list is either a non-list value or a list of nested lists, so summing it is a two-line recursion that no simple loop can match. Composing Programs 1.7 and Think Python chapters 5-6 are the readings; this topic's canonical treatment lives in Data Structures and Algorithms, so aim for fluency with simple cases now.`,
           resources: [
@@ -959,8 +1593,35 @@ Recursion shines on **recursively defined data**: a nested list is either a non-
             {
               slug: 'basic-recursions',
               title: 'Five classic recursions',
-              prompt:
-                'Implement recursively: factorial(n), power(b, n), sum_digits(n), reverse(s) and is_palindrome(s). Verify factorial(20) == 2432902008176640000, power(2, 30) == 1073741824, sum_digits(98765) == 35, reverse("abc") == "cba". For each, state the base case and why the recursive case makes progress.',
+              prompt: `Implement recursively: factorial(n), power(b, n), sum_digits(n), reverse(s) and is_palindrome(s). Verify factorial(20) == 2432902008176640000, power(2, 30) == 1073741824, sum_digits(98765) == 35, reverse("abc") == "cba". For each, state the base case and why the recursive case makes progress.
+
+\`\`\`interactive
+python
+{"title": "Exercise: five recursions", "caption": "Each function needs a base case and a call to itself on a smaller input (no loops). Check also tries the smallest inputs: 0, the empty string, a single character."}
+---
+def factorial(n):
+    pass
+
+def power(b, n):
+    pass
+
+def sum_digits(n):
+    pass
+
+def reverse(s):
+    pass
+
+def is_palindrome(s):
+    pass
+# --- tests ---
+assert factorial(20) == 2432902008176640000 and factorial(0) == 1
+assert power(2, 30) == 1073741824 and power(5, 0) == 1
+assert sum_digits(98765) == 35 and sum_digits(7) == 7
+assert reverse("abc") == "cba" and reverse("") == ""
+assert is_palindrome("racecar") is True and is_palindrome("ab") is False and is_palindrome("") is True, "racecar is a palindrome, ab is not, and the empty string is"
+assert all(_code.count(name + "(") >= 2 for name in ["factorial", "power", "sum_digits", "reverse", "is_palindrome"]), "every function calls itself (each name appears in its def and in a recursive call)"
+assert "for " not in _code and "while " not in _code, "no loops: recursion does the repeating"
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
@@ -975,16 +1636,56 @@ Recursion shines on **recursively defined data**: a nested list is either a non-
             {
               slug: 'nested-sum',
               title: 'Recursion on nested data',
-              prompt:
-                'Write nested_sum(x) that returns the sum of all numbers in an arbitrarily nested list, e.g. nested_sum([1, [2, [3, 4]], 5]) == 15, and nested_depth(x) returning the maximum nesting depth (the example has depth 3). Explain why a single for loop cannot do this without an explicit stack.',
+              prompt: `Write nested_sum(x) that returns the sum of all numbers in an arbitrarily nested list, e.g. nested_sum([1, [2, [3, 4]], 5]) == 15, and nested_depth(x) returning the maximum nesting depth (the example has depth 3). Explain why a single for loop cannot do this without an explicit stack.
+
+\`\`\`interactive
+python
+{"title": "Exercise: recursion on nested lists", "caption": "Use isinstance(item, list) to tell the two cases apart: a number is a base case, a list means recursing into each element. A flat list has depth 1."}
+---
+def nested_sum(x):
+    pass
+
+def nested_depth(x):
+    pass
+
+print(nested_sum([1, [2, [3, 4]], 5]), nested_depth([1, [2, [3, 4]], 5]))
+# --- tests ---
+assert nested_sum([1, [2, [3, 4]], 5]) == 15
+assert nested_sum([1, 2, 3]) == 6 and nested_sum([[[[10]]], -4]) == 6
+assert nested_depth([1, [2, [3, 4]], 5]) == 3
+assert nested_depth([1, 2, 3]) == 1, "a flat list has depth 1"
+assert nested_depth([[1], [2, [3, [4]]]]) == 4
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'recursion-limit',
               title: 'Hit the recursion limit',
-              prompt:
-                'Call your recursive sum_to(n) (n + sum_to(n-1)) with n = 500, 2000, 10000 and record what happens. Print sys.getrecursionlimit(). Rewrite sum_to as a loop and confirm it handles n = 10**6. Write two sentences on when you would choose recursion anyway.',
+              prompt: `Call your recursive sum_to(n) (n + sum_to(n-1)) with n = 500, 2000, 10000 and record what happens. Print sys.getrecursionlimit(). Rewrite sum_to as a loop and confirm it handles n = 10**6. Write two sentences on when you would choose recursion anyway.
+
+\`\`\`interactive
+python
+{"title": "Exercise: the recursion limit", "caption": "Run it: 500 works and 2000 raises RecursionError, caught here so the program can go on (delete the try to see the full traceback and how Python shortens its repeated lines). Then write sum_to_loop and Check it on 10**6. The browser's Python may have a different limit from yours, so record the value on your own machine too."}
+---
+import sys
+
+def sum_to(n):
+    return 0 if n == 0 else n + sum_to(n - 1)
+
+def sum_to_loop(n):
+    pass
+
+print("limit:", sys.getrecursionlimit())
+print(sum_to(500))
+try:
+    print(sum_to(2000))
+except RecursionError as e:
+    print("sum_to(2000) failed:", repr(e))
+# --- tests ---
+assert sum_to_loop(0) == 0 and sum_to_loop(500) == 125250
+assert sum_to_loop(10**6) == 500000500000, "the loop version handles n = 10**6"
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
@@ -1056,9 +1757,49 @@ Recursion shines on **recursively defined data**: a nested list is either a non-
           ],
           explanation: `A **list** is an ordered, mutable sequence of objects of any type. Indexing and slicing work exactly as for strings, but lists can be **changed in place**: \`items.append(x)\`, \`items.insert(i, x)\`, \`items.pop()\`, \`items.remove(x)\`, \`items[2] = y\`, \`del items[0]\`. Because the object changes, every name bound to it sees the change. \`a = [1, 2]; b = a; b.append(3)\` leaves \`a == [1, 2, 3]\`: \`a\` and \`b\` are **aliases**. Test aliasing with \`a is b\`; test equal contents with \`a == b\`.
 
+\`\`\`interactive
+memory-diagram
+{"title": "Aliases and copies", "caption": "Step through. After line 2, a and b are two arrows into one list, so b.append(3) shows up through a as well. c = a[:] makes a second list box with equal contents: c == a is True but c is a is False, and appending to c leaves a alone. Highlighted boxes are the ones the last line changed."}
+---
+a = [1, 2]
+b = a
+b.append(3)
+c = a[:]
+c.append(4)
+print(a, b, c)
+print(a is b, a == b, c is a, c == a)
+\`\`\`
+
 Mutating methods return \`None\`. \`items = items.sort()\` throws your data away; write \`items.sort()\` (in place) or \`new = sorted(items)\` (returns a new list, works on any iterable). The same pairing exists for \`reverse()\` / \`reversed()\`. This convention, *mutators return None*, is deliberate: it stops you from accidentally chaining a mutation into an expression.
 
+\`\`\`interactive
+python
+{"title": "Mutators return None", "caption": "Run it: sorted() hands back a new list and leaves scores alone, scores.sort() reorders scores itself and returns None, and the last line throws the data away. Swap sort() for reverse() and reversed() to see the same pairing."}
+---
+scores = [70, 95, 82]
+ranked = sorted(scores)
+print(ranked, scores)
+scores.sort()
+print(scores)
+scores = scores.sort()
+print(scores)
+\`\`\`
+
 To copy a list use \`b = a[:]\`, \`b = list(a)\` or \`b = a.copy()\`. These are **shallow**: the new list holds the same element objects, so a list of lists still shares the inner lists. \`copy.deepcopy\` copies all the way down. The classic trap is \`grid = [[0] * 3] * 3\`: that is three references to *one* inner list, and \`grid[0][0] = 1\` changes every row. Build grids with a comprehension: \`[[0] * 3 for _ in range(3)]\`.
+
+\`\`\`interactive
+memory-diagram
+{"title": "The [[0] * 3] * 3 trap", "caption": "Step to the end. bad is a list of three arrows into one inner list, so bad[0][0] = 1 changes every row; good has three separate inner lists. The shallow copy rows = good[:] is a new outer list whose arrows still lead to good's rows, so rows[1][1] = 5 shows up in good too."}
+---
+bad = [[0] * 3] * 3
+bad[0][0] = 1
+good = [[0] * 3 for _ in range(3)]
+good[0][0] = 1
+rows = good[:]
+rows[1][1] = 5
+print(bad)
+print(good)
+\`\`\`
 
 Never add or remove elements of a list while iterating over it with \`for\`; items get skipped. Iterate over a copy or build a new list. Think Python chapter 10 and the tutorial's data-structures section are the readings; Ned Batchelder's names article explains the aliasing rules once and for all.`,
           resources: [
@@ -1099,31 +1840,146 @@ Never add or remove elements of a list while iterating over it with \`for\`; ite
               slug: 'aliasing-experiments',
               title: 'Aliasing experiments',
               prompt:
-                'For each snippet predict the final values of a and b and whether a is b: (1) a=[1,2]; b=a; b+=[3]. (2) a=[1,2]; b=a; b=b+[3]. (3) a=[1,2]; b=a[:]; b.append(3). (4) a=[[1],[2]]; b=a[:]; b[0].append(9). (5) a=[[0]*2]*2; a[0][0]=5. Run them and explain every surprise with a diagram.',
+                `For each snippet predict the final values of a and b and whether a is b: (1) a=[1,2]; b=a; b+=[3]. (2) a=[1,2]; b=a; b=b+[3]. (3) a=[1,2]; b=a[:]; b.append(3). (4) a=[[1],[2]]; b=a[:]; b[0].append(9). (5) a=[[0]*2]*2; a[0][0]=5. Run them and explain every surprise with a diagram.
+
+Write your predictions, then step through all five here; the diagram is the drawing to explain.
+
+\`\`\`interactive
+memory-diagram
+{"title": "Five aliasing snippets", "caption": "Step through one snippet at a time and stop at each print to compare with your prediction. Watch (1) and (2) closely: b += [3] mutates the shared list in place, while b = b + [3] builds a new list and moves only b's arrow."}
+---
+a = [1, 2]; b = a; b += [3]
+print(1, a, b, a is b)
+a = [1, 2]; b = a; b = b + [3]
+print(2, a, b, a is b)
+a = [1, 2]; b = a[:]; b.append(3)
+print(3, a, b, a is b)
+a = [[1], [2]]; b = a[:]; b[0].append(9)
+print(4, a, b, a is b)
+a = [[0] * 2] * 2; a[0][0] = 5
+print(5, a)
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'list-stats',
               title: 'Statistics without the library',
-              prompt:
-                'Write mean(xs), median(xs), mode(xs) and variance(xs) using only loops, sorted and basic arithmetic. Test on [2, 4, 4, 4, 5, 5, 7, 9]: mean 5.0, median 4.5, mode 4, population variance 4.0. Then compare with the statistics module on 1000 random floats and assert the results agree to 1e-9.',
+              prompt: `Write mean(xs), median(xs), mode(xs) and variance(xs) using only loops, sorted and basic arithmetic. Test on [2, 4, 4, 4, 5, 5, 7, 9]: mean 5.0, median 4.5, mode 4, population variance 4.0. Then compare with the statistics module on 1000 random floats and assert the results agree to 1e-9.
+
+\`\`\`interactive
+python
+{"title": "Exercise: statistics without the library", "caption": "Write the four functions, then Check: it uses the example list, an odd-length list, and compares with the statistics module on 1000 random floats. median must not reorder the caller's list."}
+---
+def mean(xs):
+    pass
+
+def median(xs):
+    pass
+
+def mode(xs):
+    pass
+
+def variance(xs):
+    """Population variance: the mean squared distance from the mean."""
+    pass
+
+data = [2, 4, 4, 4, 5, 5, 7, 9]
+print(mean(data), median(data), mode(data), variance(data))
+# --- tests ---
+import random, statistics
+data = [2, 4, 4, 4, 5, 5, 7, 9]
+assert mean(data) == 5.0
+assert median(data) == 4.5, "even length: the average of the two middle values"
+assert median([3, 1, 2]) == 2, "odd length: the middle value after sorting"
+assert mode(data) == 4
+assert variance(data) == 4.0
+xs = [5, 1, 4]
+median(xs)
+assert xs == [5, 1, 4], "median leaves the caller's list in its original order (use sorted, not sort)"
+random.seed(1)
+r = [random.random() for _ in range(1000)]
+assert abs(mean(r) - statistics.mean(r)) < 1e-9 and abs(median(r) - statistics.median(r)) < 1e-9, "mean and median agree with the statistics module on 1000 random floats"
+assert abs(variance(r) - statistics.pvariance(r)) < 1e-9, "variance agrees with statistics.pvariance"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'remove-while-iterating',
               title: 'The remove-while-iterating bug',
-              prompt:
-                'Write a loop that removes all even numbers from [1,2,2,3,4,4,5,6,6] by calling remove inside a for loop over the same list. Print the result (it will be wrong) and explain which elements were skipped and why. Fix it three ways: iterate over a copy, build a new list, iterate backwards by index.',
+              prompt: `Write a loop that removes all even numbers from [1,2,2,3,4,4,5,6,6] by calling remove inside a for loop over the same list. Print the result (it will be wrong) and explain which elements were skipped and why. Fix it three ways: iterate over a copy, build a new list, iterate backwards by index.
+
+\`\`\`interactive
+python
+{"title": "Exercise: three fixes", "caption": "Run the buggy loop first and explain the leftover evens. Then write the three fixes; Check runs each on the same list (the first and third must change the list in place, the second must return a new list and leave its argument alone)."}
+---
+nums = [1, 2, 2, 3, 4, 4, 5, 6, 6]
+for x in nums:
+    if x % 2 == 0:
+        nums.remove(x)
+print("buggy:", nums)
+
+def remove_evens_copy(xs):
+    """Remove evens from xs in place, looping over a copy."""
+    pass
+
+def without_evens(xs):
+    """Return a new list of the odd numbers; xs is unchanged."""
+    pass
+
+def remove_evens_backwards(xs):
+    """Remove evens from xs in place, by index from the end."""
+    pass
+# --- tests ---
+start = [1, 2, 2, 3, 4, 4, 5, 6, 6]
+a = start[:]
+remove_evens_copy(a)
+assert a == [1, 3, 5], "remove_evens_copy changes the list to [1, 3, 5]"
+b = start[:]
+assert without_evens(b) == [1, 3, 5] and b == start, "without_evens returns [1, 3, 5] and leaves its argument unchanged"
+c = start[:]
+remove_evens_backwards(c)
+assert c == [1, 3, 5], "remove_evens_backwards changes the list to [1, 3, 5]"
+d = [2, 4, 6, 8]
+remove_evens_backwards(d)
+e = [2, 4, 6, 8]
+remove_evens_copy(e)
+assert d == [] and e == [], "an all-even list ends up empty"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'grid-operations',
               title: 'Two-dimensional grids',
-              prompt:
-                'Build a 5x5 grid of zeros correctly, set the diagonal to 1, then write transpose(grid) and row_sums(grid). Verify transpose(transpose(g)) == g and that the identity grid transposes to itself. Then show what goes wrong with the [[0]*5]*5 construction.',
+              prompt: `Build a 5x5 grid of zeros correctly, set the diagonal to 1, then write transpose(grid) and row_sums(grid). Verify transpose(transpose(g)) == g and that the identity grid transposes to itself. Then show what goes wrong with the [[0]*5]*5 construction.
+
+\`\`\`interactive
+python
+{"title": "Exercise: grids", "caption": "Build identity correctly, write the two functions and Check. transpose must work for non-square grids and must build new rows (changing the result must not change the input). Then swap in [[0]*5]*5 and Run to see the damage."}
+---
+identity = None   # a 5x5 grid of zeros with 1 on the diagonal
+
+def transpose(grid):
+    pass
+
+def row_sums(grid):
+    pass
+
+print(identity)
+# --- tests ---
+assert identity == [[1 if i == j else 0 for j in range(5)] for i in range(5)], "identity is 5x5 with ones on the diagonal"
+assert len({id(row) for row in identity}) == 5, "identity's five rows are five separate lists"
+assert transpose([[1, 2, 3], [4, 5, 6]]) == [[1, 4], [2, 5], [3, 6]], "a 2x3 grid transposes to 3x2"
+g = [[1, 2], [3, 4], [5, 6]]
+assert transpose(transpose(g)) == g
+assert transpose(identity) == identity
+t = transpose(g)
+t[0][0] = 99
+assert g[0][0] == 1, "transpose builds new rows: changing the result leaves the input alone"
+assert row_sums([[1, 2], [3, 4]]) == [3, 7] and row_sums(identity) == [1] * 5
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
@@ -1170,9 +2026,45 @@ Never add or remove elements of a list while iterating over it with \`for\`; ite
           ],
           explanation: `A **tuple** is an immutable sequence: \`point = (3, 4)\`. The comma creates it (\`t = 3,\` is a one-element tuple; \`(3)\` is just 3). Indexing and slicing work as for lists, but there is no \`append\` and you cannot assign to an element. That immutability is the point: a tuple is a reliable **record** whose shape and contents do not change behind your back, and because it is immutable it is **hashable**, so it can be a dictionary key or a set member (\`visited = {(0, 0), (0, 1)}\`). Use tuples for fixed-shape things (a coordinate, an RGB colour, a (name, score) pair) and lists for variable-length collections of similar items.
 
+\`\`\`interactive
+memory-diagram
+{"title": "Immutable tuples, rebindable names", "caption": "Step through. t = t + (5,) cannot change the tuple, so it builds a second tuple and moves t's arrow: point still refers to (3, 4). record's tuple never changes either, yet record[1].append(70) works, because the tuple holds an arrow to a mutable list and that list is what changes. Assigning to point[0] is refused with TypeError."}
+---
+point = (3, 4)
+t = point
+t = t + (5,)
+record = ("ada", [90, 85])
+record[1].append(70)
+visited = {(0, 0), (0, 1)}
+try:
+    point[0] = 10
+except TypeError as e:
+    print("TypeError:", e)
+\`\`\`
+
 **Unpacking** assigns the elements of any sequence to several names at once: \`x, y = point\`. It gives you the idiomatic swap \`a, b = b, a\`, the way functions return several values (\`return quotient, remainder\`, then \`q, r = divmod(17, 5)\`), and clean loops over pairs: \`for name, score in results:\`. A starred name collects the rest: \`first, *rest = items\`.
 
 Two built-ins make index-based loops almost unnecessary. \`enumerate(items)\` yields \`(index, item)\` pairs, so \`for i, x in enumerate(items):\` replaces \`for i in range(len(items)): x = items[i]\`. \`zip(a, b)\` yields pairs from two sequences in lockstep (stopping at the shorter), and \`zip(*pairs)\` unzips, transposing a list of pairs into a pair of lists. These read as what they mean, which is why experienced Python code uses them everywhere.
+
+\`\`\`interactive
+python
+{"title": "Unpacking, enumerate and zip", "caption": "Run it and match each line to the idiom in the text. Then shorten temps to two items: zip stops at the shorter sequence, so Lima silently disappears from the pairs."}
+---
+a, b = 1, 2
+a, b = b, a
+print(a, b)
+q, r = divmod(17, 5)
+first, *rest = [10, 20, 30, 40]
+print(q, r, first, rest)
+
+cities = ["Oslo", "Rome", "Lima"]
+temps = [4, 18, 22]
+for i, city in enumerate(cities):
+    print(i, city)
+pairs = list(zip(cities, temps))
+print(pairs)
+print(list(zip(*pairs)))
+\`\`\`
 
 Think Python chapter 12 and the tutorial's "Tuples and Sequences" section cover this. The exercises push you to replace every index loop you would have written with unpacking, \`enumerate\` and \`zip\`.`,
           resources: [
@@ -1203,24 +2095,97 @@ Think Python chapter 12 and the tutorial's "Tuples and Sequences" section cover 
             {
               slug: 'unpacking-idioms',
               title: 'Rewrite index loops with unpacking',
-              prompt:
-                'Given names = ["ann", "bob", "cy"] and scores = [88, 92, 79], write (a) a loop printing "1. ann 88" etc. using enumerate(start=1) and zip, (b) the name of the highest scorer using max with a key (expected "bob"), (c) the two lists recovered from the list of (name, score) pairs using zip(*pairs). No range(len(...)) allowed.',
+              prompt: `Given names = ["ann", "bob", "cy"] and scores = [88, 92, 79], write (a) a loop printing "1. ann 88" etc. using enumerate(start=1) and zip, (b) the name of the highest scorer using max with a key (expected "bob"), (c) the two lists recovered from the list of (name, score) pairs using zip(*pairs). No range(len(...)) allowed.
+
+\`\`\`interactive
+python
+{"title": "Exercise: unpacking idioms", "caption": "Write (a), (b) and (c), Run, then Check. For (b), max over the pairs needs a key that picks the score."}
+---
+names = ["ann", "bob", "cy"]
+scores = [88, 92, 79]
+pairs = list(zip(names, scores))
+
+# (a) print 1. ann 88, 2. bob 92, 3. cy 79
+
+top = None                          # (b)
+names_back, scores_back = [], []    # (c) from pairs, with zip(*pairs)
+print(top, names_back, scores_back)
+# --- tests ---
+assert "1. ann 88" in _output and "2. bob 92" in _output and "3. cy 79" in _output, "(a) prints 1. ann 88, 2. bob 92 and 3. cy 79"
+assert top == "bob", "(b) the highest scorer is bob"
+assert list(names_back) == ["ann", "bob", "cy"] and list(scores_back) == [88, 92, 79], "(c) zip(*pairs) recovers both sequences"
+assert "range(len" not in _code, "no range(len(...))"
+assert "enumerate(" in _code and "max(" in _code, "uses enumerate and max"
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
             {
               slug: 'multiple-returns',
               title: 'Functions returning tuples',
-              prompt:
-                'Write min_max(xs) -> (min, max) in one pass, and quadratic_roots(a, b, c) -> (r1, r2) or None when the discriminant is negative. Verify min_max([3,1,4,1,5]) == (1, 5), quadratic_roots(1, -3, 2) == (1.0, 2.0) (sorted ascending), quadratic_roots(1, 0, 1) is None. Unpack the results at the call site.',
+              prompt: `Write min_max(xs) -> (min, max) in one pass, and quadratic_roots(a, b, c) -> (r1, r2) or None when the discriminant is negative. Verify min_max([3,1,4,1,5]) == (1, 5), quadratic_roots(1, -3, 2) == (1.0, 2.0) (sorted ascending), quadratic_roots(1, 0, 1) is None. Unpack the results at the call site.
+
+\`\`\`interactive
+python
+{"title": "Exercise: functions returning tuples", "caption": "Write both functions (one loop for min_max, no min or max), unpack the results at the call site, and Check. Note that a negative a flips which formula gives the smaller root."}
+---
+import math
+
+def min_max(xs):
+    pass
+
+def quadratic_roots(a, b, c):
+    pass
+
+lo, hi = min_max([3, 1, 4, 1, 5])
+print(lo, hi)
+# --- tests ---
+assert min_max([3, 1, 4, 1, 5]) == (1, 5)
+assert min_max([7]) == (7, 7) and min_max([-2, -9, 0]) == (-9, 0)
+assert "min(" not in _code.replace("min_max(", "") and "max(" not in _code.replace("min_max(", ""), "one pass of your own, without min or max"
+assert quadratic_roots(1, -3, 2) == (1.0, 2.0)
+assert quadratic_roots(1, 0, 1) is None, "negative discriminant: None"
+assert quadratic_roots(1, -2, 1) == (1.0, 1.0), "a double root is returned twice"
+assert quadratic_roots(-1, 3, -2) == (1.0, 2.0), "roots come sorted ascending even when a is negative"
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
             {
               slug: 'tuple-keys',
               title: 'Tuples as keys',
-              prompt:
-                'Simulate a random walk of 10,000 steps on a 2D grid and count how many times each cell (x, y) is visited using a dict keyed by tuples. Report the most visited cell and how many distinct cells were visited. Then try using a list [x, y] as a key and record the exact error.',
+              prompt: `Simulate a random walk of 10,000 steps on a 2D grid and count how many times each cell (x, y) is visited using a dict keyed by tuples. Report the most visited cell and how many distinct cells were visited. Then try using a list [x, y] as a key and record the exact error.
+
+\`\`\`interactive
+python
+{"title": "Exercise: tuples as keys", "caption": "The walk is generated for you as a list of (x, y) cells. Write the two functions, Run for the report, then Check (it uses small walks with known answers). Finally change a key to a list [x, y] and record the error."}
+---
+import random
+
+def count_visits(path):
+    """Dict mapping each (x, y) in path to how many times it appears."""
+    pass
+
+def most_visited(counts):
+    """The (cell, count) pair with the highest count."""
+    pass
+
+random.seed(0)
+x = y = 0
+path = [(0, 0)]
+for _ in range(10_000):
+    dx, dy = random.choice([(1, 0), (-1, 0), (0, 1), (0, -1)])
+    x, y = x + dx, y + dy
+    path.append((x, y))
+counts = count_visits(path)
+print(most_visited(counts), len(counts), "distinct cells")
+# --- tests ---
+small = [(0, 0), (1, 0), (0, 0), (0, 1), (0, 0)]
+assert count_visits(small) == {(0, 0): 3, (1, 0): 1, (0, 1): 1}
+assert most_visited(count_visits(small)) == ((0, 0), 3)
+assert most_visited({(2, 5): 1, (-1, 4): 7, (0, 0): 2}) == ((-1, 4), 7)
+assert count_visits([]) == {}, "an empty path visits nothing"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
@@ -1264,9 +2229,38 @@ Think Python chapter 12 and the tutorial's "Tuples and Sequences" section cover 
           ],
           explanation: `A **dictionary** maps **keys** to **values**: \`ages = {"ada": 36, "alan": 41}\`. \`ages["ada"]\` looks up; \`ages["grace"] = 85\` inserts or updates; a missing key raises **KeyError**, so use \`ages.get("x", 0)\` when a default is sensible, or test \`"x" in ages\`. Iterating a dict yields keys; use \`.items()\` to get \`(key, value)\` pairs with unpacking. Since Python 3.7 dicts remember insertion order.
 
+\`\`\`interactive
+python
+{"title": "Lookup, get and KeyError", "caption": "Run it: the last line raises KeyError, the dict version of IndexError. Replace ages[\\"grace\\"] with ages.get(\\"grace\\", \\"unknown\\") and run again. Notice that the loop prints the keys in the order they were inserted."}
+---
+ages = {"ada": 36, "alan": 41}
+ages["grace"] = 85
+ages["ada"] = 37
+for name, age in ages.items():
+    print(name, age)
+print("linus" in ages, ages.get("linus", 0))
+del ages["grace"]
+print(ages["grace"])
+\`\`\`
+
 The reason dicts are everywhere is **speed**: looking up a key takes roughly constant time regardless of size, because the key is **hashed** to a number that indexes directly into an internal table. A list, by contrast, is searched element by element (\`x in items\` is linear). Measure it: membership tests in a 1,000,000-element list versus a dict differ by a factor of thousands. Keys must therefore be hashable (immutable): strings, numbers, tuples, not lists.
 
 Three patterns cover most uses. **Counting**: \`counts[word] = counts.get(word, 0) + 1\`, or simply \`collections.Counter(words)\`. **Grouping**: \`groups.setdefault(key, []).append(item)\`, or \`defaultdict(list)\`. **Lookup tables / memoisation**: precompute a mapping once, then look up instead of recomputing (this is exactly how \`lru_cache\` works). Nested dicts (\`{"ada": {"born": 1815, "field": "maths"}}\`) represent structured records and are what JSON becomes when loaded (module 4).
+
+\`\`\`interactive
+memory-diagram
+{"title": "Counting and grouping", "caption": "Step through. counts gains one key per new word and its value is replaced (a new int) on every repeat. groups maps each first letter to a list: setdefault creates the list the first time and returns the same list afterwards, so append adds to the list that is already in the dict."}
+---
+words = ["ant", "bee", "ant", "bat"]
+counts = {}
+for w in words:
+    counts[w] = counts.get(w, 0) + 1
+groups = {}
+for w in words:
+    groups.setdefault(w[0], []).append(w)
+print(counts)
+print(groups)
+\`\`\`
 
 Read Think Python chapter 11 and the tutorial section, then the \`collections\` docs for \`Counter\` and \`defaultdict\`. The word-frequency exercise is the canonical first real program; the timing exercise should permanently change which structure you reach for.`,
           resources: [
@@ -1304,32 +2298,141 @@ Read Think Python chapter 11 and the tutorial section, then the \`collections\` 
             {
               slug: 'word-frequency',
               title: 'Word frequency counter',
-              prompt:
-                'Download a public-domain book as plain text (e.g. from Project Gutenberg), lower-case it, strip punctuation, and count word frequencies three ways: with d.get, with setdefault/defaultdict, and with Counter. All three must produce identical results (assert it). Print the 20 most common words with counts, and the number of distinct words.',
+              prompt: `Download a public-domain book as plain text (e.g. from Project Gutenberg), lower-case it, strip punctuation, and count word frequencies three ways: with d.get, with setdefault/defaultdict, and with Counter. All three must produce identical results (assert it). Print the 20 most common words with counts, and the number of distinct words.
+
+Build and check the counting functions here on a short text first; then run them on the book on your machine.
+
+\`\`\`interactive
+python
+{"title": "Exercise: word frequencies three ways", "caption": "Write words_of, then the three counters. Check compares all three on a few texts and expects identical dicts."}
+---
+import string
+from collections import Counter, defaultdict
+
+def words_of(text):
+    """Lower-cased words of text with punctuation removed."""
+    pass
+
+def count_get(words):
+    pass
+
+def count_default(words):
+    pass
+
+def count_counter(words):
+    pass
+
+w = words_of("The cat sat. The CAT, the hat!")
+print(w)
+print(count_get(w))
+# --- tests ---
+w = words_of("The cat sat. The CAT, the hat!")
+assert w == ["the", "cat", "sat", "the", "cat", "the", "hat"], "words_of lower-cases and removes punctuation"
+assert dict(count_get(w)) == {"the": 3, "cat": 2, "sat": 1, "hat": 1}
+assert dict(count_default(w)) == dict(count_get(w)), "the defaultdict version gives the same counts"
+assert dict(count_counter(w)) == dict(count_get(w)), "the Counter version gives the same counts"
+w2 = words_of("It was the best of times, it was the worst of times; it was...")
+assert dict(count_get(w2)) == dict(count_default(w2)) == dict(count_counter(w2)) and count_get(w2)["it"] == 3
+assert dict(count_get([])) == {}, "no words, no counts"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'list-vs-dict-timing',
               title: 'Measure list vs dict lookup',
-              prompt:
-                'Build a list and a dict (or set) of n random integers for n = 10**3, 10**4, 10**5, 10**6. Time 1000 membership tests of values not present in each. Tabulate the times and the ratio. Explain the trend in one paragraph: which grows with n, which does not, and why.',
+              prompt: `Build a list and a dict (or set) of n random integers for n = 10**3, 10**4, 10**5, 10**6. Time 1000 membership tests of values not present in each. Tabulate the times and the ratio. Explain the trend in one paragraph: which grows with n, which does not, and why.
+
+\`\`\`interactive
+python
+{"title": "A first measurement", "caption": "Run it to see the trend in the browser (50 probes and n up to 10**5, to keep it quick; this Python is slower than yours, but the ratios tell the same story). Then run the full experiment, up to 10**6, on your own machine for the table."}
+---
+import random, time
+
+for n in [10**3, 10**4, 10**5]:
+    items = random.sample(range(10 * n), n)
+    as_list, as_set = items, set(items)
+    probes = [-k for k in range(1, 51)]   # 50 values never present
+    t0 = time.perf_counter()
+    for p in probes:
+        p in as_list
+    t1 = time.perf_counter()
+    for _ in range(100):          # the set is so fast we time 100 rounds
+        for p in probes:
+            p in as_set
+    t_set = (time.perf_counter() - t1) / 100
+    print(f"n={n:>7}  list {t1 - t0:.4f} s  set {t_set:.6f} s  ratio {(t1 - t0) / t_set:,.0f}")
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'group-by',
               title: 'Grouping records',
-              prompt:
-                'Given a list of (student, course, grade) tuples, build (a) a dict course -> list of students, (b) a dict student -> average grade, (c) a nested dict course -> student -> grade. Write invert(d) that turns a dict of lists into the reverse mapping and check that invert(invert(a)) reproduces a (as sets).',
+              prompt: `Given a list of (student, course, grade) tuples, build (a) a dict course -> list of students, (b) a dict student -> average grade, (c) a nested dict course -> student -> grade. Write invert(d) that turns a dict of lists into the reverse mapping and check that invert(invert(a)) reproduces a (as sets).
+
+\`\`\`interactive
+python
+{"title": "Exercise: grouping records", "caption": "Write the four functions and Check. Students appear in the order of the records; compare the lists in invert(invert(a)) as sets, as the exercise says."}
+---
+records = [("ann", "maths", 90), ("bob", "maths", 70),
+           ("ann", "physics", 80), ("cy", "physics", 60),
+           ("bob", "art", 100)]
+
+def students_by_course(records):
+    pass
+
+def average_by_student(records):
+    pass
+
+def grades_by_course(records):
+    """Nested dict: course -> student -> grade."""
+    pass
+
+def invert(d):
+    """{"maths": ["ann", "bob"]} -> {"ann": ["maths"], "bob": ["maths"]}"""
+    pass
+
+print(students_by_course(records))
+# --- tests ---
+records = [("ann", "maths", 90), ("bob", "maths", 70),
+           ("ann", "physics", 80), ("cy", "physics", 60),
+           ("bob", "art", 100)]
+a = students_by_course(records)
+assert a == {"maths": ["ann", "bob"], "physics": ["ann", "cy"], "art": ["bob"]}
+assert average_by_student(records) == {"ann": 85.0, "bob": 85.0, "cy": 60.0}
+assert grades_by_course(records) == {"maths": {"ann": 90, "bob": 70}, "physics": {"ann": 80, "cy": 60}, "art": {"bob": 100}}
+assert {k: set(v) for k, v in invert(a).items()} == {"ann": {"maths", "physics"}, "bob": {"maths", "art"}, "cy": {"physics"}}
+assert {k: set(v) for k, v in invert(invert(a)).items()} == {k: set(v) for k, v in a.items()}, "invert(invert(a)) reproduces a (as sets)"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'memo-dict',
               title: 'Memoisation by hand',
-              prompt:
-                'Reimplement memoised fib using an explicit dict passed as a parameter (no decorators), and count how many times the body computes a new value for fib(100) (expected 101 at most). Compare the call count with the naive version for fib(25).',
+              prompt: `Reimplement memoised fib using an explicit dict passed as a parameter (no decorators), and count how many times the body computes a new value for fib(100) (expected 101 at most). Compare the call count with the naive version for fib(25).
+
+\`\`\`interactive
+python
+{"title": "Exercise: memoisation by hand", "caption": "Store each computed value in memo before returning it. Check passes in its own dict and looks inside afterwards: the number of keys is the number of new values computed."}
+---
+def fib(n, memo):
+    """fib(0) = 0, fib(1) = 1; memo maps n to fib(n)."""
+    pass
+
+memo = {}
+print(fib(100, memo), len(memo), "values computed")
+# --- tests ---
+m = {}
+assert fib(100, m) == 354224848179261915075
+assert 0 < len(m) <= 101, "the memo holds at most 101 values after fib(100)"
+assert fib(10, {}) == 55 and fib(0, {}) == 0 and fib(1, {}) == 1
+m2 = {}
+fib(30, m2)
+assert m2.get(30) == 832040 and m2.get(29) == 514229, "memo maps n to fib(n)"
+assert "lru_cache" not in _code and "@" not in _code, "no decorators: the dict does the remembering"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
@@ -1378,6 +2481,21 @@ Read Think Python chapter 11 and the tutorial section, then the \`collections\` 
 
 Sets support mathematical **set algebra** with operators: \`a | b\` union, \`a & b\` intersection, \`a - b\` difference, \`a ^ b\` symmetric difference, and \`a <= b\` subset. These turn many loops into single expressions: "students in both courses" is \`enrolled_a & enrolled_b\`. A \`frozenset\` is an immutable set, usable as a dict key or set element.
 
+\`\`\`interactive
+python
+{"title": "Set algebra", "caption": "Run it and read each operator as a sentence: in both courses, in either, only in A, in exactly one. Add a student to both sets and predict which lines change. The last two lines show de-duplication with and without keeping the order."}
+---
+enrolled_a = {"ann", "bob", "cy", "dee"}
+enrolled_b = {"cy", "dee", "eve"}
+print("both:      ", sorted(enrolled_a & enrolled_b))
+print("either:    ", sorted(enrolled_a | enrolled_b))
+print("only A:    ", sorted(enrolled_a - enrolled_b))
+print("exactly 1: ", sorted(enrolled_a ^ enrolled_b))
+print("subset?    ", {"cy"} <= enrolled_b)
+items = ["b", "a", "b", "c", "a"]
+print(set(items), list(dict.fromkeys(items)))
+\`\`\`
+
 Now you know all four built-in collections, and the real skill is **choosing**. Ask: Do I need order? (list or tuple.) Do I look things up by position or by key? (list vs dict.) Do I need to test membership often? (set or dict, not list.) Is the shape fixed, like a record? (tuple, or a dataclass in module 5.) Are duplicates meaningful? (list, not set.) The costs that drive these answers: indexing a list is constant time; searching a list is linear; dict and set lookup are constant on average; inserting at the front of a list is linear (every element shifts), which is why queues use \`collections.deque\`.
 
 The tutorial's set section is brief; the TimeComplexity page on the Python wiki is the reference you will return to. The exercises combine structures, which is how real programs look: a dict of sets, a list of tuples, a set of frozensets.`,
@@ -1417,16 +2535,69 @@ The tutorial's set section is brief; the TimeComplexity page on the Python wiki 
             {
               slug: 'set-algebra',
               title: 'Set algebra on real data',
-              prompt:
-                'Build sets of words appearing in two different text files. Report: words in both, words only in the first, words in exactly one, and the Jaccard similarity |A & B| / |A | B|. Then verify two identities numerically: |A | B| == |A| + |B| - |A & B| and A ^ B == (A - B) | (B - A).',
+              prompt: `Build sets of words appearing in two different text files. Report: words in both, words only in the first, words in exactly one, and the Jaccard similarity |A & B| / |A | B|. Then verify two identities numerically: |A | B| == |A| + |B| - |A & B| and A ^ B == (A - B) | (B - A).
+
+\`\`\`interactive
+python
+{"title": "Exercise: set algebra", "caption": "Each answer is one set expression. Write compare, Run on the two sample texts, then Check; then try the two identities on text_a and text_b yourself."}
+---
+text_a = "the quick brown fox jumps over the lazy dog"
+text_b = "the lazy cat sleeps over the warm mat"
+
+def compare(a, b):
+    """Return (both, only_first, exactly_one, jaccard) for sets a and b."""
+    pass
+
+print(compare(set(text_a.split()), set(text_b.split())))
+# --- tests ---
+text_a = "the quick brown fox jumps over the lazy dog"
+text_b = "the lazy cat sleeps over the warm mat"
+A = set(text_a.split())
+B = set(text_b.split())
+both, only_first, exactly_one, jaccard = compare(A, B)
+assert both == {"the", "lazy", "over"}
+assert only_first == {"quick", "brown", "fox", "jumps", "dog"}
+assert exactly_one == {"quick", "brown", "fox", "jumps", "dog", "cat", "sleeps", "warm", "mat"}
+assert abs(jaccard - 3 / 12) < 1e-12, "Jaccard = |A & B| / |A | B| = 3 / 12"
+assert compare({1, 2}, {1, 2})[3] == 1.0 and compare({1}, {2})[3] == 0.0, "identical sets give 1.0, disjoint sets 0.0"
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
             {
               slug: 'dedupe-timing',
               title: 'De-duplication three ways',
-              prompt:
-                'Remove duplicates from a list of 10**5 random integers in 0..10**4 by (a) a nested-loop "if x not in result" approach, (b) set(), (c) dict.fromkeys preserving order. Time each and confirm (a) is dramatically slower; explain in terms of list search being linear.',
+              prompt: `Remove duplicates from a list of 10**5 random integers in 0..10**4 by (a) a nested-loop "if x not in result" approach, (b) set(), (c) dict.fromkeys preserving order. Time each and confirm (a) is dramatically slower; explain in terms of list search being linear.
+
+\`\`\`interactive
+python
+{"title": "Exercise: de-duplication three ways", "caption": "Write the three versions and Check that they agree (the first and third must keep first-seen order). Then Run: the timing uses 10**4 numbers here so the slow version finishes; time 10**5 on your machine."}
+---
+import random, time
+
+def dedupe_loop(xs):
+    pass
+
+def dedupe_set(xs):
+    pass
+
+def dedupe_ordered(xs):
+    pass
+
+random.seed(2)
+data = [random.randint(0, 10**3) for _ in range(10**4)]
+for f in (dedupe_loop, dedupe_set, dedupe_ordered):
+    t0 = time.perf_counter()
+    f(data)
+    print(f.__name__, f"{time.perf_counter() - t0:.4f} s")
+# --- tests ---
+xs = [3, 1, 3, 2, 1, 5]
+assert dedupe_loop(xs) == [3, 1, 2, 5], "the loop version keeps first-seen order"
+assert sorted(dedupe_set(xs)) == [1, 2, 3, 5], "the set version keeps each value once"
+assert list(dedupe_ordered(xs)) == [3, 1, 2, 5], "dict.fromkeys keeps first-seen order"
+assert xs == [3, 1, 3, 2, 1, 5], "the input list is not changed"
+assert dedupe_loop([]) == [] and list(dedupe_ordered([])) == []
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
@@ -1478,9 +2649,39 @@ The tutorial's set section is brief; the TimeComplexity page on the Python wiki 
           ],
           explanation: `A **comprehension** is a compact expression that builds a collection from an iterable: \`squares = [x * x for x in range(10) if x % 2 == 0]\` is exactly the loop "start empty, for each x, if the condition holds, append x*x". Dict and set comprehensions use braces: \`{w: len(w) for w in words}\`, \`{w[0] for w in words}\`. Comprehensions are preferred over the explicit loop when the transformation is simple, because they state *what* is built rather than *how*. The limit is readability: one or two \`for\` clauses, one condition; past that, write the loop.
 
+\`\`\`interactive
+python
+{"title": "The loop inside a comprehension", "caption": "Run it: the loop and the comprehension build the same list. Then edit the comprehension: drop the if clause, or change x * x to (x, x * x), and predict the output before running."}
+---
+squares = []
+for x in range(10):
+    if x % 2 == 0:
+        squares.append(x * x)
+print(squares)
+
+print([x * x for x in range(10) if x % 2 == 0])
+
+words = ["python", "is", "fun"]
+print({w: len(w) for w in words})
+print({w[0] for w in words})
+\`\`\`
+
 A **generator expression** has the same syntax with parentheses, \`(x * x for x in big)\`, but produces values lazily one at a time rather than building a list. Feed it straight into a consumer: \`sum(x * x for x in range(10**7))\` never allocates a 10-million-element list. \`any(cond(x) for x in xs)\` and \`all(...)\` stop as soon as the answer is known; this is short-circuiting over a sequence.
 
 The built-ins \`sorted\`, \`min\` and \`max\` accept a **key** function that says what to compare by: \`max(words, key=len)\`, \`sorted(people, key=lambda p: p[1])\`. A \`lambda\` is an anonymous one-expression function, ideal for keys and nothing more complicated. \`sorted\` is **stable**, so sorting by one key then another gives a multi-key sort, and tuple keys \`key=lambda p: (p.age, p.name)\` sort lexicographically.
+
+\`\`\`interactive
+python
+{"title": "Key functions and stable sorts", "caption": "Run it. max(words, key=len) compares lengths but returns the word. In the last two lines, sorting by name and then by age keeps the names in order within each age, because sorted is stable; the single tuple key gives the same result."}
+---
+words = ["kiwi", "banana", "fig", "cherry"]
+print(max(words, key=len), sorted(words, key=len))
+
+people = [("cy", 30), ("ann", 25), ("bob", 30), ("dee", 25)]
+by_name = sorted(people, key=lambda p: p[0])
+print(sorted(by_name, key=lambda p: p[1]))
+print(sorted(people, key=lambda p: (p[1], p[0])))
+\`\`\`
 
 The tutorial's comprehension sections and the Functional Programming HOWTO are the readings. The exercises convert loops both directions until you can see the comprehension in a loop and the loop in a comprehension.`,
           resources: [
@@ -1519,8 +2720,33 @@ The tutorial's comprehension sections and the Functional Programming HOWTO are t
             {
               slug: 'loop-to-comprehension',
               title: 'Convert both ways',
-              prompt:
-                'Rewrite as comprehensions: (a) the list of lengths of words longer than 3; (b) a dict from each word to its reversed form; (c) the set of all characters in a text that are vowels; (d) the flattened list from a list of lists; (e) the list of (i, j) pairs with i < j from range(5). Then take max(words, key=len) and rewrite it as an explicit loop.',
+              prompt: `Rewrite as comprehensions: (a) the list of lengths of words longer than 3; (b) a dict from each word to its reversed form; (c) the set of all characters in a text that are vowels; (d) the flattened list from a list of lists; (e) the list of (i, j) pairs with i < j from range(5). Then take max(words, key=len) and rewrite it as an explicit loop.
+
+\`\`\`interactive
+python
+{"title": "Exercise: convert both ways", "caption": "Replace each None with one comprehension built from the data above it, and write longest with a loop (the first longest word wins, as with max). Check compares with the expected values."}
+---
+words = ["tree", "a", "python", "sky", "loop"]
+text = "Comprehensions are compact"
+lists = [[1, 2], [3], [], [4, 5, 6]]
+
+lengths = None      # (a) lengths of words longer than 3
+reversed_of = None  # (b) word -> word reversed
+vowels = None       # (c) the vowels that occur in text (lower case)
+flat = None         # (d) lists flattened
+pairs = None        # (e) (i, j) with i < j, both from range(5)
+
+def longest(words):
+    """max(words, key=len) written as an explicit loop."""
+    pass
+# --- tests ---
+assert lengths == [4, 6, 4], "(a) [4, 6, 4]"
+assert reversed_of == {"tree": "eert", "a": "a", "python": "nohtyp", "sky": "yks", "loop": "pool"}, "(b) each word mapped to its reverse"
+assert vowels == {"o", "e", "i", "a"}, "(c) the vowels of text: o, e, i, a"
+assert flat == [1, 2, 3, 4, 5, 6], "(d) [1, 2, 3, 4, 5, 6]"
+assert pairs == [(i, j) for i in range(5) for j in range(5) if i < j] and len(pairs) == 10, "(e) the ten pairs (0, 1), (0, 2), ..., (3, 4)"
+assert longest(["tree", "a", "python", "sky", "loop"]) == "python" and longest(["ab", "cd", "e"]) == "ab", "longest returns the first longest word, like max"
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
@@ -1535,16 +2761,66 @@ The tutorial's comprehension sections and the Functional Programming HOWTO are t
             {
               slug: 'multi-key-sort',
               title: 'Multi-key sorting',
-              prompt:
-                'Given records of (name, department, salary), produce a list sorted by department ascending then salary descending, in two ways: one sorted() call with a tuple key (negate salary), and two successive stable sorts. Assert both results are identical. Then find the highest-paid person per department with a dict comprehension over groups.',
+              prompt: `Given records of (name, department, salary), produce a list sorted by department ascending then salary descending, in two ways: one sorted() call with a tuple key (negate salary), and two successive stable sorts. Assert both results are identical. Then find the highest-paid person per department with a dict comprehension over groups.
+
+\`\`\`interactive
+python
+{"title": "Exercise: multi-key sorting", "caption": "Write the three functions and Check. For the two-sort version, remember which key goes first: the last sort decides the main order."}
+---
+records = [("ann", "ops", 50), ("bob", "dev", 70), ("cy", "ops", 65),
+           ("dee", "dev", 90), ("eve", "art", 40), ("fay", "dev", 70)]
+
+def sort_one_call(records):
+    pass
+
+def sort_two_passes(records):
+    pass
+
+def top_paid(records):
+    """department -> name of its highest-paid person."""
+    pass
+
+print(sort_one_call(records))
+# --- tests ---
+records = [("ann", "ops", 50), ("bob", "dev", 70), ("cy", "ops", 65),
+           ("dee", "dev", 90), ("eve", "art", 40), ("fay", "dev", 70)]
+expected = [("eve", "art", 40), ("dee", "dev", 90), ("bob", "dev", 70), ("fay", "dev", 70),
+            ("cy", "ops", 65), ("ann", "ops", 50)]
+assert sort_one_call(records) == expected, "department ascending, then salary descending (ties keep their original order)"
+assert sort_two_passes(records) == expected, "two stable sorts give the same list"
+assert top_paid(records) == {"art": "eve", "dev": "dee", "ops": "cy"}
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'primes-sieve-comprehension',
               title: 'Primes with any/all',
-              prompt:
-                'Write is_prime(n) using all(n % d for d in range(2, int(n**0.5) + 1)) and primes_below(n) as a comprehension. Check primes_below(50) has 15 elements ending in 47 and that sum(primes_below(2_000_000)) == 142913828922 (Project Euler 10); time it, then implement a sieve with a list of booleans and compare.',
+              prompt: `Write is_prime(n) using all(n % d for d in range(2, int(n**0.5) + 1)) and primes_below(n) as a comprehension. Check primes_below(50) has 15 elements ending in 47 and that sum(primes_below(2_000_000)) == 142913828922 (Project Euler 10); time it, then implement a sieve with a list of booleans and compare.
+
+\`\`\`interactive
+python
+{"title": "Exercise: primes with all() and a sieve", "caption": "Write the three functions and Check (it uses limits up to 100,000 to stay quick in the browser). Watch the edge cases: all() of an empty range is True, so 0 and 1 need a guard. Time the 2,000,000 case on your machine."}
+---
+def is_prime(n):
+    pass
+
+def primes_below(n):
+    pass
+
+def sieve_below(n):
+    """Primes below n by the sieve of Eratosthenes (a list of booleans)."""
+    pass
+
+print(primes_below(50))
+# --- tests ---
+assert is_prime(0) is False and is_prime(1) is False and is_prime(2) is True and is_prime(49) is False
+p = primes_below(50)
+assert len(p) == 15 and p[-1] == 47, "primes_below(50) has 15 primes, ending in 47"
+assert sieve_below(50) == p, "the sieve agrees with the comprehension below 50"
+assert sum(sieve_below(100_000)) == 454396537, "the sum of the primes below 100,000 is 454396537"
+assert sieve_below(2) == [] and sieve_below(3) == [2]
+\`\`\``,
               kind: 'coding',
               difficulty: 3,
             },
@@ -1617,7 +2893,51 @@ Python finds modules by searching \`sys.path\`, which starts with the directory 
 
 Because importing *runs* the module, any code at the top level executes on import, including \`print\` calls and \`input()\` prompts. The **main guard** fixes this: put the script behaviour under \`if __name__ == "__main__": main()\`. When the file is run directly, \`__name__\` is \`"__main__"\`; when imported, it is the module name, so nothing runs. Every module you write from now on uses this idiom; it is what lets pytest import your code without triggering it.
 
-The standard library is enormous and you should know its shape. For this subject: \`math\` (sqrt, pi, isclose, comb), \`random\` (random, randint, choice, shuffle, seed), \`statistics\`, \`datetime\`, \`pathlib\` (object-oriented paths), \`itertools\` (product, permutations, combinations, groupby, accumulate), \`collections\` (Counter, defaultdict, deque, namedtuple), \`functools\`, \`time\` and \`sys\`. Skim the index page once so you know what exists; read a module's page when you need it.`,
+The cell below has a small virtual disk: it writes a module file next to the program and imports it, so you can watch import run the file.
+
+\`\`\`interactive
+python
+{"title": "Importing runs the module, once", "caption": "Run it: the first import prints the module's line with __name__ equal to geometry, the second import prints nothing (the module is cached), and the main-guarded line never runs. Delete the if line and unindent the print below it, then run again: now importing triggers it."}
+---
+from pathlib import Path
+
+Path("geometry.py").write_text('''
+print("running geometry.py, __name__ =", __name__)
+PI = 3.14159
+
+def area(r):
+    return PI * r * r
+
+if __name__ == "__main__":
+    print("geometry.py was run as a script")
+''')
+
+import geometry
+import geometry
+print(geometry.area(2))
+print("this program's __name__ is", __name__)
+\`\`\`
+
+The standard library is enormous and you should know its shape. For this subject: \`math\` (sqrt, pi, isclose, comb), \`random\` (random, randint, choice, shuffle, seed), \`statistics\`, \`datetime\`, \`pathlib\` (object-oriented paths), \`itertools\` (product, permutations, combinations, groupby, accumulate), \`collections\` (Counter, defaultdict, deque, namedtuple), \`functools\`, \`time\` and \`sys\`. Skim the index page once so you know what exists; read a module's page when you need it.
+
+\`\`\`interactive
+python
+{"title": "A few standard-library tools", "caption": "Run it, then look each function up in the library reference and change one argument. Everything here ships with Python; nothing was installed."}
+---
+import math, random, statistics
+from collections import Counter, deque
+from itertools import permutations, product
+
+print(math.comb(5, 2), math.isclose(0.1 + 0.2, 0.3))
+random.seed(42)
+print(random.randint(1, 6), random.choice(["red", "green", "blue"]))
+print(statistics.median([3, 1, 4, 1, 5]))
+print(Counter("mississippi").most_common(2))
+print(list(product("ab", [0, 1])), len(list(permutations("abcd"))))
+d = deque([1, 2, 3])
+d.appendleft(0)
+print(d)
+\`\`\``,
           resources: [
             {
               title: 'The Python Tutorial — Modules',
@@ -1670,8 +2990,30 @@ The standard library is enormous and you should know its shape. For this subject
             {
               slug: 'stdlib-scavenger-hunt',
               title: 'Standard library scavenger hunt',
-              prompt:
-                'Using only the standard library, write one-line solutions to: all 3-combinations of "abcd"; the number of days between two dates; the running sums of [1,2,3,4] (expected [1,3,6,10]); the most common letter in a word; a deque rotated by 2; a path to a file in your home directory that exists; the SHA-256 hex digest of the string "hello". Name the module and function for each.',
+              prompt: `Using only the standard library, write one-line solutions to: all 3-combinations of "abcd"; the number of days between two dates; the running sums of [1,2,3,4] (expected [1,3,6,10]); the most common letter in a word; a deque rotated by 2; a path to a file in your home directory that exists; the SHA-256 hex digest of the string "hello". Name the module and function for each.
+
+\`\`\`interactive
+python
+{"title": "Exercise: scavenger hunt", "caption": "Replace each None with one line that calls the right standard-library function, adding the imports you need at the top. Check verifies six of the seven (the home-directory path needs your own machine)."}
+---
+from datetime import date
+
+combos = None        # all 3-combinations of "abcd", as a list of tuples
+days = None          # days from date(2024, 1, 1) to date(2024, 3, 1)
+running = None       # running sums of [1, 2, 3, 4], as a list
+common = None        # the most common letter in "banana"
+rotated = None       # deque([1, 2, 3, 4, 5]) rotated right by 2
+digest = None        # SHA-256 hex digest of "hello"
+print(combos, days, running, common, rotated, digest, sep="\\n")
+# --- tests ---
+from collections import deque
+assert list(combos) == [("a", "b", "c"), ("a", "b", "d"), ("a", "c", "d"), ("b", "c", "d")], "itertools.combinations gives the four 3-combinations"
+assert days == 60, "2024 is a leap year: 31 + 29 = 60 days"
+assert list(running) == [1, 3, 6, 10]
+assert common == "a"
+assert list(rotated) == [4, 5, 1, 2, 3], "rotating right by 2 moves 4 and 5 to the front"
+assert digest == "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824", "hashlib.sha256(b'hello').hexdigest()"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
@@ -1717,9 +3059,50 @@ The standard library is enormous and you should know its shape. For this subject
 
 A text file object is **iterable over lines**, so \`for line in f:\` streams through gigabytes using constant memory, which is what you want for logs and datasets. Each line keeps its trailing newline; \`line.rstrip("\\n")\` or \`.strip()\` removes it. \`f.read()\` returns the whole file as one string (fine for small files), \`f.readlines()\` a list of lines. Writing uses mode \`"w"\` (truncate!) or \`"a"\` (append), with \`f.write(s)\` (no newline added) or \`print(..., file=f)\`.
 
+\`\`\`interactive
+python
+{"title": "Writing, then streaming, a text file", "caption": "Run it (the cell has a small virtual disk). repr shows each line's trailing newline, and the last line has none because write adds nothing. Change \\"w\\" to \\"a\\" and run twice: the file grows instead of being truncated."}
+---
+with open("notes.txt", "w", encoding="utf-8") as f:
+    f.write("first line\\n")
+    print("second line", file=f)
+    f.write("third line, no newline at the end")
+
+with open("notes.txt", encoding="utf-8") as f:
+    for line in f:
+        print(repr(line), "->", repr(line.rstrip("\\n")))
+\`\`\`
+
 **pathlib** replaces string manipulation of paths. \`Path("data") / "input.txt"\` joins portably across Windows and Unix; \`p.exists()\`, \`p.suffix\`, \`p.stem\`, \`p.parent\`, \`Path(".").glob("*.csv")\` and the convenience \`p.read_text()\` / \`p.write_text()\` cover most needs.
 
+\`\`\`interactive
+python
+{"title": "pathlib", "caption": "Run it. The / operator joins path parts, and suffix, stem and parent pick a path apart without any string slicing. Add a file named c.txt and see glob pick up only the .csv files."}
+---
+from pathlib import Path
+
+data = Path("data")
+data.mkdir(exist_ok=True)
+(data / "a.csv").write_text("x,y\\n1,2\\n", encoding="utf-8")
+(data / "b.csv").write_text("x,y\\n", encoding="utf-8")
+p = data / "a.csv"
+print(p, p.exists(), p.suffix, p.stem, p.parent)
+print(sorted(q.name for q in data.glob("*.csv")))
+print(p.read_text(encoding="utf-8").splitlines())
+\`\`\`
+
 Text is bytes plus an **encoding**. UTF-8 is the universal default and you should pass \`encoding="utf-8"\` explicitly, because the platform default differs (Windows is a common trap) and a file with accented characters will then decode differently on two machines. Binary mode (\`"rb"\`) gives raw \`bytes\`; you need it for images and for hashing files.
+
+\`\`\`interactive
+python
+{"title": "Text is bytes plus an encoding", "caption": "Run it: é takes two bytes in UTF-8, so the byte count exceeds the character count, and decoding those bytes as latin-1 gives the classic mojibake. Add a character such as € or 日 to s and predict the new byte count first."}
+---
+s = "café"
+b = s.encode("utf-8")
+print(len(s), "characters,", len(b), "bytes:", b)
+print(b.decode("utf-8"))
+print(b.decode("latin-1"))
+\`\`\`
 
 Think Python chapter 14 and the tutorial's input/output section are the readings; the exercises stream a large file and measure that memory stays flat.`,
           resources: [
@@ -1758,24 +3141,92 @@ Think Python chapter 14 and the tutorial's input/output section are the readings
             {
               slug: 'line-stats-streaming',
               title: 'Stream a large file',
-              prompt:
-                'Generate a 200 MB text file of random lines (write it with a loop). Then compute the number of lines, the longest line and the total word count by iterating line by line. Measure peak memory with tracemalloc or your OS monitor; it must stay under a few MB. Then do the same with f.read() and compare memory.',
+              prompt: `Generate a 200 MB text file of random lines (write it with a loop). Then compute the number of lines, the longest line and the total word count by iterating line by line. Measure peak memory with tracemalloc or your OS monitor; it must stay under a few MB. Then do the same with f.read() and compare memory.
+
+Write and check the streaming function here on small files; the 200 MB run and the memory measurement belong on your machine.
+
+\`\`\`interactive
+python
+{"title": "Exercise: streaming line statistics", "caption": "Write line_stats so it reads one line at a time (for line in f). Check writes a few small files to the cell's virtual disk and compares your counts; the longest line is returned without its newline."}
+---
+def line_stats(path):
+    """Return (line_count, longest_line, word_count) for a UTF-8 text file."""
+    pass
+
+with open("sample.txt", "w", encoding="utf-8") as f:
+    f.write("one two\\nthree four five\\n\\nsix\\n")
+print(line_stats("sample.txt"))
+# --- tests ---
+with open("t1.txt", "w", encoding="utf-8") as f:
+    f.write("one two\\nthree four five\\n\\nsix\\n")
+assert line_stats("t1.txt") == (4, "three four five", 6), "4 lines (one blank), longest 'three four five', 6 words"
+with open("t2.txt", "w", encoding="utf-8") as f:
+    f.write("no newline at the end")
+assert line_stats("t2.txt") == (1, "no newline at the end", 5), "a last line without a newline still counts"
+with open("t3.txt", "w", encoding="utf-8") as f:
+    f.writelines(f"line {i} " + "x" * (i % 7) + "\\n" for i in range(10000))
+n, longest, words = line_stats("t3.txt")
+assert (n, words) == (10000, 10000 * 2 + sum(1 for i in range(10000) if i % 7)), "10,000 lines counted correctly"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'pathlib-inventory',
               title: 'Directory inventory with pathlib',
-              prompt:
-                'Write inventory(root) that walks a directory tree with Path.rglob and prints a table of file extension -> (count, total bytes) sorted by total bytes descending. Run it on your home directory or a project folder, and handle PermissionError by skipping and counting skipped entries.',
+              prompt: `Write inventory(root) that walks a directory tree with Path.rglob and prints a table of file extension -> (count, total bytes) sorted by total bytes descending. Run it on your home directory or a project folder, and handle PermissionError by skipping and counting skipped entries.
+
+\`\`\`interactive
+python
+{"title": "Exercise: directory inventory", "caption": "Following return-not-print, split the job: totals(root) returns the dict, and inventory prints the table from it. The cell builds a small tree on its virtual disk; Check runs totals on it. The PermissionError handling needs a real file system, so try it on your machine."}
+---
+from pathlib import Path
+
+def totals(root):
+    """Dict: extension (like ".txt", or "" for none) -> (file count, total bytes)."""
+    pass
+
+def inventory(root):
+    for ext, (count, size) in sorted(totals(root).items(), key=lambda kv: kv[1][1], reverse=True):
+        print(f"{ext or '(none)':<8} {count:>4} {size:>8}")
+
+root = Path("tree")
+(root / "src").mkdir(parents=True, exist_ok=True)
+(root / "a.txt").write_text("hello")
+(root / "src" / "b.txt").write_text("x" * 10)
+(root / "src" / "main.py").write_text("print(1)\\n")
+(root / "README").write_text("readme")
+inventory(root)
+# --- tests ---
+from pathlib import Path
+r = Path("tree2")
+(r / "deep" / "er").mkdir(parents=True, exist_ok=True)
+(r / "one.csv").write_text("a,b,")
+(r / "deep" / "two.csv").write_text("123456")
+(r / "deep" / "er" / "x.py").write_text("pass;")
+(r / "LICENSE").write_text("MIT")
+assert totals(r) == {".csv": (2, 10), ".py": (1, 5), "": (1, 3)}, "counts and sizes per extension, recursing into subdirectories (directories themselves are not counted)"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'encoding-roundtrip',
               title: 'Encoding round trip',
-              prompt:
-                'Write the string "naïve café — 日本語" to a file with encoding utf-8, then read it back with encoding latin-1 and with utf-8; show the results. Print len(s) versus len(s.encode("utf-8")) and explain the difference. Finally write it with errors="replace" under ascii and show what is lost.',
+              prompt: `Write the string "naïve café — 日本語" to a file with encoding utf-8, then read it back with encoding latin-1 and with utf-8; show the results. Print len(s) versus len(s.encode("utf-8")) and explain the difference. Finally write it with errors="replace" under ascii and show what is lost.
+
+\`\`\`interactive
+python
+{"title": "Exercise: encoding round trip", "caption": "The cell's virtual disk behaves like a real one for this. Complete the three steps, run, and explain each printed line: which characters take two bytes, which take three, and what errors=\\"replace\\" turned into question marks."}
+---
+s = "naïve café — 日本語"
+with open("enc.txt", "w", encoding="utf-8") as f:
+    f.write(s)
+
+# 1. read enc.txt back with encoding="latin-1", then with "utf-8", and print both
+# 2. print len(s) and len(s.encode("utf-8"))
+# 3. write s to ascii.txt with encoding="ascii", errors="replace", read it back, print it
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
@@ -1819,7 +3270,36 @@ Think Python chapter 14 and the tutorial's input/output section are the readings
           ],
           explanation: `Most data you will meet arrives as **CSV** (comma-separated values) or **JSON**. CSV looks trivial but is not: fields can contain commas inside quotes, quotes are doubled to escape them, and line endings vary. Never \`line.split(",")\`; use the **csv** module. \`csv.reader(f)\` yields lists of strings per row; \`csv.DictReader(f)\` uses the header row to yield dicts keyed by column name, which makes code self-documenting. Open CSV files with \`newline=""\` as the docs instruct. Everything read is a *string*: convert \`int(row["year"])\`, \`float(row["mass"])\` yourself, and expect failures (an empty cell, "N/A"), which is where validation comes in.
 
+\`\`\`interactive
+python
+{"title": "Why not line.split(\\",\\")", "caption": "Run it: split breaks the quoted name at its comma and keeps the quotes, while csv reads the doubled quote and the comma correctly. Notice that every value DictReader gives you is a string, including mass."}
+---
+import csv, io
+
+text = 'name,mass\\n"Smith, J.",1.5\\n"The ""Big"" One",N/A\\n'
+for line in text.splitlines():
+    print(line.split(","))
+print()
+for row in csv.DictReader(io.StringIO(text)):
+    print(row)
+\`\`\`
+
 **JSON** is the lingua franca of APIs and configuration: nested objects (dicts), arrays (lists), strings, numbers, booleans and \`null\` (\`None\`). \`json.load(f)\` / \`json.loads(s)\` parse; \`json.dump(obj, f, indent=2)\` / \`json.dumps\` serialise. Only those types are serialisable; a \`datetime\` or a \`set\` raises \`TypeError\` unless you convert it or supply \`default=\`. Keys are always strings after a round trip, so a dict keyed by integers comes back keyed by \`"1"\`, \`"2"\`: a classic surprise.
+
+\`\`\`interactive
+python
+{"title": "A JSON round trip", "caption": "Run it: the integer keys come back as strings, so the round trip is not equal, and the set cannot be serialised at all. Fix the set with default=list in json.dumps and the keys with {int(k): v for k, v in back.items()}."}
+---
+import json
+
+scores = {1: "gold", 2: "silver"}
+text = json.dumps(scores, indent=2)
+print(text)
+back = json.loads(text)
+print(back, back == scores)
+
+print(json.dumps({"tags": {"a", "b"}}))
+\`\`\`
 
 A program that reads files must decide what to do with **bad data**. The right default is: validate each record, collect errors with the row number, skip the bad rows, and report at the end (or fail fast with a clear message if the user asked for strictness). Crashing with a KeyError on row 4,812 of a file is not acceptable behaviour.
 
@@ -1877,16 +3357,85 @@ A program that reads files must decide what to do with **bad data**. The right d
             {
               slug: 'validate-records',
               title: 'Validate and report bad rows',
-              prompt:
-                'Create a CSV of 50 people with name, age, email, and corrupt five rows (negative age, non-numeric age, missing email, extra comma, blank line). Write load_people(path) -> (good_records, errors) where errors is a list of (line_number, message). The program must process every row and print a summary, not crash. Expected: 45 good records, 5 error entries.',
+              prompt: `Create a CSV of 50 people with name, age, email, and corrupt five rows (negative age, non-numeric age, missing email, extra comma, blank line). Write load_people(path) -> (good_records, errors) where errors is a list of (line_number, message). The program must process every row and print a summary, not crash. Expected: 45 good records, 5 error entries.
+
+\`\`\`interactive
+python
+{"title": "Exercise: validate and report bad rows", "caption": "The cell writes a 50-person file with the five corrupt rows to its virtual disk. Write load_people with csv.reader (DictReader skips blank lines silently, which would hide one of the errors) and Check the counts and line numbers."}
+---
+import csv
+
+def load_people(path):
+    """Return (good, errors). good: dicts with name, age (int), email.
+    errors: (line_number, message), counting the header as line 1."""
+    pass
+
+lines = ["name,age,email"] + [f"p{i},{20 + i},p{i}@example.org" for i in range(45)]
+lines[3] = "bob,-3,bob@example.org"
+lines[10] = "cy,abc,cy@example.org"
+lines[20] = "dee,40,"
+lines[30] = "eve,30,eve@example.org,extra"
+lines[40] = ""
+lines += ["q1,50,q1@example.org", "q2,51,q2@example.org", "q3,52,q3@example.org",
+          "q4,53,q4@example.org", "q5,54,q5@example.org"]
+with open("people.csv", "w", encoding="utf-8", newline="") as f:
+    f.write("\\n".join(lines) + "\\n")
+
+good, errors = load_people("people.csv")
+print(len(good), "good,", len(errors), "errors")
+for line_number, message in errors:
+    print(line_number, message)
+# --- tests ---
+good, errors = load_people("people.csv")
+assert len(good) == 45, "45 good records"
+assert len(errors) == 5, "5 error entries"
+assert sorted(n for n, _ in errors) == [4, 11, 21, 31, 41], "errors on file lines 4, 11, 21, 31 and 41 (the header is line 1)"
+assert good[0] == {"name": "p0", "age": 20, "email": "p0@example.org"}, "a good record is a dict with an int age"
+assert all(isinstance(m, str) and m for _, m in errors), "each error has a message"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'json-config',
               title: 'JSON configuration with defaults',
-              prompt:
-                'Write load_config(path) that reads a JSON file of settings, fills in defaults for missing keys from a DEFAULTS dict, rejects unknown keys with a clear error, and returns the merged dict. Demonstrate that a dict with integer keys does not survive a JSON round trip and fix it by converting keys.',
+              prompt: `Write load_config(path) that reads a JSON file of settings, fills in defaults for missing keys from a DEFAULTS dict, rejects unknown keys with a clear error, and returns the merged dict. Demonstrate that a dict with integer keys does not survive a JSON round trip and fix it by converting keys.
+
+\`\`\`interactive
+python
+{"title": "Exercise: JSON configuration", "caption": "Write load_config and Check: it writes config files to the virtual disk and tries a partial one, an empty one and one with a typo in a key. Raise ValueError naming the unknown key, and do not change DEFAULTS."}
+---
+import json
+
+DEFAULTS = {"width": 80, "colour": True, "theme": "light"}
+
+def load_config(path):
+    pass
+
+with open("config.json", "w", encoding="utf-8") as f:
+    json.dump({"width": 100}, f)
+print(load_config("config.json"))
+# --- tests ---
+import json
+def _write(name, obj):
+    with open(name, "w", encoding="utf-8") as f:
+        json.dump(obj, f)
+_write("c1.json", {"width": 100})
+assert load_config("c1.json") == {"width": 100, "colour": True, "theme": "light"}, "missing keys are filled from DEFAULTS"
+_write("c2.json", {})
+assert load_config("c2.json") == DEFAULTS
+_write("c3.json", {"colour": False, "theme": "dark", "width": 60})
+assert load_config("c3.json") == {"width": 60, "colour": False, "theme": "dark"}
+_write("c4.json", {"widht": 100})
+assert _raises(ValueError, load_config, "c4.json"), "an unknown key (here the typo widht) raises ValueError"
+try:
+    load_config("c4.json")
+    _msg = ""
+except ValueError as e:
+    _msg = str(e)
+assert "widht" in _msg, "the error message names the unknown key"
+assert DEFAULTS == {"width": 80, "colour": True, "theme": "light"}, "DEFAULTS itself is not modified"
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
@@ -1934,9 +3483,54 @@ A program that reads files must decide what to do with **bad data**. The right d
           ],
           explanation: `When something goes wrong, Python **raises** an exception object. It then unwinds the call stack frame by frame looking for a \`try\` block whose \`except\` clause matches; if none is found, the program dies with the traceback you have been reading since lesson 1. So an exception raised deep inside \`parse_row\` can be handled in \`main\`, and everything between is skipped.
 
+\`\`\`interactive
+python
+{"title": "An exception unwinds the stack", "caption": "Run it: parse_row raises, load is skipped from that point (its after-line never prints), and main catches. The finally block runs either way. Change \\"x\\" to \\"7\\" and run again to see the path with no exception, including the else block."}
+---
+def parse_row(text):
+    return int(text)
+
+def load(text):
+    value = parse_row(text)
+    print("load: after parse_row")
+    return value
+
+def main():
+    try:
+        value = load("x")
+    except ValueError as e:
+        print("main caught:", e)
+    else:
+        print("main got", value)
+    finally:
+        print("finally always runs")
+
+main()
+\`\`\`
+
 The structure is \`try:\` (code that may fail), \`except ValueError as e:\` (handle one kind), \`else:\` (runs only if no exception; keeps the try block small), \`finally:\` (always runs: cleanup). Catch the **most specific** type that you can actually handle. A bare \`except:\` or \`except Exception:\` that swallows everything hides bugs, including \`KeyboardInterrupt\` and typos in your own code; if you must catch broadly, log the exception and re-raise.
 
 **Raise** when your function cannot fulfil its contract: \`raise ValueError(f"age must be non-negative, got {age}")\`. Choose the built-in type whose meaning matches (ValueError for bad values, TypeError for wrong types, KeyError/IndexError for missing items, FileNotFoundError) or define \`class ConfigError(Exception): pass\` so callers can catch your errors specifically. When you catch and re-raise a different exception, use \`raise NewError(...) from e\` to preserve the cause in the traceback.
+
+\`\`\`interactive
+python
+{"title": "Raising your own error, with its cause", "caption": "Run it and read the whole traceback: the original ValueError from int() comes first, then the line saying it was the direct cause of the ConfigError. Remove from e and compare the wording Python uses instead."}
+---
+class ConfigError(Exception):
+    pass
+
+def read_port(text):
+    try:
+        port = int(text)
+    except ValueError as e:
+        raise ConfigError(f"port must be a number, got {text!r}") from e
+    if not 0 < port < 65536:
+        raise ConfigError(f"port out of range: {port}")
+    return port
+
+print(read_port("8080"))
+print(read_port("eighty"))
+\`\`\`
 
 Python style favours **EAFP**: try the operation and handle the exception, rather than checking preconditions first (which is racy for files and verbose for dicts). \`try: value = d[key] except KeyError:\` is idiomatic; so is \`int(s)\` inside a try. The exception types a function may raise are part of its documented contract; write them in the docstring.
 
@@ -1985,24 +3579,98 @@ Read the tutorial's errors chapter in full now, and Think Python's treatment; th
             {
               slug: 'robust-input',
               title: 'Robust numeric input',
-              prompt:
-                'Write ask_float(prompt, lo, hi) that loops until the user enters a number in [lo, hi], handling ValueError for non-numbers, re-prompting on out-of-range values with a message, and returning None cleanly on Ctrl-D (EOFError) or Ctrl-C (KeyboardInterrupt). Test every path manually and document the behaviour in the docstring.',
+              prompt: `Write ask_float(prompt, lo, hi) that loops until the user enters a number in [lo, hi], handling ValueError for non-numbers, re-prompting on out-of-range values with a message, and returning None cleanly on Ctrl-D (EOFError) or Ctrl-C (KeyboardInterrupt). Test every path manually and document the behaviour in the docstring.
+
+\`\`\`interactive
+python
+{"title": "Exercise: robust numeric input", "stdin": ["abc", "99", "21.5"], "caption": "Run it with the lines in the Input box (each input() call takes the next line; when they run out, input() raises EOFError, just like Ctrl-D). Check replaces input() with scripted answers to try every path, including Ctrl-C."}
+---
+def ask_float(prompt, lo, hi):
+    """Ask until the user types a number in [lo, hi] and return it as a float.
+    Non-numbers and out-of-range numbers print a message and ask again.
+    Return None on end of input (Ctrl-D) or Ctrl-C."""
+    pass
+
+print("got", ask_float("Temperature (-50 to 50): ", -50, 50))
+# --- tests ---
+import builtins
+def _feed(*lines, end=EOFError):
+    queue = list(lines)
+    def fake(prompt=""):
+        print(prompt, end="")
+        if queue:
+            return queue.pop(0)
+        raise end()
+    builtins.input = fake
+_feed("5")
+assert ask_float("? ", 0, 10) == 5.0, "a valid number is returned as a float"
+_feed("abc", "1e", "7.5")
+assert ask_float("? ", 0, 10) == 7.5, "non-numbers are rejected and it asks again"
+_feed("-1", "11", "10")
+assert ask_float("? ", 0, 10) == 10.0, "out-of-range answers ask again; lo and hi themselves are allowed"
+_feed("42", "1")
+assert _capture(ask_float, "? ", 0, 10).replace("? ", "").strip() != "", "an out-of-range answer prints a message"
+_feed()
+assert ask_float("? ", 0, 10) is None, "end of input (Ctrl-D, EOFError) returns None"
+_feed("abc", end=KeyboardInterrupt)
+assert ask_float("? ", 0, 10) is None, "Ctrl-C (KeyboardInterrupt) returns None"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'custom-exceptions',
               title: 'Custom exceptions for a loader',
-              prompt:
-                'Define a hierarchy DataError -> (MissingFieldError, BadValueError). Rewrite the CSV validator from the previous lesson so parse_row raises these with the row number in the message; the caller catches DataError to collect errors and lets anything else propagate. Demonstrate raise ... from e when wrapping a ValueError from int().',
+              prompt: `Define a hierarchy DataError -> (MissingFieldError, BadValueError). Rewrite the CSV validator from the previous lesson so parse_row raises these with the row number in the message; the caller catches DataError to collect errors and lets anything else propagate. Demonstrate raise ... from e when wrapping a ValueError from int().
+
+\`\`\`interactive
+python
+{"title": "Exercise: custom exceptions", "caption": "Define the three classes and parse_row, then Check. The checks look at the class hierarchy, which error each bad row raises, the row number in the message, and the __cause__ that raise ... from e records."}
+---
+def parse_row(row, line_number):
+    """row is a dict of strings with keys name, age, email.
+    Return (name, age as int, email). Raise MissingFieldError if a field
+    is missing or empty, BadValueError if age is not a non-negative
+    integer (chained from int()'s ValueError with raise ... from e).
+    Both messages include line_number."""
+    pass
+
+print(parse_row({"name": "ada", "age": "36", "email": "ada@example.org"}, 2))
+# --- tests ---
+assert issubclass(MissingFieldError, DataError) and issubclass(BadValueError, DataError) and issubclass(DataError, Exception), "MissingFieldError and BadValueError are both DataErrors, and DataError is an Exception"
+assert parse_row({"name": "ada", "age": "36", "email": "a@x.org"}, 2) == ("ada", 36, "a@x.org")
+assert _raises(MissingFieldError, parse_row, {"name": "bo", "age": "3"}, 5), "a missing email raises MissingFieldError"
+assert _raises(MissingFieldError, parse_row, {"name": "", "age": "3", "email": "b@x.org"}, 5), "an empty name raises MissingFieldError"
+assert _raises(BadValueError, parse_row, {"name": "cy", "age": "abc", "email": "c@x.org"}, 7), "a non-numeric age raises BadValueError"
+assert _raises(BadValueError, parse_row, {"name": "cy", "age": "-4", "email": "c@x.org"}, 7), "a negative age raises BadValueError"
+try:
+    parse_row({"name": "cy", "age": "abc", "email": "c@x.org"}, 7)
+except DataError as e:
+    _err = e
+assert "7" in str(_err), "the message includes the row number"
+assert isinstance(_err.__cause__, ValueError), "raise ... from e keeps int()'s ValueError as __cause__"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'bare-except-harm',
               title: 'Why bare except is harmful',
-              prompt:
-                'Write a loop that processes items inside try: ... except: pass, with a typo in the body (e.g. itme instead of item). Run it and observe that it silently does nothing. Replace with except ValueError and show the NameError surfaces. Write three sentences on the lesson.',
+              prompt: `Write a loop that processes items inside try: ... except: pass, with a typo in the body (e.g. itme instead of item). Run it and observe that it silently does nothing. Replace with except ValueError and show the NameError surfaces. Write three sentences on the lesson.
+
+\`\`\`interactive
+python
+{"title": "Exercise: the bare except", "caption": "Run it: the totals stay at zero and nothing says why. Change except: to except ValueError: and run again; the NameError for the typo surfaces with its line number. Fix the typo and the bad item is still skipped, as intended."}
+---
+items = ["3", "4", "five", "6"]
+total = 0
+for item in items:
+    try:
+        total += int(itme)
+    except:
+        pass
+print("total:", total)
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
@@ -2053,6 +3721,35 @@ Read the tutorial's errors chapter in full now, and Think Python's treatment; th
 A well-behaved tool follows Unix conventions: read input from a file *or* from **stdin** when no file is given, write results to **stdout**, write diagnostics and errors to **stderr** (\`print(msg, file=sys.stderr)\`), and **exit** with 0 on success and a non-zero code on failure (\`sys.exit(2)\`, or return the code from main). This is what lets \`cat data.csv | python tool.py summarise | sort\` work and lets a shell script detect failure.
 
 Structure the program as \`def main(argv=None) -> int\`, which builds the parser, parses \`argv\` (defaulting to \`sys.argv[1:]\`), calls the pure functions, handles their exceptions by printing a message to stderr and returning a code, and is invoked by the main guard with \`sys.exit(main())\`. Because \`main\` takes \`argv\` as a parameter, tests can call \`main(["summarise", "x.csv"])\` without touching the real command line.
+
+\`\`\`interactive
+python
+{"title": "main(argv) without a terminal", "caption": "Run it: each main call parses its own argument list, exactly as a test would, and returns an exit code instead of exiting. The --help call prints the generated help; the last call shows argparse rejecting a bad value (it raises SystemExit with code 2, the usage-error convention). Try adding a --verbose flag."}
+---
+import argparse, sys
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(prog="shout", description="Repeat a word loudly.")
+    parser.add_argument("word")
+    parser.add_argument("--times", type=int, default=1)
+    args = parser.parse_args(argv)
+    if args.times < 1:
+        print("shout: --times must be at least 1", file=sys.stderr)
+        return 1
+    print(" ".join([args.word.upper()] * args.times))
+    return 0
+
+print("exit code", main(["hello", "--times", "3"]))
+print("exit code", main(["hi", "--times", "0"]))
+try:
+    main(["--help"])
+except SystemExit as e:
+    print("--help exits with code", e.code)
+try:
+    main(["hello", "--times", "lots"])
+except SystemExit as e:
+    print("bad value exits with code", e.code)
+\`\`\`
 
 Use the \`logging\` module for diagnostics controlled by \`--verbose\` rather than scattering prints. Read the argparse tutorial first (it is a walkthrough), then the reference; Beazley's course has a good section on scripts.`,
           resources: [
@@ -2172,9 +3869,45 @@ Use the \`logging\` module for diagnostics controlled by \`--verbose\` rather th
           ],
           explanation: `So far data (dicts, tuples) and the functions that use it have lived apart, and every function had to know the layout of the data. A **class** brings them together: it defines a new type whose instances carry **state** (attributes) and **behaviour** (methods). \`class Account:\` with \`def __init__(self, owner, balance=0):\` describes how to build an account; \`acct = Account("ada", 100)\` creates an instance; \`acct.deposit(50)\` calls a method on it.
 
+\`\`\`interactive
+memory-diagram
+{"title": "Instances, self and aliases", "caption": "Step through. The class Account is itself an object listing its methods. Inside __init__ and deposit, self points at the very instance being built or used, so self.balance = ... writes into that instance's box. mine and also are two names for one Account: the deposit made through also is visible through mine, while theirs is a separate box."}
+---
+class Account:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+
+    def deposit(self, amount):
+        self.balance += amount
+
+mine = Account("ada", 100)
+theirs = Account("alan")
+also = mine
+also.deposit(50)
+print(mine.balance, theirs.balance, mine is also)
+\`\`\`
+
 **self** is nothing magical: \`acct.deposit(50)\` is translated to \`Account.deposit(acct, 50)\`. The method's first parameter receives the instance so the body can read and modify *that* object's attributes with \`self.balance\`. Forgetting \`self\` in a method signature or in an attribute reference produces the two most common class errors; both have readable tracebacks.
 
 Attributes created on \`self\` are **instance attributes**, distinct per object. Names assigned in the class body are **class attributes**, shared by all instances; a mutable class attribute (\`items = []\`) is the \`[[0]*3]*3\` trap in a new costume. Use class attributes for constants and defaults only.
+
+\`\`\`interactive
+memory-diagram
+{"title": "A shared class attribute", "caption": "Step to the end. members lives in the class box, not in either Team instance, so red.add and blue.add both append to that one list. Edit the code to set self.members = [] in an __init__, visualise again, and each instance box gets its own list."}
+---
+class Team:
+    members = []
+
+    def add(self, name):
+        self.members.append(name)
+
+red = Team()
+blue = Team()
+red.add("ann")
+blue.add("bob")
+print(red.members, blue.members)
+\`\`\`
 
 Give every class a \`__repr__\` returning something like \`Account(owner='ada', balance=150)\`; it makes debugging and test failures readable. Instances are ordinary mutable objects: two names can alias one instance, and passing an instance to a function lets the function mutate it. Python has no enforced privacy; a leading underscore (\`_balance\`) means "do not touch from outside", by convention.
 
@@ -2208,32 +3941,133 @@ Design question: what belongs in a class? State that must stay consistent (a bal
             {
               slug: 'dict-to-class',
               title: 'From a dict to a class',
-              prompt:
-                'Start with functions deposit(acct_dict, amt) and withdraw(acct_dict, amt) over a dict {"owner":..., "balance":..., "history":[]}. Convert to class Account with the same behaviour, a __repr__, and a rule that withdraw raises ValueError on insufficient funds. Write a short script creating three accounts and transferring between them; verify total money is conserved (sum of balances unchanged).',
+              prompt: `Start with functions deposit(acct_dict, amt) and withdraw(acct_dict, amt) over a dict {"owner":..., "balance":..., "history":[]}. Convert to class Account with the same behaviour, a __repr__, and a rule that withdraw raises ValueError on insufficient funds. Write a short script creating three accounts and transferring between them; verify total money is conserved (sum of balances unchanged).
+
+\`\`\`interactive
+python
+{"title": "Exercise: from a dict to a class", "caption": "The dict version is given. Write class Account with the same behaviour (history records each amount: positive for deposits, negative for withdrawals), then Check. A refused withdrawal must leave balance and history untouched."}
+---
+def deposit(acct, amt):
+    acct["balance"] += amt
+    acct["history"].append(amt)
+
+def withdraw(acct, amt):
+    acct["balance"] -= amt
+    acct["history"].append(-amt)
+
+class Account:
+    pass
+
+a = Account("ada", 100)
+print(a)
+# --- tests ---
+a, b, c = Account("ada", 100), Account("bob"), Account("cy", 30)
+assert (a.owner, a.balance, a.history) == ("ada", 100, []), "Account(owner, balance=0) starts with an empty history"
+assert b.balance == 0, "balance defaults to 0"
+a.deposit(50)
+a.withdraw(30)
+assert a.balance == 120 and a.history == [50, -30], "deposit and withdraw update balance and history"
+assert _raises(ValueError, c.withdraw, 31), "withdrawing more than the balance raises ValueError"
+assert c.balance == 30 and c.history == [], "a refused withdrawal changes nothing"
+assert b.history is not a.history, "each account has its own history list"
+assert "ada" in repr(a) and "120" in repr(a), "__repr__ shows the owner and balance"
+total = a.balance + b.balance + c.balance
+a.withdraw(20); b.deposit(20)
+c.withdraw(10); a.deposit(10)
+assert a.balance + b.balance + c.balance == total, "transfers conserve the total"
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
             {
               slug: 'class-attribute-trap',
               title: 'The shared class attribute trap',
-              prompt:
-                'Define class Team with a class attribute members = [] and a method add(name) that appends. Create two teams, add to one, print both. Explain the output, fix by creating the list in __init__, and show the difference with id().',
+              prompt: `Define class Team with a class attribute members = [] and a method add(name) that appends. Create two teams, add to one, print both. Explain the output, fix by creating the list in __init__, and show the difference with id().
+
+The memory diagram "A shared class attribute" in the explanation draws the bug. Fix it here:
+
+\`\`\`interactive
+python
+{"title": "Exercise: fix the shared list", "caption": "Run it to see the bug and the matching id() values, then give each Team its own list in __init__ and Check."}
+---
+class Team:
+    members = []
+
+    def add(self, name):
+        self.members.append(name)
+
+red, blue = Team(), Team()
+red.add("ann")
+print(red.members, blue.members, id(red.members) == id(blue.members))
+# --- tests ---
+r, b = Team(), Team()
+r.add("ann")
+assert r.members == ["ann"] and b.members == [], "adding to one team leaves the other empty"
+assert r.members is not b.members, "each team has its own list (different id())"
+r.add("cy")
+assert r.members == ["ann", "cy"]
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
             {
               slug: 'vector-class',
               title: 'A 2D vector class',
-              prompt:
-                'Implement Vector2 with x, y; methods add, scale, dot, norm; and __repr__. Verify Vector2(3,4).norm() == 5.0 and that a.add(b) returns a new vector without modifying a (test by printing a before and after). Then write a function that takes a list of vectors and returns the one with the largest norm.',
+              prompt: `Implement Vector2 with x, y; methods add, scale, dot, norm; and __repr__. Verify Vector2(3,4).norm() == 5.0 and that a.add(b) returns a new vector without modifying a (test by printing a before and after). Then write a function that takes a list of vectors and returns the one with the largest norm.
+
+\`\`\`interactive
+python
+{"title": "Exercise: Vector2", "caption": "Write the class and longest(vectors), then Check. add and scale return new vectors; the checks make sure the originals are untouched."}
+---
+import math
+
+class Vector2:
+    pass
+
+def longest(vectors):
+    pass
+
+a = Vector2(3, 4)
+print(a, a.norm())
+# --- tests ---
+a, b = Vector2(3, 4), Vector2(1, -2)
+assert a.norm() == 5.0
+s = a.add(b)
+assert (s.x, s.y) == (4, 2), "add returns the sum (4, 2)"
+assert (a.x, a.y) == (3, 4) and s is not a, "add returns a new vector and leaves a unchanged"
+t = a.scale(2)
+assert (t.x, t.y) == (6, 8) and (a.x, a.y) == (3, 4), "scale(2) returns (6, 8) and leaves a unchanged"
+assert a.dot(b) == -5, "the dot product of (3, 4) and (1, -2) is -5"
+assert "3" in repr(a) and "4" in repr(a), "__repr__ shows x and y"
+vs = [Vector2(1, 1), Vector2(-6, 0), Vector2(3, 4)]
+assert longest(vs) is vs[1], "longest returns the vector (-6, 0), whose norm 6 is largest"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'self-errors',
               title: 'Produce and fix the self errors',
-              prompt:
-                'Write a method without self in the signature and call it; then reference an attribute as balance instead of self.balance. Record both tracebacks, explain each with the obj.method(x) -> Class.method(obj, x) rule, and fix them.',
+              prompt: `Write a method without self in the signature and call it; then reference an attribute as balance instead of self.balance. Record both tracebacks, explain each with the obj.method(x) -> Class.method(obj, x) rule, and fix them.
+
+\`\`\`interactive
+python
+{"title": "Exercise: the two self errors", "caption": "Run it and record the TypeError (deposit received the instance as an extra argument). Fix the signature, run again, and record the second traceback, a NameError from show. Fix that too."}
+---
+class Account:
+    def __init__(self, balance):
+        self.balance = balance
+
+    def deposit(amount):
+        self.balance += amount
+
+    def show(self):
+        print("balance:", balance)
+
+acct = Account(100)
+acct.deposit(50)
+acct.show()
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
@@ -2277,9 +4111,60 @@ Design question: what belongs in a class? State that must stay consistent (a bal
           ],
           explanation: `Most classes are **records**: a few named fields, an \`__init__\` that stores them, a \`__repr__\`, and equality by value. Writing that by hand is tedious and error-prone, so Python provides **dataclasses**: decorate a class with \`@dataclass\`, declare fields with type annotations (\`name: str\`, \`mass: float = 0.0\`), and \`__init__\`, \`__repr__\` and \`__eq__\` are generated. For a mutable default use \`field(default_factory=list)\` (the mutable-default rule again). \`frozen=True\` makes instances immutable and therefore hashable (usable as dict keys), and \`order=True\` generates comparisons field by field.
 
+\`\`\`interactive
+python
+{"title": "What @dataclass writes for you", "caption": "Run it: the generated __repr__ and __eq__ print and compare by value, and the frozen Point works as a dict key. Remove frozen=True and run again: assigning p.x now works, but the dict line fails with unhashable type, because eq without frozen sets __hash__ to None."}
+---
+from dataclasses import dataclass, field
+
+@dataclass
+class Planet:
+    name: str
+    mass: float = 0.0
+    moons: list = field(default_factory=list)
+
+@dataclass(frozen=True)
+class Point:
+    x: float
+    y: float
+
+print(Planet("Mars", 0.107), Planet("Mars", 0.107) == Planet("Mars", 0.107))
+p = Point(1, 2)
+print({p: "home"})
+p.x = 5
+\`\`\`
+
 Behind this are Python's **special methods** ("dunders"). Every operator and built-in function dispatches to one: \`a == b\` calls \`a.__eq__(b)\`, \`a < b\` calls \`__lt__\`, \`a + b\` calls \`__add__\` (and if that returns \`NotImplemented\`, tries \`b.__radd__(a)\`), \`len(x)\` calls \`__len__\`, \`x[i]\` calls \`__getitem__\`, \`for v in x\` calls \`__iter__\`, \`v in x\` calls \`__contains__\`, \`print(x)\` calls \`__str__\` falling back to \`__repr__\`. Implementing these makes your types feel built-in: a \`Vector\` that supports \`+\` and \`*\`, a \`Polynomial\` you can evaluate with \`p(x)\` via \`__call__\`, a \`Deck\` you can index and iterate.
 
 Two rules keep this sane. If you define \`__eq__\` you must think about \`__hash__\` (dataclasses handle it: eq without frozen sets \`__hash__\` to None). And return \`NotImplemented\` (not raise) from binary operators when the other operand is of a type you do not know, so Python can try the reflected operation.
+
+\`\`\`interactive
+python
+{"title": "Operators dispatch to special methods", "caption": "Run it. 2 * m works only because __rmul__ exists: int's own __mul__ returns NotImplemented for a Money, so Python asks Money. The last line fails with a clear TypeError for the same reason; delete __rmul__ and watch 2 * m fail too."}
+---
+class Money:
+    def __init__(self, cents):
+        self.cents = cents
+
+    def __repr__(self):
+        return f"Money({self.cents})"
+
+    def __add__(self, other):
+        if not isinstance(other, Money):
+            return NotImplemented
+        return Money(self.cents + other.cents)
+
+    def __mul__(self, k):
+        if not isinstance(k, int):
+            return NotImplemented
+        return Money(self.cents * k)
+
+    __rmul__ = __mul__
+
+m = Money(150)
+print(m + Money(50), m * 3, 2 * m)
+print(m + 1)
+\`\`\`
 
 When to use what: a dict for ad-hoc data crossing a boundary (JSON), a \`namedtuple\` or frozen dataclass for small immutable values, a dataclass for records with behaviour, a hand-written class when construction is complex. Read the dataclasses docs and the Data Model chapter sections listed; the exercises build operator-aware classes and measure what dataclass generates.`,
           resources: [
@@ -2318,24 +4203,91 @@ When to use what: a dict for ad-hoc data crossing a boundary (JSON), a \`namedtu
             {
               slug: 'dataclass-records',
               title: 'Records as dataclasses',
-              prompt:
-                'Define @dataclass(frozen=True, order=True) class Planet(name: str, mass: float, period: float). Load the exoplanet CSV into a list of Planet, sort them, put them in a set to de-duplicate, and use one as a dict key. Then try to assign p.mass = 1 and record the error. Print dataclasses.fields(Planet) and explain what was generated.',
+              prompt: `Define @dataclass(frozen=True, order=True) class Planet(name: str, mass: float, period: float). Load the exoplanet CSV into a list of Planet, sort them, put them in a set to de-duplicate, and use one as a dict key. Then try to assign p.mass = 1 and record the error. Print dataclasses.fields(Planet) and explain what was generated.
+
+\`\`\`interactive
+python
+{"title": "Exercise: Planet records", "caption": "Define Planet and Check it on a few hand-written records; then load the real CSV on your machine. Before checking, predict the sorted order: order=True compares name first, then mass, then period."}
+---
+from dataclasses import dataclass, fields, FrozenInstanceError
+
+# your Planet dataclass here
+
+print(fields(Planet))
+# --- tests ---
+from dataclasses import FrozenInstanceError
+ps = [Planet("Mars", 0.107, 687.0), Planet("Earth", 1.0, 365.25), Planet("Mars", 0.107, 687.0)]
+assert ps[0] == ps[2] and ps[0] is not ps[2], "equal fields mean equal planets"
+assert len(set(ps)) == 2, "frozen planets are hashable, so a set removes the duplicate"
+assert sorted(ps)[0].name == "Earth", "order=True sorts by name first"
+assert {ps[1]: "home"}[Planet("Earth", 1.0, 365.25)] == "home", "a planet works as a dict key"
+assert _raises(FrozenInstanceError, setattr, ps[0], "mass", 1), "assigning p.mass raises FrozenInstanceError"
+assert [f.name for f in fields(Planet)] == ["name", "mass", "period"]
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
             {
               slug: 'vector-operators',
               title: 'Operators for Vector2',
-              prompt:
-                'Extend Vector2 (or write it as a dataclass) with __add__, __sub__, __mul__ (scalar), __rmul__, __neg__, __eq__, __abs__ (norm) and __iter__ (so x, y = v works). Verify 2 * v == v * 2, abs(Vector2(3,4)) == 5, and that v + "a" raises TypeError (return NotImplemented). Write 10 assertions covering the identities a + b == b + a and -(-a) == a.',
+              prompt: `Extend Vector2 (or write it as a dataclass) with __add__, __sub__, __mul__ (scalar), __rmul__, __neg__, __eq__, __abs__ (norm) and __iter__ (so x, y = v works). Verify 2 * v == v * 2, abs(Vector2(3,4)) == 5, and that v + "a" raises TypeError (return NotImplemented). Write 10 assertions covering the identities a + b == b + a and -(-a) == a.
+
+\`\`\`interactive
+python
+{"title": "Exercise: operators for Vector2", "caption": "Write the special methods, add your own ten identity assertions at the bottom (they run on Run), then Check."}
+---
+import math
+
+class Vector2:
+    def __init__(self, x, y):
+        self.x, self.y = x, y
+
+    def __repr__(self):
+        return f"Vector2({self.x}, {self.y})"
+
+a, b = Vector2(1, 2), Vector2(-3, 5)
+# your assertions here, e.g. assert a + b == b + a
+# --- tests ---
+v, w = Vector2(3, 4), Vector2(1, -2)
+assert v + w == Vector2(4, 2) and v - w == Vector2(2, 6)
+assert 2 * v == v * 2 == Vector2(6, 8), "2 * v == v * 2 (needs __rmul__)"
+assert -v == Vector2(-3, -4) and -(-v) == v
+assert abs(Vector2(3, 4)) == 5
+x, y = v
+assert (x, y) == (3, 4), "x, y = v unpacks (needs __iter__)"
+assert v != w and not (v == "a"), "== compares by value and is False for non-vectors"
+assert _raises(TypeError, lambda: v + "a"), "v + 'a' raises TypeError (return NotImplemented)"
+assert _raises(TypeError, lambda: v * v), "v * v is not scalar multiplication, so TypeError"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'polynomial-class',
               title: 'A Polynomial class',
-              prompt:
-                'Implement Polynomial from a list of coefficients with __call__(x) for evaluation (Horner scheme), __add__, __mul__, __repr__ printing like 3x^2 - x + 2, and derivative(). Verify (x+1)*(x-1) == Polynomial([-1, 0, 1]) and that p(2) == 7 for p = x^2 + x + 1. Compare evaluation time of Horner vs naive powers for degree 1000 polynomials.',
+              prompt: `Implement Polynomial from a list of coefficients with __call__(x) for evaluation (Horner scheme), __add__, __mul__, __repr__ printing like 3x^2 - x + 2, and derivative(). Verify (x+1)*(x-1) == Polynomial([-1, 0, 1]) and that p(2) == 7 for p = x^2 + x + 1. Compare evaluation time of Horner vs naive powers for degree 1000 polynomials.
+
+\`\`\`interactive
+python
+{"title": "Exercise: Polynomial", "caption": "Coefficients are listed from the constant term up, so Polynomial([-1, 0, 1]) is x^2 - 1. You will need __eq__ too. Check covers evaluation, the operators, the derivative and the two repr examples; do the timing comparison on your machine."}
+---
+class Polynomial:
+    def __init__(self, coeffs):
+        self.coeffs = list(coeffs)   # coeffs[i] multiplies x**i
+
+p = Polynomial([1, 1, 1])
+print(p)
+# --- tests ---
+x_plus_1, x_minus_1 = Polynomial([1, 1]), Polynomial([-1, 1])
+p = Polynomial([1, 1, 1])
+assert p(2) == 7 and p(0) == 1 and p(-1) == 1, "p = x^2 + x + 1 gives p(2) = 7"
+assert x_plus_1 * x_minus_1 == Polynomial([-1, 0, 1]), "(x + 1)(x - 1) = x^2 - 1"
+assert x_plus_1 + Polynomial([0, 0, 3]) == Polynomial([1, 1, 3]), "adding polynomials of different degrees"
+assert p.derivative() == Polynomial([1, 2]), "the derivative of x^2 + x + 1 is 2x + 1"
+assert repr(Polynomial([2, -1, 3])) == "3x^2 - x + 2"
+assert repr(p) == "x^2 + x + 1"
+assert Polynomial([0, 0, 0, 1])(3) == 27
+\`\`\``,
               kind: 'coding',
               difficulty: 3,
             },
@@ -2385,6 +4337,41 @@ When to use what: a dict for ad-hoc data crossing a boundary (JSON), a \`namedtu
 
 The payoff is **polymorphism**: code written against \`Account\` works unchanged on any subclass, because \`acct.withdraw(10)\` dispatches to whichever \`withdraw\` the object's class defines. Python goes further with **duck typing**: no inheritance is needed at all; if an object has a \`read()\` method, \`json.load\` will happily use it, which is why a file, a socket and an \`io.StringIO\` all work. Checking \`isinstance\` before calling is usually a smell; call the method and let it fail if unsupported.
 
+\`\`\`interactive
+python
+{"title": "Overriding, super() and duck typing", "caption": "Run it. pay_all is written once against Account and works on both classes, because acct.withdraw finds whichever withdraw the object's class defines; LimitedAccount's version checks its limit and then calls super().withdraw. count_lines works on a file-like StringIO and on a plain list alike: duck typing."}
+---
+import io
+
+class Account:
+    def __init__(self, balance):
+        self.balance = balance
+    def withdraw(self, amount):
+        self.balance -= amount
+
+class LimitedAccount(Account):
+    def __init__(self, balance, limit):
+        super().__init__(balance)
+        self.limit = limit
+    def withdraw(self, amount):
+        if amount > self.limit:
+            raise ValueError(f"limit is {self.limit}")
+        super().withdraw(amount)
+
+def pay_all(accounts, amount):
+    for acct in accounts:
+        acct.withdraw(amount)
+
+accts = [Account(100), LimitedAccount(100, 50)]
+pay_all(accts, 30)
+print([a.balance for a in accts])
+
+def count_lines(f):
+    return sum(1 for _ in f)
+
+print(count_lines(io.StringIO("a\\nb\\nc\\n")), count_lines(["x", "y"]))
+\`\`\`
+
 Inheritance is easy to misuse. The test is **is-a**: a square is-a shape, fine; a stack is-not-a list, so \`class Stack(list)\` leaks \`insert\` and indexing that a stack should not have. The informal **Liskov** rule: anywhere a parent works, a child must work without surprises; a subclass that throws where the parent did not, or ignores arguments, breaks callers. When you want to *reuse* an implementation rather than *be* the type, hold the object as an attribute instead (composition, next lesson).
 
 The \`abc\` module lets you declare an **abstract base class** with methods subclasses must implement, which documents an interface and fails fast. Read Think Python chapter 18 and Composing Programs 2.5 (inheritance sections); the shapes exercise is the classic illustration and the stack exercise shows the misuse.`,
@@ -2423,24 +4410,107 @@ The \`abc\` module lets you declare an **abstract base class** with methods subc
             {
               slug: 'shapes',
               title: 'Shapes with an abstract base',
-              prompt:
-                'Define abstract Shape with area() and perimeter(); implement Circle, Rectangle and Triangle (Heron). Write total_area(shapes) that works on any mix. Verify total_area([Circle(1), Rectangle(2,3)]) is close to 9.1416. Show that instantiating Shape() raises TypeError and that a class missing perimeter() cannot be instantiated.',
+              prompt: `Define abstract Shape with area() and perimeter(); implement Circle, Rectangle and Triangle (Heron). Write total_area(shapes) that works on any mix. Verify total_area([Circle(1), Rectangle(2,3)]) is close to 9.1416. Show that instantiating Shape() raises TypeError and that a class missing perimeter() cannot be instantiated.
+
+\`\`\`interactive
+python
+{"title": "Exercise: shapes with an abstract base", "caption": "Use abc.ABC and @abstractmethod for Shape; Circle(r), Rectangle(w, h) and Triangle(a, b, c) take their sizes in that order. Check also defines a class that forgets perimeter and expects it to be refused."}
+---
+import math
+from abc import ABC, abstractmethod
+
+class Shape(ABC):
+    pass
+
+def total_area(shapes):
+    pass
+# --- tests ---
+import math
+assert math.isclose(total_area([Circle(1), Rectangle(2, 3)]), math.pi + 6), "total_area([Circle(1), Rectangle(2, 3)]) is about 9.1416"
+assert math.isclose(Triangle(3, 4, 5).area(), 6.0), "Heron's formula gives 6 for the 3-4-5 triangle"
+assert math.isclose(Triangle(3, 4, 5).perimeter(), 12) and math.isclose(Rectangle(2, 3).perimeter(), 10) and math.isclose(Circle(1).perimeter(), 2 * math.pi)
+assert _raises(TypeError, Shape), "Shape() cannot be instantiated"
+class _NoPerimeter(Shape):
+    def area(self):
+        return 1.0
+assert _raises(TypeError, _NoPerimeter), "a subclass missing perimeter() cannot be instantiated"
+assert all(isinstance(s, Shape) for s in [Circle(1), Rectangle(1, 1), Triangle(1, 1, 1)])
+\`\`\``,
               kind: 'coding',
               difficulty: 1,
             },
             {
               slug: 'savings-account',
               title: 'Override and extend',
-              prompt:
-                'Subclass Account as SavingsAccount with an interest rate, add_interest(), and a withdraw() that calls super().withdraw after checking a monthly withdrawal limit of 3. Verify the 4th withdrawal in a month raises, and that a function that takes a list of Account and sums balances works with mixed types without isinstance.',
+              prompt: `Subclass Account as SavingsAccount with an interest rate, add_interest(), and a withdraw() that calls super().withdraw after checking a monthly withdrawal limit of 3. Verify the 4th withdrawal in a month raises, and that a function that takes a list of Account and sums balances works with mixed types without isinstance.
+
+\`\`\`interactive
+python
+{"title": "Exercise: SavingsAccount", "caption": "Account is given. Write SavingsAccount(owner, balance, rate): add_interest() adds balance * rate, withdraw allows three withdrawals per month (raising ValueError on the fourth) and new_month() resets the count. Then write total_balance without isinstance, and Check."}
+---
+class Account:
+    def __init__(self, owner, balance=0):
+        self.owner, self.balance = owner, balance
+
+    def withdraw(self, amount):
+        if amount > self.balance:
+            raise ValueError("insufficient funds")
+        self.balance -= amount
+
+class SavingsAccount(Account):
+    pass
+
+def total_balance(accounts):
+    pass
+# --- tests ---
+s = SavingsAccount("ada", 1000, 0.02)
+assert s.owner == "ada" and s.balance == 1000, "super().__init__ sets owner and balance"
+s.add_interest()
+assert abs(s.balance - 1020) < 1e-9, "add_interest adds balance * rate"
+s.withdraw(10); s.withdraw(10); s.withdraw(10)
+assert abs(s.balance - 990) < 1e-9, "three withdrawals go through"
+assert _raises(ValueError, s.withdraw, 10), "the fourth withdrawal in a month raises ValueError"
+assert abs(s.balance - 990) < 1e-9, "the refused withdrawal leaves the balance alone"
+s.new_month()
+s.withdraw(10)
+assert abs(s.balance - 980) < 1e-9, "after new_month() withdrawals work again"
+assert _raises(ValueError, SavingsAccount("bo", 5, 0.01).withdraw, 50), "the parent's insufficient-funds rule still applies (super().withdraw)"
+assert abs(total_balance([Account("a", 100), SavingsAccount("b", 50, 0.1)]) - 150) < 1e-9, "total_balance works on a mix"
+assert "isinstance" not in _code, "no isinstance needed"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
             {
               slug: 'stack-is-not-a-list',
               title: 'Why Stack(list) is wrong',
-              prompt:
-                'Implement Stack by subclassing list, then implement it again holding a private list (composition). Show that the first allows s.insert(0, x) and s[0], violating the stack contract, while the second does not. Write a paragraph applying the is-a test.',
+              prompt: `Implement Stack by subclassing list, then implement it again holding a private list (composition). Show that the first allows s.insert(0, x) and s[0], violating the stack contract, while the second does not. Write a paragraph applying the is-a test.
+
+\`\`\`interactive
+python
+{"title": "Exercise: a stack by composition", "caption": "ListStack shows the leak: Run it. Then write Stack holding a private list (self._items) with push, pop, peek and len(), and Check that it offers nothing more."}
+---
+class ListStack(list):
+    def push(self, x):
+        self.append(x)
+
+s = ListStack()
+s.push(1); s.push(2)
+s.insert(0, 99)
+print(s, s[0])
+
+class Stack:
+    pass
+# --- tests ---
+st = Stack()
+st.push(1); st.push(2); st.push(3)
+assert len(st) == 3 and st.peek() == 3, "peek shows the top without removing it"
+assert st.pop() == 3 and st.pop() == 2 and len(st) == 1, "pop removes from the top"
+assert not hasattr(st, "insert") and not hasattr(st, "append"), "no insert or append leak through"
+assert _raises(TypeError, lambda: st[0]), "indexing is not part of the stack contract"
+assert not isinstance(st, list), "Stack is not a list"
+assert _raises(IndexError, Stack().pop), "popping an empty stack raises IndexError"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
@@ -2495,6 +4565,54 @@ The \`abc\` module lets you declare an **abstract base class** with methods subc
 An **interface** names what a part must be able to do without saying how. Python offers two forms: an abstract base class (nominal: subclasses declare they implement it) and \`typing.Protocol\` (structural: anything with the right methods qualifies, which is duck typing made checkable). Define \`class Storage(Protocol): def save(self, items) -> None: ...; def load(self) -> list: ...\`, then write \`JsonStorage\`, \`CsvStorage\` and, crucially, \`MemoryStorage\` for tests.
 
 That last point is **dependency injection**: instead of a class creating its own collaborators (\`self.storage = JsonStorage("todo.json")\`), it receives them (\`def __init__(self, storage: Storage)\`). Now the core logic can be tested with in-memory fakes, swapped to a database later, and reasoned about in isolation. It is the single most valuable design habit for the testing module ahead.
+
+\`\`\`interactive
+python
+{"title": "Injecting a storage", "caption": "Run it: TodoList never says which storage it uses, so the same logic runs on MemoryStorage (as a test would) and on JsonStorage writing to the cell's virtual disk. Add a third class with save and load (say, one that prints instead of storing) and pass it in; nothing in TodoList changes."}
+---
+import json
+from typing import Protocol
+
+class Storage(Protocol):
+    def save(self, items: list[str]) -> None: ...
+    def load(self) -> list[str]: ...
+
+class MemoryStorage:
+    def __init__(self):
+        self._items: list[str] = []
+    def save(self, items):
+        self._items = list(items)
+    def load(self):
+        return list(self._items)
+
+class JsonStorage:
+    def __init__(self, path: str):
+        self.path = path
+    def save(self, items):
+        with open(self.path, "w", encoding="utf-8") as f:
+            json.dump(items, f)
+    def load(self):
+        try:
+            with open(self.path, encoding="utf-8") as f:
+                return json.load(f)
+        except FileNotFoundError:
+            return []
+
+class TodoList:
+    def __init__(self, storage: Storage):
+        self.storage = storage
+    def add(self, text: str) -> None:
+        items = self.storage.load()
+        items.append(text)
+        self.storage.save(items)
+
+JsonStorage("todo.json").save([])   # start each run from an empty file
+for storage in [MemoryStorage(), JsonStorage("todo.json")]:
+    todo = TodoList(storage)
+    todo.add("milk")
+    todo.add("eggs")
+    print(type(storage).__name__, storage.load())
+\`\`\`
 
 **Type hints** (\`def total(items: list[LineItem]) -> float\`) do not change behaviour but document contracts and let tools (mypy, your editor) catch mistakes. Use them on public functions from now on.
 
@@ -2624,6 +4742,39 @@ Structure each test as **arrange, act, assert**: set up inputs, call the functio
 
 Two helpers you need immediately: \`with pytest.raises(ValueError):\` to assert that an error path fires, and \`pytest.approx(0.3)\` to compare floats with tolerance. For functions that read files, keep the logic pure (parse a string, not a path) so most tests need no files; the next lesson covers fixtures for the rest.
 
+pytest itself runs on your machine, but the idea fits in a few lines. The cell below is a toy runner doing what pytest does at its core: find the functions named test_*, call each, and report the ones whose assert fails.
+
+\`\`\`interactive
+python
+{"title": "What pytest does, in miniature", "caption": "Run it: the median bug makes one test fail and the report names it. Fix median (an even-length list should average the two middle values) and run again until every test passes. Real pytest adds discovery across files, the values on both sides of a failed assert, fixtures and much more."}
+---
+def median(xs):
+    s = sorted(xs)
+    return s[len(s) // 2]
+
+def test_median_of_odd_length_is_middle_value():
+    assert median([3, 1, 2]) == 2
+
+def test_median_of_even_length_averages_middle_two():
+    assert median([1, 2, 3, 4]) == 2.5
+
+def test_median_does_not_reorder_input():
+    xs = [3, 1, 2]
+    median(xs)
+    assert xs == [3, 1, 2]
+
+tests = [f for name, f in list(globals().items()) if name.startswith("test_")]
+failed = 0
+for test in tests:
+    try:
+        test()
+        print("PASSED", test.__name__)
+    except AssertionError:
+        failed += 1
+        print("FAILED", test.__name__)
+print(f"{len(tests) - failed} passed, {failed} failed")
+\`\`\`
+
 Every bug you fix gets a **regression test** that reproduces it first and passes after; this is how a codebase stops re-breaking. A coverage tool (\`pytest --cov\`) reports which lines ran; low coverage is a warning, high coverage is not proof.
 
 Install pytest into a virtual environment (lesson 3 of this module covers that properly; for now \`pip install pytest\`), read the Getting Started page, and convert the manual checks from earlier exercises into tests. You will find bugs.`,
@@ -2679,8 +4830,31 @@ Install pytest into a virtual environment (lesson 3 of this module covers that p
             {
               slug: 'float-and-error-tests',
               title: 'Floats and error paths',
-              prompt:
-                'Test the Newton square root from module 2 with pytest.approx for inputs 2, 1e-6, 1e12 (relative tolerance 1e-9), and test that it raises ValueError for negative input (add that behaviour if missing). Then test that quadratic_roots returns None for a negative discriminant and that roots are returned sorted.',
+              prompt: `Test the Newton square root from module 2 with pytest.approx for inputs 2, 1e-6, 1e12 (relative tolerance 1e-9), and test that it raises ValueError for negative input (add that behaviour if missing). Then test that quadratic_roots returns None for a negative discriminant and that roots are returned sorted.
+
+Before writing the pytest file, use the cell below: its checks are the same assertions (math.isclose plays the role of pytest.approx). They fail on the module 2 version. Find out why, and fix the function.
+
+\`\`\`interactive
+python
+{"title": "Exercise: what the float tests reveal", "caption": "Press Check first: 1e-6 fails because an absolute stopping rule (x*x within 1e-10 of a) is far too loose for small a. Switch to a relative rule, add the ValueError for negative input, and Check again."}
+---
+def newton_sqrt(a):
+    x = a
+    steps = 0
+    while abs(x * x - a) >= 1e-10 and steps < 200:
+        x = (x + a / x) / 2
+        steps += 1
+    return x
+
+print(newton_sqrt(2), newton_sqrt(1e-6))
+# --- tests ---
+import math
+assert math.isclose(newton_sqrt(2), math.sqrt(2), rel_tol=1e-9), "newton_sqrt(2) == approx(sqrt(2))"
+assert math.isclose(newton_sqrt(1e-6), 1e-3, rel_tol=1e-9), "newton_sqrt(1e-6) == approx(0.001), relative tolerance 1e-9"
+assert math.isclose(newton_sqrt(1e12), 1e6, rel_tol=1e-9), "newton_sqrt(1e12) == approx(1e6)"
+assert math.isclose(newton_sqrt(0.25), 0.5, rel_tol=1e-9) and math.isclose(newton_sqrt(1e-12), 1e-6, rel_tol=1e-9), "small inputs such as 0.25 and 1e-12 too"
+assert _raises(ValueError, newton_sqrt, -4), "a negative input raises ValueError"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
@@ -2735,6 +4909,25 @@ Install pytest into a virtual environment (lesson 3 of this module covers that p
             'Property-based testing (Hypothesis) as a glimpse',
           ],
           explanation: `Once you have twenty tests, duplication appears. **Parametrisation** turns a table of cases into one test: \`@pytest.mark.parametrize("year, expected", [(1900, False), (2000, True), (2024, True)])\` runs the test body once per row and reports each separately. This is the natural form for the decision tables you wrote in module 2.
+
+\`\`\`interactive
+python
+{"title": "A decision table as data", "caption": "Run it: each row is one case, reported separately with its own id, which is exactly what parametrize does for you. Break is_leap (drop the 400 rule) and see precisely which rows fail. Then add rows for 1600 and 1700."}
+---
+def is_leap(year):
+    return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+
+cases = [
+    (1900, False, "century not divisible by 400"),
+    (2000, True, "century divisible by 400"),
+    (2023, False, "not divisible by 4"),
+    (2024, True, "divisible by 4"),
+    (2100, False, "another plain century"),
+]
+for year, expected, case_id in cases:
+    result = is_leap(year)
+    print("PASSED" if result == expected else "FAILED", f"[{case_id}]", year, result)
+\`\`\`
 
 **Fixtures** provide shared setup: a function decorated with \`@pytest.fixture\` returns an object, and any test that names it as a parameter receives a fresh one. pytest ships useful fixtures: \`tmp_path\` gives a unique temporary directory, so file-writing code can be tested without touching real files or leaving litter; \`monkeypatch\` temporarily replaces attributes or environment variables; \`capsys\` captures stdout so you can test \`main(["--help"])\` output.
 
@@ -2795,8 +4988,28 @@ Finally, think systematically about **edge cases**: empty input, a single elemen
             {
               slug: 'tdd-roman',
               title: 'Test-driven Roman numerals',
-              prompt:
-                'Using strict TDD (write one failing test, make it pass, refactor, repeat), implement to_roman(n) for 1-3999 and from_roman(s). Keep a log of each red/green step. Finish with a parametrised round-trip test over all 3999 values and a test that from_roman("IIII") raises ValueError.',
+              prompt: `Using strict TDD (write one failing test, make it pass, refactor, repeat), implement to_roman(n) for 1-3999 and from_roman(s). Keep a log of each red/green step. Finish with a parametrised round-trip test over all 3999 values and a test that from_roman("IIII") raises ValueError.
+
+Do the red/green cycle in your own pytest file. When you think you are done, the cell below is an independent referee: paste your two functions in and Check.
+
+\`\`\`interactive
+python
+{"title": "Exercise: Roman numerals referee", "caption": "Check runs known values, the round trip over all 1-3999, and rejection of malformed numerals such as IIII, IC and VV (only the standard, shortest form is valid)."}
+---
+def to_roman(n):
+    pass
+
+def from_roman(s):
+    pass
+# --- tests ---
+assert to_roman(1) == "I" and to_roman(4) == "IV" and to_roman(9) == "IX" and to_roman(14) == "XIV"
+assert to_roman(1994) == "MCMXCIV" and to_roman(3999) == "MMMCMXCIX" and to_roman(444) == "CDXLIV"
+assert from_roman("MCMXCIV") == 1994 and from_roman("XL") == 40
+assert all(from_roman(to_roman(n)) == n for n in range(1, 4000)), "from_roman(to_roman(n)) == n for every n from 1 to 3999"
+assert _raises(ValueError, from_roman, "IIII"), "from_roman('IIII') raises ValueError"
+assert _raises(ValueError, from_roman, "IC") and _raises(ValueError, from_roman, "VV"), "IC and VV are not valid numerals either"
+assert _raises(ValueError, from_roman, "") and _raises(ValueError, from_roman, "ABC"), "an empty string or other letters raise ValueError"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
@@ -2864,6 +5077,27 @@ Finally, think systematically about **edge cases**: empty input, a single elemen
 
 For problems that unfold over time or in production, use **logging** instead of prints: \`logging.basicConfig(level=logging.INFO)\` and \`log.debug("row %d parsed: %r", i, row)\`. Levels let you turn detail on with \`--verbose\` and off by default, messages carry timestamps and module names, and nothing needs deleting before shipping.
 
+\`\`\`interactive
+python
+{"title": "Logging levels instead of prints", "caption": "Run it: at INFO level the debug lines are hidden and the warning shows the bad row's number; log output goes to stderr, shown in red here, while results go to stdout. Change level=logging.INFO to logging.DEBUG (what a --verbose flag would do) and run again."}
+---
+import logging
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s", force=True)
+log = logging.getLogger("loader")
+
+rows = ["3", "4", "x", "6"]
+total = 0
+for i, row in enumerate(rows, start=1):
+    log.debug("row %d raw: %r", i, row)
+    try:
+        total += int(row)
+    except ValueError:
+        log.warning("row %d is not a number: %r", i, row)
+log.info("loaded %d rows", len(rows))
+print("total:", total)
+\`\`\`
+
 When you have no idea where the bug is, **bisect**: halve the input until the smallest failing case appears, or halve the range of commits (\`git bisect\`, next lesson). Read the pdb docs and practise the stepping exercises until the commands are in your fingers.`,
           resources: [
             {
@@ -2925,8 +5159,48 @@ When you have no idea where the bug is, **bisect**: halve the input until the sm
             {
               slug: 'bisect-the-input',
               title: 'Bisect a failing input',
-              prompt:
-                'Create a 10,000-row CSV in which exactly one row has an invisible problem (e.g. a non-breaking space in a number). Write bisect_failure(rows, check) that finds the smallest failing prefix, then the single offending row, in about 14 checks. Report the number of checks and the row.',
+              prompt: `Create a 10,000-row CSV in which exactly one row has an invisible problem (e.g. a non-breaking space in a number). Write bisect_failure(rows, check) that finds the smallest failing prefix, then the single offending row, in about 14 checks. Report the number of checks and the row.
+
+\`\`\`interactive
+python
+{"title": "Exercise: bisect a failing input", "caption": "check(rows) is True when every row in the list parses. Write bisect_failure so it only ever calls check on prefixes rows[:k] and returns the index of the bad row. Check counts your calls: about 14 for 10,000 rows (at most 16 allowed)."}
+---
+def check(rows):
+    try:
+        for row in rows:
+            float(row.split(",")[1])
+        return True
+    except ValueError:
+        return False
+
+def bisect_failure(rows, check):
+    """Index of the first row whose prefix fails check (rows[:i+1] fails, rows[:i] passes)."""
+    pass
+
+rows = [f"r{i},{i * 0.5}" for i in range(10_000)]
+rows[6123] = "r6123,3\\u00a0061.5"    # a non-breaking space inside the number
+print(bisect_failure(rows, check))
+# --- tests ---
+def check(rows):
+    try:
+        for row in rows:
+            float(row.split(",")[1])
+        return True
+    except ValueError:
+        return False
+calls = []
+def counted(prefix):
+    calls.append(len(prefix))
+    return check(prefix)
+rows = [f"r{i},{i * 0.5}" for i in range(10_000)]
+rows[6123] = "r6123,3\\u00a0061.5"
+assert bisect_failure(rows, counted) == 6123, "finds the bad row at index 6123"
+assert len(calls) <= 16, f"about 14 checks for 10,000 rows (you used {len(calls)})"
+for bad in [0, 1, 9_998, 9_999]:
+    rows2 = [f"r{i},{i}" for i in range(10_000)]
+    rows2[bad] = "rX,oops"
+    assert bisect_failure(rows2, check) == bad, f"finds a bad row at index {bad}"
+\`\`\``,
               kind: 'coding',
               difficulty: 2,
             },
@@ -3192,6 +5466,26 @@ Stop formatting by hand. A **formatter** (\`black\` or \`ruff format\`) rewrites
 
 Beyond tools: **naming** is the main documentation. \`n_rows\` beats \`n\`; \`is_valid\` beats \`flag\`; a function named \`load_planets\` must load planets and nothing else. Comments should explain *why* (a non-obvious constraint, a workaround) rather than restate the code; a comment that paraphrases the next line is noise. **Docstrings** (PEP 257) describe the contract of every public function and class; pick one format (Google or NumPy style) and keep it. Type hints on public signatures complete the picture.
 
+\`\`\`interactive
+python
+{"title": "Same behaviour, better names", "caption": "Run it: both functions return the same answer, and the asserts confirm it. Compare how long it takes to understand each one. The second needs no comments, because its names and docstring say what the first one's comments would have to."}
+---
+def f(l, t):
+    r = []
+    for x in l:
+        if x[1] >= t:   # check score
+            r.append(x[0])   # add name
+    return r
+
+def names_scoring_at_least(results: list[tuple[str, int]], threshold: int) -> list[str]:
+    """Names from (name, score) pairs whose score is at least threshold, in input order."""
+    return [name for name, score in results if score >= threshold]
+
+results = [("ann", 72), ("bob", 55), ("cy", 90)]
+assert f(results, 60) == names_scoring_at_least(results, 60) == ["ann", "cy"]
+print(names_scoring_at_least(results, 60))
+\`\`\`
+
 Read PEP 8 once (skim the long tail), the ruff docs quick start, and \`import this\`. The exercises have you lint your own earlier code, which is humbling and useful.`,
           resources: [
             {
@@ -3321,6 +5615,35 @@ Read PEP 8 once (skim the long tail), the ruff docs quick start, and \`import th
 
 **Run a doubling experiment.** Time the code for $n$, $2n$, $4n$, $8n$ and look at the ratio between successive times. Ratio about 1: constant. Slightly above 1: logarithmic. About 2: linear. A bit above 2 (like 2.2): $n \\log n$. About 4: quadratic. About 8: cubic. From the class and one measurement you can **predict**: if a quadratic algorithm takes 1 s on 10,000 items, it takes about 100 s on 100,000 and 3 hours on 1,000,000. Making this prediction *before* running is the skill.
 
+\`\`\`interactive
+python
+{"title": "A doubling experiment", "caption": "Run it (it takes a few seconds). Each row doubles n; the ratio column is about 2 for the linear sum and about 4 for the quadratic pair count. Absolute times in this browser Python are slower than on your machine, but the ratios, which are what you predict with, come out the same."}
+---
+import time
+
+def best_time(f, n, repeat=3):
+    best = float("inf")
+    for _ in range(repeat):
+        t0 = time.perf_counter()
+        f(n)
+        best = min(best, time.perf_counter() - t0)
+    return best
+
+def linear(n):
+    return sum(range(n))
+
+def quadratic(n):
+    return sum(1 for i in range(n) for j in range(n) if i < j)
+
+for f, sizes in [(linear, [500_000, 1_000_000, 2_000_000, 4_000_000]), (quadratic, [300, 600, 1200])]:
+    prev = None
+    for n in sizes:
+        t = best_time(f, n)
+        ratio = f"{t / prev:5.2f}" if prev else "    -"
+        print(f"{f.__name__:<9} n={n:>9,}  {t:.4f} s  ratio {ratio}")
+        prev = t
+\`\`\`
+
 **Find the hidden loops.** \`x in some_list\` is a loop. \`list.insert(0, x)\` and \`del list[0]\` shift every element. Building a string with \`s += piece\` in a loop can be quadratic. Sorting inside a loop is $n \\log n$ per iteration. When something is slow, run \`cProfile\` to see where the time goes rather than guessing; it is usually one function.
 
 Finally, the rule of thumb: make it correct, make it clear, measure, and only then make it fast where the profile says it matters. The exercises are all measurement; keep the tables you produce as reference points for your machine.`,
@@ -3443,6 +5766,38 @@ Finally, the rule of thumb: make it correct, make it clear, measure, and only th
 
 Then **decompose**. Most data programs share the shape *parse → transform → aggregate → format*: \`parse_line(str) -> Request | None\`, \`hour_of(request) -> int\`, \`count_by_hour(requests) -> dict[int, int]\`, \`busiest(counts) -> (int, int)\`, \`format_report(...) -> str\`, and a \`main\` that wires them. Write the **signatures and docstrings first**; if a function is hard to name or its inputs are unclear, the decomposition is wrong, and discovering that on paper costs minutes rather than hours.
 
+\`\`\`interactive
+python
+{"title": "End to end on day one, with stubs", "caption": "Run it: the whole busiest-hour pipeline already runs, although two stages are stubs. Replace count_by_hour's stub with a real count (a dict or Counter of hour_of(r)) and run again; the expected answer for this log is hour 9 with 3 requests. Each stage can be tested on its own."}
+---
+log = """2024-05-01 09:15:02 GET /
+2024-05-01 09:47:10 GET /about
+2024-05-01 10:02:33 GET /
+2024-05-01 09:59:59 POST /login
+not a log line
+2024-05-01 14:00:00 GET /"""
+
+def parse_line(line):
+    """'YYYY-MM-DD HH:MM:SS METHOD PATH' -> (hour, method, path), or None if malformed."""
+    parts = line.split()
+    if len(parts) != 4 or len(parts[1]) != 8:
+        return None
+    return int(parts[1][:2]), parts[2], parts[3]
+
+def hour_of(request):
+    return request[0]
+
+def count_by_hour(requests):
+    return {0: 0}                      # stub: replace me
+
+def busiest(counts):
+    return max(counts.items(), key=lambda kv: kv[1])
+
+requests = [r for r in map(parse_line, log.splitlines()) if r is not None]
+print(len(requests), "requests parsed")
+print("busiest (hour, count):", busiest(count_by_hour(requests)))
+\`\`\`
+
 **Build incrementally.** Implement the pipeline end to end on a trivial example with stubs (\`return 0\`), so the program runs from the first hour. Then replace one stub at a time, with its tests, keeping the whole thing runnable. Compare with writing 300 lines and running them once: the second approach produces a wall of errors with no idea where to start.
 
 Recognise **standard sub-problems**: you have already solved counting (dicts/Counter), grouping, top-k (sorted with key), searching, and parsing structured text (csv/json). Most new problems are combinations; the skill is seeing which. Write a one-page design (goal, examples, function list, data representation, risks) before any project longer than an afternoon; it is the most valuable hour you will spend. Composing Programs' discussion of function design and the Think Python chapter on development plans are the readings; the exercises require the design document before code.`,
@@ -3544,11 +5899,59 @@ Recognise **standard sub-problems**: you have already solved counting (dicts/Cou
           ],
           explanation: `Python is "interpreted", but not line by line. CPython first **compiles** your source into **bytecode**, a compact instruction set for a stack-based virtual machine (cached in \`__pycache__/*.pyc\`), and then an interpreter loop executes those instructions one at a time. \`import dis; dis.dis(f)\` shows the bytecode; a simple \`a + b\` becomes a \`LOAD_FAST\`, \`LOAD_FAST\`, \`BINARY_OP\` sequence, and each instruction costs tens of nanoseconds of dispatch and type checking.
 
+\`\`\`interactive
+python
+{"title": "Reading bytecode", "caption": "Run it and find the loop in total_loop's bytecode: the instructions between FOR_ITER and the jump back run once per element. total_builtin hands the whole loop to sum, which runs in C. Count the per-element instructions; that count is the read-bytecode exercise."}
+---
+import dis
+
+def add(a, b):
+    return a + b
+
+def total_loop(xs):
+    t = 0
+    for x in xs:
+        t += x
+    return t
+
+def total_builtin(xs):
+    return sum(xs)
+
+dis.dis(add)
+print("-" * 40)
+dis.dis(total_loop)
+print("-" * 40)
+dis.dis(total_builtin)
+\`\`\`
+
 That is the core of why Python is slow for tight loops: **everything is an object**. The integer 5 is a heap object with a type pointer and a reference count; adding two integers means dereferencing both, checking their types, allocating a result object. C does the same addition in one instruction on registers. The ratio is typically 30-100x for numeric loops. It does not matter when the loop body is dominated by I/O or by calls into fast library code, and it matters enormously when you are doing a billion arithmetic operations.
 
 The way out, which the physics and astronomy tracks rely on, is libraries like **NumPy**: a typed array stores a million floats contiguously with no per-element objects, and a single call \`a + b\` runs a C loop over all of them. The rule: express computation over whole arrays, not Python loops over elements.
 
 **Memory** is managed by **reference counting**: each object counts how many names and containers refer to it, and when the count hits zero it is freed immediately. Scope ending, \`del name\` and rebinding all just decrement counts. Reference cycles (a list containing itself) cannot reach zero, so a separate garbage collector finds them periodically. \`sys.getsizeof\` shows the object overhead (an empty list is dozens of bytes; a small int 28).
+
+\`\`\`interactive
+python
+{"title": "Object sizes and reference counts", "caption": "Run it. The sizes are measured in this browser's Python, a 32-bit WebAssembly build, so they come out smaller than the 64-bit numbers in the text (a small int is 16 bytes here, 28 on your machine); the overhead compared with 8 bytes per C number is the point. getrefcount reports one extra reference, its own argument; watch it rise and fall as names and list slots bind the object. The last lines build a cycle that only the garbage collector can free."}
+---
+import gc, sys
+
+for v in [0, 2**30, 2**100, 0.5, "", "a", [], [1], ()]:
+    print(f"{v!r:>35}  {sys.getsizeof(v)} bytes")
+
+data = [1, 2, 3]
+print("refs:", sys.getrefcount(data))
+alias = data
+box = [data, data]
+print("refs:", sys.getrefcount(data))
+del alias, box
+print("refs:", sys.getrefcount(data))
+
+a = []
+a.append(a)
+del a
+print("objects freed by gc.collect():", gc.collect())
+\`\`\`
 
 Read the dis documentation and the data model intro, then do the measurement exercises; they turn these claims into numbers for your own machine.`,
           resources: [
@@ -3662,6 +6065,25 @@ Read the dis documentation and the data model intro, then do the measurement exe
           explanation: `Everything you learned in this subject transfers. Variables, expressions, conditionals, loops, functions, arrays/lists, maps/dicts, decomposition, testing and debugging exist in every mainstream language; what differs is syntax and a few deep design choices. The fastest way to see this is to rewrite a program you know in two languages that sit on either side of Python.
 
 **C** is compiled and **statically typed**: you declare \`int n = 10;\` and \`double xs[100];\`, run \`gcc prog.c -o prog\`, and get a native executable. Every variable has a fixed type and size, integers **overflow** silently at 32 or 64 bits (there is no arbitrary precision), strings are arrays of characters terminated by a zero byte, and there are no built-in lists or dicts: you manage memory yourself with \`malloc\`/\`free\`. In exchange, a loop runs at the speed the hardware allows. **Pointers** (variables holding addresses) are the concept Python hides and C exposes; they are the subject of Systems Programming, so meet them here and move on.
+
+\`\`\`interactive
+python
+{"title": "What a 32-bit int would do", "caption": "Python ints never overflow, so this cell imitates C's 32-bit signed int with wrap-around arithmetic. Run it: factorials are exact in Python but the int32 column goes wrong at 13! and soon turns negative. Change the 32 to 16 to see what a C short does, as in the port-to-C exercise."}
+---
+BITS = 32
+
+def wrap(n, bits=BITS):
+    """The value a C signed integer of this width would hold for n (two's complement)."""
+    n &= (1 << bits) - 1
+    return n - (1 << bits) if n >= 1 << (bits - 1) else n
+
+exact = c_like = 1
+for k in range(1, 21):
+    exact *= k
+    c_like = wrap(c_like * k)
+    flag = "" if exact == c_like else "   <- overflowed"
+    print(f"{k:>2}! = {exact:>20}   int{BITS}: {c_like:>12}{flag}")
+\`\`\`
 
 **JavaScript** is Python's cousin: dynamically typed, interpreted (by a JIT), with first-class functions, arrays and objects that behave like dicts, and \`for...of\` loops. Differences bite: use \`===\` (strict equality) because \`==\` coerces types (\`"1" == 1\` is true); declare with \`let\`/\`const\`, never \`var\`; blocks use braces not indentation; \`[] + {}\` is a famous surprise; and asynchronous code (callbacks, promises, the event loop) is central because JS was built for browsers. Run scripts with Node, or open the browser console.
 

@@ -2,6 +2,8 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import type { Element, ElementContent } from 'hast';
+import { Widget } from '@/widgets/Widget';
 
 const remarkPlugins = [remarkGfm, remarkMath];
 const rehypePlugins = [rehypeKatex];
@@ -44,7 +46,17 @@ export function fenceDisplayMath(src: string): string {
     .join('\n');
 }
 
-/** Renders curriculum Markdown with GFM tables and LaTeX math. */
+/** The source of a ```interactive fenced block, or null for any other <pre>. */
+function interactiveSource(pre: Element | undefined): string | null {
+  const code = pre?.children[0];
+  if (!code || code.type !== 'element' || code.tagName !== 'code') return null;
+  const cls = code.properties.className;
+  if (!Array.isArray(cls) || !cls.includes('language-interactive')) return null;
+  const text = (n: ElementContent): string => (n.type === 'text' ? n.value : n.type === 'element' ? n.children.map(text).join('') : '');
+  return code.children.map(text).join('');
+}
+
+/** Renders curriculum Markdown with GFM tables, LaTeX math and ```interactive widgets. */
 export function Markdown({ children, className = '' }: { children: string; className?: string }) {
   return (
     <div className={`prose-lesson ${className}`}>
@@ -57,6 +69,10 @@ export function Markdown({ children, className = '' }: { children: string; class
               {children}
             </a>
           ),
+          pre: ({ node, children }) => {
+            const src = interactiveSource(node);
+            return src === null ? <pre>{children}</pre> : <Widget source={src} />;
+          },
           table: ({ children }) => (
             <div className="overflow-x-auto">
               <table>{children}</table>

@@ -131,6 +131,11 @@ Write the augmented matrix and eliminate in column 1 with multipliers $\\ell_{21
 $$\\left[\\begin{array}{ccc|c} 1 & 2 & 1 & 1\\\\ 2 & 5 & 3 & 3\\\\ -1 & 1 & 4 & 6 \\end{array}\\right] \\to \\left[\\begin{array}{ccc|c} 1 & 2 & 1 & 1\\\\ 0 & 1 & 1 & 1\\\\ 0 & 3 & 5 & 7 \\end{array}\\right].$$
 Row 2 became $R_2 - 2R_1$ and row 3 became $R_3 + R_1$. Now clear column 2 with $\\ell_{32} = 3$: row 3 becomes $R_3 - 3R_2 = [0\\ 0\\ 2 \\mid 4]$. The pivots are $1, 1, 2$. Back substitution gives $z = 4/2 = 2$, then $y = 1 - z = -1$, then $x = 1 - 2y - z = 1 + 2 - 2 = 1$. Check in the original equations: $1 - 2 + 2 = 1$, $2 - 5 + 6 = 3$, $-1 - 1 + 8 = 6$.
 
+\`\`\`interactive
+row-reduce
+{"title": "Eliminate the worked example yourself", "A": [[1, 2, 1, 1], [2, 5, 3, 3], [-1, 1, 4, 6]], "vars": ["x", "y", "z"], "target": "echelon", "caption": "Choose R₂ → R₂ − 2R₁ (the box fills in the multiplier for you), then R₃ → R₃ + R₁ and R₃ → R₃ − 3R₂. The outlined pivots become 1, 1, 2, and at upper triangular form the widget back-substitutes to (1, −1, 2). Undo and try a bad order to see the pivots lose their staircase shape. Then use Edit matrix to check your multipliers and pivots for the first exercise below, or the mesh-current system."}
+\`\`\`
+
 **When elimination stalls.** If a zero appears in a pivot position, swap with a lower row that has a nonzero entry there. If no such row exists, that column has no pivot and its variable is **free**. The system is then either inconsistent or has infinitely many solutions. A row reading $[0\\ 0\\ \\cdots\\ 0 \\mid c]$ with $c \\ne 0$ says $0 = c$, so there is no solution. Otherwise you choose the free variables arbitrarily and solve for the pivot variables, which gives infinitely many solutions.
 
 Solution sets have a rigid shape. If $x$ and $y$ both solve $Ax = b$, then so does $x + t(y - x)$ for every real $t$, because $A(y - x) = 0$. So two different solutions force infinitely many. A square system has exactly one solution precisely when elimination, with row exchanges allowed, produces $n$ nonzero pivots.
@@ -236,6 +241,11 @@ Reduce $[K \\mid I]$. Add $\\tfrac12 R_1$ to $R_2$, giving $[0\\ \\tfrac32\\ {-1
 $$K^{-1} = \\frac14\\begin{pmatrix} 3 & 2 & 1\\\\ 2 & 4 & 2\\\\ 1 & 2 & 3 \\end{pmatrix}.$$
 Column $j$ of $K^{-1}$ is the displacement of all three masses when a unit force pushes mass $j$ alone. Pushing the middle mass moves it by $1$ and its neighbours by $\\tfrac12$. Every entry is positive, which says that pushing any mass moves every mass the same way.
 
+\`\`\`interactive
+row-reduce
+{"mode": "inverse", "title": "Gauss-Jordan on [K | I]", "A": [[2, -1, 0], [-1, 2, -1], [0, -1, 2]], "name": "K", "caption": "Do the steps of the worked example: R₂ → R₂ + ½R₁ (type 1/2), R₃ → R₃ + ⅔R₂, then scale each row by one over its pivot and clear upward. The exact fractions should match the text at every step, and when the left block becomes I the right block is K⁻¹ = ¼ times rows (3, 2, 1), (2, 4, 2), (1, 2, 3). Next step does the same job in the standard order."}
+\`\`\`
+
 **Pitfall.** Do not solve $Ax = b$ by computing $A^{-1}$ and multiplying. Elimination on $A$ alone costs about a third of the work of finding $A^{-1}$, and is usually more accurate. Inverses are for understanding, as here, or for small symbolic work.`,
           resources: [
             mit1806(U1, 'multiplication-and-inverse-matrices', 'Multiplication and inverse matrices', 'Four ways to multiply matrices and Gauss-Jordan elimination.', true),
@@ -337,6 +347,11 @@ The first multiplier is $\\ell_{21} = -1/2$. Subtracting $-\\tfrac12 R_1$ from $
 $$L = \\begin{pmatrix} 1 & 0 & 0\\\\ -\\tfrac12 & 1 & 0\\\\ 0 & -\\tfrac23 & 1 \\end{pmatrix},\\quad U = \\begin{pmatrix} 2 & -1 & 0\\\\ 0 & \\tfrac32 & -1\\\\ 0 & 0 & \\tfrac43 \\end{pmatrix},$$
 and $D = \\operatorname{diag}(2, \\tfrac32, \\tfrac43)$ with $K = LDL^T$. Forward substitution on $Lc = (1,1,1)$ gives $c_1 = 1$, $c_2 = 1 + \\tfrac12 = \\tfrac32$ and $c_3 = 1 + \\tfrac23 \\cdot \\tfrac32 = 2$. Back substitution on $Uu = c$ gives $u_3 = 2 / \\tfrac43 = \\tfrac32$, $u_2 = (\\tfrac32 + u_3)/\\tfrac32 = 2$ and $u_1 = (1 + u_2)/2 = \\tfrac32$. Gravity pulls the middle mass furthest, as you would expect.
 
+\`\`\`interactive
+row-reduce
+{"mode": "lu", "title": "Factor the spring-chain matrix", "A": [[2, -1, 0], [-1, 2, -1], [0, -1, 2]], "name": "K", "b": [1, 1, 1], "unknown": "u", "caption": "Subtract ℓ₂₁ = −1/2 times R₁ from R₂, note that ℓ₃₁ = 0 needs no step at all, then subtract ℓ₃₂ = −2/3 times R₂ from R₃. Each multiplier lands in L, and the pivots 2, 3/2, 4/3 sit on the diagonal of U. Once U is triangular, the forward and back substitutions give c = (1, 3/2, 2) and u = (3/2, 2, 3/2). Notice that L and U stay bidiagonal: no new non-zeros appear. Then try the no-lu exercise matrix with Edit matrix."}
+\`\`\`
+
 Notice that $L$ and $U$ are bidiagonal: elimination on a tridiagonal matrix creates no new nonzeros. That fact makes long spring chains and long resistor ladders cheap to solve.
 
 **When LU fails.** If a zero pivot appears, there is no $A = LU$ with those rows in that order. For example, $\\begin{pmatrix} 0 & 1\\\\ 1 & 1 \\end{pmatrix}$ is invertible but has no LU factorisation, because its first pivot is zero. The fix is a row exchange, $PA = LU$, which is the subject of the next lesson. When an LU factorisation with unit diagonal in $L$ exists for an invertible $A$, it is unique.`,
@@ -430,6 +445,11 @@ $$\\varepsilon x_1 + x_2 = 1,\\qquad x_1 + x_2 = 2,$$
 whose exact solution is $x_1 = 1/(1-\\varepsilon) \\approx 1.0001$ and $x_2 = (1-2\\varepsilon)/(1-\\varepsilon) \\approx 0.9999$.
 
 **Worked example.** Compute with three significant digits. Without exchanges, the multiplier is $1/\\varepsilon = 10^4$. The second equation becomes $(1 - 10^4)x_2 = 2 - 10^4$. Both $-9999$ and $-9998$ round to $-1.00 \\times 10^4$, so $x_2 = 1.00$. Then $\\varepsilon x_1 = 1 - x_2 = 0$, so $x_1 = 0$, which is completely wrong. Now exchange the rows first, so the pivot is $1$. The multiplier is $\\varepsilon$, and the second equation becomes $(1 - \\varepsilon)x_2 = 1 - 2\\varepsilon$, which rounds to $1.00\\,x_2 = 1.00$. So $x_2 = 1.00$ and $x_1 = 2 - x_2 = 1.00$, correct to three digits. The rounding of $x_2$ was harmless in the second case because it was not multiplied by $1/\\varepsilon$ afterwards.
+
+\`\`\`interactive
+row-reduce
+{"title": "Elimination on a three-digit calculator", "A": [[0.0001, 1, 1], [1, 1, 2]], "digits": 3, "target": "echelon", "pivotToggle": true, "vars": ["x_1", "x_2"], "caption": "Every result here is rounded to three significant digits. Press Next step with partial pivoting off: the multiplier is 10⁴, both −9999 and −9998 round to −1.00 × 10⁴, and back substitution gives the useless answer x₁ = 0, x₂ = 1. Reset, tick partial pivoting and press Next step again: the rows are swapped first, the multiplier is 10⁻⁴, and the answer is (1.00, 1.00). You can also do the swap yourself with Swap rows."}
+\`\`\`
 
 **Partial pivoting** makes this automatic. At each step, swap into the pivot position the row whose entry in the current column has the largest absolute value. Then every multiplier satisfies $|\\ell_{ij}| \\le 1$. Recording the swaps in a **permutation matrix** $P$, the identity with its rows reordered, gives
 $$PA = LU.$$
@@ -760,6 +780,11 @@ The pivots are in columns 1 and 3, so $r = 2$.
 
 So $Ax = b$ is solvable exactly when $-b_1 - b_2 + b_3 = 0$, that is, $b_3 = b_1 + b_2$. For $b = (1, 3, 4)$ the condition holds. Setting the free variables to zero gives the particular solution $x_p = (0, 0, 1, 0)$. The complete solution is $x = x_p + c_1(-2, 1, 0, 0) + c_2(1, 0, -1, 1)$.
 
+\`\`\`interactive
+row-reduce
+{"title": "From [A | b] to the complete solution", "A": [[1, 2, 1, 0, 1], [2, 4, 3, 1, 3], [3, 6, 4, 1, 4]], "free": ["c_1", "c_2"], "caption": "Reduce [A | b] for b = (1, 3, 4), by hand or with Next step. At reduced echelon form the readout shows x₁ = −2c₁ + c₂, x₂ = c₁, x₃ = 1 − c₂, x₄ = c₂, which is x_p = (0, 0, 1, 0) plus the two special solutions. Use Edit matrix to change b₃ from 4 to 5: now b₃ ≠ b₁ + b₂, and a row reading 0 = 1 appears."}
+\`\`\`
+
 **Pitfall.** Row operations change the column space. Take column-space basis vectors from $A$ and row-space basis vectors from $R$: row operations preserve the row space and the dependencies among the columns.`,
           resources: [
             mit1806(U1, 'the-four-fundamental-subspaces', 'The four fundamental subspaces', 'The central lecture of the first unit.', true),
@@ -968,6 +993,11 @@ For the projection, take $a = (1, 2)$, so $a^T a = 5$ and
 $$P = \\frac15\\begin{pmatrix} 1 & 2\\\\ 2 & 4 \\end{pmatrix}.$$
 Check the defining features. $Pa = \\tfrac15(5, 10) = a$, so vectors on the line are unchanged. $P(-2, 1) = \\tfrac15(0, 0) = 0$, so perpendicular vectors are sent to zero. And $P^2 = P$, since projecting twice changes nothing. The kernel is the perpendicular line, the range is the line $y = 2x$, and the rank is $1$.
 
+\`\`\`interactive
+matrix-transform
+{"title": "Projection onto y = 2x as a map of the plane", "A": [[0.2, 0.4], [0.4, 0.8]], "name": "P", "x": [-2, 1], "view": 3, "modes": ["transform"], "presets": ["projection", "reflection", "rotation", "shear"], "bracket": "p", "caption": "The columns of P are Pe₁ = (0.2, 0.4) and Pe₂ = (0.4, 0.8), both on the line y = 2x, so the whole grid collapses onto that line and det P = 0. The test vector x starts at (−2, 1), on the kernel, and is sent to 0. Drag x along y = 2x and Px = x. Then pick Reflection, which is H = 2P − I: the grid flips across the same line and det H = −1. Drag the column tips to build any map you like: column j is always T(eⱼ)."}
+\`\`\`
+
 For differentiation $D: P_2 \\to P_2$ with basis $1, t, t^2$, compute $D(1) = 0$, $D(t) = 1$ and $D(t^2) = 2t$. In coordinates these images are $(0,0,0)$, $(1,0,0)$ and $(0,2,0)$, so
 $$D = \\begin{pmatrix} 0 & 1 & 0\\\\ 0 & 0 & 2\\\\ 0 & 0 & 0 \\end{pmatrix}.$$
 To differentiate $p = 3 - t + 5t^2$, multiply $D(3, -1, 5) = (-1, 10, 0)$, which is $-1 + 10t$. The kernel is the constants and the range is $P_1$. Also $D^3 = 0$, because three derivatives kill any quadratic.
@@ -1067,6 +1097,11 @@ In the adapted basis, the projection keeps the first coordinate and discards the
 
 Coordinates work the same way. The vector $v = (3, 1)$ has coordinates $S^{-1}v = \\tfrac15(3 + 2, -6 + 1) = (1, -1)$. Indeed, $1 \\cdot (1, 2) - 1 \\cdot (-2, 1) = (3, 1)$. So $Pv = 1 \\cdot v_1 = (1, 2)$, read off with no multiplication by $P$ at all.
 
+\`\`\`interactive
+matrix-transform
+{"title": "The projection in an adapted basis", "A": [[0.2, 0.4], [0.4, 0.8]], "name": "P", "B": [[1, -2], [2, 1]], "basisName": "S", "basisVec": "v", "vec": "v", "x": [3, 1], "view": 3.5, "mode": "basis", "modes": ["basis"], "presets": [], "bracket": "p", "caption": "The purple grid is the coordinate grid of v₁ = (1, 2) and v₂ = (−2, 1). The vector v = (3, 1) has coordinates S⁻¹v = (1, −1): one step along v₁ and one step back along v₂. Pv (red) keeps only the v₁ part, and the readout shows S⁻¹PS = diag(1, 0). Drag v₂ away from the perpendicular direction: S⁻¹PS is no longer diagonal, yet its trace stays 1 and its determinant 0."}
+\`\`\`
+
 **Pitfall.** Keep the direction of $S$ straight. $S$ converts new coordinates into standard ones, and $S^{-1}$ converts standard coordinates into new ones. Writing $SAS^{-1}$ instead of $S^{-1}AS$ gives the matrix in a different basis, the one whose vectors are the columns of $S^{-1}$.`,
           resources: [
             threeBlue('change-of-basis', 'Change of basis', 'The clearest picture of why $S^{-1}AS$ is the right formula.'),
@@ -1154,6 +1189,11 @@ with the sign $(-1)^{\\text{number of row swaps}}$. This costs about $n^3/3$ ope
 
 From the properties you also get $\\det(AB) = \\det A\\,\\det B$, $\\det A^T = \\det A$ (so column operations work too), $\\det(A^{-1}) = 1/\\det A$, and the fundamental test: $A$ is invertible if and only if $\\det A \\ne 0$. Geometrically, $|\\det A|$ is the volume of the parallelepiped spanned by the columns. It is the factor by which $x \\mapsto Ax$ scales every volume, and the sign records whether orientation is reversed. That is the same factor $|\\det J|$ that appears in a change of variables in a multiple integral.
 
+\`\`\`interactive
+matrix-transform
+{"title": "Area scale and orientation", "A": [[2, 1], [1, 1.5]], "x": [1, -1], "modes": ["transform"], "presets": ["shear", "rotation", "reflection", "singular", "scaling"], "bracket": "p", "caption": "The shaded parallelogram, spanned by the columns, is the image of the unit square: its area is |det A|. Drag the second column across the line of the first: the area falls to 0, where A is singular, and then the shading turns amber because the orientation is reversed and det A < 0. A shear keeps the area (det = 1) however far you push it."}
+\`\`\`
+
 **Worked example.** Compute $\\det K$ for $K = \\begin{pmatrix} 2 & -1 & 0\\\\ -1 & 2 & -1\\\\ 0 & -1 & 2 \\end{pmatrix}$ in two ways.
 
 By elimination, the LU lesson found pivots $2, \\tfrac32, \\tfrac43$ with no row swaps. So $\\det K = 2 \\cdot \\tfrac32 \\cdot \\tfrac43 = 4$.
@@ -1161,6 +1201,11 @@ By elimination, the LU lesson found pivots $2, \\tfrac32, \\tfrac43$ with no row
 By **cofactor expansion** along row 1, each entry multiplies the signed determinant of the matrix left after deleting its row and column:
 $$\\det K = 2\\begin{vmatrix} 2 & -1\\\\ -1 & 2 \\end{vmatrix} - (-1)\\begin{vmatrix} -1 & -1\\\\ 0 & 2 \\end{vmatrix} + 0 = 2(4 - 1) + (-2 - 0) = 4.$$
 The signs alternate $+, -, +$ along the row. Both methods agree, and the answer matches the pattern $\\det K_n = n + 1$.
+
+\`\`\`interactive
+row-reduce
+{"title": "det K from the pivots", "A": [[2, -1, 0], [-1, 2, -1], [0, -1, 2]], "name": "K", "aug": 0, "target": "echelon", "det": true, "caption": "Press Next step until K is upper triangular: the readout multiplies the pivots 2 · 3/2 · 4/3 = 4. Reset, swap two rows first and eliminate again: the pivots differ but the sign count keeps det K = 4. Edit the matrix to try the Vandermonde exercise with numbers of your choice."}
+\`\`\`
 
 Cofactor expansion is useful for small matrices, for matrices with many zeros, and for symbolic entries, as in characteristic polynomials. For a general $n \\times n$ matrix it unrolls into $n!$ products, about $2.4 \\times 10^{18}$ for $n = 20$. **Cramer's rule**, $x_i = \\det A_i / \\det A$ where $A_i$ is $A$ with column $i$ replaced by $b$, is a fine formula for theory and for $2 \\times 2$ systems, but a terrible algorithm.
 
@@ -1382,6 +1427,11 @@ and $q_3 = (-1, 1, 1)/\\sqrt3$.
 
 Check: $q_1 \\cdot q_2 = (1 - 1 + 0)/\\sqrt{12} = 0$, $q_1 \\cdot q_3 = (-1 + 1)/\\sqrt6 = 0$ and $q_2 \\cdot q_3 = (-1 - 1 + 2)/\\sqrt{18} = 0$.
 
+\`\`\`interactive
+projection-3d
+{"mode": "gram-schmidt", "title": "Gram-Schmidt on three vectors in R³", "a": [[1, 1, 0], [1, 0, 1], [0, 1, 1]], "turn": -30, "caption": "Press Next through the five steps. Step 2 subtracts ½(1, 1, 0) from a₂ and leaves v₂ = (½, −½, 1); step 4 subtracts the components along q₁ and q₂ from a₃, drawn dashed, and leaves v₃ = (−⅔, ⅔, ⅔), sticking straight out of the plane of q₁ and q₂. Q and R fill in as you go, and R holds the coefficients ⟨aⱼ, qᵢ⟩. Turn the view to see the three q's at right angles. Then edit a₃ to (2, 1, 1) = a₁ + a₂: the leftover v₃ is zero and r₃₃ = 0, the sign of dependent vectors."}
+\`\`\`
+
 The same steps work in any inner product space. Applied to $1, t, t^2$ with $\\int_{-1}^{1}$, Gram-Schmidt produces multiples of the Legendre polynomials, the orthogonal functions behind multipole expansions.
 
 **Pitfall.** In floating point, classical Gram-Schmidt as written loses orthogonality when the $a_k$ are nearly dependent. The **modified** version subtracts each projection from the updated vector immediately, and it behaves much better. Householder reflections, in the next lesson, are better still.`,
@@ -1479,6 +1529,11 @@ Check the second column: $\\tfrac{1}{\\sqrt2}q_1 + \\tfrac{\\sqrt6}{2}q_2 = (\\t
 
 The least-squares solution satisfies $Rx = Q^Tb$, which the next lesson derives. Here $Q^Tb = (3/\\sqrt2,\\ 5/\\sqrt6)$. Back substitution gives $\\tfrac{\\sqrt6}{2}x_2 = 5/\\sqrt6$, so $x_2 = \\tfrac53$. Then $\\sqrt2\\,x_1 + \\tfrac{1}{\\sqrt2}\\cdot\\tfrac53 = \\tfrac{3}{\\sqrt2}$; multiplying by $\\sqrt2$ gives $2x_1 + \\tfrac53 = 3$, so $x_1 = \\tfrac23$. The normal equations give the same answer, $\\hat x = (\\tfrac23, \\tfrac53)$, without forming $A^TA$.
 
+\`\`\`interactive
+projection-3d
+{"title": "What the least-squares solution means", "b": [1, 2, 3], "a": [[1, 1, 0], [1, 0, 1]], "turn": -30, "caption": "The columns of A span the blue plane, and b = (1, 2, 3) is not in it. The least-squares x̂ = (2/3, 5/3) gives the point p = Ax̂ = (7/3, 2/3, 5/3) of the plane nearest to b, and the residual e = (−4/3, 4/3, 4/3) is perpendicular to the plane (it is a multiple of the normal a₁ × a₂). Turn the view until the plane is edge-on to see the right angle. QR reaches the same x̂ by working with an orthonormal basis of this plane."}
+\`\`\`
+
 A Householder step by hand: for $a = (3, 4)$, take $u = (3 + 5, 4) = (8, 4)$, so $u^Tu = 80$ and
 $$H = I - \\frac{2}{80}\\begin{pmatrix} 64 & 32\\\\ 32 & 16 \\end{pmatrix} = \\begin{pmatrix} -0.6 & -0.8\\\\ -0.8 & 0.6 \\end{pmatrix}.$$
 Then $Ha = (-5, 0)$, as promised.
@@ -1571,6 +1626,11 @@ $$A = \\begin{pmatrix} 1 & 0\\\\ 1 & 1\\\\ 1 & 2\\\\ 1 & 3 \\end{pmatrix},\\quad
 The determinant of $A^TA$ is $56 - 36 = 20$, so
 $$c_0 = \\frac{14(43.5) - 6(68.2)}{20} = 9.99,\\qquad c_1 = \\frac{4(68.2) - 6(43.5)}{20} = 0.59.$$
 The fitted natural length is $9.99$ cm and the compliance is $0.59$ cm/N, so $k \\approx 1.7$ N/cm, or about $170$ N/m. The residuals $L_i - (c_0 + c_1F_i)$ are $0.01, 0.02, -0.07, 0.04$. They sum to zero, which is orthogonality to the column of ones, and $\\sum F_i r_i = 0 + 0.02 - 0.14 + 0.12 = 0$, which is orthogonality to the second column. Always run these two checks.
+
+\`\`\`interactive
+least-squares
+{"title": "Calibrate the spring", "points": [[0, 10], [1, 10.6], [2, 11.1], [3, 11.8]], "xName": "F", "yName": "L", "view": [-0.5, 3.5, 9.6, 12.2], "caption": "The green line is L = 9.99 + 0.59F, and the red residuals are 0.01, 0.02, −0.07, 0.04. The two sums under the plot are the orthogonality checks of the text, and both are zero. Turn on 'Draw my own line' and try to beat the sum of squares by dragging its handles: you cannot. Drag the third measurement up to 11.2 and see the fitted natural length and compliance change."}
+\`\`\`
 
 **Weighted least squares.** If measurement $i$ has standard deviation $\\sigma_i$, minimise $\\sum (b_i - (Ax)_i)^2/\\sigma_i^2$ instead. With $C = \\operatorname{diag}(1/\\sigma_i^2)$, the normal equations become $A^TCA\\,\\hat x = A^TCb$. This is the first appearance of $A^TCA$, the matrix that runs through the next module.
 
@@ -1705,6 +1765,11 @@ $$x^TKx = 2x_1^2 - 2x_1x_2 + 2x_2^2 = 2\\left(x_1 - \\tfrac12x_2\\right)^2 + \\t
 The coefficients outside the squares are the pivots, and the $-\\tfrac12$ inside is the multiplier $\\ell_{21}$. This is $K = LDL^T$ written as a sum of squares. Solving $Ku = f$ gives $u^* = (1, 1)$, so the minimum energy is $P(u^*) = -\\tfrac12(1 + 1) = -1$. The **Cholesky factor** is $L\\sqrt{D}$: here $K = GG^T$ with $G = \\begin{pmatrix} \\sqrt2 & 0\\\\ -1/\\sqrt2 & \\sqrt{3/2} \\end{pmatrix}$.
 
 Compare $\\begin{pmatrix} 1 & 2\\\\ 2 & 1 \\end{pmatrix}$. Its pivots are $1$ and $-3$, and $x = (1, -1)$ gives $x^TKx = 1 - 4 + 1 = -2$. It is **indefinite**: $P$ is a saddle with no minimum, even though every entry is positive.
+
+\`\`\`interactive
+matrix-transform
+{"title": "The energy xᵀKx as level curves", "A": [[2, -1], [-1, 2]], "name": "K", "x": [1, -1], "view": 2, "mode": "quadratic", "modes": ["quadratic"], "presets": ["definite", "semidefinite", "indefinite"], "bracket": "p", "caption": "For K with rows (2, −1), (−1, 2) the level curves of xᵀKx are ellipses around the origin, and the readouts show the pivots 2 and 3/2 and the leading minors 2 and 3. Press Indefinite for rows (1, 2), (2, 1): the pivots become 1 and −3, the curves turn into hyperbolas, and at x = (1, −1) the readout gives xᵀKx = −2, a direction in which the energy falls without limit. Drag x to explore, and press Semidefinite for the borderline case of a zero eigenvalue."}
+\`\`\`
 
 **Pitfall.** Positive entries do not make a matrix positive definite, and negative off-diagonal entries do not prevent it. Use one of the four tests.`,
           resources: [
@@ -2133,6 +2198,11 @@ The checks pass: $5 + 2 = 7$ is the trace, and $5 \\cdot 2 = 10$ is the determin
 
 **Complex eigenvalues.** A real matrix can have complex eigenvalues, which come in conjugate pairs. Rotation by $90^\\circ$, $\\begin{pmatrix} 0 & -1\\\\ 1 & 0 \\end{pmatrix}$, has $\\lambda^2 + 1 = 0$, so $\\lambda = \\pm i$. No real direction is left unturned. In dynamics, complex eigenvalues mean oscillation.
 
+\`\`\`interactive
+matrix-transform
+{"title": "Find the eigenvectors by dragging", "A": [[4, 1], [2, 3]], "x": [1, 0.3], "view": 6, "mode": "eigen", "modes": ["eigen", "transform"], "presets": ["rotation90", "defective", "symmetric", "projection"], "bracket": "p", "caption": "Drag x around and watch Ax (red). Only along the dashed lines does Ax point the same way as x (it snaps there): along (1, 1), Ax = 5x, and along (1, −2), Ax = 2x. The readouts check trace 7 and determinant 10. Press Rotation 90° to lose every real eigenline (λ = ±i), and Defective to see a double eigenvalue with just one line; type rows (3, 1), (0, 3) to get the matrix of the multiplicity paragraph."}
+\`\`\`
+
 Eigenvectors for distinct eigenvalues are independent. For two, suppose $c_1x_1 + c_2x_2 = 0$. Apply $A$ to get $c_1\\lambda_1x_1 + c_2\\lambda_2x_2 = 0$. Subtract $\\lambda_2$ times the first equation to get $c_1(\\lambda_1 - \\lambda_2)x_1 = 0$, so $c_1 = 0$, and then $c_2 = 0$. Induction extends this to any number.
 
 **Pitfall.** Row operations change eigenvalues. Never row-reduce $A$ before computing $\\det(A - \\lambda I)$. Row-reduce only $A - \\lambda I$, after substituting a specific $\\lambda$.`,
@@ -2226,6 +2296,11 @@ $$S = \\begin{pmatrix} 1 & 1\\\\ 1 & -2 \\end{pmatrix},\\qquad S^{-1} = \\frac13
 using the $2 \\times 2$ inverse formula with $\\det S = -3$. Then
 $$A^k = S\\begin{pmatrix} 5^k & 0\\\\ 0 & 2^k \\end{pmatrix}S^{-1} = \\frac13\\begin{pmatrix} 2\\cdot5^k + 2^k & 5^k - 2^k\\\\ 2\\cdot5^k - 2\\cdot2^k & 5^k + 2\\cdot2^k \\end{pmatrix}.$$
 Check $k = 0$: $\\tfrac13\\begin{pmatrix} 3 & 0\\\\ 0 & 3 \\end{pmatrix} = I$. Check $k = 1$: $\\tfrac13\\begin{pmatrix} 12 & 3\\\\ 6 & 9 \\end{pmatrix} = A$. For large $k$ the $5^k$ terms dominate, and $A^ku_0$ lines up with $(1, 1)$ for almost every starting vector. The power method for the largest eigenvalue is based on exactly this.
+
+\`\`\`interactive
+matrix-transform
+{"title": "Aᵏu₀, one eigen-direction at a time", "A": [[4, 1], [2, 3]], "vec": "u", "x": [1, -1], "view": 2.5, "mode": "powers", "modes": ["powers", "eigen"], "k": 0, "kMax": 10, "presets": [], "bracket": "p", "caption": "Slide k. The readout splits u₀ = (1, −1) into c₁(1, 1) + c₂(1, −2) and shows Aᵏu₀ = c₁5ᵏ(1, 1) + c₂2ᵏ(1, −2), and the matrix Aᵏ agrees with the closed form of the text (try k = 1 and k = 3). The arrows are rescaled to one length so you can watch the direction turn onto the line of (1, 1). Type the defective matrix with rows (1, 1), (0, 1) and watch Aᵏ grow like k instead."}
+\`\`\`
 
 **Complex eigenvalues.** Over $\\mathbb{C}$, a real matrix with complex eigenvalues $\\alpha \\pm i\\beta$ and $\\beta \\ne 0$ is diagonalisable, with complex conjugate eigenvectors. The real form of the solution combines the conjugate pair into $r^k\\cos(k\\theta)$ and $r^k\\sin(k\\theta)$, where $\\alpha + i\\beta = re^{i\\theta}$.
 
@@ -2322,6 +2397,11 @@ with $Q$ orthogonal. Each $q_iq_i^T$ is the projection onto one eigen-direction.
 **Worked example.** Find the principal axes of $5x^2 + 4xy + 2y^2 = 1$. The matrix is $A = \\begin{pmatrix} 5 & 2\\\\ 2 & 2 \\end{pmatrix}$, with characteristic polynomial $\\lambda^2 - 7\\lambda + 6 = (\\lambda - 6)(\\lambda - 1)$. For $\\lambda = 6$, $A - 6I = \\begin{pmatrix} -1 & 2\\\\ 2 & -4 \\end{pmatrix}$ gives $q_1 = (2, 1)/\\sqrt5$. For $\\lambda = 1$, $q_2 = (1, -2)/\\sqrt5$, orthogonal to $q_1$ as promised. Check the spectral decomposition:
 $$6q_1q_1^T + 1\\,q_2q_2^T = \\frac65\\begin{pmatrix} 4 & 2\\\\ 2 & 1 \\end{pmatrix} + \\frac15\\begin{pmatrix} 1 & -2\\\\ -2 & 4 \\end{pmatrix} = \\begin{pmatrix} 5 & 2\\\\ 2 & 2 \\end{pmatrix}.$$
 The ellipse has semi-axis $1/\\sqrt6 \\approx 0.41$ along $(2, 1)$ and $1$ along $(1, -2)$.
+
+\`\`\`interactive
+matrix-transform
+{"title": "Principal axes of 5x² + 4xy + 2y² = 1", "A": [[5, 2], [2, 2]], "x": [0.6, 0.3], "view": 1.8, "symmetric": true, "mode": "quadratic", "modes": ["quadratic", "eigen"], "presets": ["symmetric", "definite", "indefinite"], "bracket": "p", "caption": "The thick cyan curve is the ellipse xᵀAx = 1. Its axes point along q₁ ∝ (2, 1) and q₂ ∝ (1, −2), with semi-axes 1/√6 ≈ 0.41 and 1. Edit the entries (A stays symmetric): the axes always stay perpendicular. Drag x around the ellipse and watch the Rayleigh quotient move between 1 and 6. Switch to Eigen to see the same two directions as the lines that A only stretches."}
+\`\`\`
 
 The same computation gives **principal stresses**. A plane stress state is a symmetric matrix $\\begin{pmatrix} \\sigma_x & \\tau\\\\ \\tau & \\sigma_y \\end{pmatrix}$. Its eigenvalues are the largest and smallest normal stresses over all orientations, and its eigenvectors are the directions on which there is no shear.
 
@@ -2420,6 +2500,11 @@ $$A^TA = \\begin{pmatrix} 25 & 20\\\\ 20 & 25 \\end{pmatrix},$$
 with eigenvalues $45$ and $5$ and eigenvectors $v_1 = (1, 1)/\\sqrt2$ and $v_2 = (1, -1)/\\sqrt2$. So $\\sigma_1 = \\sqrt{45} = 3\\sqrt5$ and $\\sigma_2 = \\sqrt5$. Next,
 $$u_1 = \\frac{Av_1}{\\sigma_1} = \\frac{(3, 9)/\\sqrt2}{3\\sqrt5} = \\frac{(1, 3)}{\\sqrt{10}},\\qquad u_2 = \\frac{Av_2}{\\sigma_2} = \\frac{(3, -1)/\\sqrt2}{\\sqrt5} = \\frac{(3, -1)}{\\sqrt{10}}.$$
 Check: $u_1 \\cdot u_2 = (3 - 3)/10 = 0$, and $\\sigma_1\\sigma_2 = 15 = |\\det A|$. The condition number is $\\kappa = 3$, and $\\|A\\|_2 = 3\\sqrt5 \\approx 6.71$. Note that the eigenvalues of $A$ itself are $3$ and $5$, which differ from the singular values. For non-symmetric matrices the two decompositions are different things.
+
+\`\`\`interactive
+matrix-transform
+{"title": "Circle to ellipse: A = UΣVᵀ", "A": [[3, 0], [4, 5]], "x": [1, 0], "view": 7.5, "mode": "svd", "modes": ["svd", "eigen", "transform"], "presets": ["shear", "rotation", "singular"], "bracket": "p", "caption": "The dashed unit circle maps to the cyan ellipse. The dashed v₁ ∝ (1, 1) and v₂ ∝ (1, −1) land on the semi-axes σ₁u₁ and σ₂u₂, of lengths 3√5 ≈ 6.71 and √5 ≈ 2.24, with u₁ ∝ (1, 3) and u₂ ∝ (3, −1). Move x round the circle (drag it or use the angle slider): |Ax| never leaves the range from σ₂ to σ₁. The readouts confirm σ₁σ₂ = |det A| = 15 and κ = 3, and that the eigenvalues 5 and 3 are different numbers. Drag a column to make A nearly singular and watch σ₂ and the ellipse collapse."}
+\`\`\`
 
 **Physical meaning.** In continuum mechanics, a deformation gradient $F$ maps material line elements to their deformed positions. Its singular values are the **principal stretches**, and the $v_i$ are the material directions that are stretched without shearing. The product of the stretches is the area or volume ratio $|\\det F|$.
 
@@ -2526,6 +2611,11 @@ The characteristic equation is $(0.6 - \\lambda)^2 - 0.16 = 0$, so $\\lambda = 0
 $$u_k = 2.5(2, 1) + 2.5(0.2)^k(2, -1) \\to (5, 2.5).$$
 The population settles at a 2:1 juvenile-to-adult ratio with no growth, since $\\lambda_1 = 1$. The transient dies by a factor of $5$ each year. Check $k = 1$: $T(10, 0) = (6, 2)$, and the formula gives $(5, 2.5) + 0.5(2, -1) = (6, 2)$.
 
+\`\`\`interactive
+matrix-transform
+{"title": "The two-stage population settling", "A": [[0.6, 0.8], [0.2, 0.6]], "name": "T", "vec": "u", "x": [10, 0], "view": 11, "mode": "powers", "modes": ["powers"], "k": 0, "kMax": 12, "rescale": false, "presets": [], "bracket": "p", "caption": "Slide k: u₁ = (6, 2), and the points march in a straight line, parallel to the eigenvector (2, −1) of λ = 0.2, towards (5, 2.5) on the eigenline of λ = 1, closing the gap by a factor of 5 each year. The readout shows the split u₀ = 2.5(2, 1) + 2.5(2, −1). Drag the start u₀ anywhere: the limit is always a point of the λ = 1 line, a 2:1 ratio. Then raise the 0.8 offspring rate slightly and the population grows instead (spectral radius above 1); tick Rescale to follow its direction."}
+\`\`\`
+
 **Iterative solvers are dynamical systems.** To solve $Ku = f$, the Jacobi method splits $K = D + (K - D)$, with $D$ the diagonal of $K$, and iterates $u_{k+1} = D^{-1}(f - (K - D)u_k)$. The error $\\varepsilon_k = u_k - u$ obeys $\\varepsilon_{k+1} = (I - D^{-1}K)\\varepsilon_k$. So Jacobi converges for every starting guess exactly when $\\rho(I - D^{-1}K) < 1$, and the spectral radius is the factor by which the error shrinks per step in the long run.
 
 **Pitfall.** $\\rho(T) < 1$ does not mean $\\|u_k\\|$ decreases at every step. For non-symmetric $T$ the norm can grow for a while before it decays. Stability is a statement about the limit.`,
@@ -2616,6 +2706,11 @@ $$P = \\begin{pmatrix} 0.9 & 0.2\\\\ 0.1 & 0.8 \\end{pmatrix}.$$
 The trace is $1.7$ and one eigenvalue is $1$, so the other is $\\lambda_2 = 0.7$. For the steady state, $P - I = \\begin{pmatrix} -0.1 & 0.2\\\\ 0.1 & -0.2 \\end{pmatrix}$ gives $0.1q_A = 0.2q_B$. With $q_A + q_B = 1$, this means $q = (\\tfrac23, \\tfrac13)$. The eigenvector for $0.7$ is $(1, -1)$, since $P(1, -1) = (0.7, -0.7)$. A bike that starts at A has
 $$p_k = \\left(\\tfrac23, \\tfrac13\\right) + \\tfrac13(0.7)^k(1, -1),$$
 which gives $p_0 = (1, 0)$ and $p_1 = (0.9, 0.1)$, as it should. After $10$ days the deviation from the steady state is $\\tfrac13(0.7)^{10} \\approx 0.009$. In the long run, two-thirds of the fleet is at A, whatever the starting distribution.
+
+\`\`\`interactive
+markov-chain
+{"title": "Bikes between two stations", "P": [[0.9, 0.2], [0.1, 0.8]], "states": ["A", "B"], "x0": [1, 0], "vec": "p", "kMax": 25, "caption": "Step from p₀ = (1, 0): p₁ = (0.9, 0.1), and the bars close in on the dashed steady state (2/3, 1/3). On the log plot the distance falls by exactly λ₂ = 0.7 per step, so after 10 days the gap in each entry is about 0.009 (the plot shows the sum of both). Drag the start to any split of the fleet: the limit never changes. Then move both top-row entries (0.9 and 0.2) towards 0.5: λ₂ = trace − 1 shrinks and the chain mixes faster."}
+\`\`\`
 
 **Pitfall.** The steady state is an eigenvector of $P$, not of $P^T$. For a column-stochastic matrix, $\\mathbf{1}$ is the eigenvector of $P^T$. The two coincide only when the rows also sum to $1$.`,
           resources: [
@@ -2933,6 +3028,11 @@ where the $a_i$ come from $u(0)$ and the $b_i\\omega_i$ from $u'(0)$. If $K$ has
 Pull mass 1 by one unit and release both from rest: $u(0) = (1, 0)$, $u'(0) = 0$. Expanding, $(1, 0) = \\tfrac12v_1 + \\tfrac12v_2$, and all $b_i = 0$, so
 $$u(t) = \\tfrac12\\cos(\\omega_1t)(1, 1) + \\tfrac12\\cos(\\omega_2t)(1, -1).$$
 Check: $u(0) = (1, 0)$, and $mu'' = -\\tfrac{k}{2}\\cos(\\omega_1t)(1, 1) - \\tfrac{3k}{2}\\cos(\\omega_2t)(1, -1)$, which equals $-Ku$ because $Kv_1 = kv_1$ and $Kv_2 = 3kv_2$. The motion is not periodic in general, since $\\omega_2/\\omega_1 = \\sqrt3$ is irrational. If the middle spring were much weaker than the outer ones, the two frequencies would be close, and the energy would slosh slowly from one mass to the other. Those are **beats**, at the difference frequency.
+
+\`\`\`interactive
+normal-modes
+{"title": "Two masses, three springs", "m": [1, 1], "k": [1, 1, 1], "u0": [1, 0], "tMax": 40, "caption": "With m = k = 1, ω₁ = 1 with v₁ = (1, 1) and ω₂ = √3 ≈ 1.732 with v₂ = (1, −1). Press Play: pulling m₁ alone splits into a₁ = a₂ = ½, and the motion never repeats because √3 is irrational. Press Start in mode 1 or mode 2: the masses move exactly in step (or exactly opposite) at a single frequency. Then lower the middle spring to about 0.1 and pull m₁ only: the frequencies come close and the swing passes slowly from m₁ to m₂ and back, the beats of the text."}
+\`\`\`
 
 **Unequal masses.** With a general diagonal $M$, either solve $\\det(K - \\omega^2M) = 0$ directly, or substitute $u = M^{-1/2}w$. That turns the problem into the ordinary symmetric eigenproblem for $M^{-1/2}KM^{-1/2}$, so the spectral theorem applies.
 

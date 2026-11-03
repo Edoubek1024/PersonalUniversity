@@ -56,6 +56,11 @@ The central theorem of this lesson is that **any** truth table can be turned int
 
 Then comes the surprise that makes the whole subject possible. NAND, defined as $\\overline{xy}$, is **functionally complete**: $\\text{NOT}(x) = \\text{NAND}(x, x)$, $\\text{AND}(x,y) = \\text{NOT}(\\text{NAND}(x,y))$, and by De Morgan $\\text{OR}(x,y) = \\text{NAND}(\\bar{x}, \\bar{y})$. Since AND, OR and NOT express every function, so does NAND alone. That is why Nand2Tetris gives you exactly one primitive and nothing else.
 
+\`\`\`interactive
+logic-circuit
+{"title": "Everything from NAND", "circuit": "not-nand", "circuits": ["not-nand", "and-nand", "or-nand", "xor-nand"], "caption": "Click the input switches (or a truth-table row). NOT ties both NAND inputs together; AND is a NAND followed by that NOT; OR negates both inputs first and then NANDs them, which is De Morgan's law in hardware. XOR needs four NANDs: check its table against a ⊕ b, then count the gates on the longest path from an input to out (its depth) for each circuit."}
+\`\`\`
+
 Two things matter to a hardware designer beyond correctness. **Gate count** is cost and power. **Depth**, the longest path from an input to an output, is delay: a signal cannot leave a gate until it has settled, so a deep circuit is slow. Keep both in mind as you build; a Mux built with 4 NANDs beats one built with 7.
 
 Read Nand2Tetris chapter 1 (free on the course site) and watch the Unit 1 videos. Work the truth-table exercises by hand before touching the simulator; the next lesson introduces HDL.`,
@@ -253,6 +258,11 @@ Install the Nand2Tetris software suite (or use the web IDE, which needs no insta
           ],
           explanation: `A **multiplexer** (Mux) chooses: with select bit $s$, $\\text{out} = s ? b : a$. Written in Boolean algebra, $\\text{out} = \\bar{s}a + sb$. It is the hardware version of \`if\`, and it appears everywhere in a CPU: choosing which value to load into a register, choosing whether the ALU's second operand comes from a register or memory, choosing between the next instruction address and a jump target. A **demultiplexer** (DMux) is the opposite: one input is routed to one of several outputs according to the select bits, the others are 0.
 
+\`\`\`interactive
+logic-circuit
+{"title": "Mux and DMux at the gate level", "circuit": "mux", "circuits": ["mux", "mux-nand", "dmux"], "inputs": {"a": 1}, "caption": "With sel = 0 the lower AND gate is blocked, so out copies a; flip sel and out copies b instead, whatever a does. That is out = s̄a + sb. The 4-NAND version computes the same truth table with fewer gates (compare the two tables). In the DMux, the unselected output is forced to 0, the pitfall the paragraph below warns about."}
+\`\`\`
+
 Multi-bit chips are mostly bookkeeping. \`And16\` is sixteen \`And\` gates side by side, one per bit; in HDL you write sixteen lines (or use the bus syntax \`a[0..7]\` to split a bus). Multi-way chips are built as trees: \`Mux4Way16\` is three \`Mux16\`s, two selecting on \`sel[0]\` and a third selecting between their outputs on \`sel[1]\`. Get the select-bit ordering right: in Nand2Tetris, \`sel=00\` picks \`a\`, \`01\` picks \`b\`, \`10\` picks \`c\`, \`11\` picks \`d\`, so \`sel[0]\` is the least significant bit.
 
 \`Or8Way\` is a different kind of chip: a *reduction* of a bus to a single bit. You will use it in the ALU to compute the "output is zero" flag. A tree of Or gates has depth $\\log_2 8 = 3$ rather than 7 for a chain; depth matters.
@@ -360,7 +370,17 @@ Pitfalls: forgetting that \`DMux\` outputs must be 0 when not selected, and mixi
 
 In two's complement the most significant bit has weight $-2^{n-1}$ instead of $+2^{n-1}$. So for 4 bits, $1111 = -8 + 4 + 2 + 1 = -1$ and $1000 = -8$. The range is $-2^{n-1}$ to $2^{n-1}-1$: one more negative number than positive, because zero takes a slot on the positive side. The payoff: $x + (-x)$ must equal $2^n \\equiv 0$, so $-x = 2^n - x$. Since $2^n - 1$ is all ones, $-x = (\\text{all ones} - x) + 1 = \\bar{x} + 1$: **flip every bit and add one**. Subtraction $a - b$ is therefore $a + \\bar{b} + 1$, which an adder can do with a bit of extra wiring, and that is exactly how the Hack ALU will do it.
 
+\`\`\`interactive
+bit-lab
+{"title": "Two's complement, one bit at a time", "width": 4, "widths": [4, 8, 16], "value": -8, "ops": ["neg"], "caption": "Click bits to build 1111 and 1000 and read them as −1 and −8: the top bit's place value is −8 instead of +8 (switch the place-value buttons to compare with the unsigned reading). The panel below negates a by inverting every bit and adding one. Try 0101 (5), then 1000: the most negative number is its own negative. Change the width to see sign extension keep the value."}
+\`\`\`
+
 **Overflow** is subtle. For unsigned numbers, overflow means a carry out of the top bit. For signed numbers, a carry out is normal (e.g. $-1 + 1$) and overflow means the result has the wrong sign: adding two positives and getting a negative, or two negatives and getting a positive. In hardware, signed overflow is detected when the carry *into* the sign bit differs from the carry *out* of it. In C, unsigned overflow wraps silently and signed overflow is undefined behaviour; the Data Representation module returns to this at length.
+
+\`\`\`interactive
+bit-lab
+{"title": "Carries and the two overflow flags", "width": 8, "widths": [4, 8, 16], "value": 100, "b": 50, "ops": ["add", "sub"], "caption": "100 + 50 = 150 does not fit in 8 signed bits: the carry into the sign bit is 1 but the carry out is 0, so the signed-overflow flag fires while the unsigned sum is fine. Now set a = −1 and b = 1: a carry out with no signed overflow. Switch to a − b to watch subtraction become a + ~b + 1. Do the conversions exercise by hand first, then check your answers here at 16 bits."}
+\`\`\`
 
 Work through Nand2Tetris chapter 2's first sections and CS:APP section 2.2 (the book is paid; the lecture slides and labs on the CMU 15-213 site are free). Practise by hand until converting $-37$ to 8-bit hex is automatic.`,
           resources: [
@@ -456,9 +476,19 @@ Work through Nand2Tetris chapter 2's first sections and CS:APP section 2.2 (the 
           ],
           explanation: `Adding two bits gives a sum and a carry: that is a **half adder**, with $\\text{sum} = a \\oplus b$ and $\\text{carry} = ab$. Adding a column in the middle of a number needs three inputs, the two operand bits and the carry from the previous column; the **full adder** computes $\\text{sum} = a \\oplus b \\oplus c$ and $\\text{carry} = ab + c(a \\oplus b)$. A full adder can be made from two half adders and an Or; see whether you can do better in NAND count.
 
+\`\`\`interactive
+logic-circuit
+{"title": "Half adder and full adder", "circuit": "half-adder", "circuits": ["half-adder", "full-adder"], "caption": "The half adder's two outputs are the two bits of a + b: try a = b = 1 to get carry 1, sum 0 (binary 10). Switch to the full adder: the first half adder adds a and b, the second adds the carry c to that partial sum, and the OR combines the two possible carries (they can never both be 1). Check that sum and carry always spell out a + b + c in binary."}
+\`\`\`
+
 A **ripple-carry adder** chains sixteen full adders, each column's carry out feeding the next column's carry in. The carry into bit 0 is 0 (or 1, if you want to subtract, as the next lesson exploits). The final carry out is discarded: the Hack computer does arithmetic modulo $2^{16}$. \`Inc16\` is an adder with the constant 1 as the second operand; you can build it from \`Add16\`, or more cheaply from a chain of half adders since one operand is known.
 
 Now think about delay. Bit 15's sum is not correct until the carry has rippled through all fifteen lower columns, so the delay grows linearly with width. A 64-bit ripple adder would make a slow CPU. Real adders use **carry lookahead**: for each column compute *generate* $g_i = a_i b_i$ (this column produces a carry no matter what) and *propagate* $p_i = a_i \\oplus b_i$ (this column passes a carry along); then carries can be computed in parallel with $c_{i+1} = g_i + p_i c_i$ expanded out, trading gates for depth $O(\\log n)$. You do not have to build one, but you should be able to explain it.
+
+\`\`\`interactive
+logic-circuit
+{"title": "A 4-bit ripple-carry adder", "circuit": "ripple-4", "a": 11, "b": 6, "caption": "Each FA box is the full adder above; bit 0 is on the right, as you write numbers. 11 + 6 = 17 overflows 4 bits, so the carry out is 1 and the result is 17 − 16 = 1. Turn on the carry delay view and press Play: the carry crawls one column per step. Set a = 1111 and b = 0001 for the worst case, a carry that ripples through every column and needs four adder delays; then try 0101 + 0101, where every column makes or kills its own carry and the sum is ready after two."}
+\`\`\`
 
 Build HalfAdder, FullAdder, Add16 and Inc16 from Project 2 this lesson and test them. Then write a software model and check it exhaustively for 4 bits so that you trust the design before relying on it in the ALU.`,
           resources: [
@@ -557,6 +587,11 @@ Build HalfAdder, FullAdder, Add16 and Inc16 from Project 2 this lesson and test 
 The trick is a pipeline of simple transformations. **zx**: if set, replace $x$ by 0. **nx**: if set, bitwise-negate $x$. The same for $y$ with **zy** and **ny**. **f**: if 1 compute $x + y$, if 0 compute $x \\& y$. **no**: if set, bitwise-negate the output. Every step is a \`Mux16\` choosing between a value and its transformed version, so the whole ALU is six Mux16s, a few Not16s, an And16 and an Add16.
 
 Why does it work? Take $x - y$: the table says zx=0, nx=1, zy=0, ny=0, f=1, no=1. The ALU computes $\\overline{\\bar{x} + y}$. In two's complement, $\\bar{a} = -a - 1$, so $\\overline{\\bar{x} + y} = -(\\bar{x} + y) - 1 = -(-x - 1 + y) - 1 = x - y$. Work out a few others yourself; every line of the table follows from the identity $\\bar{a} = -a - 1$ and the fact that AND of all-ones with $a$ is $a$. The clever part is that **$x | y$** falls out of De Morgan: negate both inputs, AND them, negate the output.
+
+\`\`\`interactive
+hack-alu
+{"title": "Inside the Hack ALU", "x": 17, "y": 5, "fn": "x-y", "caption": "The bits are set to x − y (nx = 1, f = 1, no = 1). Follow the stages: x is flipped to !x = −18, the adder gives !x + y = −13, and flipping the output gives 12 = 17 − 5, exactly the identity !a = −a − 1 at work. Click x|y and watch De Morgan happen in the stages: both inputs negated, ANDed, output negated. Set y to 17 to make out = 0 and see zr light up, then make out negative for ng. Toggle single bits to reach the combinations that are not in the table."}
+\`\`\`
 
 The two output flags are cheap: **zr** is 1 when the output is all zeros (an \`Or8Way\` on each half, then a \`Not\` of their Or), and **ng** is the output's bit 15, the sign. The CPU will use these for conditional jumps.
 
@@ -676,7 +711,17 @@ Build it and run the test, which exercises every function. Note what the ALU lac
 
 A clock is a square wave alternating between two phases, *tick* and *tock*; one tick-tock is a **cycle**. Nand2Tetris provides a single sequential primitive, the **data flip-flop** (DFF), whose contract is $\\text{out}(t) = \\text{in}(t-1)$: whatever you present during cycle $t-1$ appears at the output during cycle $t$. Physically a DFF is built from gates with feedback (a pair of latches), and it is **edge-triggered**: it samples its input only at the clock edge, so the input can change freely during the rest of the cycle without disturbing the stored value.
 
+\`\`\`interactive
+logic-circuit
+{"title": "Feedback makes memory: the NAND latch", "circuit": "sr-latch", "caption": "Two NANDs, each feeding the other: the simplest circuit that remembers. The inputs are active low, so S̄ = 0 sets Q to 1 and R̄ = 0 resets it. Set, then return S̄ to 1: Q stays 1, because the loop holds it. Reset and release the same way. Then pull both inputs to 0 (forbidden: Q and Q̄ both become 1) and release them together to see the race the sr-latch exercise asks about. A DFF wraps latches like this so that they only listen at the clock edge."}
+\`\`\`
+
 From a DFF and a Mux you build the **Bit**, a 1-bit register with a *load* line: if load is 1, the DFF's next value is the input; otherwise the Mux feeds the DFF's own output back into it, so the value persists. Sixteen Bits make a Register. This is the pattern of all synchronous hardware: a block of combinational logic sits between banks of flip-flops, and at every clock edge the flip-flops capture the logic's outputs and present them as the next inputs.
+
+\`\`\`interactive
+logic-circuit
+{"title": "Bit: a DFF with a load line", "circuit": "bit", "inputs": {"in": 1, "load": 0}, "caption": "Press Clock tick with load = 0: out stays 0 however you set in, because the Mux feeds the DFF its own output. Set load = 1 and tick: out becomes 1 one cycle later. Set load back to 0, toggle in, and tick a few times: the bit is remembered. In the timing diagram, the out row is the DFF-in row shifted right by one cycle, which is out(t) = in(t − 1)."}
+\`\`\`
 
 The clock period is set by the **critical path**: the slowest combinational path between flip-flops plus the flip-flop's setup time. A 3 GHz CPU gets about 0.33 ns per cycle, which is roughly 10-20 gate delays; that is why pipelining (module 6) exists.
 
@@ -983,6 +1028,11 @@ The **A-instruction** \`@v\` is encoded as \`0vvv vvvv vvvv vvvv\`: a leading 0 
 
 The **C-instruction** \`dest = comp ; jump\` is encoded as \`111a cccc ccdd djjj\`. The seven **comp** bits select one of the ALU functions: the \`a\` bit decides whether the ALU's second input is A or M, and the six \`c\` bits are *literally* the ALU control bits zx, nx, zy, ny, f, no. The three **dest** bits say which of A, D and M receive the result (any combination; \`AMD=D+1\` is legal). The three **jump** bits say whether to jump to the address in A if the result is less than, equal to, or greater than zero, in any combination; \`JMP\` sets all three. Jumps are evaluated using the ALU's \`ng\` and \`zr\` flags.
 
+\`\`\`interactive
+hack-alu
+{"title": "The comp field is the ALU's control bits", "hack": true, "x": 7, "y": 7, "fn": "x-y", "caption": "Here x is the D register and y is A (when the a bit is 0) or M (when a is 1), so the six c bits of D−A are 010011, the same as x − y in the ALU lesson. With D = A = 7 the result is 0 and zr = 1: an instruction D-A;JEQ would jump. Click D|A, A−1 or !D and compare each pattern with the comp table in chapter 4; in a C-instruction those six bits sit straight after the a bit."}
+\`\`\`
+
 Two consequences shape all Hack programs. First, because A is both the data pointer and the jump target, you must set A to a memory address, use M, then set A to the jump target before jumping. Second, **D** is the only pure data register, so most computations move things through D. Hack uses a **Harvard** architecture: instructions live in a separate ROM, so a program cannot overwrite itself and there is no way to execute data.
 
 Read chapter 4 and decode the instruction table yourself. The next lesson has you write real programs.`,
@@ -1095,6 +1145,35 @@ Read chapter 4 and decode the instruction table yourself. The next lesson has yo
 \`\`\`
 
 Variables such as \`i\` are symbols the assembler maps to free RAM addresses starting at 16; labels like \`(LOOP)\` are resolved to instruction addresses. Since Hack has no indirect addressing beyond M, a **pointer** dereference is a two-step idiom: \`@ptr\`, \`A=M\` (now A holds the address stored in ptr), then \`M\` is the target word. Arrays are pointer plus offset arithmetic done in D.
+
+\`\`\`interactive
+hack-cpu
+{"title": "Stepping a Hack loop", "ram": {"0": 5}, "show": [0, 1], "caption": "This program sums 1 + 2 + … + R0 into R1 using the loop pattern above. Step through the first pass and watch A change with every @ instruction, so that M points at a different RAM word each time; the variable i was given address 16 by the assembler. Note how the jump D;JGT uses the flags of the value just computed. Press Run to end: R1 = 15 after 80 instructions. Then add the four lines @100, D=A, @R0, M=D at the top, predict the instruction count, and run it (1414). The same counting is asked of Mult in the exercise below."}
+---
+// R1 = 1 + 2 + ... + R0
+  @i
+  M=1      // i = 1
+  @R1
+  M=0      // sum = 0
+(LOOP)
+  @i
+  D=M      // D = i
+  @R0
+  D=D-M    // D = i - n
+  @END
+  D;JGT    // if i > n goto END
+  @i
+  D=M
+  @R1
+  M=D+M    // sum = sum + i
+  @i
+  M=M+1    // i = i + 1
+  @LOOP
+  0;JMP
+(END)
+  @END
+  0;JMP
+\`\`\`
 
 **Memory-mapped I/O** is the second big idea. The screen is 256 rows of 512 pixels, stored as 8192 words starting at address 16384 (symbol \`SCREEN\`): writing -1 (all ones) to \`SCREEN\` blackens the first sixteen pixels of row 0. The keyboard is one word at 24576 (\`KBD\`) holding the code of the currently pressed key, or 0. No special instructions are needed; the hardware wires those addresses to devices. The \`Fill\` program polls the keyboard forever and fills or clears the screen accordingly.
 
@@ -1731,6 +1810,11 @@ $$S = \\frac{1}{(1-f) + f/s}$$
 
 With $f = 0.9$ and infinitely fast improvement, you gain at most $10\\times$. This is why making the common case fast is the architect's mantra, and why measuring *before* optimising is not optional.
 
+\`\`\`interactive
+function-explorer
+{"title": "Amdahl's law: speedup S against the improvement factor s", "f": ["1/((1-f)+f/x)", "1/(1-f)"], "sliders": {"f": [0.9, 0, 1, 0.01]}, "view": [1, 40, 0, 20], "caption": "The horizontal axis is s, how much faster the improved fraction f of the run becomes; the solid curve is the overall speedup S and the second line is its ceiling 1/(1 − f). With f = 0.9 the curve flattens long before s = 40 and can never pass 10. Slide f to 0.6 for exercise (c) and read S at s = 4; then find how large f must be for S to reach 10 at s = 16 (exercise (d))."}
+\`\`\`
+
 **Measurement** is harder than it looks. Clock frequency says nothing about work per cycle, and MIPS compares instruction counts across incompatible ISAs. Standard benchmark suites (SPEC CPU) run real programs and report geometric means. On your own machine, use \`perf stat\` on Linux to read hardware counters: cycles, instructions (so IPC), cache misses, branch mispredictions. Run each measurement several times, report the median and spread, pin the CPU frequency if you can, and be suspicious of any result that differs by less than the noise.
 
 Read the first part of CS:APP chapter 5 (or the 15-213 slides on program optimisation) and MIT 6.004's lecture on performance, then do the measurement exercise: it is the baseline for everything in this module.`,
@@ -1950,6 +2034,17 @@ Use the RISC-V ISA manual as reference and Ripes, a visual simulator, to run cod
 
 The catch is **hazards**: situations where the next instruction cannot proceed. A **data hazard** arises when an instruction needs a register that a previous instruction has not yet written back. The fix is **forwarding**: route the ALU result directly from the EX/MEM pipeline register to the next instruction's ALU input instead of waiting for WB. One case cannot be forwarded in time: a load followed immediately by a use of its result (**load-use**), which needs a one-cycle **stall** (a bubble); compilers schedule an independent instruction in between when they can.
 
+\`\`\`interactive
+pipeline-diagram
+{"title": "Hazards, stalls and forwarding", "forwarding": true, "caption": "Each row is an instruction and each column a clock cycle. With forwarding on, the add right after the load still waits one cycle (the load-use stall): the loaded value only exists after MEM. Turn forwarding off: every dependent instruction now waits until its producer's WB, and the run grows from 10 to 14 cycles. Then, with forwarding on, move the independent addi line up between the lw and the add: the stall disappears and the run takes the minimum n + 4 = 9 cycles, which is exactly what a scheduling compiler does."}
+---
+lw   x1, 0(x10)
+add  x2, x1, x3
+sub  x4, x2, x5
+addi x6, x7, 4
+sw   x4, 8(x10)
+\`\`\`
+
 A **control hazard** arises because a branch outcome is not known until EX, yet two more instructions have already been fetched. Either stall (costly), or **predict**. Static prediction (backward branches taken) is decent; dynamic prediction with a table of 2-bit saturating counters indexed by the branch address, plus a branch target buffer, achieves well over 90% accuracy on typical code. A misprediction flushes the wrongly fetched instructions, costing the number of stages between fetch and resolve, which on deep modern pipelines is 15-20 cycles. That is why unpredictable branches in a hot loop are expensive and why \`perf\` reports branch-misses.
 
 Beyond the five-stage model, modern cores are **superscalar** (several instructions per cycle) and **out-of-order** (executing independent instructions while a stalled one waits). Treat these as refinements of the same idea: find independent work. Use Ripes's pipeline view to watch hazards happen; the exercises depend on it.`,
@@ -2059,11 +2154,21 @@ Beyond the five-stage model, modern cores are **superscalar** (several instructi
 
 A **cache** stores recently used **blocks** (typically 64 bytes) of memory. An address of $m$ bits splits into a **block offset** ($b$ bits, $2^b$ = block size), a **set index** ($s$ bits, $2^s$ sets) and a **tag** (the rest). A **direct-mapped** cache has one block per set, so a block can live in exactly one place; an $E$-way **set-associative** cache has $E$ blocks per set and picks a victim with LRU; a fully associative cache has one set. Higher associativity reduces **conflict misses** (two hot blocks mapping to the same set) at the cost of slower, more power-hungry lookup. Misses are also classified as **compulsory** (first touch) and **capacity** (working set bigger than the cache).
 
+\`\`\`interactive
+cache-sim
+{"title": "Tag, set, offset and conflict misses", "size": 64, "block": 16, "assoc": 1, "trace": "conflict", "traces": ["conflict", "exercise", "sequential", "strided", "custom"], "caption": "A 64-byte direct-mapped cache with 16-byte blocks: 4 offset bits, 2 set bits, the rest tag. The trace reads x[i] then y[i], and y sits exactly one cache size after x, so both map to the same set and evict each other on every access: all conflict misses. Switch to 2-way and run it again: the same capacity now gives 75% hits. For the address-decomposition exercise, work it by hand first, then pick the exercise trace with 4 KB and 64 B blocks, direct-mapped and then 2-way (this simulator uses 16-bit addresses, so its tags are 16 bits narrower than the exercise's)."}
+\`\`\`
+
 The performance model is **AMAT**:
 
 $$\\text{AMAT} = t_{\\text{hit}} + r_{\\text{miss}} \\times t_{\\text{penalty}}$$
 
 With a 1 ns hit, 100 ns penalty, a miss rate of 2% versus 5% is the difference between 3 ns and 6 ns per access, which is why small changes to loop order can double a program's speed. Iterating a 2-D array row-major (stride 1) uses every byte of each fetched block; iterating column-major (stride = row length) wastes 15 of 16 ints per block. **Blocking** (tiling) restructures matrix code so that a sub-block stays in cache while it is reused.
+
+\`\`\`interactive
+cache-sim
+{"title": "Row-major versus column-major", "size": 64, "block": 16, "assoc": 1, "trace": "row-major", "traces": ["row-major", "col-major"], "caption": "An 8×8 int matrix (256 bytes) walked through a 64-byte cache with 16-byte blocks. Row-major order misses once per block and then hits the next three ints: 75% hits. Column-major order jumps 32 bytes each time, so a column touches 8 different blocks, more than the 4 lines the cache has: by the time it comes back for the next column every block is gone, and every access is a miss. Try fully associative: column-major is no better, because these are capacity misses. Then make the cache 256 B to fit the whole matrix."}
+\`\`\`
 
 Work through CS:APP chapter 6 via the 15-213 slides, then do the **Cache Lab**: part A is a cache simulator that replays memory traces, part B is optimising matrix transpose for a specific cache. It is the best exercise on this topic anywhere. Then read the Drepper paper's sections on caches for how real hardware behaves.`,
           resources: [
@@ -2172,7 +2277,12 @@ Work through CS:APP chapter 6 via the 15-213 slides, then do the **Cache Lab**: 
           ],
           explanation: `Until about 2005, each new chip generation ran at a higher clock because transistors shrank and used proportionally less power (**Dennard scaling**). That stopped: leakage current and heat capped clocks near 3-5 GHz, while **Moore's law** kept delivering more transistors. The only way to use them was **parallelism**, which means the burden moved from the hardware to the programmer.
 
-Three kinds of parallelism matter. **Instruction-level** parallelism is what pipelining, superscalar and out-of-order execution extract automatically; it is limited by dependences and branches, and modern cores already harvest most of it. **Data-level** parallelism applies one instruction to many data elements: **SIMD** units (AVX-512 handles sixteen floats per instruction; RISC-V has a vector extension) and compilers can auto-vectorise simple loops if you write them plainly. **Thread-level** parallelism runs independent instruction streams on multiple cores sharing memory.
+Three kinds of parallelism matter. **Instruction-level** parallelism is what pipelining, superscalar and out-of-order execution extract automatically; it is limited by dependences and branches, and modern cores already harvest most of it. **Data-level** parallelism applies one instruction to many data elements: **SIMD** units (AVX-512 handles sixteen floats per instruction; RISC-V has a vector extension) and compilers can auto-vectorise simple loops if you write them plainly. **Thread-level** parallelism runs independent instruction streams on multiple cores sharing memory. How much it can buy is capped by Amdahl's law from the measuring-performance lesson: with $n$ cores and a parallel fraction $f$, the speedup is $1/((1-f) + f/n)$.
+
+\`\`\`interactive
+function-explorer
+{"title": "Speedup against the number of cores", "f": ["1/((1-f)+f/x)", "x"], "sliders": {"f": [0.95, 0, 1, 0.01]}, "view": [1, 64, 0, 32], "caption": "The horizontal axis is the number of cores n; the straight line is perfect linear speedup and the curve is Amdahl's prediction for parallel fraction f. Even at f = 0.95, 64 cores give only about 15×. Drag f towards 1 and watch how much of the serial part has to disappear before extra cores pay off; this is the curve you fit in the amdahl-multicore exercise."}
+\`\`\`
 
 Shared memory brings **cache coherence**. Each core has private L1/L2 caches, so when core A writes a variable that core B has cached, B's copy must be invalidated. The **MESI** protocol tracks each cache line as Modified, Exclusive, Shared or Invalid and sends messages over the interconnect to keep every core's view consistent. Coherence is invisible to correct programs but visible in performance: if two cores write different variables that share a 64-byte line, the line ping-pongs between caches (**false sharing**) and a parallel program can run slower than a serial one. Memory consistency, the question of what order writes become visible across cores, is subtler still and is why locks and atomics exist; the Operating Systems concurrency module covers it.
 
@@ -2303,7 +2413,17 @@ C's **bitwise operators** work on each bit position independently: \`&\` (AND), 
 
 **Shifts** multiply or divide by powers of two. \`x << k\` is $x \\cdot 2^k$ with the top bits lost. \`x >> k\` on an unsigned value shifts zeros in (**logical** shift); on a signed value almost every compiler shifts copies of the sign bit in (**arithmetic** shift), so $-8 \\gg 1 = -4$. The C standard leaves signed right shift implementation-defined and makes shifting by a negative amount or by the full width undefined; in practice x86 masks the shift count to 5 or 6 bits, giving nonsense rather than zero.
 
+\`\`\`interactive
+bit-lab
+{"title": "Logical and arithmetic shifts", "width": 8, "widths": [8, 16, 32], "value": -8, "ops": ["shift"], "caption": "a = −8 is 1111 1000. An arithmetic right shift by 1 copies the sign bit in and gives −4; switch to the logical shift and the same bits become 124, because a zero came in at the top. Shift left and watch bits fall off the top: a << k is a × 2^k only until a significant bit is lost. Try a = −7: the arithmetic shift rounds toward −∞ (−4), not toward zero like C's −7 / 2."}
+\`\`\`
+
 The idioms are worth memorising. Set bit $k$: \`x | (1u << k)\`. Clear it: \`x & ~(1u << k)\`. Test it: \`(x >> k) & 1\`. Extract a field of width $w$ at position $p$: \`(x >> p) & ((1u << w) - 1)\`. Lowest set bit: \`x & -x\`. Clear lowest set bit: \`x & (x - 1)\`, which is the basis of a fast population count. Swap without a temporary: three XORs.
+
+\`\`\`interactive
+bit-lab
+{"title": "Masks: set, clear, toggle, extract", "width": 8, "widths": [8, 16, 32], "value": 180, "signed": false, "ops": ["mask"], "b": "0x0F", "caption": "a = 180 = 1011 0100. With m = 0x0F, a & m extracts the low four bits (0100); switch to | to set them and ^ to toggle them. Now set the mask to 179, which is a − 1: a & (a − 1) = 176 clears exactly the lowest set bit. Try a mask with a single 1 (such as 0x20, i.e. 1 << 5) to set, clear or flip one bit."}
+\`\`\`
 
 The CS:APP **Data Lab** asks you to implement functions like \`bitXor\`, \`isTmax\` and \`logicalNeg\` using a restricted set of operators and no conditionals. It is tedious and brilliant; do at least the integer half. The 15-213 slides on bits and bytes are the lecture companion.`,
           resources: [
@@ -2405,7 +2525,17 @@ The second rule, the **usual arithmetic conversions**: when a signed and an unsi
 
 When **widening**, signed values are sign-extended (the sign bit is replicated) and unsigned values zero-extended; the result preserves the value. When **narrowing**, the high bits are simply dropped: \`(short)0x12345\` is \`0x2345\`. **Unsigned overflow wraps** modulo $2^w$ by definition; **signed overflow is undefined behaviour**, and compilers exploit this: given \`x + 1 > x\`, gcc at -O2 assumes it is always true and deletes the check. Never test for signed overflow after the fact; test before (\`if (x > INT_MAX - y)\`) or use \`__builtin_add_overflow\`.
 
+\`\`\`interactive
+bit-lab
+{"title": "Same bits, two readings", "width": 32, "widths": [8, 16, 32], "value": -1, "ops": ["add", "sub"], "b": 1, "caption": "The 32 ones of −1 read as 4294967295 unsigned: a cast changes only the reading, never the bits. Change the width to 8 and back to 32: widening sign-extends, so −1 stays −1 (switch the place-value buttons to unsigned to see zero extension instead). Type 2147483647 (INT_MAX) and add 1: the signed-overflow flag fires and the result reads as −2147483648, the wrap that C calls undefined behaviour. With a = 0 and a − b, the borrow shows why (size_t)0 − 1 is huge."}
+\`\`\`
+
 Compilers optimise multiplication by constants into shifts and adds ($x \\cdot 14 = (x \\ll 4) - (x \\ll 1)$) and division by powers of two into shifts, but signed division must round **toward zero**, so \`x / 4\` for negative \`x\` becomes \`(x + 3) >> 2\`; look for this pattern in the assembly.
+
+\`\`\`interactive
+bit-lab
+{"title": "Division by shifting needs a bias", "width": 8, "widths": [8, 16, 32], "value": -7, "ops": ["shift", "add"], "b": 3, "caption": "Shift −7 right arithmetically by 2: the result is −2, the floor of −7/4, but C's −7 / 4 is −1. Now switch to a + b with b = 3 (the bias 2^k − 1), press Use the result as a to get −4, and shift that by 2: −1, the C answer. For non-negative x the bias never changes the result; try x = 7."}
+\`\`\`
 
 The consequences are real: many security holes are an \`int\` size overflowing before a \`malloc\`, or a signed length compared with a \`size_t\`. Read CS:APP 2.2-2.3 (via the 15-213 slides), do the exercises, and the next time you write a loop over a \`size_t\` counting down, you will stop before you hit the bug.`,
           resources: [
@@ -2515,7 +2645,17 @@ with bias 127 (single) or 1023 (double). The leading 1 is implicit, buying one f
 
 The exponent field's extremes are special. $E = 0$ denotes **denormalised** numbers: value $0.f \\times 2^{1 - \\text{bias}}$, filling the gap between zero and the smallest normalised number uniformly (gradual underflow); $E = 0$, $f = 0$ is zero (and there is a negative zero). $E$ all ones with $f = 0$ is $\\pm\\infty$; with $f \\neq 0$ it is **NaN**, which compares unequal even to itself. A lovely consequence of the layout: for positive floats, the bit patterns sort in the same order as the values, so hardware can compare floats as integers.
 
+\`\`\`interactive
+bit-lab
+{"title": "IEEE 754 bit by bit", "mode": "float", "format": "binary32", "formats": ["binary32", "binary64", "binary16"], "value": "0.1", "caption": "0.1 is stored as 0x3DCCCCCD, whose exact value is 0.100000001490116119384765625: the fraction field is the repeating pattern 1100 cut off and rounded up. Click bits to see the formula update. Use the presets to visit −0, the smallest subnormal (E = 0, no implicit 1), the smallest normal number, infinity and NaN (E all ones). Type 6.5 or −0.15625 to check the encoding exercise, and switch to binary64 to see how much closer double precision gets to 0.1."}
+\`\`\`
+
 Precision is relative: adjacent doubles differ by one **ULP**, about $2^{-52} \\approx 2.2 \\times 10^{-16}$ relative. Every operation computes the exact result and then **rounds**, by default to nearest with ties to even. If $b$ is less than half an ULP of $a$, then $a + b = a$: summing a million small values into a large accumulator loses them. Subtracting nearly equal numbers (**catastrophic cancellation**) throws away leading digits and leaves rounding noise; the quadratic formula and finite differences are the classic victims. Floating-point addition is not associative, so compilers cannot reorder it without \`-ffast-math\`, which trades correctness for speed.
+
+\`\`\`interactive
+bit-lab
+{"title": "Spacing and rounding: the ulp", "mode": "float", "format": "binary32", "formats": ["binary32", "binary64"], "value": "16777217", "caption": "16777217 = 2^24 + 1 needs 25 significant bits, one more than binary32 has, so it lies exactly halfway between 16777216 and 16777218; ties-to-even picks 16777216 (even fraction). Read the gaps beside the next ▶ button: above 16777216 the gap is 2 (below it, 1, because 2^24 is a power of two), so adding 1 to 16777216.0f changes nothing. Press the preset 1, then next ▶: the gap above 1 is 2^−23 (2^−52 in binary64), the machine epsilon. Note how the gap doubles every time you cross a power of two."}
+\`\`\`
 
 Casting a float to int truncates toward zero and is undefined if out of range. Work the 15-213 floating-point lecture, play with float.exposed until you can predict the bits, and do the float half of the Data Lab (\`floatScale2\`, \`floatFloat2Int\`, \`floatPower2\`).`,
           resources: [
@@ -2617,6 +2757,11 @@ Casting a float to int truncates toward zero and is undefined if out of range. W
             'Serialisation and portability',
           ],
           explanation: `A multi-byte value lives in consecutive bytes, but in which order? **Little-endian** machines (x86, most ARM configurations, RISC-V) put the least significant byte at the lowest address: the 32-bit value \`0x01234567\` at address 100 is stored as bytes \`67 45 23 01\` at addresses 100-103. **Big-endian** (network protocols, some older architectures) stores \`01 23 45 67\`. Neither is better, but mixing them silently is a classic portability bug. Network protocols fix **network byte order** as big-endian, and \`htonl\`/\`ntohl\` convert. The only safe way to inspect bytes is through a pointer of type \`unsigned char *\`: write a \`show_bytes\` function and use it on ints, floats and pointers as CS:APP does.
+
+\`\`\`interactive
+bit-lab
+{"title": "Byte order in memory", "mode": "endian", "value": "0x01234567", "endianWidth": 32, "base": 100, "caption": "The value 0x01234567 at address 100: little-endian puts 67 (the least significant byte) at address 100, big-endian puts 01 there. Each byte keeps its colour so you can follow it. Try the 1.0f preset (the bytes show_bytes prints on x86 are 00 00 80 3F), −1 (every byte FF, so byte order cannot matter), and a 16-bit value, then read the warning line to see what a machine with the other byte order would load."}
+\`\`\`
 
 **Arrays** are contiguous, and a 2-D array in C is **row-major**: \`a[i][j]\` lives at \`base + (i * cols + j) * sizeof(elem)\`, which is why iterating \`j\` in the inner loop is cache-friendly (see the memory-hierarchy lesson). **Structs** are laid out in declaration order, but with **padding**: each field is placed at an address that is a multiple of its **alignment** (usually its size for primitive types), and the whole struct is padded to a multiple of its largest alignment so arrays of structs stay aligned. So \`struct { char c; int i; char d; }\` occupies 12 bytes, while reordering to \`{ int i; char c; char d; }\` occupies 8. \`sizeof\` and \`offsetof\` reveal the layout.
 

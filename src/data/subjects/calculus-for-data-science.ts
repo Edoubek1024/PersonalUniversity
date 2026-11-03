@@ -511,6 +511,11 @@ $$\\frac{(x + h)^2 - x^2}{h} = \\frac{2xh + h^2}{h} = 2x + h \\to 2x.$$
 
 So the slope of $x^2$ at $x = 3$ is 6: near 3, the output changes about 6 times as fast as the input. The derivative is itself a function, telling you the slope at every point.
 
+\`\`\`interactive
+secant-tangent
+{"title": "Secant to tangent for x²", "f": "x^2", "name": "x^2", "a": 3, "h": 1, "view": [-0.5, 5.5, -1, 16], "caption": "P is (3, 9) on y = x² and Q is (3 + h, (3 + h)²). The secant slope is 2·3 + h = 6 + h, as in the worked example. Shrink h and it tends to the tangent slope 6. The table compares h with −h: the average of the two columns is the central difference, which is exactly 6 here for every h."}
+\`\`\`
+
 **Notation.** $f'(x)$, $y'$, $\\frac{dy}{dx}$ and $\\frac{d}{dx}f(x)$ all mean the same thing. Leibniz's $\\frac{dy}{dx}$ is not literally a fraction, but it behaves like one so often that it is worth using.
 
 **Sign and size.** $f' > 0$ means rising, $f' < 0$ falling, and $f' = 0$ a flat spot, which is where maxima and minima hide. A large $|f'|$ means the output is sensitive to the input.
@@ -1192,6 +1197,11 @@ Geometrically, you fit a parabola at $w_n$ and jump to its bottom. This is how l
 - *Wrong curvature:* if $L'' < 0$, Newton heads for a maximum.
 - *A cycle or divergence:* for $f(x) = x^{1/3}$, the step gives $x_{n+1} = -2x_n$, which moves away forever.
 
+\`\`\`interactive
+newton-method
+{"title": "Newton's method", "examples": [{"label": "x² − 2", "f": "x^2 - 2", "name": "x^2-2", "x0": 1, "view": [-0.5, 3, -2.5, 4]}, {"label": "x^(1/3)", "f": "cbrt(x)", "name": "x^{1/3}", "x0": 1, "maxSteps": 6, "view": [-40, 40, -4, 4]}], "caption": "Press Step: each tangent line is solved exactly, and its crossing is the next guess. For x² − 2 from 1 the table shows 1.5, 1.41667, 1.4142157, …, with the correct digits doubling each step. On the x^(1/3) tab each step lands at −2 times the last guess, and the method runs away."}
+\`\`\`
+
 **Safeguards.** Keep a bracket $[a, b]$ with a sign change, and if a Newton step leaves it, take a bisection step instead. Real solvers such as Brent's method do something similar. A method that is fast when it works and fails loudly when it does not needs a backstop.
 
 Compute by hand once, then code the method with a limit on iterations and a check that the result solves the equation.`,
@@ -1477,6 +1487,11 @@ adds rectangle areas. A **left sum** uses left endpoints, a **right sum** right 
 
 For $f(x) = x^2$ on $[0, 1]$ with $n = 4$, the left sum is 0.21875, the right 0.46875, the midpoint 0.328125 and the trapezoid 0.34375. The true value is $1/3$. For an increasing function, the left sum is too low and the right too high, so the true value is bracketed.
 
+\`\`\`interactive
+riemann-sum
+{"title": "Riemann sums for x² on [0, 1]", "f": "x^2", "a": 0, "b": 1, "n": 4, "method": "left", "methods": ["left", "right", "midpoint", "trapezoid"], "exact": 0.3333333333333333, "exactTex": "\\\\tfrac13", "view": [-0.1, 1.1, -0.1, 1.15], "caption": "With n = 4 the four tabs give the values in the text: left 0.21875, right 0.46875, midpoint 0.328125, trapezoid 0.34375. Increase n and all of them tend to 1/3. Left stays below and right above, because x² is increasing."}
+\`\`\`
+
 **The definite integral** is the limit as the pieces shrink:
 
 $$\\int_a^b f(x)\\,dx = \\lim_{n \\to \\infty} \\sum_{i=1}^{n} f(x_i^*)\\,\\Delta x.$$
@@ -1568,6 +1583,11 @@ Compute a few sums by hand before using software, so the formula stays attached 
 $$A'(x) = f(x).$$
 
 **Why.** Increasing $x$ by a small $h$ adds a thin strip of height about $f(x)$ and width $h$, so $A(x + h) - A(x) \\approx f(x) h$. Divide by $h$ and let it shrink. In words: the rate at which a total grows is the current rate. For probabilities, this says a density is the derivative of its cumulative distribution.
+
+\`\`\`interactive
+riemann-sum
+{"title": "Accumulating a bell curve", "modes": ["accumulate"], "f": "exp(-x^2/2)/sqrt(2*pi)", "a": -3.5, "b": 3.5, "x": 0, "view": [-3.5, 3.5, -0.05, 0.45], "caption": "The curve is the standard normal density. Drag x, or press Play: the shaded area A(x) = ∫ f(t) dt from the far left is the cumulative distribution, traced below. Its slope at x, the dashed tangent, equals the height of the density: steepest at 0, where A ≈ 0.5, and nearly flat in the tails. That is Part 1 of the theorem."}
+\`\`\`
 
 **Part 2.** If $F$ is any antiderivative of $f$, then
 

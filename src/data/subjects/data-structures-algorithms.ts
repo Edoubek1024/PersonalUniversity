@@ -388,6 +388,11 @@ Read the Python timeit documentation and the 6.006 notes on the model of computa
 
 Fixed size is the limitation, and the **dynamic array** (Python \`list\`, Java \`ArrayList\`, C++ \`vector\`) fixes it with a trick you must understand, not just use. Keep a backing array with *capacity* larger than the *length*. Append writes into the spare slot. When full, allocate a new array of double the capacity and copy everything across. A single append can therefore cost $O(n)$, but doubling means that after a copy of $n$ elements you get $n$ free appends before the next copy. Summing over $n$ appends, the total copying is $n + n/2 + n/4 + \\cdots < 2n$, so the **amortised** cost per append is $O(1)$. Growing by a constant amount instead (say 100 slots) makes the copies $n/100$ in number and $O(n)$ each: quadratic total. Growth factor 1.5 wastes less memory and lets freed blocks be reused; CPython uses roughly 1.125 with extra slack, which still works because any factor $> 1$ gives a geometric series.
 
+\`\`\`interactive
+dynamic-array
+{"title": "Appending with doubling vs constant growth", "policy": "factor", "g": 2, "c": 4, "n": 64, "caption": "Press Play. Each spike in the left chart is a resize that copies every element; with doubling the spikes double in height but also double in spacing, so total cost / n (right, solid) stays below 3. The dashed curve is +4 growth on the same appends: it climbs steadily, because the total is quadratic. Try ×1.5 and a factor close to 1.1: the bound gets worse but stays constant. Then choose + constant and raise c: the line still grows, only more slowly."}
+\`\`\`
+
 Insertion or deletion in the middle shifts everything after the position: $O(n)$. That is the trade you make for $O(1)$ indexing; the linked list makes the opposite trade.
 
 Note the difference between an array *of values* and an array *of pointers*. A Python list stores pointers to boxed objects scattered through the heap, so a scan still misses the cache on every element; \`array.array\` and NumPy store raw values contiguously and run 10-100x faster for numeric loops.
@@ -706,9 +711,26 @@ Queues are the natural structure for breadth-first search, producer-consumer buf
 
 **Insertion sort** maintains the invariant "the prefix \`a[0..i)\` is sorted and contains the original first $i$ elements". Each step inserts \`a[i]\` by shifting larger elements right. Its cost is $n$ plus the number of **inversions** (pairs out of order), so it is $O(n^2)$ in the worst case but $O(n)$ when the input is nearly sorted, which real data often is. **Selection sort** repeatedly finds the minimum of the suffix; it is always $\\Theta(n^2)$ but performs only $n$ swaps, which matters when writes are expensive. Note which sorts are **stable** (equal keys keep their relative order): insertion yes, selection no. Stability is what lets you sort by one key, then another, and get a multi-key sort.
 
+Step through both sorts below. The bracket under the bars is the invariant: watch it grow by one element per outer step.
+
+\`\`\`interactive
+sorting
+{"title": "Insertion and selection sort", "algo": "insertion", "algos": ["insertion", "selection"], "values": [5, 2, 4, 6, 1, 3], "caption": "In insertion sort the green prefix a[0..i) is sorted but not final; in selection sort it is final. Compare the counters: try Nearly sorted, where insertion sort needs about n − 1 + I comparisons (I = inversions) and selection sort still needs n(n−1)/2. Turn on race mode to run both on the same input."}
+\`\`\`
+
 **Binary search** is famously easy to get wrong. Use a half-open interval and state the invariant: "every index below \`lo\` has value $< x$; every index at or above \`hi\` has value $\\ge x$". The loop picks \`mid = lo + (hi - lo) // 2\`, and moves exactly one bound; it terminates when \`lo == hi\`, which is then the first position with value $\\ge x$ (what \`bisect_left\` returns). This formulation handles duplicates, absent keys and empty arrays without special cases. Note the overflow-safe midpoint formula, which matters in C and Java.
 
+\`\`\`interactive
+binary-search
+{"title": "Half-open binary search", "values": [1, 3, 3, 5, 8, 8, 8, 13, 21, 34], "target": 8, "variant": "lower", "caption": "The shaded brackets are the invariant: indices below lo are known to be < x, indices at or above hi are known to be ≥ x, and each probe moves exactly one bound. With x = 8 the lower bound stops at the first 8 (index 4); switch to upper bound to land just after the last 8 (index 7), so upper − lower counts the copies. Search for 9 or 40 (absent) and for 0: the answer is the insertion point, and the probe count never exceeds ⌈log₂(n + 1)⌉. Compare with the closed-interval version, which can only say found or not found."}
+\`\`\`
+
 The generalisation is **binary search on a monotone predicate**: if $P(x)$ is false up to some point and true after it, binary search finds the boundary in $O(\\log(\\text{range}))$ evaluations. That turns "minimum capacity so that the tasks fit", "largest square root" and many optimisation problems into search problems.
+
+\`\`\`interactive
+binary-search
+{"mode": "answer", "title": "Binary search on the answer", "f": "v^2", "t": 200, "range": [0, 64], "caption": "P(v) is v² ≥ 200, false up to some point and true after it. Each test of the middle candidate rules out half the range, so 6 evaluations find the boundary 15 out of 64 candidates; the integer square root of 200 is therefore 15 − 1 = 14. Change the threshold to 3000 and count the evaluations again."}
+\`\`\`
 
 Read Sedgewick's 2.1 and the Python sorting HOWTO on stability, then do the invariant proofs on paper before coding.`,
           resources: [
@@ -811,7 +833,17 @@ Read Sedgewick's 2.1 and the Python sorting HOWTO on stability, then do the inva
           ],
           explanation: `**Merge sort** splits, sorts both halves recursively and merges two sorted sequences in linear time. Its recurrence $T(n) = 2T(n/2) + \\Theta(n)$ gives $\\Theta(n \\log n)$ in every case, it is stable, and it is the natural sort for linked lists and for data on disk. Its cost is the auxiliary $O(n)$ array. The bottom-up form merges runs of length 1, 2, 4, ... with no recursion at all.
 
+\`\`\`interactive
+sorting
+{"title": "Merge sort: splits, buffers and the call stack", "algo": "merge", "algos": ["merge", "merge-bu"], "values": [38, 27, 43, 3, 9, 82, 10, 50], "caption": "The strip under the bars is the call stack: one band per active call, the deepest highlighted. Each merge writes into the buffer row and copies back, so every level of the recursion moves n elements: about n log₂ n moves in total. Compare a tie in the merge (Many duplicates): the left element is taken first, which is what makes merge sort stable. Switch to bottom-up to see the same merges in width order 1, 2, 4 without recursion."}
+\`\`\`
+
 **Quicksort** does the work before recursing: pick a pivot, **partition** so that smaller elements are left of it and larger right, and recurse on both sides. It sorts in place with tiny constants, which is why it is the default in most libraries. The price is that cost depends on pivot quality. A pivot that always lands at an end gives $T(n) = T(n-1) + n = \\Theta(n^2)$; this happens on sorted input with a first-element pivot, so **choose the pivot randomly**. The expected number of comparisons is then about $2n \\ln n \\approx 1.39\\, n \\log_2 n$; the proof sums, over all pairs, the probability they are compared, which is $2/(j - i + 1)$ for the $i$-th and $j$-th smallest. Know the two partition schemes: Lomuto (simple, one pointer) and Hoare (two pointers, fewer swaps). With many equal keys both degrade; **three-way partitioning** (less, equal, greater) fixes it and makes quicksort linear when there are few distinct keys.
+
+\`\`\`interactive
+sorting
+{"title": "Quicksort: partition schemes and pivots", "algo": "quick", "values": [2, 8, 7, 1, 3, 5, 6, 4], "partition": "lomuto", "caption": "The brackets show the partition invariant (Lomuto: ≤ p, > p, unexamined) and the band below shows the recursion. Press Sorted, choose First or Last as pivot and watch every partition put the pivot at an end: the call stack grows to depth n − 1 and the comparisons approach n(n−1)/2. Switch to Random or Median of 3 and the depth drops to about log₂ n. Try Hoare (two pointers, fewer swaps) and Three-way on Many duplicates. Race mode puts merge sort beside it on the same input."}
+\`\`\`
 
 Production sorts are hybrids. CPython's **Timsort** is a merge sort that detects existing sorted runs, extends short runs with binary insertion sort, and merges with galloping, so it is $O(n)$ on sorted or reverse-sorted data and $O(n \\log n)$ otherwise. C++'s **introsort** is quicksort that switches to heapsort if the recursion gets too deep and to insertion sort for small ranges. Read \`listsort.txt\` from the CPython repo: it is one of the best engineering documents in any codebase.
 
@@ -923,6 +955,11 @@ Work through Erickson 1.4-1.5 and Sedgewick 2.2-2.3, then implement, test and be
 
 The escape is to stop comparing. **Counting sort** assumes keys are integers in $[0, k)$: count how many of each key there are, prefix-sum the counts to get each key's starting position, and place each element directly. That costs $O(n + k)$ and is stable if you place elements in input order. For $k$ much larger than $n$ it is useless, which is where **radix sort** comes in: sort by the least significant digit with a stable counting sort, then the next digit, and so on. After $d$ passes the array is sorted, in $O(d(n + b))$ time for base $b$. For 32-bit integers with 8-bit digits that is four passes over the data, often faster than quicksort for $n$ beyond about $10^5$, and it is the algorithm behind sorting on GPUs. Stability of each pass is not optional: it is what makes earlier digits break ties correctly.
 
+\`\`\`interactive
+sorting
+{"title": "Counting sort and LSD radix sort", "algo": "counting", "algos": ["counting", "radix"], "values": [2, 5, 3, 0, 2, 3, 0, 3], "caption": "Counting sort: pass 1 fills count[v], the prefix sums turn it into next[v] (the first output slot for key v), and pass 3 places each element in input order. The comparison counter never moves. In LSD radix sort the highlighted digit is the one being sorted on; pause after the tens pass and check that numbers with equal tens digits are still in ones-digit order: that is stability doing the work."}
+\`\`\`
+
 **Bucket sort** distributes keys assumed uniform over $[0, 1)$ into $n$ buckets and insertion-sorts each; expected $O(n)$, but a skewed distribution puts everything into one bucket and degrades to quadratic.
 
 The practical question is not "which is asymptotically faster" but "does my key type and size justify it". Strings, floats and objects with comparators are comparison territory; dense integer keys, fixed-width records and suffix array construction are radix territory. Read Sedgewick 5.1 (string sorts) and the Erickson lower-bound section, then run the crossover experiment.`,
@@ -1017,6 +1054,11 @@ The practical question is not "which is asymptotically faster" but "does my key 
             'Introselect',
           ],
           explanation: `Sorting to find a median is wasteful: you only need one element, not all of them in order. **Quickselect** reuses quicksort's partition but recurses into just the side that contains the $k$-th element. With a random pivot the expected remaining size after a partition is at most $3n/4$, so the expected total work is a geometric series $n + 3n/4 + 9n/16 + \\cdots = O(n)$. The worst case is still $O(n^2)$, for the same bad-pivot reason as quicksort.
+
+\`\`\`interactive
+sorting
+{"title": "Quickselect", "algo": "quickselect", "values": [7, 10, 4, 3, 20, 15, 1, 12, 9], "pivot": "random", "caption": "The target index k − 1 is outlined. After each Lomuto partition only the side containing it stays bright; the other side is never looked at again. Compare the final comparison count with n and with n log₂ n, then press Sorted with pivot Last to see the quadratic worst case."}
+\`\`\`
 
 The **median of medians** algorithm (Blum, Floyd, Pratt, Rivest, Tarjan, 1973) guarantees linear time by choosing the pivot carefully: split into groups of five, find each group's median by brute force, recursively find the median of those $n/5$ medians, and use it as the pivot. That pivot is guaranteed to be larger than at least $3n/10$ elements and smaller than at least $3n/10$, so the recursion is on at most $7n/10$. The recurrence $T(n) = T(n/5) + T(7n/10) + O(n)$ solves to $O(n)$ because $1/5 + 7/10 < 1$: the work shrinks geometrically. Groups of three do not work ($1/3 + 2/3 = 1$), which is a lovely exercise. In practice the constant is large; libraries use **introselect** (quickselect with a fallback to median of medians if too many bad partitions happen), exactly as introsort does.
 
@@ -1137,6 +1179,11 @@ Read Erickson section 1.8 and the 6.046 lecture on median finding; then implemen
 
 Delete is the operation people get wrong. A leaf is simply removed. A node with one child is replaced by that child. A node with two children is replaced by its **in-order successor** (the minimum of the right subtree), which has at most one child and can be removed by the easy cases. Write the invariant check and run it after every operation in tests.
 
+\`\`\`interactive
+tree-lab
+{"title": "BST search, insert and the three delete cases", "mode": "bst", "modes": ["bst"], "keys": [50, 30, 70, 20, 40, 60, 80, 35, 45, 65], "key": 30, "caption": "Delete 30 (two children): watch the walk to its in-order successor, right once then left to 35, the key copy, and the removal of the old successor node. Then delete 20 (now a leaf) and 60 (one child: 65 moves up). Search follows a single root-to-leaf path, so its comparisons never exceed h + 1. Finally press Sorted under the list: inserting keys in order builds a path with h = n − 1."}
+\`\`\`
+
 Everything hinges on $h$. If keys arrive in random order the expected height is $O(\\log n)$ (about $2 \\ln n$, by the same analysis as quicksort, since the root is a random pivot). If keys arrive sorted, each new key becomes the rightmost leaf and the tree is a linked list: $h = n$ and every operation is linear. That is why the next lesson exists. Measure it: insert $10^5$ sorted keys and watch the tree take seconds where a random order takes milliseconds.
 
 **Augmentation** is how BSTs become more than maps. Store in each node the size of its subtree, maintain it on insert and delete, and you can answer "what is the rank of key $x$" and "which key has rank $k$" in $O(h)$. The same idea with interval endpoints gives interval trees, with sums gives order-statistic range sums.
@@ -1237,7 +1284,17 @@ Read Open Data Structures chapter 6 and Sedgewick 3.2, then build the tree with 
 
 **AVL trees** (1962) store in each node the heights of its subtrees and insist they differ by at most 1. After an insertion, walk back up updating heights; the first node whose balance factor reaches $\\pm 2$ is fixed with one rotation (LL or RR case) or two (LR or RL). The height bound comes from a counting argument: the minimum number of nodes in an AVL tree of height $h$ satisfies $N(h) = N(h-1) + N(h-2) + 1$, which is Fibonacci-like, so $n \\ge \\phi^h$ and $h \\le 1.44 \\log_2 n$. Deletion is similar but may need rotations all the way up.
 
+\`\`\`interactive
+tree-lab
+{"title": "AVL rotations, one step at a time", "mode": "avl", "modes": ["bst", "avl"], "keys": [], "key": 1, "caption": "Press Sorted under the list (or insert 1, 2, 3, ... yourself). The number beside each node is its balance factor h(left) − h(right). After each insert the walk back up finds the first node at ±2 and fixes it: one rotation for LL or RR, two for LR or RL (press Clear, then insert 10, 30, 20). Compare the height readout with log₂ n, then switch to Plain BST: the same keys in the same order give a path."}
+\`\`\`
+
 **Red-black trees** colour each node and enforce: the root is black, no red node has a red child, and every root-to-leaf path has the same number of black nodes. Those rules bound the height by $2 \\log_2(n+1)$. They are easiest to understand as a binary encoding of a **2-3 tree** (a red link glues two binary nodes into one 3-node), which is exactly Sedgewick's **left-leaning red-black tree**, where insertion needs only three local fixes. Red-black trees do fewer rotations on update than AVL and are the choice of C++ \`std::map\`, Java \`TreeMap\` and the Linux scheduler; AVL is slightly faster for lookup-heavy workloads.
+
+\`\`\`interactive
+tree-lab
+{"title": "Left-leaning red-black tree", "mode": "rb", "modes": ["rb", "avl", "bst"], "keys": [], "key": 5, "caption": "Each red node hangs from a thick red link: read the two nodes as one 3-node of a 2-3 tree. Press Sorted and step through: each insertion adds a red link, then the three local fixes run on the way up: rotate left a right-leaning red link, rotate right two reds in a row, flip colours when both children are red (splitting a 4-node). Every root-to-leaf path keeps the same number of black links, so the height stays within 2 log₂(n + 1). Switch to AVL to compare heights and rotation counts on the same keys."}
+\`\`\`
 
 Two randomised alternatives are worth knowing because they are so much simpler to implement correctly: a **treap** assigns each key a random priority and keeps the tree a heap on priorities, which makes it a random BST regardless of insertion order; a **skip list** is a linked list with randomised express lanes and the same expected bounds. Redis and LevelDB use skip lists for their sorted structures.
 
@@ -1343,7 +1400,19 @@ Read Sedgewick 3.3 for LLRB and Open Data Structures chapters 7 and 9, then impl
 
 The heap is a complete binary tree stored **implicitly** in an array: the children of index $i$ are $2i+1$ and $2i+2$ and the parent is $(i-1)/2$. No pointers, perfect locality for small heaps, and the "tree" shape is enforced by the array being filled left to right. Insert appends at the end and **sifts up** while smaller than its parent. Extract-min swaps the last element into the root and **sifts down**, choosing the smaller child each time. Each walk is the height, $\\lfloor \\log_2 n \\rfloor$.
 
-**Build-heap** from an unordered array of $n$ items is $O(n)$, not $O(n \\log n)$, which surprises everyone the first time: sift down every node from the last internal node to the root. Most nodes are near the bottom and sift only a little; the sum $\\sum_h n/2^{h+1} \\cdot O(h) = O(n)$. **Heapsort** builds a max-heap then repeatedly swaps the root to the end and sifts down: in place, worst-case $O(n \\log n)$, no recursion, but each sift-down jumps around memory, so it loses to quicksort by a factor of two or three in practice. It is the safety net inside introsort.
+\`\`\`interactive
+heap
+{"title": "A min-heap as a tree and as an array", "kind": "min", "values": [4, 10, 3, 5, 1, 8, 7, 2, 9], "caption": "The tree and the array are the same data. The outlined node's index arithmetic is printed under the picture, and the arrows in the array row point from i to 2i+1 and 2i+2. Insert 0: it is appended at index n − 1 and sifts up past one parent per step. Extract-min: the last element jumps to the root and sifts down, compared with the smaller child each time. Neither walk is longer than the height ⌊log₂ n⌋."}
+\`\`\`
+
+**Build-heap** from an unordered array of $n$ items is $O(n)$, not $O(n \\log n)$, which surprises everyone the first time: sift down every node from the last internal node to the root. Most nodes are near the bottom and sift only a little; the sum $\\sum_h n/2^{h+1} \\cdot O(h) = O(n)$.
+
+\`\`\`interactive
+heap
+{"title": "Bottom-up build-heap", "kind": "min", "start": "build", "values": [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1], "caption": "A reversed array is the worst case for a min-heap: every parent starts larger than its children (red dashed edges). Build-heap sifts down from index ⌊n/2⌋ − 1 = 6 back to the root; the seven leaves are never touched. Count the swaps at the end: 11 for n = 15, never more than n − 1, compared with n log₂ n ≈ 59. Load a Random or Sorted array and check the swap count stays below n."}
+\`\`\`
+
+**Heapsort** builds a max-heap then repeatedly swaps the root to the end and sifts down: in place, worst-case $O(n \\log n)$, no recursion, but each sift-down jumps around memory, so it loses to quicksort by a factor of two or three in practice. It is the safety net inside introsort.
 
 Priority queues are everywhere: Dijkstra and Prim (with **decrease-key**, which requires an index map from item to heap position), discrete event simulation (next event time), operating-system schedulers (earliest deadline), $k$-way merging of sorted streams, and Huffman coding. Python's \`heapq\` has no decrease-key; the standard workaround is lazy deletion: push a new entry and skip stale ones on pop.
 
@@ -1564,6 +1633,11 @@ The one weakness is write cost: each insert rewrites a whole block, and random i
 
 **Separate chaining** keeps a linked list (or small array) per slot. With $n$ keys in $m$ slots the **load factor** is $\\alpha = n/m$. Under the **simple uniform hashing assumption** (each key equally likely to land in any slot, independently), an unsuccessful search examines $\\alpha$ items on average and a successful one about $1 + \\alpha/2$. Keep $\\alpha$ bounded by doubling $m$ when it exceeds a threshold, and the amortised argument from dynamic arrays makes everything expected $O(1)$. The worst case is still $O(n)$ if all keys collide, which an adversary who knows your hash function can arrange; Python salts string hashing per process for exactly that reason.
 
+\`\`\`interactive
+hash-table
+{"title": "Separate chaining", "strategy": "chaining", "strategies": ["chaining"], "hash": "mod", "m": 7, "keys": [10, 22, 31, 4, 15, 28, 17, 88, 59], "key": "36", "resize": false, "maxLoad": 1.5, "caption": "Nine keys in m = 7 slots: α ≈ 1.29, so chains are short but some slots stay empty. Search for a key that is absent and count the comparisons: the length of one chain, about α on average. Insert keys that are multiples of 7 (14, 21, 35): with k mod m they all join chain 0, the adversarial case. Switch the hash function to multiplicative and watch the same keys spread out. Turn on resizing and keep inserting: when α passes 1.5 the table grows to the next prime above 2m and every key is rehashed."}
+\`\`\`
+
 A good hash function is fast, spreads keys uniformly, and makes nearby keys land far apart. Integers in Python hash to themselves (so \`dict\` with small int keys is nearly a direct-address table); strings use SipHash; tuples combine element hashes with multiplication by odd constants and XOR. The **contract** you must never break: equal objects must have equal hashes, and the hash must not change while the object is in a table, which is why lists are unhashable and why defining \`__eq__\` without \`__hash__\` makes a class unhashable.
 
 Read Open Data Structures chapter 5 and the 6.006 hashing lecture, then implement chaining, instrument chain lengths and compare the measured distribution with the Poisson prediction.`,
@@ -1667,7 +1741,17 @@ Read Open Data Structures chapter 5 and the 6.006 hashing lecture, then implemen
           ],
           explanation: `**Open addressing** stores every key directly in the slot array: on a collision, probe a sequence of alternative slots until an empty one is found. **Linear probing** tries $h(k), h(k)+1, h(k)+2, \\ldots$ modulo $m$. It is the simplest and, on modern hardware, usually the fastest, because the probe sequence walks consecutive memory and stays within a cache line or two. Its enemy is **primary clustering**: runs of occupied slots grow, because any key hashing into a run extends it. Knuth's 1963 analysis gives expected probes of roughly $\\frac{1}{2}(1 + \\frac{1}{(1-\\alpha)^2})$ for an unsuccessful search, which explodes as $\\alpha \\to 1$: at $\\alpha = 0.9$ that is about 50 probes. So open-addressed tables keep $\\alpha$ below about $2/3$ (CPython) or $7/8$ (Swiss tables).
 
+\`\`\`interactive
+hash-table
+{"title": "Open addressing: probe sequences and clustering", "strategy": "linear", "strategies": ["linear", "quadratic", "double"], "hash": "mod", "m": 11, "keys": [10, 22, 31, 4, 15, 28, 17, 88, 59], "key": "26", "caption": "These are CLRS's keys in m = 11 slots with h(k) = k mod 11. The badges number the probes of the current operation. With linear probing, 59 needed 5 probes: it hashed into the run in slots 4-7 and walked to its end, and landing in slot 8 merged that run with 9-10. The occupancy strip shows the result, one cluster from slot 4 round to slot 1. Insert 26 (home slot 4) and count its probes. Switch to quadratic or double hashing: the same keys scatter and the longest cluster shrinks. Then set m = 61, press Fill to α 0.5, 0.8 and 0.9 in turn, and compare the measured miss cost with ½(1 + 1/(1 − α)²): it explodes as α → 1, and far less so with double hashing."}
+\`\`\`
+
 **Deletion** cannot simply empty a slot, because that would break probe chains passing through it. The standard fix is a **tombstone** marker: lookups step over it, inserts may reuse it, and a rebuild clears them once they accumulate. **Quadratic probing** and **double hashing** ($h_1(k) + i \\cdot h_2(k)$) reduce clustering at the cost of locality. **Robin Hood hashing** keeps linear probing but, on insert, lets a key steal the slot of one that is closer to its home, equalising probe lengths so that the variance drops sharply; it also allows deletion by backward shifting with no tombstones.
+
+\`\`\`interactive
+hash-table
+{"title": "Deletion with tombstones", "strategy": "linear", "strategies": ["linear", "double"], "hashes": ["mod"], "m": 11, "keys": [10, 22, 31, 4, 15, 28, 17, 88, 59], "key": "22", "resize": true, "maxLoad": 0.85, "caption": "Delete 22 from slot 0: it becomes a tombstone ⊠ rather than an empty slot. Now search for 88, whose home slot is also 0: the search steps over the tombstone and finds 88 in slot 1. Had slot 0 been emptied, the search would have stopped there and wrongly reported 88 missing. Insert 33 (home 0): the insert walks on to confirm 33 is absent, then reuses the tombstone. Resizing is on: once (n + tombstones)/m passes 0.85 the table is rebuilt at the next prime above 2m and the tombstones vanish."}
+\`\`\`
 
 Study two production designs. CPython's \`dict\` keeps a sparse index array of small integers pointing into a dense array of entries, which saves memory, preserves insertion order and improves locality; its probe sequence mixes in higher hash bits to avoid clustering. Google's **Swiss table** (abseil \`flat_hash_map\`) stores one byte of metadata per slot and probes 16 slots at a time with SIMD instructions, which is why it beats chaining by a large factor.
 
@@ -1771,7 +1855,14 @@ Read Open Data Structures 5.2 and the dictobject.c header, then run the probe-le
           ],
           explanation: `Once you have constant-time membership, a whole class of problems collapses from quadratic to linear. "Do any two numbers sum to $t$?" becomes one pass with a set of seen values. Deduplication, intersection, grouping by key, counting frequencies and detecting duplicates in a stream are all one hash table away. Learn to see the pattern: whenever an inner loop asks "have I seen this before", replace it with a set.
 
-Sometimes even one pointer per key is too much memory. A **Bloom filter** answers membership with no false negatives and a tunable false-positive rate using a bit array of $m$ bits and $k$ hash functions: insert by setting $k$ bits, query by checking them. After $n$ insertions the false-positive probability is approximately $(1 - e^{-kn/m})^k$, minimised at $k = (m/n) \\ln 2$; 10 bits per element gives about 1 percent. Browsers, databases (to skip SSTables that cannot contain a key) and CDNs use them. Count-min sketches and HyperLogLog apply the same idea to frequencies and cardinality.
+Sometimes even one pointer per key is too much memory. A **Bloom filter** answers membership with no false negatives and a tunable false-positive rate using a bit array of $m$ bits and $k$ hash functions: insert by setting $k$ bits, query by checking them. After $n$ insertions the false-positive probability is approximately $(1 - e^{-kn/m})^k$, minimised at $k = (m/n) \\ln 2$; 10 bits per element gives about 1 percent. Browsers, databases (to skip SSTables that cannot contain a key) and CDNs use them.
+
+\`\`\`interactive
+hash-table
+{"mode": "bloom", "title": "Bloom filter: measured vs predicted false positives", "m": 64, "k": 3, "n": 20, "caption": "Each item sets k bits. Query a word you never inserted: usually a 0 bit proves it absent, but sometimes all k bits were set by others, a false positive. Press Fill and measure: 20 items in 64 bits with k = 3 should give about 22%, and the measured rate tracks (1 − e^(−kn/m))^k. Set m = 512 and n = 51 (10 bits per item) and try k from 1 to 10: the rate bottoms out near k = 7 ≈ (m/n) ln 2, at about 1%."}
+\`\`\`
+
+Count-min sketches and HyperLogLog apply the same idea to frequencies and cardinality.
 
 A **rolling hash** lets you hash every window of length $m$ in a string in $O(1)$ each: treat the window as a number in base $b$ modulo $p$, and sliding it is one multiply, one subtract and one add. **Rabin-Karp** compares the pattern's hash with each window's and verifies matches character by character; expected $O(n + m)$ and it extends naturally to searching for many patterns at once. The same trick underlies rsync's block matching and plagiarism detection.
 
@@ -1892,6 +1983,11 @@ Pick the **representation** by density and by which operations you need. An **ad
 
 **Depth-first search** goes as deep as possible before backtracking, naturally via recursion or an explicit stack. Recording **discovery and finish times** turns DFS into a precise instrument: in a directed graph, an edge to a vertex that is discovered but not finished is a **back edge**, and a back edge exists if and only if there is a cycle. Finish order gives topological sort (next lesson); the parenthesis structure of discovery/finish intervals gives the component structure. Recursion depth is a real limit in Python ($10^3$ by default), so write the iterative version with an explicit stack that also tracks finish events.
 
+\`\`\`interactive
+graph-lab
+{"title": "BFS and DFS, step by step", "vertices": [[0, 0], [2, 0], [4, 0], [0, 2], [2, 2], [4, 2], [6, 0], [6, 2]], "labels": ["A", "B", "C", "D", "E", "F", "G", "H"], "edges": [["A", "B"], ["A", "D"], ["B", "C"], ["B", "E"], ["D", "E"], ["E", "F"], ["C", "F"], ["G", "H"]], "name": "Undirected example", "presets": ["custom", "dag", "scc", "grid", "cycle5"], "panels": ["adjacency", "bipartite"], "algorithms": ["bfs", "dfs"], "source": "A", "caption": "Step BFS from A and watch the queue: vertices leave it in order of distance, and the badges are shortest path lengths. Run DFS: the stack is the current path, badges are discovery/finish times, and dashed purple edges are back edges. Choose the digraph with 4 strong components (or switch on Directed) and run DFS again: back edges such as d→c prove a cycle, while forward and cross edges do not. The 5-cycle fails the bipartite test because an edge joins two vertices on the same BFS layer."}
+\`\`\`
+
 Read Erickson chapters 5 and 6 and Sedgewick 4.1-4.2, then build a graph class with both representations, both traversals and the edge classifier, and verify everything with NetworkX.`,
           resources: [
             {
@@ -1998,6 +2094,11 @@ The DFS method is a one-liner once you own DFS: output vertices in **reverse ord
 
 When the graph has cycles, the next question is which vertices are mutually reachable. Those sets are the **strongly connected components**, and contracting each to a single vertex gives the **condensation**, which is always a DAG. **Kosaraju's algorithm** runs DFS to get finish times, transposes the graph, and runs DFS again in decreasing finish order; each tree in the second pass is an SCC. The proof rests on the fact that the vertex finishing last lies in a source component of the condensation. **Tarjan's algorithm** does it in one DFS with low-link values, and is the version you will find in compilers. Both are $O(V + E)$.
 
+\`\`\`interactive
+graph-lab
+{"title": "Topological order and strong components", "preset": "dag", "presets": ["dag", "scc"], "algorithms": ["topo", "dfs", "scc"], "toggles": false, "caption": "Kahn on the DAG: the badges are remaining in-degrees, ready vertices wait in name order, and the output A, B, C, D, E, F, G has every edge pointing forward. DFS gives another valid order, the reverse of finish order. Add an edge G→A (Add mode) and Kahn gets stuck. Then choose the digraph with 4 strong components and run Kosaraju: pass 1 records finish order, pass 2 runs on the reversed edges and colours {a, b, e}, {c, d}, {f, g}, {h}."}
+\`\`\`
+
 The classic payoff is **2-SAT**: build an implication graph with vertices $x$ and $\\neg x$; the formula is satisfiable iff no variable shares an SCC with its negation. Read Erickson 6.4-6.6 and Sedgewick 4.2, then implement both SCC algorithms and verify against each other.`,
           resources: [
             {
@@ -2097,6 +2198,11 @@ The classic payoff is **2-SAT**: build an implication graph with vertices $x$ an
 **Dijkstra's algorithm** relaxes edges out of the unfinished vertex with the smallest tentative distance, using a min-priority queue. With non-negative weights, that vertex's distance is already final: any other path to it would have to leave the finished set through a vertex with a larger or equal tentative distance and could only get longer. That invariant is the correctness proof, and it is exactly what a negative edge breaks. With a binary heap and decrease-key (or lazy insertion with stale-entry skipping) the cost is $O((V + E) \\log V)$; with a Fibonacci heap $O(E + V \\log V)$, which is rarely worth its constants. Dijkstra on an unweighted graph *is* BFS with a heap in place of a queue.
 
 **Bellman-Ford** handles negative weights by relaxing every edge $V - 1$ times. After round $i$, all shortest paths using at most $i$ edges are correct, and a simple path has at most $V - 1$ edges. If a $V$-th round still relaxes something, a **negative cycle** is reachable, which is how arbitrage detection in currency graphs works (weights $-\\log$ rate). Cost $O(VE)$. On a **DAG** you can do better than either: relax vertices in topological order, once each, in $O(V + E)$, negative weights included; this is also how the longest path (critical path) is found.
+
+\`\`\`interactive
+graph-lab
+{"title": "Dijkstra and Bellman-Ford", "preset": "dijkstra", "presets": ["dijkstra", "negative", "grid", "mst"], "algorithms": ["dijkstra", "bellman-ford", "bfs"], "source": "s", "caption": "Dijkstra from s: the table holds tentative distances, the queue lists unsettled vertices by distance, and each extracted vertex is final. The result is s 0, t 8, x 9, y 5, z 7, as in CLRS. Choose the negative-weights graph: Dijkstra settles t at 6 and z at 2, but Bellman-Ford's rounds find t 2, x 4, y 7, z −2. Tap an edge to change its weight; make a cycle negative and Bellman-Ford's check round reports it. On the unweighted grid, Dijkstra and BFS agree."}
+\`\`\`
 
 **A*** is Dijkstra with a heuristic $h(v)$ estimating the remaining distance; it pops by $g + h$. If $h$ never overestimates (**admissible**) the result is optimal, and if it is **consistent** no vertex is popped twice. On grid maps with Euclidean or Manhattan distance it expands a small fraction of what Dijkstra does, which is the whole of game and robot pathfinding.
 
@@ -2212,6 +2318,11 @@ Read Erickson chapter 8 and Sedgewick 4.4, then implement all four on the same g
 The proof tool is the **cut property**: for any partition of the vertices into two sets, the lightest edge crossing the partition belongs to some MST. (Suppose not; add it to the MST, which creates a cycle; the cycle crosses the cut again on some heavier edge; swap them and get a lighter tree.) Every MST algorithm is just a sequence of cut-property applications.
 
 **Kruskal** sorts edges by weight and adds each one that connects two different components. "Different components" is the question union-find answers, and with it Kruskal is $O(E \\log E)$, dominated by the sort. **Prim** grows a single tree from a start vertex, always adding the lightest edge leaving the tree, via a priority queue keyed on each outside vertex's best connecting edge; it looks exactly like Dijkstra and costs $O(E \\log V)$. Prim suits dense graphs and adjacency matrices; Kruskal suits sparse graphs and edge lists, and gives you the clustering for free: stop after $k - 1$ merges and the components are the $k$ clusters.
+
+\`\`\`interactive
+graph-lab
+{"title": "Kruskal with union-find, and Prim", "preset": "mst", "presets": ["mst", "grid", "k4", "petersen"], "algorithms": ["kruskal", "prim"], "source": "a", "toggles": false, "caption": "Kruskal scans the sorted edge table; vertex colours are the union-find sets and the parent array is shown under the controls. Edges such as g–i (6) are skipped because both ends are already in one set. Prim from a grows a single tree and its keys behave like Dijkstra's distances. Both reach total weight 37. Tap an edge and change its weight to see which tree edges change."}
+\`\`\`
 
 **Union-find** maintains a partition under two operations: find the set containing $x$, and union two sets. Represent sets as trees of parent pointers. **Union by rank** (attach the shorter tree under the taller) keeps height $O(\\log n)$; **path compression** (point every node on a find path directly at the root) flattens trees as a side effect. Together they give an amortised cost of $O(\\alpha(n))$ per operation, where $\\alpha$ is the inverse Ackermann function, below 5 for any input that fits in the universe. The analysis is deep; the implementation is ten lines, and you should measure how close to constant it is in practice.
 
@@ -2342,6 +2453,11 @@ Erickson's recipe is worth following rigidly until it is instinct. (1) **Define 
 
 **Memoisation** (a recursive function with a cache, \`functools.lru_cache\` in Python) writes itself from the recurrence and only visits needed subproblems; it costs recursion depth and dictionary overhead. **Tabulation** fills an array in the evaluation order; it is faster, allows space optimisation (only the previous row of a 2D table may be needed), and has no recursion limit. Write the memoised version first to get it right, then convert.
 
+\`\`\`interactive
+dp-table
+{"title": "Fibonacci: memoisation vs tabulation", "problem": "fib", "problems": ["fib", "lis"], "fibMode": "memo", "n": 7, "caption": "Memoisation first: the call stack dives to fib(1) before any value is stored, then each fib(k − 2) is answered from the memo (blue). The calls readout compares 2n − 1 memoised calls with the 2F(n+1) − 1 of the naive recursion; move n to 15 to see 29 against 1973. Switch to tabulation: the same cells fill in the same left-to-right order with no recursion at all. LIS is a second 1-D table where each cell depends on every earlier smaller value, so it costs O(n²)."}
+\`\`\`
+
 Practice on rod cutting, weighted interval scheduling and the text segmentation problem from Erickson chapter 3 before attempting the classics in the next lesson.`,
           resources: [
             {
@@ -2438,7 +2554,17 @@ Practice on rod cutting, weighted interval scheduling and the text segmentation 
 
 **Two-sequence DP.** Subproblem $(i, j)$ is "the first $i$ characters of $A$ and first $j$ of $B$". **Longest common subsequence**: if $A_i = B_j$ extend by one, else take the better of dropping $A_i$ or $B_j$. **Edit distance** (Levenshtein) adds a substitution option and costs per operation; it is the basis of spell checkers, diff tools and DNA alignment (Needleman-Wunsch is edit distance with a scoring matrix). Both cost $O(mn)$, and since each row depends only on the previous, $O(\\min(m, n))$ space suffices for the value; reconstruction needs the full table or Hirschberg's divide-and-conquer.
 
+\`\`\`interactive
+dp-table
+{"title": "Two-sequence DP: edit distance and LCS", "problem": "edit", "problems": ["edit", "lcs"], "a": "kitten", "b": "sitting", "caption": "Each cell D[i][j] looks at three neighbours: above (delete), left (insert) and the diagonal (match or substitute). The solid green arrow is the one that wins. Watch the row-by-row order: every dependency is already filled, which is the topological order of the subproblem DAG. Step to the end for the traceback: kitten → sitting needs 3 edits. Switch to LCS (CLRS's ABCBDAB and BDCABA) and note that only diagonal steps on equal letters add to the subsequence."}
+\`\`\`
+
 **Capacity DP.** Subproblem $(i, w)$ is "best value using items $1..i$ with capacity $w$". **0/1 knapsack** chooses to take item $i$ (if it fits) or not, in $O(nW)$ time. That bound is **pseudo-polynomial**: it is polynomial in the *value* of $W$, not in its number of bits, which is why knapsack is NP-hard yet solvable in practice for modest $W$. Coin change and subset sum are the same shape with unbounded or unit-value items.
+
+\`\`\`interactive
+dp-table
+{"title": "Capacity DP: 0/1 knapsack and coin change", "problem": "knapsack", "problems": ["knapsack", "coins"], "weights": [1, 3, 4, 5], "values": [1, 4, 5, 7], "W": 7, "coins": [1, 3, 4], "amount": 6, "caption": "Row i, column c holds the best value using items 1..i with capacity c. Each cell chooses between the cell above (skip item i) and the cell wᵢ columns to the left in the row above, plus vᵢ (take it). The traceback takes items 2 and 3 for value 9. Raise W and watch the table widen: the work is (n + 1)(W + 1) cells, polynomial in the value of W, not in its number of bits. Coin change is the same shape in one dimension with unlimited copies of each coin."}
+\`\`\`
 
 **Interval DP.** Subproblem $(i, j)$ is "the best way to handle the contiguous range $i..j$", solved by choosing the split point $k$: **matrix-chain multiplication**, optimal binary search trees, and palindrome partitioning all cost $O(n^3)$ for $O(n^2)$ subproblems with $O(n)$ choices each (Knuth's optimisation drops some to $O(n^2)$).
 
@@ -2546,7 +2672,14 @@ Work through Erickson 3.6-3.10 and the 6.006 DP lectures, implementing each with
 
 The standard proof is the **exchange argument**. Take any optimal solution; show that you can swap in the greedy choice without making it worse; repeat until the optimal solution has become the greedy one. **Interval scheduling** (maximum number of non-overlapping intervals) is the canonical example: pick the interval that finishes earliest. Any optimal solution's first interval finishes no earlier than the greedy one, so replacing it with the greedy choice keeps everything feasible; induct on the rest. The alternative **greedy stays ahead** argument shows by induction that after $k$ choices greedy is at least as far along as any other solution.
 
-Counterexamples are just as important. Coin change by largest coin first is optimal for 1, 5, 10, 25 but not for 1, 3, 4 (6 = 3 + 3, greedy gives 4 + 1 + 1). **Fractional knapsack** is greedy by value per unit weight; **0/1 knapsack** is not, because you cannot take the "best" fraction, and that is precisely why it needs DP. Before writing a proof, run your greedy against brute force on thousands of random small instances; a counterexample found in seconds saves an afternoon.
+Counterexamples are just as important. Coin change by largest coin first is optimal for 1, 5, 10, 25 but not for 1, 3, 4 (6 = 3 + 3, greedy gives 4 + 1 + 1).
+
+\`\`\`interactive
+dp-table
+{"title": "Where greedy coin change fails", "problem": "coins", "coins": [1, 3, 4], "amount": 6, "caption": "The DP tries every last coin for every amount and finds 6 = 3 + 3; the final step reports what largest-coin-first greedy would do. Try other amounts with coins 1, 3, 4 to collect more counterexamples, then change the coins to 1, 5, 10 and check that greedy always agrees with the DP."}
+\`\`\`
+
+**Fractional knapsack** is greedy by value per unit weight; **0/1 knapsack** is not, because you cannot take the "best" fraction, and that is precisely why it needs DP. Before writing a proof, run your greedy against brute force on thousands of random small instances; a counterexample found in seconds saves an afternoon.
 
 **Huffman coding** builds an optimal prefix code by repeatedly merging the two least frequent symbols with a priority queue; the proof shows that some optimal tree has the two rarest symbols as sibling leaves at the deepest level, then inducts after merging them. It is the compression step inside DEFLATE (zip, PNG) and JPEG. Dijkstra, Prim and Kruskal are all greedy too, as you have already proved.
 
@@ -2663,6 +2796,11 @@ Read Erickson chapter 4, then do the counterexample hunt before the proofs; it c
           ],
           explanation: `Naive substring search slides the pattern along the text and compares at each position: $O(nm)$ in the worst case because it re-examines text characters after every partial match. **Knuth-Morris-Pratt** never moves backwards in the text. Its secret is the **failure function** (also called the prefix function) $\\pi[i]$: the length of the longest proper prefix of the pattern that is also a suffix of \`P[0..i]\`, called a border. When a mismatch happens after matching $i$ characters, the border tells you how many of those characters are still a valid match of a pattern prefix, so you shift the pattern to that position without rechecking the text. Computing $\\pi$ is itself a KMP-style loop over the pattern in $O(m)$, and the search is $O(n)$ by an amortised argument: the matched length increases at most once per text character and each failure-function jump decreases it.
 
+\`\`\`interactive
+kmp
+{"title": "KMP: failure function, then search", "pattern": "ababaca", "text": "abababacaba", "caption": "Phase 1 fills π for CLRS's pattern ababaca: the brackets show the border P[0..k) and the equal suffix. On a mismatch k falls back to π[k − 1], the next shorter border, never restarting from zero unless it must. Phase 2 slides the pattern along the text: after the mismatch at j = 5 the pattern jumps forward by the border, and j never moves back. Compare the final comparison count with n + m; try pattern aab on text aaaab to see the fallback chain."}
+\`\`\`
+
 A **trie** stores a set of strings as a tree where each edge is a character. Insert and lookup cost $O(L)$ for a string of length $L$, independent of how many strings are stored, and enumerating all strings with a prefix is a subtree walk: autocomplete, IP routing tables (longest prefix match) and spell-checking. Memory is the cost; compressed tries (Patricia) and ternary search tries address it.
 
 A **suffix array** is the lexicographically sorted list of all suffixes of a text, stored as starting indices. With it, every occurrence of a pattern is a contiguous range found by binary search in $O(m \\log n)$; combined with the **LCP array** (longest common prefix of adjacent suffixes) it answers longest repeated substring, number of distinct substrings and more. Construction by sorting suffixes with a comparison sort is $O(n^2 \\log n)$ in the worst case; the prefix-doubling method is $O(n \\log^2 n)$ and sufficient here, and linear-time constructions exist. Suffix arrays are the engine of genome search tools and of Burrows-Wheeler compression.
@@ -2773,6 +2911,11 @@ The **aggregate method** simply sums the total cost over the sequence and divide
 The **accounting method** charges each operation an amortised cost, possibly more than its actual cost, and stores the excess as credit on specific parts of the structure to pay for later expensive operations. For the counter, charge 2 per increment: one pays for setting a bit to 1, the other sits on that bit to pay for clearing it later. Every 1-bit carries a credit, so clearing is prepaid. The invariant "credit is never negative" is the proof.
 
 The **potential method** replaces credits with a function $\\Phi$ of the whole structure, with $\\Phi(D_0) = 0$ and $\\Phi \\ge 0$. Amortised cost $= \\text{actual} + \\Phi(D_i) - \\Phi(D_{i-1})$; summing telescopes, so total actual cost $\\le$ total amortised cost. For the counter $\\Phi$ is the number of 1-bits; for a dynamic array $\\Phi = 2 \\cdot \\text{size} - \\text{capacity}$ once it is at least half full. A shrinking array must shrink at one quarter full, not one half, or an adversary alternating push and pop at the boundary forces a copy every operation; the potential function makes this precise.
+
+\`\`\`interactive
+dynamic-array
+{"title": "The potential method on a doubling array", "policy": "factor", "g": 2, "n": 32, "potential": true, "compare": false, "caption": "Step one append at a time and watch Φ = 2·size − cap. A cheap append costs 1 and raises Φ by 2, so its amortised cost is 3. At a resize from capacity s the copy costs s + 1, but Φ falls from s to 2, so the amortised cost is again 3. Change the growth factor: the formula adapts to Φ = (g·size − cap)/(g − 1) and the amortised cost settles at 1 + g/(g − 1), up to rounding of the capacity."}
+\`\`\`
 
 **Splay trees** restructure on every access so that the accessed node becomes the root; they have no balance invariant yet achieve $O(\\log n)$ amortised per operation, via a potential based on the sum of log subtree sizes. Read Erickson's amortisation notes and the 6.046 lecture, then do the potential proofs by hand; the exercises instrument the structures to watch the potential rise and fall.`,
           resources: [

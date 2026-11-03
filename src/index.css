@@ -37,6 +37,31 @@
   }
 }
 
+/* Series and chrome colours for interactive widgets (src/widgets/kit/Plot.tsx). */
+:root {
+  --plot-1: #4f46e5;
+  --plot-2: #e11d48;
+  --plot-3: #059669;
+  --plot-4: #d97706;
+  --plot-5: #0891b2;
+  --plot-6: #9333ea;
+  --plot-grid: #eceef4;
+  --plot-axis: #9aa0b8;
+  --plot-text: #5b6078;
+}
+
+.dark {
+  --plot-1: #818cf8;
+  --plot-2: #fb7185;
+  --plot-3: #34d399;
+  --plot-4: #fbbf24;
+  --plot-5: #22d3ee;
+  --plot-6: #c084fc;
+  --plot-grid: #1c2131;
+  --plot-axis: #5a6180;
+  --plot-text: #a7acc2;
+}
+
 .dark {
   --color-canvas: #090b14;
   --color-surface: #10131f;
@@ -109,64 +134,64 @@
   .prose-lesson {
     @apply text-[15px] leading-7 text-ink;
   }
-  .prose-lesson p {
+  .prose-lesson p:not(.not-prose *) {
     @apply my-3;
   }
-  .prose-lesson h1,
-  .prose-lesson h2,
-  .prose-lesson h3,
-  .prose-lesson h4 {
+  .prose-lesson h1:not(.not-prose *),
+  .prose-lesson h2:not(.not-prose *),
+  .prose-lesson h3:not(.not-prose *),
+  .prose-lesson h4:not(.not-prose *) {
     @apply font-semibold tracking-tight text-ink mt-6 mb-2;
   }
-  .prose-lesson h1 {
+  .prose-lesson h1:not(.not-prose *) {
     @apply text-2xl;
   }
-  .prose-lesson h2 {
+  .prose-lesson h2:not(.not-prose *) {
     @apply text-xl;
   }
-  .prose-lesson h3 {
+  .prose-lesson h3:not(.not-prose *) {
     @apply text-lg;
   }
-  .prose-lesson ul {
+  .prose-lesson ul:not(.not-prose *) {
     @apply my-3 list-disc pl-6;
   }
-  .prose-lesson ol {
+  .prose-lesson ol:not(.not-prose *) {
     @apply my-3 list-decimal pl-6;
   }
-  .prose-lesson li {
+  .prose-lesson li:not(.not-prose *) {
     @apply my-1;
   }
-  .prose-lesson a {
+  .prose-lesson a:not(.not-prose *) {
     @apply text-accent underline decoration-accent/40 underline-offset-2 hover:decoration-accent;
   }
-  .prose-lesson code {
+  .prose-lesson code:not(.not-prose *) {
     @apply rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[13px] text-ink;
     overflow-wrap: anywhere;
   }
-  .prose-lesson pre {
+  .prose-lesson pre:not(.not-prose *) {
     @apply my-4 overflow-x-auto rounded-xl border border-line bg-surface-2 p-4 text-[13px] leading-6;
   }
-  .prose-lesson pre code {
+  .prose-lesson pre code:not(.not-prose *) {
     overflow-wrap: normal;
     @apply bg-transparent p-0;
   }
-  .prose-lesson blockquote {
+  .prose-lesson blockquote:not(.not-prose *) {
     @apply my-4 border-l-2 border-accent/50 pl-4 text-ink-2 italic;
   }
-  .prose-lesson strong {
+  .prose-lesson strong:not(.not-prose *) {
     @apply font-semibold text-ink;
   }
-  .prose-lesson table {
+  .prose-lesson table:not(.not-prose *) {
     @apply my-4 w-full border-collapse text-sm;
   }
-  .prose-lesson th,
-  .prose-lesson td {
+  .prose-lesson th:not(.not-prose *),
+  .prose-lesson td:not(.not-prose *) {
     @apply border border-line px-2 py-1 text-left align-top;
   }
-  .prose-lesson .katex-display {
+  .prose-lesson .katex-display:not(.not-prose *) {
     @apply my-4 overflow-x-auto overflow-y-hidden py-1;
   }
-  .prose-lesson hr {
+  .prose-lesson hr:not(.not-prose *) {
     @apply my-6 border-line;
   }
 }

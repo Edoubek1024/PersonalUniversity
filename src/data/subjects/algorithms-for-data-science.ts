@@ -354,6 +354,11 @@ copies(10**6, lambda c: 2 * c) / 10**6
 copies(10**6, lambda c: c + 1000) / 10**6
 \`\`\`
 
+\`\`\`interactive
+dynamic-array
+{"title": "Doubling vs fixed growth", "policy": "factor", "g": 2, "c": 4, "n": 64, "caption": "Press Play. Each spike on the left is a resize that copies every element. The widget charges 1 for each write plus 1 for each copied element, so total cost / n is the copies per element plus 1: it stays below 3 for doubling (r = 2), while the dashed +4 policy keeps climbing because its copies grow like n²/(2c). Try ×1.5 and compare with the 2n to 3n copies estimated above."}
+\`\`\`
+
 CPython grows lists by roughly an eighth, trading more copies for less waste. \`np.append\` has no spare capacity at all, so it copies the whole array on each call. Preallocate when you know $n$, or collect into a list and convert once.
 
 A **linked list** gives every value its own node with a pointer to the next one. Inserting or deleting at a node you already hold is $O(1)$, while reaching the $i$th element is $O(i)$. In Python each node is a heap object, so you pay in memory, and scanning chases pointers across memory with poor cache behaviour. Arrays win nearly every data workload. Linked structures earn their place when you hold references and splice often, as in an LRU cache. Read the first sections of Open Data Structures, chapters 2 and 3.`,
@@ -635,6 +640,11 @@ A row window of 60 and a time window of 60 minutes differ as soon as rows are ir
 
 Everything depends on $h$. Random insertion order gives a height proportional to $\\log n$. Sorted insertion order gives a chain of height $n$, so each insert walks the whole tree and building it is quadratic. Timestamps, sorted IDs and any already-ordered file produce exactly that. A recursive insert will also hit Python's recursion limit.
 
+\`\`\`interactive
+tree-lab
+{"title": "Insertion order decides the height", "mode": "bst", "modes": ["bst", "avl"], "keys": [50, 30, 70, 20, 40, 60, 80], "key": 45, "caption": "Search and Insert walk one root-to-leaf path, so the comparison count is at most h + 1. Press Random under the list, then Sorted, and compare the height readout with log₂ n: sorted keys build a chain with h = n − 1. Switch to AVL to see rotations keep the same keys near log₂ n."}
+\`\`\`
+
 **Balanced trees** such as AVL and red-black trees fix this by rotating nodes to keep the height near $\\log n$. You need to know they exist and that they guarantee $O(\\log n)$ updates, and the Data Structures and Algorithms course covers how they work.
 
 In Python, a pointer tree of objects is rarely the best tool, because every node is a heap object and every step chases a pointer. If your data changes rarely, keep a sorted array and use binary search:
@@ -722,6 +732,11 @@ That is $O(\\log n + r)$ for $r$ results. \`np.searchsorted\` does many lookups 
             'np.partition',
           ],
           explanation: `A **binary heap** keeps the smallest item at the root and requires only that each parent is no larger than its children. It needs no pointers, because the tree fits in an array: the children of index $i$ are at $2i + 1$ and $2i + 2$, and the parent is at $\\lfloor (i-1)/2 \\rfloor$. To push, append at the end and sift up. To pop, move the last item to the root and sift down. Both cost $O(\\log n)$, and building a heap from an array is $O(n)$.
+
+\`\`\`interactive
+heap
+{"title": "A min-heap in an array", "kind": "min", "values": [4, 10, 3, 5, 1, 8, 7, 2, 9], "caption": "The tree and the array row are the same list, the layout heapq uses. The outlined node's parent and children indices are printed under the picture. Insert 0 to watch it sift up from the end; Extract-min moves the last item to the root and sifts it down. Load an unordered list to see the O(n) bottom-up build count its swaps."}
+\`\`\`
 
 Python's \`heapq\` works on a plain list and is a min-heap only, so negate numbers for a max-heap. Tuples on a heap compare field by field, which fails when scores tie and the next field cannot be compared. Use \`(score, counter, item)\` with a running counter.
 
@@ -823,6 +838,11 @@ The key number is the **load factor** $\\alpha = n/m$, entries per slot. With ch
 $$\\frac{1}{2}\\left(1 + \\frac{1}{(1-\\alpha)^2}\\right)$$
 probes, which explodes near $\\alpha = 1$. Tables therefore resize when $\\alpha$ crosses a threshold, copying everything in a geometric pattern, just as dynamic arrays do. Keeping $\\alpha$ bounded is why lookups are $O(1)$ on average. That is an average: if many keys collide, a lookup degrades to $O(n)$. Python randomises string hashes per process to stop attackers forcing this, which also means \`hash(s)\` differs between runs, so never store it.
 
+\`\`\`interactive
+hash-table
+{"title": "Chaining vs open addressing", "strategy": "linear", "strategies": ["chaining", "linear"], "hash": "mod", "m": 11, "keys": [10, 22, 31, 4, 15, 28, 17, 88, 59], "key": "26", "caption": "Insert 26 and count the probes as it walks the long run of occupied slots. Delete a key: open addressing leaves a tombstone ⊠ so later searches do not stop early. Switch to chaining to see the same keys as short lists. Then set m = 61 and press Fill to α 0.5, 0.8, 0.9: the measured miss cost for linear probing follows ½(1 + 1/(1 − α)²) and explodes near α = 1."}
+\`\`\`
+
 **Interning** puts this to work. Strings are costly to store, compare and hash. Give each distinct string a small integer once, then work on integers:
 
 \`\`\`python
@@ -917,6 +937,11 @@ Every repeated string becomes four bytes in a NumPy array. Now sorting, grouping
 A **Bloom filter** is an array of $m$ bits and $k$ hash functions. To add an item, set its $k$ bits. To query, check them: any clear bit means definitely absent, and all set means probably present. So there are no false negatives. After $n$ inserts a given bit is still clear with probability about $e^{-kn/m}$, so the false positive rate is about
 $$\\left(1 - e^{-kn/m}\\right)^k,$$
 which is lowest at $k = (m/n)\\ln 2$. You rarely need $k$ independent hashes. **Double hashing** derives them from two: $g_i(x) = h_1(x) + i\\,h_2(x) \\bmod m$.
+
+\`\`\`interactive
+hash-table
+{"mode": "bloom", "title": "Bloom filter", "m": 64, "k": 3, "n": 20, "caption": "Each item sets the k bits gᵢ(x) = h₁(x) + i·h₂(x) mod m. Query words you never inserted: a clear bit proves absence; all bits set is a false positive. Press Fill and measure and compare the measured rate with (1 − e^(−kn/m))^k, then vary k to find the minimum near (m/n) ln 2."}
+\`\`\`
 
 \`\`\`python
 import hashlib
@@ -1625,7 +1650,14 @@ Odd masks contain the start, node 0, and the last row of \`dp\` holds complete p
           ],
           explanation: `**Edit distance** counts the fewest insertions, deletions and substitutions turning string $a$ into string $b$. Let $D_{i,j}$ be the distance between the first $i$ characters of $a$ and the first $j$ of $b$. The last column is a deletion, an insertion, or a match or substitution:
 $$D_{i,j} = \\min(D_{i-1,j} + 1,\\ D_{i,j-1} + 1,\\ D_{i-1,j-1} + [a_i \\ne b_j]).$$
-Filling the table costs $O(mn)$, and walking back from the corner recovers the edits. If you only need the distance, two rows are enough:
+Filling the table costs $O(mn)$, and walking back from the corner recovers the edits.
+
+\`\`\`interactive
+dp-table
+{"title": "Edit distance table and traceback", "problem": "edit", "a": "intention", "b": "execution", "caption": "Cell D[i][j] is D_{i,j} above. Each cell takes the minimum of the cell above + 1 (delete), the cell to the left + 1 (insert) and the diagonal + [aᵢ ≠ bⱼ]; the winning neighbour is drawn solid. Step to the end for the traceback: intention → execution needs 5 edits. Notice that each row only reads the row above it, which is why two rows are enough for the distance alone."}
+\`\`\`
+
+If you only need the distance, two rows are enough:
 
 \`\`\`python
 def edit_distance(a, b):
@@ -1727,6 +1759,11 @@ If you only care whether the distance is at most $k$, a **band** is enough: cell
           ],
           explanation: `In 0/1 **knapsack** you choose items with weights $w_i$ and values $v_i$ to maximise value within capacity $W$. Let $B_i(c)$ be the best value from the first $i$ items in capacity $c$. Item $i$ is either skipped or taken:
 $$B_i(c) = \\max\\left(B_{i-1}(c),\\ B_{i-1}(c - w_i) + v_i\\right).$$
+
+\`\`\`interactive
+dp-table
+{"title": "The knapsack table", "problem": "knapsack", "letter": "B", "weights": [6, 5, 5], "values": [9, 7, 7], "W": 10, "caption": "Rows are items, columns capacities c = 0..10. Each cell compares skipping item i (the cell above) with taking it (vᵢ plus the cell wᵢ columns to the left in the row above). On the items (6, 9), (5, 7), (5, 7) the traceback takes the two 5s for 14, beating the greedy first pick of the densest item. Raise W to watch the table, and the cost O(nW), widen."}
+\`\`\`
 
 NumPy computes each item's row in one line. The right side is built from the old row, so no item is used twice:
 

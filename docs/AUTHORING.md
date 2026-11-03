@@ -84,6 +84,42 @@ export default defineSubject({
 - Keep each `concepts` entry short: a term or a term with a 3-8 word gloss.
 - `answerOutline` is a compact rubric, not an essay.
 
+## Interactive widgets
+
+A lesson explanation, exercise prompt or hint can embed an interactive widget with a fenced
+block. Explanations are template literals, so the backticks are escaped in the source:
+
+```ts
+explanation: `...the paragraph that introduces the idea.
+
+\`\`\`interactive
+riemann-sum
+{"f": "x^2", "a": 0, "b": 2, "n": 8, "caption": "Raise n and watch the error shrink like 1/n."}
+\`\`\`
+
+The next paragraph...`,
+```
+
+- Line 1 names the widget: the file `src/widgets/w/<name>.tsx`. Each widget's header comment
+  lists its parameters, types and defaults; that comment is the reference.
+- Then a JSON object of parameters. Optionally, a line containing only `---` followed by free
+  text (the starter code of a `python` cell, for example). Inside a template literal, double
+  every backslash and never write `${`.
+- Place the block right after the paragraph it illustrates, and give it a `caption` that says
+  what to try and what to notice, in the lesson's own notation.
+- Functions are written in the expression syntax of `src/widgets/kit/expr.ts`: `+ - * / ^`,
+  implicit multiplication after numbers and brackets (`2x`, `3sin(x)`), `pi`, `e`, `sqrt`,
+  `ln`/`log` (natural), `exp`, trig and hyperbolic functions, `abs` or `|x|`. Write `x*y`, not
+  `xy`.
+- `npm run validate` fails on an unknown widget name or invalid JSON, and the word count of an
+  explanation ignores interactive blocks. A widget that receives a bad parameter shows a red
+  error box in place of the widget.
+
+Each widget is its own chunk, loaded only when a lesson that uses it is opened. New widgets go
+in `src/widgets/w/`, built from the shared kit in `src/widgets/kit/` (plotting, controls,
+parameter readers, the expression compiler). They use no npm dependencies beyond React, and
+the colours come from the `--plot-*` and site CSS variables so both themes work.
+
 ## Coursework: machine problems and final projects
 
 Every CS and data science subject has one coursework file, `src/data/coursework/<subject-id>.ts`, which

@@ -116,6 +116,13 @@ $$
 \\text{proj}_{\\mathbf b}\\mathbf a=\\frac{\\mathbf a\\cdot\\mathbf b}{|\\mathbf b|^2}\\,\\mathbf b.
 $$
 
+The same ideas are easiest to see first in the plane. Drag the tips of $\\mathbf a$ and $\\mathbf b$ below.
+
+\`\`\`interactive
+vectors-3d
+{"title": "Dot product, angle and projection in the plane", "dim": 2, "a": [3, 1], "b": [1, 3], "features": ["proj", "angle", "sum"], "show": ["proj", "angle"], "snap": 0.5, "range": 5, "caption": "Drag the tips (or focus one and use the arrow keys). The orange bar is proj_b a, the shadow of a on the line of b, and the dashed segment is the remainder a − proj_b a, which always meets b at a right angle. Swing a round: a · b is positive while θ is acute, 0 exactly when the vectors are perpendicular, and negative once θ passes 90°, when the shadow points against b. Turn on a + b to see the parallelogram rule."}
+\`\`\`
+
 **Worked example.** Let $\\mathbf a=\\langle1,2,2\\rangle$ and $\\mathbf b=\\langle3,0,4\\rangle$. Then $\\mathbf a\\cdot\\mathbf b=3+0+8=11$, $|\\mathbf a|=3$ and $|\\mathbf b|=5$, so
 
 $$
@@ -123,6 +130,11 @@ $$
 $$
 
 The component of $\\mathbf a$ along $\\mathbf b$ is $11/5$, and the projection is $\\tfrac{11}{25}\\langle3,0,4\\rangle$. A useful check: $\\mathbf a-\\text{proj}_{\\mathbf b}\\mathbf a=\\langle\\tfrac{-8}{25},2,\\tfrac{6}{25}\\rangle$, and its dot product with $\\mathbf b$ is $-\\tfrac{24}{25}+\\tfrac{24}{25}=0$, so the remainder is perpendicular to $\\mathbf b$, as it should be.
+
+\`\`\`interactive
+vectors-3d
+{"title": "The worked example in space", "dim": 3, "a": [1, 2, 2], "b": [3, 0, 4], "features": ["proj", "angle"], "snap": 0.5, "range": 5, "caption": "These are the worked example's vectors: the readouts show a · b = 11, |a| = 3, |b| = 5, cos θ = 11/15 ≈ 0.733 (θ ≈ 42.8°), the component 11/5 = 2.2 and the projection (11/25)⟨3, 0, 4⟩ = ⟨1.32, 0, 1.76⟩. Drag in the picture to turn it and see that the dashed remainder meets b at a right angle. Change the components with the sliders, or drag a tip, and find a vector a with a · b = 0."}
+\`\`\`
 
 **Work.** A constant force $\\mathbf F$ moving an object through a displacement $\\mathbf d$ does work $W=\\mathbf F\\cdot\\mathbf d$. Only the component of the force along the motion counts. Pulling a sled with $50$ N at $30^\\circ$ above the horizontal for $10$ m does $50\\cdot10\\cos30^\\circ\\approx433$ J of work. This idea, generalised to curved paths and varying forces, becomes the line integral of Module 6.
 
@@ -206,6 +218,11 @@ Its three key properties are:
 - $\\mathbf a\\times\\mathbf b$ is perpendicular to both $\\mathbf a$ and $\\mathbf b$, with direction given by the **right-hand rule**: curl your fingers from $\\mathbf a$ to $\\mathbf b$, and your thumb points along $\\mathbf a\\times\\mathbf b$.
 - $|\\mathbf a\\times\\mathbf b|=|\\mathbf a||\\mathbf b|\\sin\\theta$, which is the **area of the parallelogram** with sides $\\mathbf a$ and $\\mathbf b$.
 - It is **anticommutative**: $\\mathbf b\\times\\mathbf a=-\\mathbf a\\times\\mathbf b$. So $\\mathbf a\\times\\mathbf a=\\mathbf 0$, and parallel vectors have zero cross product. It is not associative.
+
+\`\`\`interactive
+vectors-3d
+{"title": "The cross product a × b", "dim": 3, "a": [1, 2, 3], "b": [4, 5, 6], "features": ["cross", "angle"], "snap": 0.5, "range": 8, "az": 70, "el": 12, "caption": "These are the vectors of worked example 1, with a × b = ⟨−3, 6, −3⟩. Drag the picture to turn it: the green arrow stands perpendicular to the shaded parallelogram, and the last readout checks both dot products are 0. Its length, the area √54 ≈ 7.35, matches |a||b| sin θ. Now make b parallel to a (try b = ⟨2, 4, 6⟩) and watch the area and the cross product shrink to zero; swap the components of a and b and watch a × b flip."}
+\`\`\`
 
 **Worked example 1.** For $\\mathbf a=\\langle1,2,3\\rangle$ and $\\mathbf b=\\langle4,5,6\\rangle$,
 
@@ -833,6 +850,16 @@ and the greatest height is $\\dfrac{(v_0\\sin\\alpha)^2}{2g}=\\dfrac{100}{19.6}\
           ],
           explanation: `A function $f(x,y)$ assigns a number to each point of a region in the plane. Its graph $z=f(x,y)$ is a surface. Often more useful is a **contour map**: the **level curves** $f(x,y)=k$ drawn for equally spaced values of $k$, as on a hiking map. Where contours crowd together, the function changes quickly. For a function of three variables, $f(x,y,z)=k$ gives **level surfaces**, such as surfaces of equal temperature.
 
+\`\`\`interactive
+contour-gradient
+{"title": "A contour map of two hills", "f": "3*exp(-((x+1)^2 + y^2)) + 2*exp(-((x-1.3)^2 + (y-0.8)^2)/0.6)", "view": [-3, 3, -2.2, 2.2], "modes": ["level"], "point": [0, -1], "levels": [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75], "caption": "Each thin curve is a level curve f(x, y) = k, with k going up in steps of 0.25, like a hiking map of two hills. Drag P: the bold curve is the level curve through P and the readout gives its height f(P). Where the curves crowd together the ground is steep and |∇f| is large; between the two summits the curves pinch inwards, at a pass."}
+\`\`\`
+
+\`\`\`interactive
+surface-3d
+{"title": "The same two hills as a graph", "f": "3*exp(-((x+1)^2 + y^2)) + 2*exp(-((x-1.3)^2 + (y-0.8)^2)/0.6)", "domain": [-3, 3, -2.2, 2.2], "z": [0, 3], "point": [0, -1], "features": ["contours"], "show": ["contours"], "n": 36, "caption": "The graph z = f(x, y), with the level curves drawn on it at their heights: each one is a horizontal slice of the surface at height k. Drag the picture to turn it, and tilt it to look straight down (elevation 89°): the surface flattens into the contour map above. Where the hillside is steep, slices at equally spaced heights land close together on the map."}
+\`\`\`
+
 **Limits.** We say $\\lim_{(x,y)\\to(a,b)}f(x,y)=L$ if $f(x,y)$ is close to $L$ whenever $(x,y)$ is close to $(a,b)$, but not equal to it. Precisely: for every $\\varepsilon>0$ there is $\\delta>0$ with $|f(x,y)-L|<\\varepsilon$ whenever $0<\\sqrt{(x-a)^2+(y-b)^2}<\\delta$.
 
 In one variable there are only two directions of approach. In the plane there are infinitely many paths, and the limit must be the same along all of them. That gives a simple test for failure: if two paths give different values, there is no limit.
@@ -845,7 +872,17 @@ $$
 
 This depends on $m$: it is $0$ along the $x$-axis and $\\tfrac12$ along $y=x$. So the limit does not exist.
 
+\`\`\`interactive
+surface-3d
+{"title": "f = xy/(x² + y²) near the origin", "f": "x*y/(x^2 + y^2)", "domain": [-1.5, 1.5, -1.5, 1.5], "z": [-0.6, 0.6], "point": [1, 1], "features": ["paths", "contours"], "show": ["paths"], "paths": [["y = mx", "t", "m*t"]], "m": [1, -3, 3], "t": 1.5, "n": 40, "az": 25, "el": 32, "caption": "The coloured curve lies over the line y = mx and is flat: along it f is the constant m/(1 + m²), shown by the hollow dot where the path reaches the origin. Move m and the curve swings round to another height: 0 for m = 0, 1/2 for m = 1, −1/2 for m = −1. Turn on the level curves: every one of them is a line through the origin, so all those values occur arbitrarily close to it."}
+\`\`\`
+
 Checking lines alone is **not** enough. For $g(x,y)=\\dfrac{xy^2}{x^2+y^4}$, every straight line through the origin gives the limit $0$, yet along the parabola $x=y^2$ we get $g=\\dfrac{y^4}{2y^4}=\\tfrac12$. So again there is no limit.
+
+\`\`\`interactive
+surface-3d
+{"title": "g = xy²/(x² + y⁴): lines are not enough", "f": "x*y^2/(x^2 + y^4)", "domain": [-1.2, 1.2, -1.2, 1.2], "z": [-0.6, 0.6], "point": [1, 1], "features": ["paths"], "show": ["paths"], "paths": [["y = mx", "t", "m*t"], ["x = y²", "t^2", "t"]], "m": [1, -4, 4], "t": 1.1, "n": 48, "az": 35, "el": 30, "caption": "Two paths into the origin. Along y = mx the readout gives g → 0 for every m you try; along the parabola x = y² it gives 1/2. On the surface, a ridge of height 1/2 runs above the parabola right into the origin (and a valley of depth −1/2 above x = −y²), while every straight line crosses the ridge and comes down to 0."}
+\`\`\`
 
 **Proving that a limit exists** needs an inequality that controls every path at once.
 
@@ -934,11 +971,21 @@ $$
 
 Similarly for $f_y$. Geometrically, $f_x(a,b)$ is the slope of the curve cut from the surface by the plane $y=b$. In practice you compute it with the usual rules, treating the other variables as constants.
 
+\`\`\`interactive
+surface-3d
+{"title": "Partial derivatives as slopes of traces", "f": "x^3*y^2 + sin(x*y)", "domain": [-1.25, 1.25, -1.25, 1.25], "z": [-4.5, 4.5], "point": [1, 1], "features": ["traces", "plane"], "show": ["traces"], "n": 36, "caption": "The function of worked example 1 below. The red curve is the trace in the plane y = b (only x varies) and its dashed tangent has slope f_x(a, b); the green curve is the trace in the plane x = a, with slope f_y(a, b). At P = (1, 1) the readouts give f_x = 3 + cos 1 ≈ 3.540 and f_y = 2 + cos 1 ≈ 2.540, as the formulas say. Move a and b and watch each slope change with its own trace."}
+\`\`\`
+
 **Worked example 1.** Let $f(x,y)=x^3y^2+\\sin(xy)$. Then
 
 $$
 f_x=3x^2y^2+y\\cos(xy),\\qquad f_y=2x^3y+x\\cos(xy).
 $$
+
+\`\`\`interactive
+contour-gradient
+{"title": "The definition: difference quotients along each axis", "f": "x^3*y^2 + sin(x*y)", "view": [-2, 2, -2, 2], "modes": ["partials"], "point": [1, 1], "h": 0.5, "levels": 16, "caption": "P = (a, b) sits on the contour map of the same function. The red step moves only x, the green step only y. Slide h towards 0 (from either side): the two difference quotients settle on f_x(a, b) and f_y(a, b), here 3.540 and 2.540 at (1, 1). Drag P and check other points against the formulas above."}
+\`\`\`
 
 **Higher derivatives.** Differentiating again gives $f_{xx}$, $f_{yy}$ and the mixed partials $f_{xy}=(f_x)_y$ and $f_{yx}=(f_y)_x$. Continuing the example,
 
@@ -1035,6 +1082,11 @@ $$
 
 It contains the tangent lines of both traces, which is why those two slopes determine it. The right side is the **linearisation** $L(x,y)$, and $f(x,y)\\approx L(x,y)$ near $(a,b)$.
 
+\`\`\`interactive
+surface-3d
+{"title": "The tangent plane to z = √(x² + y²) at (3, 4)", "f": "sqrt(x^2 + y^2)", "domain": [1, 5, 1, 5], "point": [3, 4], "features": ["plane", "traces"], "show": ["plane", "traces"], "az": -50, "el": 20, "caption": "This is the surface of worked example 1 below. The two dashed lines are tangent to the traces cut by the planes y = b and x = a, with slopes f_x and f_y, and the purple plane is the one that contains both. At P = (3, 4) the readout gives f = 5, f_x = 0.6 and f_y = 0.8. Drag P (or use the a and b sliders) and the plane follows, always built from the two slopes at P. Rotate the view until you look along the plane edge-on: near P the surface and the plane are hard to tell apart."}
+\`\`\`
+
 **Worked example 1.** Estimate $\\sqrt{3.02^2+3.97^2}$. Take $f(x,y)=\\sqrt{x^2+y^2}$ at $(3,4)$, where $f=5$, $f_x=x/f=\\tfrac35$ and $f_y=\\tfrac45$. Then
 
 $$
@@ -1050,6 +1102,11 @@ $$
 $$
 
 The function $xy/(x^2+y^2)$, with value $0$ at the origin, has both partials at the origin equal to $0$, yet it is not even continuous there, so it has no tangent plane. The useful result is this: **if $f_x$ and $f_y$ exist near $(a,b)$ and are continuous at $(a,b)$, then $f$ is differentiable there.** That is the condition to check in practice.
+
+\`\`\`interactive
+surface-3d
+{"title": "Both partials exist, but no tangent plane", "f": "x*y/(x^2 + y^2)", "special": [[0, 0, 0]], "domain": [-1.5, 1.5, -1.5, 1.5], "z": [-0.6, 0.6], "point": [0, 0], "features": ["plane", "traces"], "show": ["plane", "traces"], "n": 40, "az": 25, "el": 30, "caption": "Here f = xy/(x² + y²) with f(0, 0) = 0. At P = (0, 0) both traces are flat lines along the axes, so f_x = f_y = 0 and the formula gives the plane z = 0. But the surface does not hug that plane: just off the axes it jumps to ±1/2. Move P away from the origin and the plane fits closely again, because there the partials are continuous."}
+\`\`\`
 
 **Differentials.** With $dx$ and $dy$ small changes, the **total differential** is
 
@@ -1265,6 +1322,13 @@ $$
 
 The largest possible rate at that point is $|\\nabla f|=\\sqrt{73}\\approx8.54$, in the direction of $\\langle8,3\\rangle$.
 
+In the interactive below, $P$ starts at $(1,2)$ and $\\mathbf u$ at $\\langle\\tfrac35,\\tfrac45\\rangle$. The thick orange bar along $\\mathbf u$ is the shadow of the gradient arrow on the line of $\\mathbf u$: its signed length is $\\nabla f\\cdot\\mathbf u$.
+
+\`\`\`interactive
+contour-gradient
+{"title": "Gradient and directional derivative of x² + 3xy", "f": "x^2 + 3*x*y", "view": [-3, 3, -3, 3], "modes": ["gradient", "level"], "point": [1, 2], "angle": 53.13, "levels": 14, "caption": "Drag P, or the tip of u (the slider turns u from the keyboard). At the start the readout gives the worked example's value 36/5 = 7.2. Turn u until the rate is largest: u then points along ∇f and the rate is |∇f| = √73 ≈ 8.54. Turn u along the highlighted level curve and the rate drops to 0, because ∇f is perpendicular to the level curve. Then drag P to where the contours crowd and watch ∇f grow."}
+\`\`\`
+
 **Tangent planes to level surfaces.** If a surface is given as $F(x,y,z)=k$, the gradient $\\nabla F(P)$ is normal to it at $P$. So the tangent plane is
 
 $$
@@ -1362,6 +1426,11 @@ The gradient joins the ideas of this module: linearisation is $f(\\mathbf x)\\ap
 
 A critical point need not be an extremum. At a **saddle point**, the function rises in some directions and falls in others, like $z=x^2-y^2$ at the origin, which is a minimum along the $x$-axis and a maximum along the $y$-axis.
 
+\`\`\`interactive
+surface-3d
+{"title": "A saddle: z = x² − y²", "f": "x^2 - y^2", "domain": [-2, 2, -2, 2], "point": [0, 0], "features": ["traces", "plane"], "show": ["traces"], "n": 32, "caption": "At P = (0, 0) the red trace (along the x-axis) is a parabola opening up and the green trace (along the y-axis) opens down, so the origin is a minimum one way and a maximum the other. Both slopes are 0 there, and the tangent plane is horizontal, yet the surface crosses it. Move P away and the slopes stop being zero."}
+\`\`\`
+
 **Second derivative test.** Suppose the second partials are continuous near a critical point $(a,b)$, and let
 
 $$
@@ -1382,6 +1451,11 @@ Set $f_x=3x^2-3y=0$ and $f_y=3y^2-3x=0$. The first gives $y=x^2$, and substituti
 The second partials are $f_{xx}=6x$, $f_{yy}=6y$ and $f_{xy}=-3$, so $D=36xy-9$.
 
 At $(0,0)$, $D=-9<0$, so it is a saddle. At $(1,1)$, $D=27>0$ and $f_{xx}=6>0$, so it is a local minimum, with $f(1,1)=-1$.
+
+\`\`\`interactive
+contour-gradient
+{"title": "Critical points of x³ + y³ − 3xy", "f": "x^3 + y^3 - 3*x*y", "view": [-1.6, 2.2, -1.6, 2.2], "modes": ["critical", "gradient"], "point": [1.6, 0.4], "levels": [-4, -3, -2, -1.5, -0.9, -0.75, -0.5, -0.25, 0, 0.5, 1, 2, 3, 4, 6, 8], "caption": "The widget finds where ∇f = 0 and classifies each point with D = f_xx f_yy − f_xy². Use the buttons to move P to (0, 0) and to (1, 1) and compare the readouts with the worked example: D = −9 (a saddle, where the level curve f = 0 crosses itself) and D = 27 with f_xx = 6 (a minimum, inside closed contours). Drag P elsewhere and the gradient arrow shows ∇f ≠ 0; the Gradient view adds the level curve through P."}
+\`\`\`
 
 There is no global minimum: $f(x,0)=x^3\\to-\\infty$ as $x\\to-\\infty$. A local minimum is only local.
 
@@ -1479,6 +1553,11 @@ The method mirrors the closed interval method of Calculus I. The difference is t
 
 *Compare.* The values are $-1$, $8$ and $0$. The absolute maximum is $8$ at $(-2,0)$, and the absolute minimum is $-1$ at $(1,0)$.
 
+\`\`\`interactive
+contour-gradient
+{"title": "Extremes of x² + y² − 2x on the disk x² + y² ≤ 4", "f": "x^2 + y^2 - 2*x", "view": [-2.6, 2.6, -2.6, 2.6], "modes": ["lagrange"], "g": "x^2 + y^2", "c": 4, "region": true, "point": [0, 2], "levels": 12, "caption": "The disk is shaded and its boundary circle is drawn in red. P slides round the circle (drag it, or use the slider, which is the angle t in x = 2cos t, y = 2sin t). The graph underneath is f along the boundary, the one-variable problem of step 2: it runs between 0 at t = 0 and 8 at t = π. Show the candidates to add the interior critical point (1, 0), where f = −1, and compare all three values, as in the worked example."}
+\`\`\`
+
 Here the constraint gave $f$ directly as a function of $x$. In general you can parametrise the circle as $x=2\\cos t$ and $y=2\\sin t$. Lagrange multipliers, in the next lesson, give a third approach.
 
 A geometric reading helps. Since $f=(x-1)^2+y^2-1$, its value is the squared distance from $(1,0)$, minus $1$. The closest point of the disk to $(1,0)$ is the point itself, and the farthest is $(-2,0)$, at distance $3$, which gives $9-1=8$.
@@ -1573,6 +1652,11 @@ y=2\\lambda x,\\qquad x=8\\lambda y,\\qquad x^2+4y^2=8.
 $$
 
 Multiply the first equation by $x$ and the second by $y$. Then $xy=2\\lambda x^2=8\\lambda y^2$. If $\\lambda=0$, then $x=y=0$, which is not on the ellipse. Otherwise $x^2=4y^2$. Substituting, $8y^2=8$, so $y=\\pm1$ and $x=\\pm2$. The four candidates give $f=2$ at $(2,1)$ and $(-2,-1)$, and $f=-2$ at $(2,-1)$ and $(-2,1)$. The ellipse is closed and bounded, so the maximum is $2$ and the minimum is $-2$.
+
+\`\`\`interactive
+contour-gradient
+{"title": "Lagrange multipliers: xy on the ellipse x² + 4y² = 8", "f": "x*y", "view": [-3.6, 3.6, -2.4, 2.4], "modes": ["lagrange"], "g": "x^2 + 4*y^2", "c": 8, "point": [0, 1.414], "profile": true, "levels": [-3, -2.5, -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 2.5, 3], "caption": "P is stuck to the red ellipse g = 8; drag it round, or use the slider. The blue arrow is ∇f, the red one ∇g, and the bold curve is the level curve of f through P. Where the two arrows are not parallel the level curve cuts across the ellipse, so f still goes up one way and down the other. Find the four points where they line up: the level curve f = ±2 just touches the ellipse there, at (±2, ±1), and the readout gives λ = ±1/4. The graph below shows f along the ellipse, with its peaks and dips at the same four points."}
+\`\`\`
 
 The algebra is the hard part. Good habits: eliminate $\\lambda$ early, divide only by quantities you have shown are non-zero, and treat any cases you divide out separately.
 
@@ -1678,6 +1762,11 @@ Lagrange multipliers give the candidates on the boundary in the previous lesson'
           ],
           explanation: `Divide a rectangle $R$ into small rectangles of area $\\Delta A$, pick a point in each, and form $\\sum f(x_i^*,y_j^*)\\,\\Delta A$. Each term is the volume of a thin column. The limit, as the rectangles shrink, is the **double integral** $\\iint_Rf\\,dA$. For $f\\ge0$ it is the volume under the surface. With $f=1$ it is the area of the region, and with $f$ a density it is a mass.
 
+\`\`\`interactive
+double-integral
+{"title": "Riemann boxes under z = 4 − x²/2 − y²/4", "f": "4 - x^2/2 - y^2/4", "modes": ["boxes"], "rect": [0, 2, 0, 2], "n": 3, "caption": "Each box stands on one small rectangle of R = [0, 2] × [0, 2] and is as tall as f at its centre; the light mesh is the surface itself. Drag to turn the picture. Raise n and the boxes hug the surface more closely: the total volume of the boxes approaches the double integral, which is 12, and the error shrinks roughly like 1/n²."}
+\`\`\`
+
 **Fubini's theorem.** If $f$ is continuous on $R=[a,b]\\times[c,d]$, then
 
 $$
@@ -1707,6 +1796,11 @@ $$
 $$
 
 Changing the order of integration turned an impossible integral into an easy one. When an inner integral looks hopeless, try reversing the order.
+
+\`\`\`interactive
+double-integral
+{"title": "Slicing a region both ways", "f": "x + y", "modes": ["slices"], "I": [0, 1, "x^2", "x"], "II": [0, 1, "y", "sqrt(y)"], "n": 5, "caption": "This is the region of worked example 1, between y = x² and y = x. As type I, the typical line is vertical: at each x it runs from y = x² up to y = x, and the inner integral A(x) is graphed below. The outer integral adds the slices: the strips approach the total 3/20 = 0.15 as you add more. Switch to type II: the lines are horizontal, from x = y to x = √y, the graph of A(y) looks different, yet the total is the same 0.15. The limits change with the order; the region does not."}
+\`\`\`
 
 **Properties** are those of single integrals: linearity, additivity over regions that overlap only on their boundaries, and comparison. The **average value** of $f$ over $D$ is $\\dfrac{1}{\\text{area}(D)}\\iint_Df\\,dA$.`,
           resources: [
@@ -1784,6 +1878,11 @@ dA=r\\,dr\\,d\\theta,\\qquad\\iint_Df\\,dA=\\int_\\alpha^\\beta\\int_{r_1(\\thet
 $$
 
 The extra factor $r$ is essential. It records that polar rectangles far from the origin are bigger.
+
+\`\`\`interactive
+double-integral
+{"title": "Polar rectangles under z = 4 − x² − y²", "f": "4 - x^2 - y^2", "modes": ["polar"], "polar": [0, 2, 0, 6.283185307179586], "caption": "The disk r ≤ 2 cut into polar rectangles, shaded by the height f (the paraboloid of worked example 1). Move the highlighted cell outwards with the ring slider: with the same Δr and Δθ, its area grows in proportion to r. With r taken at the middle of the ring, r Δr Δθ matches it exactly, while Δr Δθ alone stays the same and is wrong for every ring but one. The polar Riemann sum Σ f r Δr Δθ approaches 8π ≈ 25.13 as you add rings and sectors."}
+\`\`\`
 
 **Worked example 1.** Find the volume under the paraboloid $z=4-x^2-y^2$ and above the $xy$-plane. The surface meets the plane in the circle $r=2$, so
 
@@ -2206,7 +2305,12 @@ The rotation field $\\langle-y,x\\rangle$ fails this test: $P_y=-1$ and $Q_x=1$.
 
 The next lessons show that passing the test $P_y=Q_x$ is enough on a region without holes, though not on regions with holes.
 
-**Flow lines.** A **flow line** is a curve whose velocity at each point is the field there: $\\mathbf r'(t)=\\mathbf F(\\mathbf r(t))$. It is the path of a particle carried by the flow. For $\\langle-y,x\\rangle$ the flow lines are circles around the origin. For $\\langle x,y\\rangle$ they are rays leaving it. Finding flow lines means solving differential equations, which you can do in simple cases by separating variables in $dy/dx=Q/P$.`,
+**Flow lines.** A **flow line** is a curve whose velocity at each point is the field there: $\\mathbf r'(t)=\\mathbf F(\\mathbf r(t))$. It is the path of a particle carried by the flow. For $\\langle-y,x\\rangle$ the flow lines are circles around the origin. For $\\langle x,y\\rangle$ they are rays leaving it. Finding flow lines means solving differential equations, which you can do in simple cases by separating variables in $dy/dx=Q/P$.
+
+\`\`\`interactive
+vector-field
+{"title": "Four vector fields", "fields": [["⟨x, y⟩", "x", "y"], ["⟨−y, x⟩", "-y", "x"], ["⟨2xy, x² + 3y²⟩", "2*x*y", "x^2 + 3*y^2"], ["inverse square", "-x/(x^2 + y^2)^1.5", "-y/(x^2 + y^2)^1.5"]], "singular": [[0, 0]], "view": [-3, 3, -3, 3], "modes": ["field"], "probe": [1.5, 1], "caption": "Arrows are drawn shorter than true size and coloured from pale (weak) to purple (strong); tick the box to make them all the same length and see only directions. Drag the orange probe: the bold arrow is F there (at twice the scale of the grid arrows) and the orange curve is the flow line through it, the path a particle carried by the field would follow: rays for the source, circles for the rotation. The readouts give P_y and Q_x at the probe, and the line under them tests P_y = Q_x across the whole view, as in the worked example."}
+\`\`\``,
           resources: [
             openstax('6-1-vector-fields', 'Vector fields', 'Examples, gradient fields and flow lines.', true),
             paul('CalcIII/VectorFields', 'Vector fields', 'Sketches and gradient fields.'),
@@ -2309,6 +2413,11 @@ $$
 
 The answers differ, so for this field the work depends on the path. That is consistent with the test of the previous lesson: $P_y=1$ while $Q_x=2x$, so $\\mathbf F$ is not a gradient.
 
+\`\`\`interactive
+vector-field
+{"title": "Work along two paths in F = ⟨y, x²⟩", "P": "y", "Q": "x^2", "view": [-0.6, 1.6, -0.4, 1.4], "modes": ["compare"], "A": [0, 0], "B": [1, 1], "C1": [0.5, 0.5], "C2": [0, 0.5], "caption": "Path C₁ is the segment y = x and path C₂ is the parabola x = y², both from A = (0, 0) to B = (1, 1). Press Play to watch the work build up as the dots move. The totals are 5/6 ≈ 0.8333 and 13/15 ≈ 0.8667, as in the worked example. Drag the control points C₁ and C₂ to bend the paths, or move A and B: the totals keep changing with the path, because P_y ≠ Q_x."}
+\`\`\`
+
 **Piecewise curves.** If $C$ is made of smooth pieces, such as the sides of a triangle, integrate over each piece with its own parametrisation and add the results.
 
 **Physical meaning.** For a velocity field, the line integral around a closed loop measures the **circulation**, the tendency of the flow to go around the loop. Positive circulation means the flow tends to push you along the loop in its direction.`,
@@ -2396,6 +2505,11 @@ So the line integral of a gradient field depends only on the end points, not on 
 
 Such fields are called **conservative**.
 
+\`\`\`interactive
+vector-field
+{"title": "Path independence for F = ∇(x²y + y³)", "P": "2*x*y", "Q": "x^2 + 3*y^2", "potential": "x^2*y + y^3", "view": [-2.5, 2.5, -2, 2], "modes": ["compare"], "A": [-1.5, -1], "B": [1.5, 1], "C1": [0, 0], "C2": [-1.5, 1.5], "caption": "F = ⟨2xy, x² + 3y²⟩ is the gradient of f = x²y + y³, found in the previous lesson. Bend the two paths any way you like with C₁ and C₂: the two line integrals stay equal to each other and to f(B) − f(A). Then move A or B: all three numbers change together. Press Play and watch the running integrals: they differ along the way, and only the end points decide the total."}
+\`\`\`
+
 **The test.** A region is **simply connected** if it is connected and every closed curve in it can be shrunk to a point without leaving the region. Informally, it has no holes. **On a simply connected region**, a field $\\langle P,Q\\rangle$ with continuous first partials is conservative exactly when $P_y=Q_x$. In three dimensions the condition is that $\\text{curl}\\,\\mathbf F=\\mathbf 0$, which is the subject of Module 7.
 
 **The hole matters.** Let $\\mathbf F=\\dfrac{\\langle-y,x\\rangle}{x^2+y^2}$ on the plane with the origin removed. It satisfies $P_y=Q_x$ everywhere it is defined. Yet around the unit circle, with $\\mathbf r=\\langle\\cos t,\\sin t\\rangle$, $\\mathbf F\\cdot\\mathbf r'=\\sin^2t+\\cos^2t=1$, and
@@ -2405,6 +2519,11 @@ $$
 $$
 
 So the field is not conservative on that region. Locally it is the gradient of the polar angle $\\theta$, but $\\theta$ cannot be defined continuously around a loop that circles the origin, because it gains $2\\pi$ each time.
+
+\`\`\`interactive
+vector-field
+{"title": "Circulation of the vortex field", "P": "-y/(x^2 + y^2)", "Q": "x/(x^2 + y^2)", "singular": [[0, 0]], "view": [-3, 3, -3, 3], "modes": ["green"], "centre": [0, 0], "r": 1, "caption": "The loop starts as the unit circle and the circulation reads 2π ≈ 6.283. There is no shading anywhere, because Q_x − P_y = 0 wherever F is defined. Drag the centre so that the loop no longer goes round the origin: the circulation drops to 0. Any loop round the origin gives 2π, whatever its size, which is exactly what a conservative field cannot do."}
+\`\`\`
 
 **Worked example.** Evaluate $\\int_C\\mathbf F\\cdot d\\mathbf r$ for $\\mathbf F=\\langle2xy+z^2,\\ x^2,\\ 2xz\\rangle$ along any path from $(1,0,1)$ to $(2,1,3)$. Look for a potential. From $P$, $f=x^2y+xz^2+g(y,z)$. Then $f_y=x^2+g_y$ must equal $x^2$, so $g$ depends on $z$ alone, and $f_z=2xz+g'(z)$ must equal $2xz$, so $g$ is constant. Thus $f=x^2y+xz^2$, and the integral is
 
@@ -2494,6 +2613,11 @@ $$
 This is the fundamental theorem of calculus in two dimensions: an integral of a derivative over a region equals a sum of values on its boundary.
 
 **Worked example 1.** Evaluate $\\oint_C(x^2-y)\\,dx+(y^2+x)\\,dy$ around the unit circle, anticlockwise. Here $Q_x-P_y=1-(-1)=2$, so the integral is $2\\cdot\\text{area}=2\\pi$. Computing it directly takes much more work.
+
+\`\`\`interactive
+vector-field
+{"title": "Green's theorem, checked numerically", "fields": [["⟨x² − y, y² + x⟩", "x^2 - y", "y^2 + x"], ["⟨xy, x²⟩", "x*y", "x^2"], ["⟨−y, x⟩/(x² + y²)", "-y/(x^2 + y^2)", "x/(x^2 + y^2)"]], "singular": [[0, 0]], "view": [-3, 3, -3, 3], "modes": ["green"], "centre": [0, 0], "r": 1, "caption": "The first field is worked example 1: Q_x − P_y = 2 everywhere (uniform green shading), and round the unit circle both numbers are 2π ≈ 6.283. Drag the centre and change the radius: both always equal twice the area. The second field has Q_x − P_y = x, green on the right and red on the left, so a loop centred on the y-axis gets 0 while moving it right makes both numbers grow together. The third is the vortex: with the origin inside, the circulation is 2π but the shading (and the double integral) is 0, because the hypothesis fails at the origin."}
+\`\`\`
 
 **Worked example 2 (area).** If $Q_x-P_y=1$, the double integral is the area. Choosing $P=-\\tfrac y2$ and $Q=\\tfrac x2$ gives
 
@@ -2804,6 +2928,11 @@ The curl is a vector, and the divergence is a number at each point.
 **Meanings.** The **divergence** measures the net outflow per unit volume: positive at a source, negative at a sink. The field $\\langle x,y,z\\rangle$ has divergence $3$ everywhere, since it spreads out uniformly. A field with zero divergence is **incompressible**: what flows into a small box flows out.
 
 The **curl** measures rotation. Place a tiny paddle wheel in a flow. It spins fastest when its axle points along the curl, and its angular speed is half the size of the curl. The rotation $\\langle-y,x,0\\rangle$ has curl $\\langle0,0,2\\rangle$. A field with zero curl is **irrotational**. The $z$-component of the curl is the $Q_x-P_y$ of Green's theorem.
+
+\`\`\`interactive
+vector-field
+{"title": "Paddle wheel and flux circle", "fields": [["⟨−y, x⟩", "-y", "x"], ["⟨x, y⟩", "x", "y"], ["⟨y, 0⟩", "y", "0"], ["⟨x − y, x + y⟩", "x - y", "x + y"], ["⟨x², −xy⟩", "x^2", "-x*y"]], "view": [-3, 3, -3, 3], "modes": ["probe"], "probe": [1, 0.5], "caption": "This is a flat (two-dimensional) picture of a field in the xy-plane, so the curl points straight out of the screen and only its z-component Q_x − P_y shows. Press Spin: the wheel turns at half that rate, anticlockwise when it is positive. The rotation ⟨−y, x⟩ spins every wheel at rate 1, and as much flows into each circle as out of it; the source ⟨x, y⟩ never spins but pushes out through every circle (divergence 2); the shear ⟨y, 0⟩ spins wheels clockwise even though its flow lines are straight. Drag the probe: for ⟨x², −xy⟩ the spin and the outflow change from point to point."}
+\`\`\`
 
 **Worked example.** For $\\mathbf F=\\langle xz,\\ xyz,\\ -y^2\\rangle$,
 

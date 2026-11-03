@@ -132,6 +132,13 @@ $$\\left[\\begin{array}{rrr|r} 1 & 2 & -1 & 3 \\\\ 2 & 5 & 1 & 14 \\\\ -1 & 1 & 
 
 Use the first pivot, the 1 in the corner, to clear the column below it: $R_2 \\to R_2 - 2R_1$ gives $[0, 1, 3 \\mid 8]$, and $R_3 \\to R_3 + R_1$ gives $[0, 3, 3 \\mid 12]$. Now use the second pivot: $R_3 \\to R_3 - 3R_2$ gives $[0, 0, -6 \\mid -12]$. The matrix is in **echelon form**: each row's first non-zero entry, its **pivot**, sits to the right of the pivot above. Back substitution finishes the job. The last row gives $z = 2$, the second gives $y = 8 - 3(2) = 2$, and the first gives $x = 3 - 2(2) + 2 = 1$. Check by substituting $(1, 2, 2)$ into all three original equations.
 
+Redo the example yourself in the interactive below. You choose each row operation and it does the arithmetic exactly, in fractions.
+
+\`\`\`interactive
+row-reduce
+{"title": "Row-reduce the worked example", "A": [[1, 2, -1, 3], [2, 5, 1, 14], [-1, 1, 4, 9]], "vars": ["x", "y", "z"], "caption": "Apply R₂ → R₂ − 2R₁, R₃ → R₃ + R₁ and R₃ → R₃ − 3R₂ (the multiplier box fills itself with the value that clears the entry). The pivots are outlined, and once the matrix is in echelon form the solution (1, 2, 2) is read off by back substitution. Keep going to reduced echelon form, or press Next step to watch the standard order. Then use Edit matrix to enter the first system of the exercise below and see a free variable appear."}
+\`\`\`
+
 Echelon form tells you what kind of answer exists. A row $[0, \\dots, 0 \\mid c]$ with $c \\neq 0$ says $0 = c$, so the system is **inconsistent**. Otherwise it is consistent, and each column with no pivot gives a **free variable**. If reduction ends with $x_1 + 2x_2 = 3$ and $x_3 = 1$, then $x_2 = t$ is free and every solution is $(3 - 2t,\\ t,\\ 1)$. So a linear system has no solution, exactly one, or infinitely many. Two solutions and no others is impossible.
 
 **Reduced** echelon form goes further: every pivot is 1 and is the only non-zero entry in its column. It is unique, but echelon form is not, so two people may reach different echelon forms and still be right. A common mistake is to change two rows at once using each other, such as $R_1 \\to R_1 - R_2$ and $R_2 \\to R_2 - R_1$ in one step. Do one operation at a time.
@@ -223,6 +230,11 @@ So $AB$ swaps the columns of $A$ and $BA$ swaps its rows, and $AB \\neq BA$. To 
 $$A^{-1} = \\begin{bmatrix} 1 & -1 \\\\ -1 & 2 \\end{bmatrix},$$
 and multiplying confirms $AA^{-1} = I$.
 
+\`\`\`interactive
+row-reduce
+{"mode": "inverse", "title": "Invert A by reducing [A | I]", "A": [[2, 1], [1, 1]], "caption": "Follow the worked example: swap R₁ and R₂, then R₂ → R₂ − 2R₁, scale R₂ by −1 and finally R₁ → R₁ − R₂. When the left block becomes I, the right block is A⁻¹ with rows (1, −1) and (−1, 2). Reset and press Next step instead: a different order of operations reaches the same inverse. Then edit A to a singular matrix such as rows (1, 2), (2, 4) and see elimination run out of pivots."}
+\`\`\`
+
 A square matrix $A$ is **invertible** exactly when elimination finds $n$ pivots, and then $Ax = b$ has the unique solution $x = A^{-1}b$. Non-square matrices have no two-sided inverse. Two rules reverse the order: $(AB)^{-1} = B^{-1}A^{-1}$, when both inverses exist, and $(AB)^T = B^T A^T$. Think of socks and shoes: you undo the last action first.
 
 In NumPy, \`A @ B\` is the matrix product and \`A * B\` multiplies entry by entry, which silently gives a wrong answer for square matrices of the same shape. Also watch the cost of grouping: for $n \\times n$ matrices, \`A @ (B @ x)\` takes about $2n^2$ multiplications and \`(A @ B) @ x\` takes about $n^3$.`,
@@ -303,6 +315,11 @@ The first pivot is 2. Subtract $2$ times row 1 from row 2, giving $(0, 3, 2)$, a
 $$L = \\begin{bmatrix} 1 & 0 & 0 \\\\ 2 & 1 & 0 \\\\ -1 & 1 & 1 \\end{bmatrix}, \\qquad U = \\begin{bmatrix} 2 & 1 & -1 \\\\ 0 & 3 & 2 \\\\ 0 & 0 & 3 \\end{bmatrix}.$$
 Now solve $Ax = b$ for $b = (2, 9, 6)$ in two triangular steps. Forward substitution on $Ly = b$ gives $y_1 = 2$, $y_2 = 9 - 2(2) = 5$ and $y_3 = 6 + 2 - 5 = 3$. Back substitution on $Ux = y$ gives $x_3 = 1$, then $3x_2 + 2 = 5$ so $x_2 = 1$, then $2x_1 + 1 - 1 = 2$ so $x_1 = 1$.
 
+\`\`\`interactive
+row-reduce
+{"mode": "lu", "title": "Build L from the multipliers", "A": [[2, 1, -1], [4, 5, 0], [-2, 2, 6]], "b": [2, 9, 6], "forward": "y", "caption": "Each elimination step subtracts ℓᵢⱼ times row j from row i, and ℓᵢⱼ drops into L at position (i, j). Clear column 1 with ℓ₂₁ = 2 and ℓ₃₁ = −1, then column 2 with ℓ₃₂ = 1, and compare L and U with the worked example. When U is triangular the widget solves Ly = b and Ux = y for b = (2, 9, 6). Edit the matrix to rows (0, 1, 1), (1, 1, 1), (1, 2, 3): the first pivot is zero, so swap rows first and P appears."}
+\`\`\`
+
 **Cost.** Factoring an $n \\times n$ matrix takes about $\\tfrac{2}{3}n^3$ floating-point operations, and each triangular solve takes about $n^2$. For $n = 1000$, factoring is several hundred times the cost of one solve, so reuse pays off quickly.
 
 **Pivoting.** Not every invertible matrix has an LU factorisation without row swaps. A zero pivot stops the algorithm, and a tiny pivot is worse: it produces huge multipliers that swamp the other entries in floating point. **Partial pivoting** swaps rows so that the largest entry in the column, in absolute value, becomes the pivot. This gives $PA = LU$, with $P$ a permutation matrix, and it exists for every invertible $A$.
@@ -379,6 +396,11 @@ Library conventions differ, so read the documentation. \`scipy.linalg.lu(A)\` re
             'Ill-conditioned matrices',
           ],
           explanation: `Python floats are IEEE double-precision numbers, with 53 binary digits of precision. Most decimals have no exact binary form, so \`0.1 + 0.2\` prints \`0.30000000000000004\`. **Machine epsilon**, $\\varepsilon = 2^{-52} \\approx 2.2 \\times 10^{-16}$, is the gap between 1 and the next representable number, and each arithmetic operation is accurate to about that relative size. Never test floats with \`==\`. Use \`np.isclose\`.
+
+\`\`\`interactive
+bit-lab
+{"title": "Inside a double", "mode": "float", "format": "binary64", "formats": ["binary64", "binary32"], "value": "0.1", "caption": "0.1 is stored as the nearest double, whose exact value is 0.1000000000000000055511151231257827…; the rounding error is under half an ulp. Type 0.2 and 0.3 and compare their errors: they do not cancel, which is why 0.1 + 0.2 misses 0.3. Press the preset 1 and then next ▶: the gap above 1 is 2^−52, machine epsilon. Type 1e16 and read the gap: 2, so adding 1 to 1e16 does nothing."}
+\`\`\`
 
 Rounding is usually harmless unless the problem itself is sensitive. The **condition number** measures that sensitivity. For an invertible matrix, $\\kappa(A) = \\|A\\|\\,\\|A^{-1}\\|$, and in the 2-norm it equals the largest singular value divided by the smallest. For $Ax = b$ with a change $\\delta b$ on the right,
 $$\\frac{\\|\\delta x\\|}{\\|x\\|} \\le \\kappa(A)\\, \\frac{\\|\\delta b\\|}{\\|b\\|}.$$
@@ -681,6 +703,11 @@ The dimensions check: $2 + 2 = 4$ and $2 + 1 = 3$. You can also verify that each
 
 This picture answers the solvability question. $Ax = b$ has a solution exactly when $b$ is perpendicular to the left null space, here when $-3b_1 + b_2 + b_3 = 0$. For $b = (2, 2, 4)$ this holds, and a particular solution is $x_p = (1, 0, 1, 0)$. The **complete solution** is $x = x_p + s(-2, 1, 0, 0) + t(-1, 0, 1, 1)$. Every consistent system looks like this: one solution plus the null space.
 
+\`\`\`interactive
+row-reduce
+{"title": "Reduce [A | b] and read off the complete solution", "A": [[1, 2, 1, 0, 2], [2, 4, 0, 2, 2], [1, 2, 3, -2, 4]], "caption": "Press Next step until the matrix reaches R. The pivots land in columns 1 and 3, the zero row confirms r = 2, and the solution set appears as x₁ = 1 − 2s − t, x₂ = s, x₃ = 1 + t, x₄ = t: the particular solution (1, 0, 1, 0) plus the two special solutions. Use Edit matrix to change b to (2, 2, 5), which breaks −3b₁ + b₂ + b₃ = 0, and watch a row 0 = c appear."}
+\`\`\`
+
 On a computer, \`scipy.linalg.null_space(A)\` and \`scipy.linalg.orth(A)\` return orthonormal bases computed from the SVD, which look different from your hand-computed ones but span the same subspaces.`,
           resources: [
             main(mit1806, 'The session on the four fundamental subspaces, with the problem-solving videos that follow it.'),
@@ -760,7 +787,12 @@ On a computer, \`scipy.linalg.null_space(A)\` and \`scipy.linalg.orth(A)\` retur
 
 Linearity makes a map remarkably cheap to describe. Every vector is $x = x_1 e_1 + \\dots + x_n e_n$, so $T(x) = x_1 T(e_1) + \\dots + x_n T(e_n)$. Once you know where the basis vectors go, you know everything. Therefore **the columns of the matrix of $T$ are the images of the basis vectors**.
 
-This recipe builds the standard maps of the plane. Rotation by $\\theta$ anticlockwise sends $e_1$ to $(\\cos\\theta, \\sin\\theta)$ and $e_2$ to $(-\\sin\\theta, \\cos\\theta)$. A shear fixes $e_1$ and sends $e_2$ to $(k, 1)$. Projection onto the line through a unit vector $u$ has matrix $uu^T$.
+This recipe builds the standard maps of the plane. Rotation by $\\theta$ anticlockwise sends $e_1$ to $(\\cos\\theta, \\sin\\theta)$ and $e_2$ to $(-\\sin\\theta, \\cos\\theta)$. A shear fixes $e_1$ and sends $e_2$ to $(k, 1)$. Projection onto the line through a unit vector $u$ has matrix $uu^T$. In the interactive below, drag the tips of $Ae_1$ and $Ae_2$ and watch the matrix entries and the whole grid follow.
+
+\`\`\`interactive
+matrix-transform
+{"title": "The columns of A are the images of e₁ and e₂", "A": [[1, 1], [0, 1]], "x": [1.5, -1], "modes": ["transform"], "caption": "This starts as the shear that fixes e₁ and sends e₂ to (1, 1). Drag either column tip and the entries change with it, since column j of A is Aeⱼ. Drag the test vector x too: its image Ax (red) is always x₁ times the first column plus x₂ times the second. Try the presets, then type the matrices of the worked example, F with rows (0, 1), (1, 0), R with rows (0, −1), (1, 0) and RF with rows (−1, 0), (0, 1), and check each against the picture."}
+\`\`\`
 
 **Worked example.** Let $F$ reflect across the line $y = x$, and let $R$ rotate by $90^\\circ$ anticlockwise. Reading off images of $e_1$ and $e_2$ gives
 $$F = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}, \\qquad R = \\begin{bmatrix} 0 & -1 \\\\ 1 & 0 \\end{bmatrix}.$$
@@ -850,6 +882,11 @@ So $P$ has rows $(1, 1)$ and $(1, -1)$, and $P^{-1} = \\tfrac12 P$. Work out wha
 $$A' = P^{-1}AP = \\begin{bmatrix} 4 & 0 \\\\ 0 & 2 \\end{bmatrix}.$$
 In the standard basis, $A$ mixes coordinates. In this basis, $T$ just stretches by 4 along $(1, 1)$ and by 2 along $(1, -1)$. The trace (6) and determinant (8) are the same for both matrices, as they must be.
 
+\`\`\`interactive
+matrix-transform
+{"title": "One vector, two coordinate systems", "A": [[3, 1], [1, 3]], "B": [[1, 1], [1, -1]], "x": [2, 1], "view": 4, "mode": "basis", "modes": ["basis"], "presets": [], "caption": "The purple grid is the grid of the basis b₁ = (1, 1), b₂ = (1, −1). The vector x = (2, 1) has coordinates P⁻¹x = (1.5, 0.5): walk 1.5 along b₁ and 0.5 along b₂. The red vector is Ax, and A′ = P⁻¹AP comes out diagonal, diag(4, 2), with the same trace and determinant as A. Drag b₁ or b₂ off the eigenvector directions and A′ stops being diagonal, though its trace and determinant never change. Check the exercise: set A to rows (1, 2), (0, 3) and the basis to (1, 1), (0, 1)."}
+\`\`\`
+
 This example is the point of the lesson. A hard-looking matrix may be a simple map in the wrong coordinates. Choosing good coordinates is a recurring strategy, and eigenvectors, in a later module, are how you find them.
 
 In NumPy, avoid forming the inverse. Compute \`A_new = np.linalg.solve(P, A @ P)\`, which solves $PX = AP$ for $X$. Bases need not be orthonormal, and when they are, $P^{-1} = P^T$ and the formula is simply $P^T A P$.`,
@@ -923,12 +960,22 @@ In NumPy, avoid forming the inverse. Compute \`A_new = np.linalg.solve(P, A @ P)
           ],
           explanation: `The **determinant** of a square matrix measures how the map $x \\mapsto Ax$ scales volume: the unit cube goes to a parallelepiped of volume $|\\det A|$. The sign records whether orientation is preserved. So $\\det A = 0$ means that space is flattened into a lower dimension, which is exactly when $A$ is not invertible. Composition multiplies scale factors, which is why $\\det(AB) = \\det(A)\\det(B)$. Also $\\det(A^T) = \\det(A)$, and $\\det(A^{-1}) = 1/\\det(A)$ for invertible $A$.
 
+\`\`\`interactive
+matrix-transform
+{"title": "The determinant as a signed area", "A": [[2, 1], [1, 1.5]], "x": [1, -1], "modes": ["transform"], "caption": "The shaded parallelogram is the image of the unit square, and its area is |det A|. Drag the tip of Ae₂ across the line through Ae₁: the area shrinks to 0 (the plane collapses onto a line and A has no inverse) and then grows again with the shading turned amber, because the orientation has flipped and det A is negative. Try the Singular, Reflection and Rotation presets."}
+\`\`\`
+
 Row operations affect the determinant in a controlled way. Adding a multiple of one row to another leaves it unchanged. Swapping two rows flips its sign. Multiplying a row by $c$ multiplies it by $c$. The determinant of a triangular matrix is the product of its diagonal entries. So the practical algorithm is elimination: $\\det A$ is the product of the pivots, times $(-1)^{\\text{number of swaps}}$.
 
 **Worked example.** From the LU lesson,
 $$A = \\begin{bmatrix} 2 & 1 & -1 \\\\ 4 & 5 & 0 \\\\ -2 & 2 & 6 \\end{bmatrix}, \\qquad U = \\begin{bmatrix} 2 & 1 & -1 \\\\ 0 & 3 & 2 \\\\ 0 & 0 & 3 \\end{bmatrix}.$$
 No swaps were needed, so $\\det A = 2 \\cdot 3 \\cdot 3 = 18$. As a check, expand along the first row using **cofactors**:
 $$\\det A = 2(5 \\cdot 6 - 0 \\cdot 2) - 1(4 \\cdot 6 - 0 \\cdot (-2)) + (-1)(4 \\cdot 2 - 5 \\cdot (-2)) = 60 - 24 - 18 = 18.$$
+
+\`\`\`interactive
+row-reduce
+{"title": "Determinant by elimination", "A": [[2, 1, -1], [4, 5, 0], [-2, 2, 6]], "aug": 0, "target": "echelon", "det": true, "caption": "Press Next step three times to reach U; once the matrix is triangular the readout multiplies the pivots, 2 · 3 · 3 = 18. Reset and start with a swap of R₁ and R₂ instead: the pivots change, but the sign bookkeeping still gives 18. Scale a row by 2 and the readout divides by that factor."}
+\`\`\`
 
 Cofactor expansion is good for small matrices and for theory, but it costs about $n!$ operations. At $n = 25$ that is around $10^{25}$, whereas elimination takes about $10^4$. This gap is a clear lesson in why algorithms matter.
 
@@ -1035,6 +1082,11 @@ The **projection matrix** $P = A(A^T A)^{-1}A^T$ is symmetric and satisfies $P^2
 $$A^T A = \\begin{bmatrix} 2 & 1 \\\\ 1 & 2 \\end{bmatrix}, \\qquad A^T b = \\begin{bmatrix} 3 \\\\ 3 \\end{bmatrix}.$$
 Solving gives $\\hat{x} = (1, 1)$, so $p = a_1 + a_2 = (1, 2, 1)$ and $e = b - p = (2, -2, 2)$. Check the result: $e \\cdot a_1 = 0$ and $e \\cdot a_2 = 0$. The distance from $b$ to the plane is $\\|e\\| = 2\\sqrt{3}$.
 
+\`\`\`interactive
+projection-3d
+{"title": "Project b = (3, 0, 3) onto a line and a plane", "b": [3, 0, 3], "a": [[1, 1, 0], [0, 1, 1]], "onto": "line", "caption": "Start with the line through a₁: p = (1.5, 1.5, 0), and the red residual e meets the line at a right angle. Switch to the plane of a₁ and a₂ and check x̂ = (1, 1), p = (1, 2, 1), e = (2, −2, 2) and |e| = 2√3 ≈ 3.464. Drag the background (or use the sliders) to turn the picture until you look along the plane edge-on: then e is plainly perpendicular to it. Edit b to try the exercises."}
+\`\`\`
+
 The Pythagorean theorem explains why $p$ is closest. For any other point $q$ in the subspace, $p - q$ lies in the subspace and is perpendicular to $e$, so $\\|b - q\\|^2 = \\|e\\|^2 + \\|p - q\\|^2 \\ge \\|e\\|^2$. In code, compute projections by solving, for example with \`np.linalg.lstsq\`, instead of building $P$, since an explicit $P$ is an expensive dense matrix.`,
           resources: [
             main(ila, 'The chapter on orthogonality, especially orthogonal projection.'),
@@ -1112,6 +1164,11 @@ $$r_{11} = \\|a_1\\| = \\sqrt{2}, \\qquad q_1 = \\tfrac{1}{\\sqrt{2}}(1, 1, 0).$
 Next, $r_{12} = q_1 \\cdot a_2 = 1/\\sqrt{2}$. Subtract the component along $q_1$:
 $$a_2 - r_{12}\\, q_1 = (1, 0, 1) - \\tfrac12(1, 1, 0) = \\left(\\tfrac12, -\\tfrac12, 1\\right).$$
 Its length is $r_{22} = \\sqrt{3/2}$, so $q_2 = \\tfrac{1}{\\sqrt{6}}(1, -1, 2)$. Check that $q_1 \\cdot q_2 = 0$, and that $r_{12}q_1 + r_{22}q_2 = (1, 0, 1)$.
+
+\`\`\`interactive
+projection-3d
+{"mode": "gram-schmidt", "title": "Gram-Schmidt on a₁ = (1, 1, 0), a₂ = (1, 0, 1)", "a": [[1, 1, 0], [1, 0, 1]], "turn": -30,"caption": "Press Next to normalise a₁, then to subtract from a₂ its component r₁₂q₁ (dashed) and finally to normalise what is left. Q and R fill in as you go: r₁₁ = √2 ≈ 1.414, r₁₂ = 1/√2 ≈ 0.707, r₂₂ = √(3/2) ≈ 1.225. Turn the view to see that v₂ is perpendicular to q₁. Then edit the vectors to (1, 2, 2) and (3, 0, 3) from the exercise."}
+\`\`\`
 
 The formula on paper is not the end of the story. **Classical Gram-Schmidt** computes every $r_{ij}$ from the original $a_j$, and on ill-conditioned input it loses orthogonality badly. **Modified Gram-Schmidt** subtracts each projection from the current, already updated vector. The two are identical in exact arithmetic, but not in floating point. On the $10 \\times 10$ Hilbert matrix, where $\\kappa \\approx 10^{13}$, a run gave $\\|Q^T Q - I\\| \\approx 3.5$ for classical (complete loss of orthogonality), about $5 \\times 10^{-5}$ for modified, and about $10^{-15}$ for the **Householder reflections** that \`np.linalg.qr\` uses through LAPACK.
 
@@ -1194,6 +1251,11 @@ $$A = \\begin{bmatrix} 1 & 0 \\\\ 1 & 1 \\\\ 1 & 2 \\\\ 1 & 3 \\end{bmatrix}, \\
 Then
 $$A^T A = \\begin{bmatrix} 4 & 6 \\\\ 6 & 14 \\end{bmatrix}, \\qquad A^T b = \\begin{bmatrix} 8 \\\\ 17 \\end{bmatrix}.$$
 Solving gives $c_0 = \\tfrac12$ and $c_1 = 1$, the line $y = \\tfrac12 + t$. The residuals are $(\\tfrac12, -\\tfrac12, -\\tfrac12, \\tfrac12)$, with squared sum 1. Note the check: they sum to 0, because they are perpendicular to the column of ones, and their dot product with $t$ is also 0.
+
+\`\`\`interactive
+least-squares
+{"title": "Fit a line to the four points", "points": [[0, 1], [1, 1], [2, 2], [3, 4]], "maxDegree": 3, "caption": "The green line is y = 1/2 + t with residuals (red) of squared sum 1. Turn on 'Draw my own line' and drag its two handles: however you place it, its sum of squares stays above 1. Drag a data point and watch the normal equations, the fit and both orthogonality checks update. Raise the degree to 2, the model of the next paragraph, and to 3, where the curve passes through all four points and the residuals vanish."}
+\`\`\`
 
 "Linear" in least squares refers to the unknown coefficients, not the model's shape in $t$. A model such as $c_0 + c_1 t + c_2 t^2$, or $c_0 + c_1 \\sin t$, is still a linear system in the $c_i$.
 
@@ -1278,6 +1340,11 @@ For a least-squares fit with an intercept, $0 \\le R^2 \\le 1$. Without an inter
 **Worked example.** In the last lesson, the line through $(0, 1), (1, 1), (2, 2), (3, 4)$ had residual sum 1. The mean of $y$ is 2, so the total sum is $1 + 1 + 0 + 4 = 6$, and $R^2 = 1 - 1/6 = 5/6$. The line accounts for five sixths of the variation. But look at the residuals, $(\\tfrac12, -\\tfrac12, -\\tfrac12, \\tfrac12)$: they go positive, negative, positive in a pattern, which suggests curvature that the line misses. Always plot residuals. A high $R^2$ does not show that a model is right, and adding columns can never reduce $R^2$ on the fitted data.
 
 That last fact is the danger. A degree-9 polynomial through 10 points has $R^2 = 1$ and may predict terribly. So set aside a **test set**, fit on the rest and report the error on the data the model has not seen.
+
+\`\`\`interactive
+least-squares
+{"title": "R² always rises with the degree", "points": [[0, 4.3], [1, 2.9], [2, 3.1], [3, 2.7], [4, 3.4], [5, 3.2], [6, 4.4], [7, 5.2], [8, 7.1], [9, 8.3]], "degree": 1, "maxDegree": 9, "compare": false, "view": [-1, 10, 0, 10], "caption": "These ten points come from a gentle curve plus noise. The straight line leaves residuals that go positive, negative, positive: the pattern that says curvature is missing. Degree 2 fixes that and R² jumps. Keep raising the degree: R² creeps up to exactly 1 at degree 9, where the curve passes through every point and swings wildly between them, especially near the ends. Drag one point a little and compare how much the degree-2 and degree-9 curves move."}
+\`\`\`
 
 **Ridge regression** discourages large coefficients by minimising $\\|b - Ax\\|^2 + \\lambda\\|x\\|^2$ with $\\lambda > 0$. The solution satisfies
 $$(A^T A + \\lambda I)\\hat{x} = A^T b,$$
@@ -1389,6 +1456,11 @@ This is the **characteristic equation**, a polynomial of degree $n$ in $\\lambda
 $$A = \\begin{bmatrix} 4 & 1 \\\\ 2 & 3 \\end{bmatrix}.$$
 Then $\\det(A - \\lambda I) = (4 - \\lambda)(3 - \\lambda) - 2 = \\lambda^2 - 7\\lambda + 10 = (\\lambda - 5)(\\lambda - 2)$. For $\\lambda = 5$, $A - 5I$ has rows $(-1, 1)$ and $(2, -2)$, so $v = (1, 1)$. For $\\lambda = 2$, $A - 2I$ has rows $(2, 1)$ and $(2, 1)$, so $v = (1, -2)$. Check: $A(1, -2) = (2, -4) = 2(1, -2)$. Two quick checks on the eigenvalues: their sum equals the trace ($5 + 2 = 4 + 3$), and their product equals the determinant ($10 = 12 - 2$). Both hold in general, with eigenvalues counted with multiplicity, including complex ones.
 
+\`\`\`interactive
+matrix-transform
+{"title": "Hunt for the directions A only stretches", "A": [[4, 1], [2, 3]], "x": [1, 0.3], "mode": "eigen", "modes": ["eigen", "transform"], "presets": ["rotation90", "defective", "symmetric", "projection", "shear"], "caption": "Drag x around the origin and watch Ax (red). Usually Ax points somewhere else, but along the dashed lines through (1, 1) and (1, −2) it lines up with x: there Ax = 5x and Ax = 2x, and x snaps onto the line. Now try the presets: Rotation 90° has eigenvalues ±i and no eigenline at all; Defective, rows (1, 1), (0, 1), has λ = 1 twice but a single eigenline; a projection has eigenvalues 1 and 0."}
+\`\`\`
+
 Three things can complicate the picture. **Complex eigenvalues:** a real matrix can have them, in conjugate pairs. Rotation by $90^\\circ$ has $\\lambda = \\pm i$, and it leaves no real direction fixed. **Repeated eigenvalues:** the matrix with rows $(1, 1), (0, 1)$ has $\\lambda = 1$ twice but only one independent eigenvector. Its **algebraic multiplicity** (as a root) is 2 and its **geometric multiplicity** (dimension of the eigenspace) is 1. **Triangular matrices:** the eigenvalues are simply the diagonal entries, but row operations change eigenvalues in general, so you cannot read them from an echelon form.
 
 On a computer, \`w, V = np.linalg.eig(A)\` returns eigenvalues and a matrix whose **columns** are unit eigenvectors, so $v_i$ is \`V[:, i]\`. Eigenvalues come in no guaranteed order, and each eigenvector is only determined up to a scale factor, so the signs may differ from yours. Software does not use the characteristic polynomial, because polynomial roots can be extremely sensitive to rounding in the coefficients. Eigenvalue routines work directly on the matrix with orthogonal transformations.`,
@@ -1470,6 +1542,11 @@ $$P = \\begin{bmatrix} 1 & 1 \\\\ 1 & -2 \\end{bmatrix}, \\quad D = \\begin{bmat
 Multiplying out gives
 $$A^k = \\frac13\\begin{bmatrix} 2 \\cdot 5^k + 2^k & 5^k - 2^k \\\\ 2 \\cdot 5^k - 2^{k+1} & 5^k + 2^{k+1} \\end{bmatrix}.$$
 For $k = 1$ this gives back $A$. For $k = 3$ the top-left entry is $(250 + 8)/3 = 86$, which matches direct multiplication. Notice that for large $k$, the eigenvalue 5 dominates, and $A^k$ looks more and more like a multiple of the rank-one matrix built from $(1, 1)$. That idea drives the rest of this module.
+
+\`\`\`interactive
+matrix-transform
+{"title": "Powers of A along the eigenvectors", "A": [[4, 1], [2, 3]], "x": [1, -1], "view": 2.5, "mode": "powers", "modes": ["powers", "eigen"], "k": 0, "kMax": 10, "presets": [], "caption": "Slide k from 0 upwards. The readout writes x₀ = (1, −1) in the eigenvector basis and Aᵏx₀ = c₁5ᵏ(1, 1) + c₂2ᵏ(1, −2): each component is just multiplied by its eigenvalue. The arrows are rescaled to the same length so you can follow the direction, which swings onto the line of (1, 1) because 5ᵏ beats 2ᵏ. Check the matrix A³: its top-left entry is 86. Then type the exercise matrix, rows (2, 1), (1, 2), and look at A⁵."}
+\`\`\`
 
 **When does it work?** Diagonalisation needs $n$ independent eigenvectors, which means each eigenvalue's geometric multiplicity equals its algebraic multiplicity (over $\\mathbb{C}$, for a full count). Eigenvectors for different eigenvalues are always independent, so $n$ **distinct** eigenvalues guarantee diagonalisability. That condition is sufficient but not necessary: the identity has one repeated eigenvalue and is already diagonal. A matrix that lacks enough eigenvectors is called **defective**, like the matrix with rows $(1, 1), (0, 1)$. Do not confuse diagonalisability with invertibility; they are independent properties. The zero matrix is diagonal but not invertible, and that defective matrix is invertible.
 
@@ -1565,6 +1642,11 @@ and every term after the first dies away. The error in direction shrinks by a fa
 
 The vectors approach the eigenvector $(1, 1)$, and the scale factors $4, 4.5, 4.778, 4.907$ approach $\\lambda_1 = 5$. The error in the second entry goes $0.5, 0.222, 0.093, 0.038$, each about 0.4 of the last, matching $|\\lambda_2/\\lambda_1| = 2/5$.
 
+\`\`\`interactive
+markov-chain
+{"mode": "power", "title": "Power iteration on the worked example", "A": [[4, 1], [2, 3]], "x0": [1, 0], "kMax": 25, "caption": "Step from x₀ = (1, 0) and check the table against the worked example: x₁ = (1, 0.5), x₂ = (1, 0.778), scale factors 4, 4.5, 4.778 heading for 5. The red arrow turns onto the amber eigenline of (1, 1), and the log plot falls with slope 2/5. Now move the λ₂ slider: at λ₂ = 4.5 the ratio is 0.9 and convergence crawls; at λ₂ = −5 the two eigenvalues tie in size and the iterates swing for ever. Try x₀ = (1, −2), which has no component along v₁."}
+\`\`\`
+
 A better eigenvalue estimate is the **Rayleigh quotient** $r(x) = x^T A x / x^T x$. If $x$ is an exact eigenvector, $r(x) = \\lambda$. For symmetric $A$, an error $\\varepsilon$ in $x$ gives an error of order $\\varepsilon^2$ in $r(x)$, so convergence is twice as fast in digits.
 
 **Inverse iteration** applies the same idea to $(A - \\mu I)^{-1}$, whose eigenvalues are $1/(\\lambda_i - \\mu)$. The largest of these belongs to the $\\lambda_i$ closest to the shift $\\mu$, so a good shift finds any eigenvalue you want, very quickly. Solve with a stored LU factorisation rather than forming the inverse. A useful warning: as $\\mu$ approaches an eigenvalue, the system becomes nearly singular, yet the method still works, since the error it makes lies mostly along the wanted eigenvector.`,
@@ -1649,6 +1731,11 @@ Each eigenvector evolves independently, and its eigenvalue says what happens to 
 **Worked example.** A population has juveniles $j$ and adults $a$. Each juvenile produces 1 offspring and each adult produces 2. Half of the juveniles survive to adulthood, and adults live one step. So
 $$\\begin{bmatrix} j \\\\ a \\end{bmatrix}_{k+1} = \\begin{bmatrix} 1 & 2 \\\\ 0.5 & 0 \\end{bmatrix} \\begin{bmatrix} j \\\\ a \\end{bmatrix}_k.$$
 The characteristic equation is $\\lambda^2 - \\lambda - 1 = 0$, so $\\lambda_1 = (1 + \\sqrt{5})/2 \\approx 1.618$ and $\\lambda_2 \\approx -0.618$. The second component dies away with alternating sign. So the population eventually grows by 61.8% per step, whatever the start, provided the start has a component along $v_1$. The eigenvector for $\\lambda_1$ has $j/a = 2\\lambda_1 \\approx 3.24$, which is the **stable age structure**. Starting from $(10, 0)$, the sequence is $(10, 5), (20, 5), (30, 10), (50, 15), (80, 25)$, and $j/a$ moves through $2, 4, 3, 3.33, 3.2$, oscillating towards 3.24.
+
+\`\`\`interactive
+matrix-transform
+{"title": "The juvenile-adult population", "A": [[1, 2], [0.5, 0]], "x": [10, 0], "mode": "powers", "modes": ["powers"], "k": 0, "kMax": 12, "presets": [], "vec": "x", "caption": "Slide k and compare xₖ with (10, 5), (20, 5), (30, 10), (50, 15), (80, 25). The arrows are rescaled to equal length so you can watch the direction: it zigzags (λ₂ ≈ −0.618 is negative) onto the dashed eigenline of λ₁ ≈ 1.618, the stable age structure j/a ≈ 3.24. Untick Rescale to see the real growth. Then type rows (0.72, −0.54), (0.54, 0.72), the spiral matrix 0.9Q from the exercise, start from (1, 0) and untick Rescale: complex eigenvalues of modulus 0.9 give an inward spiral."}
+\`\`\`
 
 **Continuous systems** $x' = Ax$ work the same way, with $e^{\\lambda t}$ in place of $\\lambda^k$:
 $$x(t) = c_1 e^{\\lambda_1 t} v_1 + \\dots + c_n e^{\\lambda_n t} v_n.$$
@@ -1749,6 +1836,11 @@ When is it unique, and does the chain approach it? A chain is **regular** if som
 **Worked example.** A day is sunny or rainy. A sunny day is followed by a sunny day with probability 0.9, and a rainy day is followed by either with probability 0.5. With states in that order,
 $$P = \\begin{bmatrix} 0.9 & 0.5 \\\\ 0.1 & 0.5 \\end{bmatrix}.$$
 Solve $(P - I)\\pi = 0$: the first row gives $-0.1\\pi_1 + 0.5\\pi_2 = 0$, so $\\pi_1 = 5\\pi_2$. Scaling to sum to 1 gives $\\pi = (5/6, 1/6)$. The trace is 1.4, so the other eigenvalue is 0.4. Starting from a rainy day, $(0, 1)$, the sequence is $(0.5, 0.5), (0.7, 0.3), (0.78, 0.22), (0.812, 0.188)$. The gap from $5/6$ shrinks by exactly 0.4 each step.
+
+\`\`\`interactive
+markov-chain
+{"title": "Sunny and rainy days", "P": [[0.9, 0.5], [0.1, 0.5]], "states": ["sunny", "rainy"], "x0": [0, 1], "kMax": 25, "caption": "Press Step from a rainy day and compare with (0.5, 0.5), (0.7, 0.3), (0.78, 0.22), (0.812, 0.188). The bars approach the dashed steady state (5/6, 1/6), and on the log plot the distance falls along a line of slope 0.4, the second eigenvalue: the measured ratio is exactly 0.4 every step. Drag the start anywhere on the segment and the limit does not change. Then type a top row of 0 and 1 (the bottom row fills itself in): that chain swaps states every day, has eigenvalue −1 and never settles."}
+\`\`\`
 
 **PageRank** applies this to the web. A random surfer follows a random outgoing link. To guarantee regularity, with probability $1 - d$ they jump to a uniformly random page instead, giving
 $$G = dS + \\frac{1 - d}{n}\\mathbf{1}\\mathbf{1}^T,$$
@@ -1862,6 +1954,11 @@ $$6q_1q_1^T + q_2q_2^T = \\frac{6}{5}\\begin{bmatrix} 1 & 2 \\\\ 2 & 4 \\end{bma
 
 The **quadratic form** $x^T A x$ becomes $\\sum_i \\lambda_i y_i^2$ in the coordinates $y = Q^T x$. So on the unit sphere, $x^TAx$ is largest at $\\lambda_{\\max}$ and smallest at $\\lambda_{\\min}$, attained at the corresponding eigenvectors. For this $A$, the maximum on the unit circle is 6 at $q_1$.
 
+\`\`\`interactive
+matrix-transform
+{"title": "A symmetric matrix: perpendicular eigenvectors", "A": [[2, 2], [2, 5]], "x": [0.6, 0.2], "view": 3, "symmetric": true, "mode": "eigen", "modes": ["eigen", "quadratic"], "presets": ["symmetric", "definite", "indefinite", "semidefinite"], "caption": "Edit the entries (the two off-diagonal entries stay equal): however you change them, the two eigenlines stay at right angles, here along (1, 2) for λ = 6 and (2, −1) for λ = 1. Switch to Quadratic form to see the level curves of xᵀAx; drag x around the unit circle and watch the Rayleigh quotient reach its largest value 6 at q₁ and its smallest value 1 at q₂."}
+\`\`\`
+
 In NumPy, use \`np.linalg.eigh\` for symmetric matrices, not \`eig\`. It is faster, guarantees real eigenvalues in ascending order, and returns orthonormal eigenvectors. Note the ordering: the largest eigenvalue is last.`,
           resources: [
             main(ila, 'The material on symmetric matrices and quadratic forms.'),
@@ -1951,7 +2048,12 @@ and multiplying out confirms $LL^T = A$. The entries come from solving row by ro
 
 Cholesky costs about $\\tfrac13 n^3$ operations, half of LU, needs no pivoting and is stable. It is also the standard way to test positive definiteness numerically: try it and see whether it fails. \`np.linalg.cholesky\` raises \`LinAlgError\` if the matrix is not positive definite. Be careful, though: it reads only the lower triangle and does not check symmetry. Given rows $(1, 5), (0, 1)$, it returns the identity with no error.
 
-Geometrically, $x^TAx = 1$ is an ellipsoid with axes along the eigenvectors and semi-axis lengths $1/\\sqrt{\\lambda_i}$. Positive definite matrices also connect linear systems with optimisation: the bowl $\\tfrac12 x^T A x - b^T x$ has its unique minimum at the solution of $Ax = b$. Finally, $A^TA$ is always positive semidefinite, and it is positive definite exactly when $A$ has independent columns.`,
+Geometrically, $x^TAx = 1$ is an ellipsoid with axes along the eigenvectors and semi-axis lengths $1/\\sqrt{\\lambda_i}$, as the interactive below shows in the plane. Positive definite matrices also connect linear systems with optimisation: the bowl $\\tfrac12 x^T A x - b^T x$ has its unique minimum at the solution of $Ax = b$. Finally, $A^TA$ is always positive semidefinite, and it is positive definite exactly when $A$ has independent columns.
+
+\`\`\`interactive
+matrix-transform
+{"title": "Level curves of xᵀAx", "A": [[4, 2], [2, 3]], "x": [0.5, 0.25], "view": 2, "mode": "quadratic", "modes": ["quadratic"], "presets": ["definite", "semidefinite", "indefinite"], "caption": "For the worked example the level curves are ellipses, with axes along the eigenvectors and semi-axes 1/√λ on the level xᵀAx = 1; the readouts give the pivots 4 and 2 and the leading minors 4 and 8. Raise the off-diagonal entry towards and past √12 ≈ 3.46: when det A reaches 0 the ellipses open into parallel lines (semidefinite), and beyond it they become hyperbolas, with negative values (amber) where the form dips below zero (indefinite). Drag x to read xᵀAx anywhere."}
+\`\`\``,
           resources: [
             main(mit1806, 'The sessions on positive definite matrices and minima.'),
             also(ula, 'The section on quadratic forms.'),
@@ -2029,6 +2131,13 @@ $$A = \\begin{bmatrix} 1 & 1 \\\\ 0 & 1 \\\\ 1 & 0 \\end{bmatrix}, \\qquad A^TA 
 The eigenvalues of $A^TA$ are 3 and 1, so $\\sigma_1 = \\sqrt{3}$ and $\\sigma_2 = 1$, with $v_1 = (1, 1)/\\sqrt{2}$ and $v_2 = (1, -1)/\\sqrt{2}$. Then
 $$u_1 = \\frac{Av_1}{\\sqrt{3}} = \\frac{(2, 1, 1)}{\\sqrt{6}}, \\qquad u_2 = Av_2 = \\frac{(0, -1, 1)}{\\sqrt{2}}.$$
 Complete the basis with a unit vector perpendicular to both: $u_3 = (1, -1, -1)/\\sqrt{3}$. Now check that $\\sigma_1 u_1 v_1^T + \\sigma_2 u_2 v_2^T = A$.
+
+This example is $3 \\times 2$, so its picture lives in $\\mathbb{R}^3$. The interactive shows the same geometry for $2 \\times 2$ matrices in the plane.
+
+\`\`\`interactive
+matrix-transform
+{"title": "The unit circle becomes an ellipse", "A": [[2, 1], [1, 2]], "x": [1, 0], "mode": "svd", "modes": ["svd", "eigen", "transform"], "presets": ["shear", "rotation", "projection", "singular", "scaling"], "caption": "This is A with rows (2, 1), (1, 2), from the exercise: the circle maps to an ellipse with semi-axes σ₁u₁ and σ₂u₂ of lengths 3 and 1, and the dashed v₁, v₂ on the circle are the directions that land on them. Drag x around the circle: |Ax| is largest at v₁ and smallest at v₂. Type rows (1, 2), (0, 1): the singular values become 1 + √2 and √2 − 1, while both eigenvalues are 1, so singular values are not |eigenvalues| for a non-symmetric matrix. The Singular preset squashes the ellipse to a segment, σ₂ = 0."}
+\`\`\`
 
 The SVD exposes the whole structure. The rank $r$ is the number of non-zero singular values. The first $r$ columns of $U$ span $C(A)$, and the rest span $N(A^T)$. The first $r$ columns of $V$ span the row space, and the rest span $N(A)$. The largest stretch is $\\|A\\|_2 = \\sigma_1$, and for an invertible matrix $\\kappa(A) = \\sigma_1/\\sigma_n$. Do not assume that singular values are the absolute values of eigenvalues: that holds for symmetric matrices but not in general.
 
@@ -2132,6 +2241,11 @@ The error matrix $A - A_1$ has rows $(0, 0), (-0.5, 0.5), (0.5, -0.5)$. Its Frob
 
 **Compression.** A rank-$k$ approximation needs $k$ left vectors, $k$ right vectors and $k$ singular values, or $k(m + n + 1)$ numbers rather than $mn$. For a $512 \\times 512$ greyscale image with $k = 20$, that is 20,500 numbers rather than 262,144, about one thirteenth of the size. Real images compress well because their singular values fall quickly. A matrix of random noise does not, and its singular values decay slowly.
 
+\`\`\`interactive
+low-rank-image
+{"title": "Compress a 48 × 48 picture with the truncated SVD", "k": 5, "caption": "The picture is a 48 × 48 matrix of brightness values and its SVD is computed in your browser. Slide k: by rank 10 the house is recognisable using 970 numbers instead of 2304. The relative error readout from the singular values alone matches the one computed from the pixels, as Eckart-Young says. Switch to 'Only the k-th term' to see that each piece is a rank-one outer product of a column pattern and a row pattern. Then pick Noise: its singular values fall slowly, and no small k looks right."}
+\`\`\`
+
 The relative Frobenius error is exactly $\\sqrt{\\sum_{i>k}\\sigma_i^2 / \\sum_i\\sigma_i^2}$, so you can choose $k$ from the singular values alone, without forming $A_k$. In code, \`(U[:, :k] * s[:k]) @ Vt[:k]\` builds $A_k$ efficiently, since multiplying by \`s[:k]\` scales each column. For a large sparse matrix, \`scipy.sparse.linalg.svds\` finds only the top $k$ triplets.`,
           resources: [
             main(mit18065, 'The lecture on low-rank approximation and the Eckart-Young theorem.'),
@@ -2211,6 +2325,11 @@ The second is **principal component analysis**. Put $N$ observations of $d$ vari
 **Worked example.** Take four points that are already centred: $(3, 1), (-3, -1), (1, -1), (-1, 1)$. Then
 $$X^TX = \\begin{bmatrix} 20 & 4 \\\\ 4 & 4 \\end{bmatrix},$$
 with eigenvalues $\\lambda = 12 \\pm 4\\sqrt{5}$, which are about $20.94$ and $3.06$. These are the squared singular values, and the first direction explains $20.94/24 \\approx 87.3\\%$ of the total variance. The eigenvector for $20.94$ satisfies $(20 - 20.94)a + 4b = 0$, so $b \\approx 0.236a$, and normalising gives $v_1 \\approx (0.973, 0.230)$. Projecting the data onto $v_1$ gives the best one-dimensional summary.
+
+\`\`\`interactive
+least-squares
+{"mode": "pca", "title": "The first principal direction of four points", "points": [[3, 1], [-3, -1], [1, -1], [-1, 1]], "view": [-4.5, 4.5, -3, 3], "xName": "x₁", "yName": "x₂", "caption": "The green line through the mean is the direction v₁ ≈ (0.973, 0.230), and the readouts show XᵀX, its eigenvalues 20.94 and 3.06 and the 87.3% share. The red segments are perpendicular distances: their squares add up to σ₂² = 3.06, the smallest possible for any line through the mean. Turn on the regression line to see that least squares, which measures vertical errors, picks a different line. Drag a point and the mean moves with it: PCA always works with centred data."}
+\`\`\`
 
 Three cautions. Forget to centre, and the first direction largely points at the mean instead of along the spread. Variables in different units need scaling first, because PCA otherwise follows whichever variable has the largest numbers. And components are combinations chosen for variance alone, so a large component need not be meaningful, and PCA ignores any label you care about. Compute with the SVD of $X$, not by eigendecomposition of the covariance matrix.`,
           resources: [

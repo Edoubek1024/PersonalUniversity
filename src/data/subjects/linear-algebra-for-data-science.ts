@@ -1147,6 +1147,11 @@ beta, *_ = np.linalg.lstsq(A, y, rcond=None)
 
 For the points $(0, 6)$, $(1, 0)$ and $(2, 0)$, you get $\\beta = (5, -3)$, the fit from the projections exercise.
 
+\`\`\`interactive
+least-squares
+{"title": "The least-squares line through three points", "points": [[0, 6], [1, 0], [2, 0]], "xName": "x", "yName": "y", "coef": "beta", "maxDegree": 2, "view": [-0.6, 2.8, -2, 7.5], "caption": "The green line is y = 5 − 3x, with residuals (1, −2, 1) and sum of squares 6. Turn on 'Draw my own line' and try to get a smaller sum: you cannot. Drag any point and watch β and the normal equations change. Raise the degree to 2: three coefficients fit three points exactly, which is the 'too many columns' warning in miniature."}
+\`\`\`
+
 **Linear in the parameters.** "Linear" here does not mean a straight line. It means the prediction is a linear combination of the coefficients, and the columns can be any function of the input. So you can fit
 
 $$y \\approx \\beta_0 + \\beta_1 t + \\beta_2 t^2 + \\beta_3 \\sin(2\\pi t) + \\beta_4 \\cos(2\\pi t)$$
@@ -1557,6 +1562,11 @@ $$P = \\begin{bmatrix} 0.9 & 0.1 & 0 \\\\ 0.2 & 0.7 & 0.1 \\\\ 0 & 0.3 & 0.7 \\e
 
 **Will it converge?** If every state can reach every other (**irreducible**) and the chain does not cycle (**aperiodic**), then $x_0 P^k \\to \\pi$ from any start. Starting from all active, the chain has an $\\ell_1$ distance to $\\pi$ of 0.22 after 5 steps, 0.0077 after 20 and $10^{-5}$ after 50.
 
+\`\`\`interactive
+markov-chain
+{"title": "Active, lapsing and churned customers", "P": [[0.9, 0.1, 0], [0.2, 0.7, 0.1], [0, 0.3, 0.7]], "convention": "row", "states": ["active", "lapsing", "churned"], "x0": [1, 0, 0], "kMax": 50, "caption": "Rows sum to 1 here and the distribution is a row vector, so each step is xₖ₊₁ = xₖP. Step from all active and check the ℓ₁ distance to π = (0.6, 0.3, 0.1): about 0.22 at k = 5 and 0.0077 at k = 20. The purple path crawls across the triangle of probability vectors to π, and on the log plot it falls along the slope 0.8 = |λ₂|. Drag the starting point anywhere in the triangle: the limit is the same. Then lower the churned-to-lapsing probability 0.3 towards 0 (the last entry of each row fills itself in): churned customers rarely return, π shifts towards churned, |λ₂| grows and convergence slows."}
+\`\`\`
+
 **How fast?** The eigenvalues of this $P$ are 1, 0.8 and 0.5. Everything except $\\pi$ decays like the second-largest $|\\lambda|$:
 
 $$\\|x_k - \\pi\\| \\approx C |\\lambda_2|^k.$$
@@ -1938,6 +1948,11 @@ $$A = \\begin{bmatrix} 3 & 0 \\\\ 4 & 5 \\end{bmatrix}, \\quad A^TA = \\begin{bm
 
 the eigenvalues are 45 and 5, so $\\sigma_1 = 3\\sqrt{5} \\approx 6.708$ and $\\sigma_2 = \\sqrt{5} \\approx 2.236$. Real software does not form $A^TA$, because that would square the condition number. Use \`np.linalg.svd(A, full_matrices=False)\`, which gives the **thin** SVD.
 
+\`\`\`interactive
+matrix-transform
+{"title": "The unit circle under A", "A": [[3, 0], [4, 5]], "x": [1, 0], "view": 7.5, "mode": "svd", "modes": ["svd", "transform"], "presets": ["shear", "rotation", "singular"], "caption": "The dashed circle maps to the cyan ellipse, whose semi-axes σ₁u₁ and σ₂u₂ have lengths 6.708 and 2.236. The dashed v₁ and v₂ on the circle are the directions that land on them: rotate by Vᵀ, stretch by Σ, rotate by U. Move x round the circle with the slider and watch |Ax| stay between σ₂ and σ₁. Drag a column of A towards the other and watch σ₂ shrink: the condition number σ₁/σ₂ grows, and at the Singular preset the ellipse flattens to a segment."}
+\`\`\`
+
 **A sum of simple pieces.** The SVD says
 
 $$A = \\sigma_1 u_1 v_1^T + \\sigma_2 u_2 v_2^T + \\dots$$
@@ -2046,6 +2061,11 @@ So the singular values tell you exactly how much you lose.
 | 100 | 99.5% | 7.4% | 39.1% |
 
 **Energy** is $\\sum_{i \\le k} \\sigma_i^2 / \\sum_i \\sigma_i^2$. Do not be fooled by its high numbers. Here the first singular value mostly captures the average brightness, so energy looks excellent even at rank 5, while the picture is plainly blurry. Relative error, which is the square root of the energy missed, gives a more honest reading. Removing the mean first gives a fairer measure, as PCA does.
+
+\`\`\`interactive
+low-rank-image
+{"title": "Rank, energy and error on a small image", "k": 3, "images": ["house", "letters", "rings", "noise"], "caption": "A 48 × 48 picture, its SVD computed in your browser. At rank 3 the energy kept is already above 98% while the picture is still poor: compare that with the relative error readout, the square root of the energy missed. The singular value plot is the scree plot of the next paragraph; for Noise it falls smoothly with no elbow, and no small rank looks right. Switch to 'The error' to see what Aₖ leaves out."}
+\`\`\`
 
 JPEG does far better at the same quality, since an SVD basis must be stored with the image.
 

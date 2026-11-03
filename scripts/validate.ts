@@ -14,9 +14,15 @@ import { dirname } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 import { attachCoursework } from '../src/data/define';
 import type { CourseworkInput, CourseworkItem, Subject } from '../src/data/types';
+import { findBlocks, stripBlocks } from '../src/widgets/parse';
 
 const SUBJECT_DIR = resolve(__dirname, '../src/data/subjects');
 const COURSEWORK_DIR = resolve(__dirname, '../src/data/coursework');
+const WIDGET_NAMES = new Set(
+  readdirSync(resolve(__dirname, '../src/widgets/w'))
+    .filter((f) => f.endsWith('.tsx'))
+    .map((f) => f.replace(/\.tsx$/, '')),
+);
 const KNOWN_SUBJECT_IDS = [
   'programming-fundamentals',
   'discrete-mathematics',
@@ -200,7 +206,16 @@ function checkSubject(s: Subject, allLessonIds: Set<string>, presentSubjects: Se
       if (!(l.estimatedMinutes > 0)) err(id, w, 'estimatedMinutes must be > 0');
       if (l.objectives.length < 3) err(id, w, `only ${l.objectives.length} objectives (need 3-6)`);
       if (l.concepts.length < 4) err(id, w, `only ${l.concepts.length} concepts (need 4-10)`);
-      const wc = wordCount(l.explanation);
+      for (const md of [l.explanation, ...l.exercises.flatMap((ex) => [ex.prompt, ex.hint ?? ''])]) {
+        const blocks = findBlocks(md);
+        const opened = (md.match(/```interactive/g) ?? []).length;
+        if (opened !== blocks.length) err(id, w, `${opened - blocks.length} interactive block(s) not closed by a \`\`\` line of its own`);
+        for (const b of blocks) {
+          if (!WIDGET_NAMES.has(b.name)) err(id, w, `unknown interactive "${b.name}" (no src/widgets/w/${b.name}.tsx)`);
+          if (b.error) err(id, w, `interactive "${b.name}": ${b.error}`);
+        }
+      }
+      const wc = wordCount(stripBlocks(l.explanation));
       if (wc < 120) err(id, w, `explanation too short (${wc} words; need 150-400)`);
       else if (wc > 600) warn(id, w, `explanation long (${wc} words)`);
       if (l.resources.length < 2) err(id, w, `only ${l.resources.length} resources (need 2-5)`);

@@ -670,7 +670,19 @@ $$
 
 The borderline case is $p=1$, which diverges in both directions because $\\ln x$ is unbounded at both $\\infty$ and $0$. The two conditions are opposites. At infinity the function must fall fast enough, and at $0$ it must not blow up too fast.
 
+In the interactive below, slide $b$ out towards $1000$ and watch the running value $\\int_1^b x^{-p}\\,dx$ in the lower plot.
+
+\`\`\`interactive
+improper-integral
+{"title": "The p-integral on [1, ∞)", "f": "1/x^p", "a": 1, "bMax": 1000, "sliders": {"p": [2, 0.3, 3, 0.05]}, "value": "1/(p-1)", "converges": "p-1", "view": [0, 10, -0.1, 1.2], "caption": "With p = 2 the running value levels off at 1/(p − 1) = 1: an infinitely long region with finite area. Lower p towards 1 and the level rises and is reached more slowly; at p = 1 the value is ln b, and for p ≤ 1 it climbs without bound however far b goes."}
+\`\`\`
+
 **Worked example 2.** $\\displaystyle\\int_0^1\\frac{dx}{\\sqrt{x}}$ has $p=\\tfrac12<1$, so it converges, to $2$. In contrast, $\\displaystyle\\int_1^\\infty\\frac{dx}{\\sqrt{x}}$ diverges.
+
+\`\`\`interactive
+improper-integral
+{"title": "The p-integral on (0, 1]", "kind": "lower", "f": "1/x^p", "a": 0, "b": 1, "tMin": 1e-6, "sliders": {"p": [0.5, 0.2, 1.5, 0.05]}, "value": "1/(1-p)", "converges": "1-p", "view": [0, 1.5, -0.4, 6], "caption": "Now the trouble is at x = 0. Slide t down towards 0 (the lower plot's axis is t on a log scale). With p = 1/2 the area of the spike stays finite and the value approaches 2, as in worked example 2. Raise p to 1 or above and the value keeps growing as t shrinks: the opposite condition to the one at infinity."}
+\`\`\`
 
 **Singularities inside the interval.** Look at the integrand before you apply the fundamental theorem. In $\\int_{-1}^{1}\\dfrac{dx}{x^2}$ the integrand blows up at $x=0$. Split it into $\\int_{-1}^0$ and $\\int_0^1$. Each piece diverges, so the whole integral diverges.
 
@@ -764,6 +776,11 @@ In words, below something finite is finite, and above something infinite is infi
 
 **Worked example 1.** Does $\\int_1^\\infty e^{-x^2}dx$ converge? There is no elementary antiderivative. For $x\\ge1$, $x^2\\ge x$, so $e^{-x^2}\\le e^{-x}$, and $\\int_1^\\infty e^{-x}dx=e^{-1}$. So it converges.
 
+\`\`\`interactive
+improper-integral
+{"title": "Below something finite is finite", "f": "exp(-x^2)", "g": "exp(-x)", "a": 1, "bMax": 6, "scale": "linear", "value": 0.1394027926, "gValue": "exp(-1)", "view": [0, 6, -0.04, 0.45], "caption": "The solid area under e^(−x²) sits inside the dashed area under e^(−x), so its running value is always below g's, which levels off at 1/e ≈ 0.368. A bounded, increasing running value must converge; numerically it settles at about 0.1394, a number with no elementary formula."}
+\`\`\`
+
 **Worked example 2.** For $\\int_1^\\infty\\dfrac{1+\\sin^2x}{x}\\,dx$, the integrand is at least $\\dfrac1x$, whose integral diverges. So it diverges.
 
 **Limit comparison.** Suppose $f,g>0$ for $x\\ge a$, and $\\lim_{x\\to\\infty}f(x)/g(x)=L$ with $0<L<\\infty$. Then the two integrals either both converge or both diverge. This formalises the idea that only the dominant behaviour for large $x$ matters.
@@ -779,6 +796,11 @@ and since $\\int_1^\\infty x^{-3/2}dx$ converges ($p=\\tfrac32>1$), so does the 
 Near a finite singularity, the same idea applies. For $\\int_0^1\\dfrac{dx}{x+x^2}$, the integrand behaves like $1/x$ near $0$, so it diverges.
 
 **Integrands that change sign.** The comparison tests need non-negative functions. If $\\int|f|\\,dx$ converges, then $\\int f\\,dx$ converges too, and we say it **converges absolutely**. For instance, $\\left|\\dfrac{\\sin x}{x^2}\\right|\\le\\dfrac{1}{x^2}$, so $\\int_1^\\infty\\dfrac{\\sin x}{x^2}\\,dx$ converges absolutely. The converse is false: $\\int_1^\\infty\\dfrac{\\sin x}{x}\\,dx$ converges through cancellation, although $\\int_1^\\infty\\left|\\dfrac{\\sin x}{x}\\right|dx$ diverges. You will meet the same distinction for infinite series in Module 4.
+
+\`\`\`interactive
+improper-integral
+{"title": "Convergence by cancellation", "f": "sin(x)/x", "g": "abs(sin(x))/x", "a": 1, "bMax": 80, "scale": "linear", "value": 0.6247132564, "view": [0, 20, -0.35, 0.9], "caption": "Slide b out. The running value of the integral of sin(x)/x (solid) swings above and below its limit, π/2 − Si(1) ≈ 0.6247, with ever smaller swings, because each hump of area is cancelled by the next. The integral of |sin(x)/x| (dashed) has no cancellation and creeps upwards like (2/π) ln b, without bound."}
+\`\`\`
 
 The usual workflow is to guess the behaviour from the dominant terms, then prove it with one of the two tests.`,
           resources: [
@@ -884,6 +906,11 @@ The errors are about $0.00388$ and $0.00011$. Now compare with the bounds. Since
 
 To guarantee $|E_T|<10^{-4}$, we need $\\dfrac{2}{12n^2}<10^{-4}$, so $n^2>1667$ and $n\\ge41$. With Simpson, $f^{(4)}=24/x^5$ gives $K_4=24$, and $\\dfrac{24}{180n^4}<10^{-4}$ gives $n^4>1334$, so $n\\ge8$, taking the next even number. That is a very large saving.
 
+\`\`\`interactive
+riemann-sum
+{"title": "Trapezoid, midpoint and Simpson for ln 2", "modes": ["sum", "error"], "f": "1/x", "a": 1, "b": 2, "n": 4, "method": "trapezoid", "methods": ["left", "midpoint", "trapezoid", "simpson"], "exact": 0.6931471805599453, "exactTex": "\\\\ln 2", "view": [0.85, 2.15, -0.1, 1.15], "caption": "On the first tab, n = 4 reproduces the worked example: T₄ ≈ 0.69702 and S₄ ≈ 0.69325, with errors of about 0.00388 and 0.00011. Switch to Error against n. On log-log axes each rule is a straight line whose slope is its order: −1 for the left sum, −2 for trapezoid and midpoint, −4 for Simpson. The doubling table shows ratios near 4 and 16. The midpoint error is about half the trapezoid error, with the opposite sign. Simpson reaches 10⁻¹⁴ near n = 1000, where rounding error starts to matter."}
+\`\`\`
+
 These rules also work on data alone, where there is no formula at all, which is why engineers use them for measured profiles.`,
           resources: [
             openstax('3-6-numerical-integration', 'Numerical integration', 'The rules with their error bounds.', true),
@@ -980,6 +1007,11 @@ L=\\int_0^4\\sqrt{1+\\tfrac94x}\\,dx=\\frac49\\cdot\\frac23\\left[(1+\\tfrac94x)
 $$
 
 The straight line between the end points has length $\\sqrt{16+64}\\approx8.94$. The curve should be slightly longer, and it is. That is a good quick check.
+
+\`\`\`interactive
+arc-length
+{"title": "Inscribed polygons on y = x^(3/2)", "f": "x^(3/2)", "a": 0, "b": 4, "n": 1, "nMax": 64, "caption": "With n = 1 the polygon is the chord, about 8.94. Raise n: each segment has length close to √(1 + f′(x)²) Δx, and their total climbs to the arc length (8/27)(10^(3/2) − 1) ≈ 9.073. Watch the shortfall: about 0.06 at n = 2, and about 0.001 by n = 32."}
+\`\`\`
 
 The square root usually spoils the integration, and the arc length of a simple curve like $y=\\sin x$ has no elementary form. So you should use numerics in such cases. The hand-computable cases are often built so that $1+f'^2$ is a perfect square.
 
@@ -1212,13 +1244,23 @@ $$
 
 For the median, solve $1-e^{-0.2m}=\\tfrac12$, to get $m=5\\ln2\\approx3.47$ minutes. The median is below the mean, because a few long waits pull the mean to the right.
 
+\`\`\`interactive
+pdf-area
+{"title": "Waiting times at the help desk", "f": "lambda*exp(-lambda*x)", "support": [0, "inf"], "a": 10, "b": "inf", "sliders": {"lambda": [0.2, 0.05, 1, 0.01]}, "view": [-1, 30, -0.015, 0.25], "caption": "The shaded area is P(X > 10) = e^(−2) ≈ 0.135, as in the worked example. Untick b = ∞ and drag the ends: P(a ≤ X ≤ b) is always the area, and the total area stays 1 whatever λ is. The median line sits at 5 ln 2 ≈ 3.47, left of the mean 1/λ = 5."}
+\`\`\`
+
 **The normal distribution.** The familiar bell curve has density
 
 $$
 f(x)=\\frac{1}{\\sigma\\sqrt{2\\pi}}\\exp\\left(-\\frac{(x-\\mu)^2}{2\\sigma^2}\\right).
 $$
 
-It has no elementary antiderivative, so its probabilities come from tables or numerics. About $68.3\\%$ of the probability lies within one standard deviation of the mean, and about $95.4\\%$ within two. The constant $1/(\\sigma\\sqrt{2\\pi})$ comes from the Gaussian integral $\\int_{-\\infty}^\\infty e^{-x^2}dx=\\sqrt\\pi$, which is proved with double integrals in Calculus III.
+It has no elementary antiderivative, so its probabilities come from tables or numerics. About $68.3\\%$ of the probability lies within one standard deviation of the mean, and about $95.4\\%$ within two. Check both with the interactive after this paragraph. The constant $1/(\\sigma\\sqrt{2\\pi})$ comes from the Gaussian integral $\\int_{-\\infty}^\\infty e^{-x^2}dx=\\sqrt\\pi$, which is proved with double integrals in Calculus III.
+
+\`\`\`interactive
+pdf-area
+{"title": "The normal density", "f": "exp(-(x-mu)^2/(2*sigma^2))/(sigma*sqrt(2*pi))", "support": ["-inf", "inf"], "a": -1, "b": 1, "sliders": {"mu": [0, -2, 2, 0.1], "sigma": [1, 0.4, 2, 0.05]}, "view": [-5, 5, -0.04, 1.05], "mean": true, "median": false, "caption": "With μ = 0 and σ = 1 the shaded area from −1 to 1 is about 0.683. Drag the ends to ±2 for about 0.954. Change σ: the curve widens and flattens, or narrows and rises (at σ = 0.4 its peak is almost 1, and smaller σ would pass 1, since a density is not a probability), but the area within one σ of μ stays 0.683 once you move a and b to μ ± σ."}
+\`\`\`
 
 To make a function into a density, multiply it by a constant so that the total area is $1$. That step is called **normalising**.`,
           resources: [
@@ -1417,6 +1459,11 @@ $$
 
 Your limit methods carry over. If $a_n=f(n)$ and $\\lim_{x\\to\\infty}f(x)=L$, then $a_n\\to L$. So you can use L'Hopital's rule on $f$ even though it cannot be applied to $a_n$ directly, since $a_n$ is defined only on integers. For example, $\\ln n/n\\to0$ because $\\ln x/x\\to0$. The limit laws and the squeeze theorem also hold. A useful special case: if $|a_n|\\to0$ then $a_n\\to0$, so $(-1)^n/n\\to0$.
 
+\`\`\`interactive
+series-sums
+{"title": "The definition of a limit, for ln n / n", "mode": "sequence", "a": "ln(n)/n", "limit": 0, "eps": 0.1, "N": 20, "NMax": 80, "caption": "The band is L ± ε around L = 0. Terms outside it are red. The dashed line marks the N of the definition: every term after it stays inside. Shrink ε and N moves right (for ε = 0.1 it is 35; for ε = 0.06 it is beyond 70), but for every ε there is such an N. That is what convergence means."}
+\`\`\`
+
 **Geometric sequences.** $r^n$ tends to $0$ if $|r|<1$, equals $1$ always if $r=1$, and diverges for $r=-1$ (it oscillates) and for $|r|>1$.
 
 Standard limits worth memorising, all for fixed $x$: $\\sqrt[n]{n}\\to1$, $(1+x/n)^n\\to e^x$, and $x^n/n!\\to0$. The last says that factorials outgrow exponentials.
@@ -1430,6 +1477,11 @@ Standard limits worth memorising, all for fixed $x$: $\\sqrt[n]{n}\\to1$, $(1+x/
 *Increasing.* For $0<a_n<2$, $a_{n+1}^2-a_n^2=2+a_n-a_n^2=(2-a_n)(1+a_n)>0$, so $a_{n+1}>a_n$.
 
 So the sequence converges to some $L$, and we can take limits in the recursion: $L=\\sqrt{2+L}$, so $L^2-L-2=(L-2)(L+1)=0$. Since the terms are positive, $L=2$.
+
+\`\`\`interactive
+series-sums
+{"title": "The recursion a(n+1) = √(2 + a(n))", "mode": "sequence", "rec": "sqrt(2+a)", "a1": 1.4142135623730951, "limit": 2, "eps": 0.05, "N": 4, "NMax": 15, "termsView": [0, 2.3], "caption": "The terms 1.414, 1.848, 1.962, 1.990, … rise and never pass the line at 2: increasing and bounded, as the proof shows. Shrink ε: the error roughly quarters at each step, so even ε = 0.001 is reached by n = 6."}
+\`\`\`
 
 Do not skip the existence step. The sequence $a_1=2$, $a_{n+1}=a_n^2$ would "solve" $L=L^2$ to give $L=0$ or $1$, but it plainly diverges to infinity.`,
           resources: [
@@ -1501,7 +1553,12 @@ Do not skip the existence step. The sequence $a_1=2$, $a_{n+1}=a_n^2$ would "sol
           ],
           explanation: `An infinite sum cannot be done term by term. It is defined through a sequence. The **partial sums** are $s_n=a_1+a_2+\\dots+a_n$. If $s_n\\to S$, the series $\\sum_{n=1}^\\infty a_n$ **converges** with sum $S$. If not, it **diverges**.
 
-Keep the two sequences apart: $a_n$ is what you add, and $s_n$ is the running total.
+Keep the two sequences apart: $a_n$ is what you add, and $s_n$ is the running total. The interactive shows both, one above the other.
+
+\`\`\`interactive
+series-sums
+{"title": "Terms and partial sums", "presets": ["geometric", "telescoping", "harmonic"], "mode": "sums", "N": 10, "NMax": 60, "caption": "Geometric: with r = 1/2 the partial sums climb to 1/(1 − r) = 2; try r = −1/2 (they zig-zag onto 2/3) and r = 1.1 (no sum). Telescoping: s_n = 1 − 1/(n + 1) creeps up to 1. Harmonic: the terms go to 0 just as the others do, yet the partial sums never level off. They pass 4 only at n = 31."}
+\`\`\`
 
 **Geometric series.** For $s_n=a+ar+\\dots+ar^{n-1}$, multiply by $r$, subtract, and solve to get $s_n=\\dfrac{a(1-r^n)}{1-r}$ for $r\\ne1$. Thus
 
@@ -1603,6 +1660,11 @@ Each group has a sum of at least $\\tfrac12$, so the partial sums grow without b
 **Integral test.** Let $f$ be continuous, positive and decreasing on $[1,\\infty)$, with $a_n=f(n)$. Then $\\sum a_n$ converges exactly when $\\int_1^\\infty f(x)\\,dx$ converges.
 
 Picture rectangles of width $1$ under and over the curve: $\\sum_{n=2}^Na_n\\le\\int_1^Nf\\,dx\\le\\sum_{n=1}^{N-1}a_n$. The integral and the sum are bounded together. The value of the integral is not generally the sum of the series.
+
+\`\`\`interactive
+series-sums
+{"title": "The integral test for 1/n^p", "preset": "p", "mode": "integral", "N": 10, "NMax": 16, "caption": "Green rectangles (heights a₂ … a_N, each placed to the left of its n) lie under the curve; red ones (heights a₁ … a_(N−1), each to the right) lie over it. So the three readouts are always in increasing order. With p = 2 and N = 10 the note below uses the remainder estimate of worked example 1 to trap the sum between 1.6407 and 1.6498. Drag p to 1 or below: the integral from N to ∞ diverges, and so does the series."}
+\`\`\`
 
 **$p$-series.** By the integral test, and the $p$-integral,
 
@@ -1714,6 +1776,11 @@ $$
 
 The error is at most the size of the first term you left out, and its sign is the sign of that term.
 
+\`\`\`interactive
+series-sums
+{"title": "Alternating partial sums", "presets": ["alt-harmonic", "alt-p"], "mode": "alternating", "N": 6, "NMax": 40, "caption": "The partial sums step up, down, up, each step shorter, and squeeze onto S (dashed). The amber bar is s_N ± b_(N+1): S is always inside it, so the actual error never exceeds the bound. For the alternating harmonic series S = ln 2. Switch to the alternating p-series with p = 2 and set N = 31, as in worked example 2: the bound is 1/1024, just under 0.001."}
+\`\`\`
+
 **Worked example 1.** The **alternating harmonic series** $1-\\tfrac12+\\tfrac13-\\tfrac14+\\dots$ converges by the test, while the harmonic series itself diverges. In the next module you will see that its sum is $\\ln2$.
 
 **Worked example 2.** To sum $\\sum(-1)^{n-1}/n^2$ with error below $0.001$, we need $\\dfrac{1}{(n+1)^2}<0.001$, which means $n+1\\ge32$, so $n=31$ terms suffice. (The first omitted term is $1/1024$, just under $0.001$.)
@@ -1822,11 +1889,21 @@ $$
 
 So it converges too. The $(n+1)$ factors cancel, and the limit that defines $e$ appears.
 
+\`\`\`interactive
+series-sums
+{"title": "Ratio and root for n!/n^n", "mode": "ratio", "a": "n!/n^n", "L": 0.36787944117144233, "N": 10, "NMax": 40, "caption": "Each dot is |a_(n+1)/a_n| = (n/(n + 1))^n. The dots fall towards L = 1/e ≈ 0.368 (dashed), well below the line at 1, so the terms eventually shrink at least as fast as a geometric series with ratio 0.4, say. Switch to the root: the n-th roots tend to 1/e as well, but much more slowly."}
+\`\`\`
+
 **Root test.** Let $L=\\lim_{n\\to\\infty}\\sqrt[n]{|a_n|}$. The conclusions are the same as for the ratio test. Use it when the whole term is an $n$th power.
 
 **Worked example 3.** For $\\sum\\left(\\dfrac{n}{2n+1}\\right)^n$, the $n$th root is $\\dfrac{n}{2n+1}\\to\\tfrac12$, so it converges.
 
 **The inconclusive case.** $\\sum1/n$ diverges and $\\sum1/n^2$ converges, and both have $L=1$ for both tests. So $L=1$ tells you nothing. Rational functions of $n$ always give $L=1$, so do not try these tests on such terms.
+
+\`\`\`interactive
+series-sums
+{"title": "The inconclusive case L = 1", "presets": ["harmonic", "p"], "mode": "ratio", "N": 20, "NMax": 60, "caption": "For 1/n the ratios n/(n + 1) creep up to 1; for 1/n² (the p-series with p = 2) they creep up to 1 too, from further below. The pictures look alike, yet the first series diverges and the second converges. Try other p: the ratio always tends to 1, so the test cannot tell them apart."}
+\`\`\`
 
 **Strategy.** Given a series, ask these questions in order.
 
@@ -1933,6 +2010,11 @@ $$
 
 So it converges for $|x|<1$ and diverges for $|x|>1$, which means $R=1$. At $x=1$ it is the harmonic series, which diverges. At $x=-1$ it is the alternating harmonic series, which converges. The interval is $[-1,1)$.
 
+\`\`\`interactive
+power-series
+{"title": "Partial sums of the series of xⁿ/n", "term": "x^n/n", "n0": 1, "f": "-ln(1-x)", "a": 0, "R": 1, "ends": "[)", "N": 5, "NMax": 40, "x": 0.5, "view": [-1.6, 1.6, -2.5, 3.5], "caption": "The series sums to −ln(1 − x) (blue) inside the shaded interval. Raise N: the red partial sums hug the curve inside |x| < 1 and peel away outside. Then drag the amber probe point (it snaps to ±1). At x = 0.5 the lower plot settles quickly; at x = −1 it zig-zags onto −ln 2; at x = 1 it is the harmonic series and keeps climbing; at x = 1.2 it shoots off. The term ratio readout tends to |x|, as in the ratio test."}
+\`\`\`
+
 **Worked example 2.** Find the interval for $\\sum_{n=1}^\\infty\\dfrac{(x-2)^n}{3^nn^2}$. The ratio gives
 
 $$
@@ -2022,6 +2104,11 @@ $$
 \\frac{1}{1+x^2}=\\sum_{n=0}^\\infty(-1)^nx^{2n}.
 $$
 
+\`\`\`interactive
+power-series
+{"title": "The series for 1/(1 + x²)", "term": "(-1)^n*x^(2*n)", "n0": 0, "f": "1/(1+x^2)", "a": 0, "R": 1, "ends": "()", "N": 4, "NMax": 40, "x": 0.6, "view": [-2, 2, -1.5, 2.5], "caption": "The function is smooth on the whole line, but the series, made by putting −x² into the geometric series, converges only where |−x²| < 1. Raise N: inside (−1, 1) the partial sums close in on the curve; outside they swing wildly with ever larger amplitude. At x = ±1 the terms are ±1 for ever, so the lower plot flips between 1 and 0."}
+\`\`\`
+
 For a different centre or radius, do some algebra first:
 
 $$
@@ -2057,6 +2144,11 @@ $$
 $$
 
 Both new series also converge at $x=1$, and Abel's theorem says that the sum there equals the value of the function, provided the function is continuous from the left there. So $1-\\tfrac12+\\tfrac13-\\dots=\\ln2$ and $1-\\tfrac13+\\tfrac15-\\dots=\\tfrac\\pi4$.
+
+\`\`\`interactive
+power-series
+{"title": "Integrating term by term: ln(1 + x)", "term": "(-1)^(n-1)*x^n/n", "n0": 1, "f": "ln(1+x)", "a": 0, "R": 1, "ends": "(]", "N": 6, "NMax": 60, "x": 1, "view": [-1.5, 1.8, -3, 1.6], "caption": "The probe starts at the endpoint x = 1, where the series is the alternating harmonic series: the lower plot zig-zags slowly onto ln 2 ≈ 0.693, as Abel's theorem promises. Drag the probe to −1: the terms all become −1/n and the sums fall without bound, so the interval is (−1, 1], the same radius as the geometric series but a different endpoint."}
+\`\`\`
 
 **Worked example 3.** Integrals with no formula become series. For example,
 
@@ -2164,6 +2256,11 @@ $$
 
 The proof that the first three converge to the function for every $x$ is in the next lesson.
 
+\`\`\`interactive
+taylor-series
+{"title": "Taylor polynomials of the standard functions", "menu": ["exp", "sin", "cos", "ln1p", "geom", "atan"], "a": 0, "n": 3, "nMax": 20, "view": [-5, 5, -3, 4], "caption": "Pick a function and raise the degree n. For eˣ, sin and cos (R = ∞) the red polynomial T_n hugs the curve over a wider and wider stretch, and the error plot sinks everywhere. For ln(1 + x), 1/(1 − x) and arctan the agreement stops at the edges of the shaded interval (−1, 1) however large n is: outside it the error grows with n. The coefficients shown in T_n are computed exactly from the function; compare them with the list above."}
+\`\`\`
+
 **Worked example 2.** Do not differentiate when you do not have to. Substituting gives
 
 $$
@@ -2177,6 +2274,11 @@ Differentiating $e^{-x^2}$ directly six times would be much worse. Series may be
 $$
 \\ln x=\\sum_{n=1}^\\infty\\frac{(-1)^{n-1}(x-1)^n}{n},\\quad0<x\\le2.
 $$
+
+\`\`\`interactive
+taylor-series
+{"title": "ln x about a different centre", "f": "ln(x)", "a": 1, "aRange": [0.4, 3], "sing": [0], "ends": "(]", "n": 4, "nMax": 20, "view": [-0.5, 5, -3, 2.5], "errView": [-8, 2], "caption": "At a = 1 the coefficients are (−1)^(n−1)/n, as derived above, and the interval is (0, 2]. Now move the centre a: the radius is always a, the distance to x = 0 where ln x blows up, so centring further out gives a longer interval of good approximation."}
+\`\`\`
 
 **A warning.** A function's Taylor series can converge and yet not equal the function. A function that does equal its Taylor series near each point is called **analytic**. Most functions in this course are analytic, but an exercise below shows a smooth one that is not.`,
           resources: [
@@ -2276,6 +2378,11 @@ $$
 
 We need $(n+1)!>3\\times10^5$. Since $8!=40\\,320$ and $9!=362\\,880$, we need $n+1=9$, so $n=8$. Then $T_8(1)=1+1+\\tfrac12+\\dots+\\tfrac{1}{8!}=2.718279$, which differs from $e$ by about $3.1\\times10^{-6}$, inside the bound of $3/9!\\approx8.3\\times10^{-6}$.
 
+\`\`\`interactive
+taylor-series
+{"title": "Error and Lagrange bound for eˣ", "f": "exp(x)", "a": 0, "sing": [], "mode": "remainder", "x": 1, "n": 4, "nMax": 14, "view": [-1.5, 2.5, -1, 8], "errView": [-14, 2], "caption": "The red bar at x is the actual error R_n(x); the amber bar around T_n(x) has half-height equal to the Lagrange bound, using the best constant M, the largest e^c on [0, x] (so M = e at x = 1, a little better than the 3 used above). Set n = 8: actual error 3.06×10⁻⁶, bound e/9! ≈ 7.5×10⁻⁶. The amber dot marks a c that makes the remainder formula exact. In the lower plot the dashed bound stays above the actual error everywhere."}
+\`\`\`
+
 **Worked example 2.** Bound the error in $\\sin0.5\\approx0.5-\\dfrac{0.5^3}{6}+\\dfrac{0.5^5}{120}=0.479427$. The polynomial is $T_5$, and also $T_6$, since the $x^6$ coefficient is zero. Using $n=6$ with $|f^{(7)}|\\le1$,
 
 $$
@@ -2283,6 +2390,11 @@ $$
 $$
 
 Using the extra zero term like this gives a better bound. (The series also alternates here, which gives the same bound.)
+
+\`\`\`interactive
+taylor-series
+{"title": "Error and bound for sin x at 0.5", "f": "sin(x)", "a": 0, "sing": [], "mode": "remainder", "x": 0.5, "n": 5, "nMax": 15, "view": [-4, 4, -2.5, 2.5], "errView": [-14, 2], "caption": "With n = 5 the bound uses f⁽⁶⁾ = −sin, which is small near 0, so it is about 1.0×10⁻⁵. Change n to 6: T₆ is the same polynomial, so the actual error does not move, but the bound now uses |f⁽⁷⁾| = |cos| ≤ 1 and drops to 0.5⁷/7! ≈ 1.6×10⁻⁶, as in worked example 2. Drag x away from 0 and watch both grow."}
+\`\`\`
 
 **Proving convergence.** For a fixed $x$, $\\dfrac{|x|^{n+1}}{(n+1)!}\\to0$ as $n\\to\\infty$, since the factorial eventually beats any fixed power. All derivatives of $\\sin$ and $\\cos$ are bounded by $1$, so $R_n(x)\\to0$ for every $x$. Hence these series really do converge to $\\sin x$ and $\\cos x$ everywhere. For $e^x$, on $|x|\\le B$ the derivatives are bounded by $e^B$, which gives the same result. This limit is the step that upgrades a formal series to a true equation.
 
@@ -2374,6 +2486,11 @@ $$
 $$
 
 Integrating gives $\\arcsin x=x+\\dfrac{x^3}{6}+\\dfrac{3x^5}{40}+\\dots$
+
+\`\`\`interactive
+taylor-series
+{"title": "The binomial series for (1 + x)^k", "f": "(1+x)^k", "a": 0, "sing": [-1], "sliders": {"k": [0.5, -2, 3, 0.25]}, "n": 3, "nMax": 16, "view": [-1.6, 2.4, -1, 4], "errView": [-12, 2], "caption": "With k = 1/2 the coefficients are 1, 1/2, −1/8, 1/16, −5/128, …, as in worked example 1, and the polynomials only track the curve on (−1, 1). Set k = 2 or 3: the series stops, T_n equals the function exactly once n ≥ k (the error drops off the plot), and the radius becomes infinite. Try k = −1 for the geometric series in −x."}
+\`\`\`
 
 **Limits.** Series expose the first non-cancelling term, often faster than repeated L'Hopital.
 
@@ -2520,6 +2637,13 @@ with asymptotes $y=\\pm\\dfrac bax$. Note the different sign in the relation for
 
 The **eccentricity** is $e=c/a$. It is $0$ for a circle, between $0$ and $1$ for an ellipse, and greater than $1$ for a hyperbola, with $e=1$ for a parabola. It measures how far a conic is from a circle.
 
+All three curves also share one definition, which the interactive below draws: the points $P$ whose distance to a focus $F$ is $e$ times their distance to a line, the **directrix**. A parabola is the case $e=1$.
+
+\`\`\`interactive
+conic-sections
+{"title": "One definition, three curves", "e": 0.6, "d": 2, "eMax": 2, "second": false, "caption": "Drag P around the curve: |PF| and |PD| both change, but their ratio stays equal to e. Slide e from small to large: the ellipse stretches, becomes a parabola at e = 1 (the slider snaps there), then a hyperbola whose second branch lies beyond the directrix. Tick the second focus: for an ellipse |PF| + |PF′| stays at 2a, for a hyperbola the difference does, and the readout c/a equals e, linking this definition to the one above."}
+\`\`\`
+
 **Worked example.** Identify the curve $4x^2+9y^2-8x+36y+4=0$. Group the terms and complete the square in each variable:
 
 $$
@@ -2616,6 +2740,11 @@ $$
 
 The tangent is horizontal where $dy/dt=0$ with $dx/dt\\ne0$, and vertical where $dx/dt=0$ with $dy/dt\\ne0$. If both vanish, more analysis is needed, and the curve may have a cusp.
 
+\`\`\`interactive
+parametric-polar
+{"title": "Motion along x = t², y = t³ − 3t", "x": "t^2", "y": "t^3-3*t", "t0": -2.2, "t1": 2.2, "t": -2.2, "tangent": true, "view": [-1, 5.5, -4, 4], "caption": "Press Play, or drag the t slider. The purple arrow is the velocity (x′(t), y′(t)), always along the tangent. At t = ±1 it is horizontal (slope 0, points (1, ∓2)); at t = 0 it is vertical, since x′(0) = 0. Near t = ±√3 ≈ ±1.73 the point passes (3, 0) twice, with slopes √3 and −√3: one point of the plane, two times, two tangents."}
+\`\`\`
+
 For the second derivative, differentiate the slope with respect to $t$, and divide by $dx/dt$ again:
 
 $$
@@ -2656,7 +2785,12 @@ $$
 L=\\int_0^{2\\pi}2r\\sin(t/2)\\,dt=\\left[-4r\\cos(t/2)\\right]_0^{2\\pi}=8r.
 $$
 
-The length of one arch is exactly eight times the radius. Christopher Wren found this result in 1658, before calculus had been invented in its full form.`,
+The length of one arch is exactly eight times the radius. Christopher Wren found this result in 1658, before calculus had been invented in its full form.
+
+\`\`\`interactive
+parametric-polar
+{"title": "The cycloid", "x": "r*(t-sin(t))", "y": "r*(1-cos(t))", "t0": 0, "t1": "2*pi", "sliders": {"r": [1, 0.5, 1.5, 0.05]}, "area": true, "view": [-0.5, 9.9, -0.6, 3.4], "caption": "Play the motion. The point stops dead at the cusps t = 0 and t = 2π, where the speed readout is 0 and both derivatives vanish, and moves fastest (speed 2r) at the top. When the arch is complete, the area readout is 3πr² (≈ 9.425 for r = 1) and the arc length 8r. Change r and check that both scale as they should."}
+\`\`\``,
           resources: [
             openstax('7-1-parametric-equations', 'Parametric equations', 'Sketching and eliminating the parameter.', true),
             openstax('7-2-calculus-of-parametric-curves', 'Calculus of parametric curves', 'Derivatives, area and arc length.'),
@@ -2757,7 +2891,17 @@ It is a circle of radius $1$ centred at $(1,0)$, traced once as $\\theta$ goes f
 - $r=a+b\\cos\\theta$: **limacons**. If $a=b$ it is a **cardioid**, heart-shaped with a cusp at the pole. If $a<b$ there is an inner loop.
 - $r=a\\cos n\\theta$: **roses**, with $n$ petals if $n$ is odd and $2n$ petals if $n$ is even.
 
-Sketch by finding where $r=0$ and where $|r|$ is greatest, and by using a rough graph of $r$ against $\\theta$.
+Sketch by finding where $r=0$ and where $|r|$ is greatest, and by using a rough graph of $r$ against $\\theta$. The interactive below draws that graph under the curve.
+
+\`\`\`interactive
+parametric-polar
+{"title": "Limaçons r = a + b cos θ", "r": "a+b*cos(theta)", "t0": 0, "t1": "2*pi", "sliders": {"a": [1, 0, 2, 0.05], "b": [1, 0, 2, 0.05]}, "area": false, "vector": false, "tangent": true, "view": [-1.6, 3.4, -2, 2], "caption": "With a = b = 1 this is the cardioid; press Play and watch the ray sweep round as r falls to 0 at θ = π, the cusp. Now set a = 1, b = 2. Between θ = 2π/3 and 4π/3 the lower graph dips below zero: r is negative, so the point sits on the opposite side of the pole from the dashed ray at angle θ, and traces the inner loop. Check worked example 2: at θ = π/2 on the cardioid the slope readout is 1."}
+\`\`\`
+
+\`\`\`interactive
+parametric-polar
+{"title": "Roses r = cos kθ", "r": "cos(k*theta)", "t0": 0, "t1": "2*pi", "sliders": {"k": [3, 1, 6, 1]}, "area": false, "vector": false, "view": [-1.2, 1.2, -1.2, 1.2], "caption": "Play with k = 3: the three petals are each traced twice as θ runs to 2π, once with r > 0 and once with r < 0. With k = 2 the negative values land on new petals, giving four. Odd k gives k petals; even k gives 2k."}
+\`\`\`
 
 **Tangents.** A polar curve $r=f(\\theta)$ is a parametric curve with parameter $\\theta$: $x=r\\cos\\theta$ and $y=r\\sin\\theta$. So
 
@@ -2852,6 +2996,11 @@ $$
 A=\\frac12\\int_0^{2\\pi}(1+2\\cos\\theta+\\cos^2\\theta)\\,d\\theta=\\frac12\\left(2\\pi+0+\\pi\\right)=\\frac{3\\pi}{2}.
 $$
 
+\`\`\`interactive
+parametric-polar
+{"title": "Area swept by the cardioid", "r": "1+cos(theta)", "t0": 0, "t1": "2*pi", "area": true, "vector": false, "rGraph": true, "view": [-0.8, 2.3, -1.5, 1.5], "caption": "Press Play: the ray sweeps from θ = 0 and the shaded region is the area ½∫r² dθ so far. Halfway, at θ = π, the readout is 3π/4 ≈ 2.356; after the full turn it is 3π/2 ≈ 4.712. Most of the area is swept early, when r is large, because each thin sector has area ½r²Δθ. The arc length readout ends at 8, the value found at the end of this lesson."}
+\`\`\`
+
 **Worked example 2.** One petal of $r=\\cos2\\theta$ lies between consecutive zeros of $r$, at $\\theta=\\pm\\pi/4$:
 
 $$
@@ -2873,6 +3022,11 @@ Note that this is the difference of squares, not the square of a difference.
 $$
 A=2\\cdot\\frac12\\int_0^{\\pi/3}\\left(9\\cos^2\\theta-(1+\\cos\\theta)^2\\right)d\\theta=\\int_0^{\\pi/3}(8\\cos^2\\theta-2\\cos\\theta-1)\\,d\\theta=\\pi.
 $$
+
+\`\`\`interactive
+parametric-polar
+{"title": "Between r = 3 cos θ and r = 1 + cos θ", "r": "3*cos(theta)", "r2": "1+cos(theta)", "t0": "-pi/3", "t1": "pi/3", "area": true, "vector": false, "rGraph": false, "view": [-0.5, 3.3, -1.7, 1.7], "caption": "The ray sweeps from θ = −π/3 to π/3, between the two intersection points. The shaded region is the part inside the circle (blue) and outside the cardioid (cyan), and the readout is ½∫(r² − r₂²) dθ so far: a difference of squares, not the square of a difference. At the end it shows π ≈ 3.1416."}
+\`\`\`
 
 **Intersections.** Solving $f(\\theta)=g(\\theta)$ finds only the intersections that occur at the same $\\theta$. Curves can also meet at the pole, with different values of $\\theta$, or at points with different coordinates such as $(r,\\theta)$ and $(-r,\\theta+\\pi)$. Always sketch both curves. For example, $r=\\sin\\theta$ and $r=\\cos\\theta$ meet at the pole, and the equation $\\sin\\theta=\\cos\\theta$ does not reveal that.
 

@@ -117,6 +117,11 @@ but this holds only for $x\\ge 1$, because $f$ must be defined first. The simpli
 
 **Transformations.** Replacing $f(x)$ by $f(x-c)$ moves the graph right by $c$. Adding $c$ to the output, $f(x)+c$, moves it up by $c$. Using $cf(x)$ stretches it vertically, and $-f(x)$ reflects it in the $x$-axis. A function is **even** if $f(-x)=f(x)$ (symmetric about the $y$-axis) and **odd** if $f(-x)=-f(x)$ (symmetric about the origin).
 
+\`\`\`interactive
+function-explorer
+{"title": "Shifts, stretches and reflections", "f": ["x^2", "s*(x - c)^2 + d"], "sliders": {"c": [0, -4, 4, 0.1], "d": [0, -4, 4, 0.1], "s": [1, -3, 3, 0.1]}, "view": [-6, 6, -5, 7], "caption": "The first curve is y = x², the second y = s(x − c)² + d. Drag c and the parabola moves right by c; drag d and it moves up by d; s stretches it vertically, and a negative s reflects it in the x-axis. Set c = 2, d = 3 and s = 1 to get y = (x − 2)² + 3 from the self-check, with its vertex at (2, 3)."}
+\`\`\`
+
 One expression deserves special attention, because the whole of differential calculus grows from it. The **difference quotient** $\\dfrac{f(x+h)-f(x)}{h}$ is the slope of the line through two points of the graph. For $f(x)=x^2$ it simplifies to
 
 $$
@@ -205,6 +210,13 @@ Take the point where a ray at angle $\\theta$ meets the unit circle, measuring a
 
 Learn these values cold. For $\\theta=0,\\ \\pi/6,\\ \\pi/4,\\ \\pi/3,\\ \\pi/2$, sine takes the values $0,\\ \\tfrac12,\\ \\tfrac{\\sqrt2}{2},\\ \\tfrac{\\sqrt3}{2},\\ 1$, and cosine takes the same values in reverse. Other quadrants follow by symmetry.
 
+Drag the point round the circle below and watch both coordinates at once.
+
+\`\`\`interactive
+unit-circle
+{"title": "Sine and cosine on the unit circle", "degrees": 30, "caption": "The point at angle θ is (cos θ, sin θ): its x-coordinate is the cos θ segment and its y-coordinate the sin θ segment, and the graphs on the right are traced as θ grows. Near multiples of π/6 and π/4 the point snaps and the readouts become exact. Check sin(5π/6) = 1/2 and cos(7π/4) = √2/2, then find the two angles in [0, 2π) with sin θ = −1/2 from the worked example: both have reference angle π/6."}
+\`\`\`
+
 The identities you will use constantly are
 
 $$
@@ -227,7 +239,12 @@ $$
 \\cos\\tfrac{\\pi}{12}=\\cos\\tfrac\\pi3\\cos\\tfrac\\pi4+\\sin\\tfrac\\pi3\\sin\\tfrac\\pi4=\\frac{\\sqrt6+\\sqrt2}{4}.
 $$
 
-**Sinusoids.** The function $y=A\\cos(\\omega t)+D$ oscillates about the midline $y=D$ with amplitude $|A|$ and period $2\\pi/\\omega$. Waves and vibrations throughout physics have this form.`,
+**Sinusoids.** The function $y=A\\cos(\\omega t)+D$ oscillates about the midline $y=D$ with amplitude $|A|$ and period $2\\pi/\\omega$. Waves and vibrations throughout physics have this form.
+
+\`\`\`interactive
+function-explorer
+{"title": "Sinusoids", "f": "A*cos(w*(x - c)) + D", "sliders": {"A": [1, -3, 3, 0.1], "w": [1, 0.25, 4, 0.05], "c": [0, -3.15, 3.15, 0.05], "D": [0, -2, 2, 0.1]}, "view": [-6.6, 6.6, -4, 4], "trig": true, "caption": "y = A cos(w(x − c)) + D, with w playing the role of ω. |A| is the amplitude, 2π/w the period, c the shift to the right and D the midline. Set w = 2 and check that the period halves to π. Make A negative and the curve starts at its lowest point at x = 0, like the rider in the Ferris wheel exercise."}
+\`\`\``,
           resources: [
             openstax('1-3-trigonometric-functions', 'Trigonometric functions', 'Radians, the unit circle, identities and graphs.', true),
             paul('TrigFcns', 'Review of trig functions', 'Fast review with exact values.'),
@@ -314,6 +331,11 @@ $$
 There is no law for $\\log_b(x+y)$. The change-of-base formula is $\\log_b x=\\ln x/\\ln b$.
 
 The most important base is $e\\approx2.71828$, for a reason you will see in Module 4: $e^x$ is the one exponential that is its own derivative, in other words its slope at any point equals its height. We write $\\ln x$ for $\\log_e x$. The two functions cancel: $\\ln(e^x)=x$ for all $x$, and $e^{\\ln x}=x$ for $x>0$.
+
+\`\`\`interactive
+function-explorer
+{"title": "Exponentials and their logarithms", "f": ["b^x", "log(x)/log(b)", "x"], "sliders": {"b": [2, 0.2, 5, 0.05]}, "view": [-4, 6, -4, 6], "equal": true, "caption": "The first curve is y = bˣ, the second y = log_b x = ln x / ln b, and the third the line y = x: each curve is the other's mirror image in that line, because the logarithm undoes the exponential. Every exponential passes through (0, 1) and every logarithm through (1, 0). Slide b below 1 and growth turns into decay; at b = 1 the logarithm disappears, which is why b ≠ 1. Set b = 2.7 for a close look at eˣ and ln x."}
+\`\`\`
 
 **Worked example 1.** Solve $\\ln x+\\ln(x-2)=\\ln3$.
 
@@ -407,7 +429,12 @@ Write $y(x-3)=2x+1$, so $yx-3y=2x+1$. Collect the $x$ terms: $x(y-2)=3y+1$, henc
 - $\\arccos x$ is the angle in $[0,\\pi]$ whose cosine is $x$, for $-1\\le x\\le1$.
 - $\\arctan x$ is the angle in $(-\\pi/2,\\pi/2)$ whose tangent is $x$, for all real $x$.
 
-These ranges matter.
+These ranges matter. In the interactive below, drag the point $P$ and watch its mirror image.
+
+\`\`\`interactive
+inverse-function
+{"title": "Inverses by reflection", "examples": [{"label": "x²", "f": "x^2", "restrict": [0, 1000000], "a": 1.5, "view": [-3.5, 4.5, -3.5, 4.5], "name": "x^2", "inverseName": "\\\\sqrt{x}"}, {"label": "sin x", "f": "sin(x)", "restrict": [-1.5707963267948966, 1.5707963267948966], "a": 0.7853981633974483, "trig": true, "view": [-3.6, 3.6, -3.6, 3.6], "name": "\\\\sin x", "inverseName": "\\\\arcsin x"}, {"label": "(2x+1)/(x−3)", "f": "(2x + 1)/(x - 3)", "a": 0, "view": [-8, 10, -8, 10], "name": "\\\\frac{2x+1}{x-3}", "inverseName": "\\\\frac{3x+1}{x-2}"}], "caption": "P′ = (f(a), a) swaps the coordinates of P, so it traces the reflection of the graph in y = x. On the x² tab, turn on the horizontal line test and drag P: most lines meet the parabola twice, and the reflection is not a function. Restrict to x ≥ 0 and the reflection becomes y = √x. On the sin x tab, restricting to [−π/2, π/2] gives arcsin x. Without the restriction, put a near 3π/4 and read sin a ≈ 0.707; then restrict and move P′ to the input 0.707: its height is π/4, not 3π/4, as in worked example 2. The third tab is worked example 1, already one-to-one."}
+\`\`\`
 
 **Worked example 2.** Evaluate $\\arcsin(\\sin\\tfrac{3\\pi}{4})$. Tempting as it is, the answer is not $3\\pi/4$, which lies outside the range of arcsine. Since $\\sin\\tfrac{3\\pi}{4}=\\tfrac{\\sqrt2}{2}$, the answer is the angle in $[-\\pi/2,\\pi/2]$ with that sine, namely $\\pi/4$.
 
@@ -504,6 +531,11 @@ That last clause is crucial. The limit describes what happens near $a$. It says 
 
 Limits can fail in three main ways: a **jump**, as for $g$; **unbounded growth**, as for $1/x^2$ at $0$; and **oscillation**, as for $\\sin(1/x)$ near $0$, which takes every value between $-1$ and $1$ on every interval around $0$.
 
+\`\`\`interactive
+epsilon-delta
+{"title": "Zooming in on a limit", "modes": ["zoom"], "examples": [{"label": "f(1) = 5", "f": "2 - |x - 1|", "a": 1, "fa": 5, "view": [-1, 3, -0.6, 5.6]}, {"label": "Jump", "f": "|x - 2|/(x - 2)", "a": 2, "view": [0, 4, -2, 2]}, {"label": "1/x²", "f": "1/x^2", "a": 0, "L": 2, "view": [-2, 2, -1, 10]}, {"label": "sin(1/x)", "f": "sin(1/x)", "a": 0, "L": 0, "view": [-1, 1, -1.6, 1.6]}], "caption": "The first tab is the worked example's f: x + 1 to the left of 1, 3 − x to the right, and f(1) = 5. Shrink the window and read the table: from both sides f(x) closes in on 2, while the filled dot stays at 5. The limit ignores f(a). The other tabs fail in the three ways of the lesson: the jump settles on −1 and 1 from the two sides, 1/x² grows without bound, and sin(1/x) keeps covering [−1, 1] at every zoom."}
+\`\`\`
+
 Tables are useful for guessing, but they can mislead, because a calculator rounds and because a function can behave differently at scales you did not sample. The next lesson gives methods that prove the value.`,
           resources: [
             openstax('2-1-a-preview-of-calculus', 'A preview of calculus', 'The tangent, velocity and area problems.', true),
@@ -594,6 +626,11 @@ $$
 **Squeeze theorem.** If $g(x)\\le f(x)\\le h(x)$ for all $x$ near $a$ (except possibly at $a$), and $\\lim_{x\\to a} g=\\lim_{x\\to a} h=L$, then $\\lim_{x\\to a}f=L$.
 
 **Worked example 2.** For $x\\ne0$, $-1\\le\\cos(1/x)\\le1$, so $-x^2\\le x^2\\cos(1/x)\\le x^2$. Both outer functions tend to $0$, hence $\\lim_{x\\to0}x^2\\cos(1/x)=0$. You could not use the product law here, because $\\lim_{x\\to0}\\cos(1/x)$ does not exist.
+
+\`\`\`interactive
+epsilon-delta
+{"title": "Squeezed to zero", "modes": ["zoom"], "f": "x^2*cos(1/x)", "a": 0, "L": 0, "view": [-0.5, 0.5, -0.3, 0.3], "caption": "Zoom in on x² cos(1/x) near 0. It oscillates infinitely often, but always between −x² and x², so the wiggles shrink faster than the window and the table of f(±h) goes to 0. Compare sin(1/x) in the previous lesson, whose wiggles never shrink."}
+\`\`\`
 
 **The key trigonometric limit.** Take $0<\\theta<\\pi/2$ on the unit circle. Comparing the areas of an inner triangle, a sector and an outer triangle gives
 
@@ -702,6 +739,11 @@ f(x)=\\frac{-x\\sqrt{4+1/x^2}}{x(1-3/x)}\\to-2.
 $$
 
 There are two different horizontal asymptotes, $y=2$ and $y=-2$. Near $x=3$ the numerator is close to $\\sqrt{37}>0$, so $f\\to+\\infty$ from the right and $-\\infty$ from the left, giving a vertical asymptote.
+
+\`\`\`interactive
+function-explorer
+{"title": "Two horizontal asymptotes", "f": ["sqrt(k*x^2 + 1)/(x - 3)", "sqrt(k)", "-sqrt(k)"], "sliders": {"k": [4, 0.25, 9, 0.25]}, "view": [-30, 30, -8, 8], "caption": "The first curve is y = √(kx² + 1)/(x − 3); the two horizontal lines are y = √k and y = −√k. With k = 4 this is the worked example: the graph approaches y = 2 far to the right, y = −2 far to the left, and goes to +∞ just right of x = 3 and −∞ just left. Change k and the asymptotes move to ±√k but always have opposite signs, because √(x²) = |x|."}
+\`\`\`
 
 **The form $\\infty-\\infty$** is indeterminate, as $0/0$ is. For $\\lim_{x\\to\\infty}(\\sqrt{x^2+x}-x)$, the terms grow at nearly the same rate. Multiply by the conjugate:
 
@@ -891,6 +933,13 @@ The minimum is what makes both restrictions hold at once.
 
 **Showing a limit fails.** To show that $L$ is not the limit, you must find one $\\varepsilon>0$ such that no $\\delta$ works: for every $\\delta>0$ there is an $x$ with $0<|x-a|<\\delta$ and $|f(x)-L|\\ge\\varepsilon$.
 
+Play the game yourself below. Choose $\\varepsilon$, then find a $\\delta$ that works.
+
+\`\`\`interactive
+epsilon-delta
+{"title": "The ε–δ game", "examples": [{"label": "3x + 1", "f": "3x + 1", "a": 2, "L": 7, "epsilon": 0.6, "delta": 0.5, "view": [-1, 5, 1, 13]}, {"label": "x²", "f": "x^2", "a": 2, "L": 4, "epsilon": 0.5, "delta": 0.3, "view": [-1, 5, -2, 10]}, {"label": "x/|x|", "f": "x/abs(x)", "a": 0, "L": 0, "epsilon": 0.5, "delta": 0.5, "editL": true, "view": [-2, 2, -2, 2]}], "caption": "The horizontal band is L ± ε and the vertical strip a ± δ. The graph inside the strip (x = a itself excluded) turns green where it stays in the band and red where it escapes. For 3x + 1 the largest δ that works is exactly ε/3, the δ of worked example 1. For x² compare it with the proof's min(1, ε/5): the proof's δ is smaller, which is safe. On the x/|x| tab, move L anywhere you like: once ε ≤ 1 no δ works, which is the last exercise. In Game mode your opponent names ε."}
+\`\`\`
+
 This style of argument returns in full force in real analysis. Here, the goal is to see that a limit is a claim that can be proved, not just a number read from a table.`,
           resources: [
             openstax('2-5-the-precise-definition-of-a-limit', 'The precise definition of a limit', 'Definition and proofs, with one-sided versions.', true),
@@ -995,6 +1044,11 @@ f(2+h)-f(2)=(4+4h+h^2-6-3h)-(-2)=h+h^2,
 $$
 
 so the difference quotient is $1+h$ and $f'(2)=1$. Since $f(2)=-2$, the tangent line is $y=-2+1\\cdot(x-2)$, that is, $y=x-4$.
+
+\`\`\`interactive
+secant-tangent
+{"title": "From secant to tangent", "f": "x^2 - 3x", "name": "x^2-3x", "a": 2, "h": 1, "view": [-1.5, 4.5, -3.5, 4], "caption": "P is the point (2, −2) on f(x) = x² − 3x and Q is (2 + h, f(2 + h)). The secant slope is the worked example's difference quotient 1 + h. Drag Q towards P, or press Shrink h: the secant swings onto the dashed tangent y = x − 4 and its slope tends to f′(2) = 1. The table shows the quotients for h = ±1, ±0.1, ±0.01, … from both sides. At h = 0 the quotient is 0/0, which is why a limit is needed."}
+\`\`\`
 
 **Worked example 2.** A stone is thrown straight up from the ground, with height $s(t)=20t-4.9t^2$ metres. Using the definition at a general time $t$,
 
@@ -1107,7 +1161,12 @@ As $x\\to a$, the first factor tends to $f'(a)$ and the second to $0$, so $f(x)\
 
 **Higher derivatives.** The derivative of $f'$ is $f''$, also written $\\dfrac{d^2y}{dx^2}$. If $s$ is position, then $s'$ is velocity and $s''$ is acceleration, which is why Newton's law $F=ma$ makes force a statement about a second derivative.
 
-To sketch $f'$ from a graph of $f$, mark where $f$ has horizontal tangents (zeros of $f'$), where it rises ($f'>0$) and where it falls ($f'<0$), and join these up, judging steepness by eye. The Calculus Grapher simulation is good practice for this.`,
+To sketch $f'$ from a graph of $f$, mark where $f$ has horizontal tangents (zeros of $f'$), where it rises ($f'>0$) and where it falls ($f'<0$), and join these up, judging steepness by eye. The Calculus Grapher simulation is good practice for this, and so is the interactive below.
+
+\`\`\`interactive
+secant-tangent
+{"title": "Tracing the derivative", "modes": ["trace"], "examples": [{"label": "x³ − 3x", "f": "x^3 - 3x", "name": "x^3-3x", "a": -2.5, "view": [-2.5, 2.5, -4, 4], "fpView": [-4, 16]}, {"label": "√x", "f": "sqrt(x)", "name": "\\\\sqrt{x}", "a": -0.5, "view": [-0.5, 4.5, -0.5, 2.5], "fpView": [-0.5, 3.5]}, {"label": "|x|", "f": "abs(x)", "name": "|x|", "a": -2, "view": [-2, 2, -0.5, 2], "fpView": [-1.6, 1.6]}], "caption": "Press Sweep, or drag the point, and the slope of each tangent is plotted in the lower graph: the dots draw f′. Before you turn on Show f′, predict where it is zero and where it is negative. On the √x tab the slopes shoot up near 0, the vertical tangent of the worked example, and f′ = 1/(2√x) exists only for x > 0. On |x| the slopes jump from −1 to 1 at the corner, so f′(0) does not exist."}
+\`\`\``,
           resources: [
             openstax('3-2-the-derivative-as-a-function', 'The derivative as a function', 'Graphs, differentiability and higher derivatives.', true),
             paul('DefnOfDerivative', 'The definition of the derivative', 'Worked limit-definition computations.'),
@@ -1300,6 +1359,11 @@ $$
 $$
 
 Those limits hold because $h$ is measured in radians. In degrees, the derivative of sine would carry an awkward factor of $\\pi/180$. The same argument gives $\\dfrac{d}{dx}\\cos x=-\\sin x$. The geometry agrees: at $x=0$ the sine curve rises with slope $1$, at $x=\\pi/2$ it is flat, and at $x=\\pi$ it falls with slope $-1$, which is exactly the cosine curve.
+
+\`\`\`interactive
+secant-tangent
+{"title": "The slope of sine is cosine", "modes": ["trace"], "examples": [{"label": "sin x", "f": "sin(x)", "name": "\\\\sin x"}, {"label": "cos x", "f": "cos(x)", "name": "\\\\cos x"}], "a": 0, "trig": true, "view": [-0.4, 6.7, -1.4, 1.4], "fpView": [-1.4, 1.4], "caption": "Sweep the tangent along y = sin x and record its slope: slope 1 at 0, flat at π/2, −1 at π. The recorded dots fall exactly on the cosine curve (turn on Show f′ to compare). On the cos x tab they trace −sin x. Both rely on x being in radians."}
+\`\`\`
 
 The other four follow from the quotient rule:
 
@@ -1781,7 +1845,17 @@ $$
 
 Ask whether this makes sense. The tank widens as it fills, so a constant inflow raises the level more and more slowly, and indeed $dh/dt$ is proportional to $1/h^2$.
 
+\`\`\`interactive
+related-rates
+{"title": "Filling the conical tank", "scene": "cone", "H": 6, "R": 3, "rate": 2, "caption": "Water pours in at a steady 2 m³/min. Press Play, or drag t. The widget starts at the moment the depth is 3 m, where dh/dt = 8/(9π) ≈ 0.283 m/min, the worked example's answer. The depth graph is steep at first and flattens as the tank widens. The slope of its dashed tangent is dh/dt, and it is always (dV/dt)/(πr²), the inflow spread over the water's surface."}
+\`\`\`
+
 **Signs.** A quantity that is decreasing has a negative derivative. When a ladder slides down a wall, the height $y$ has $dy/dt<0$, and if you put in a positive number by mistake your answer will have the wrong sign. State the direction in your final sentence.
+
+\`\`\`interactive
+related-rates
+{"title": "A sliding ladder", "scene": "ladder", "length": 5, "rate": 0.5, "x0": 1, "caption": "The foot of a 5 m ladder slides out at 0.5 m/s, and x² + y² = 25 holds at all times. Differentiating gives dy/dt = −(x/y)·dx/dt, which is negative: the top falls, slowly at first and faster and faster as the ladder flattens. Use it to check the sign and size of your answer to the sliding-ladder exercise."}
+\`\`\`
 
 **Units.** Keep track of them. If you mix km and m in a single equation, the answer will be wrong by a factor of 1000.
 
@@ -1874,6 +1948,11 @@ $$
 $$
 
 The true value is $2.02485\\ldots$, so the estimate is too high by about $0.00015$. That makes sense: the graph of $\\sqrt{x}$ curves downward, so it lies below its tangent, and the tangent overestimates. In general, if $f$ is concave down near $a$ the linearisation is high, and if it is concave up the linearisation is low.
+
+\`\`\`interactive
+secant-tangent
+{"title": "Linear approximation", "modes": ["linear"], "f": "sqrt(x)", "name": "\\\\sqrt{x}", "a": 4, "h": 0.1, "view": [-0.5, 9, -0.5, 3.5], "caption": "The tangent to √x at a = 4 is L(x) = 2 + (x − 4)/4. With h = 0.1 the readouts reproduce worked example 1: L(4.1) = 2.025, √4.1 ≈ 2.02485, error ≈ −0.00015, negative because √x is concave down and lies below its tangent. Zoom in and the curve and the tangent become indistinguishable. Make h ten times smaller and the error becomes about a hundred times smaller."}
+\`\`\`
 
 Standard approximations near $x=0$ are $\\sin x\\approx x$, $\\cos x\\approx1$, $e^x\\approx1+x$, $\\ln(1+x)\\approx x$ and $(1+x)^k\\approx1+kx$.
 
@@ -1996,6 +2075,11 @@ $f'(x)=3x^2-6x=3x(x-2)$, which is zero at $x=0$ and $x=2$, both in the interval.
 
 The absolute maximum is $17$ at $x=4$, an endpoint, and the absolute minimum is $-3$ at $x=2$. Note that $x=0$ gives a local maximum, which is not the absolute one. No test for concavity or sign is needed. You compare values, which is why the method is so reliable.
 
+\`\`\`interactive
+curve-analysis
+{"title": "The closed interval method", "modes": ["extrema"], "f": "x^3 - 3x^2 + 1", "name": "x^3-3x^2+1", "a": -0.5, "b": 4, "view": [-1.5, 4.5, -5, 19], "caption": "The table lists the candidates: the endpoints and the critical numbers inside the interval. With [−1/2, 4] it is the worked example: maximum 17 at the endpoint x = 4, minimum −3 at x = 2, and x = 0 only a local maximum. Drag b below 3 and the absolute maximum moves to x = 0. Drag a or b past a critical number and that candidate drops out of the table."}
+\`\`\`
+
 If the interval is not closed and bounded, the theorem gives no guarantee. You must then study limits at the open ends or at infinity.`,
           resources: [
             openstax('4-3-maxima-and-minima', 'Maxima and minima', 'Definitions and the closed interval method.', true),
@@ -2070,6 +2154,11 @@ f'(c)=\\frac{f(b)-f(a)}{b-a}.
 $$
 
 Geometrically, some tangent line is parallel to the secant through the endpoints. In motion terms, if you drive $30$ km in $20$ minutes, your average speed is $90$ km/h, so at some instant your speedometer read exactly $90$ km/h. Your speed changed smoothly, and it could not have stayed below the average for the whole trip.
+
+\`\`\`interactive
+curve-analysis
+{"title": "Tangents parallel to the secant", "modes": ["mvt"], "examples": [{"label": "x³ − x", "f": "x^3 - x", "name": "x^3-x", "a": 0, "b": 2, "view": [-1.6, 2.4, -2, 7]}, {"label": "|x|", "f": "abs(x)", "name": "|x|", "a": -1, "b": 1, "view": [-1.6, 1.6, -0.6, 1.8]}], "caption": "The solid line is the secant through (a, f(a)) and (b, f(b)); each dashed line is a tangent with the same slope, touching at a point c. For x³ − x on [0, 2] the secant slope is 3 and c = 2/√3 ≈ 1.155, as in worked example 1. Drag a and b: the c values move, but at least one always exists. On the |x| tab the secant over [−1, 1] is flat and no tangent is, because the corner at 0 breaks the hypothesis."}
+\`\`\`
 
 The special case with $f(a)=f(b)$, where the conclusion is $f'(c)=0$, is **Rolle's theorem**. It follows from what you already know: a continuous $f$ has extrema on $[a,b]$. If both are at the endpoints then $f$ is constant, and otherwise one is at an interior point, where Fermat's theorem gives $f'(c)=0$. To get the MVT, apply Rolle's theorem to $f$ minus the secant line.
 
@@ -2177,6 +2266,11 @@ Concavity changes at $x=0$ and $x=2$, so the inflection points are $(0,0)$ and $
 
 Put it together. The graph comes down from the upper left, concave up, flattens to a horizontal tangent at the origin while switching to concave down, keeps falling, switches back at $(2,-16)$, reaches the minimum at $(3,-27)$, then rises through $(4,0)$.
 
+\`\`\`interactive
+curve-analysis
+{"title": "f, f′ and f″ together", "modes": ["sketch"], "f": "x^4 - 4x^3", "name": "x^4-4x^3", "x": 1, "view": [-1.5, 4.5, -32, 12], "caption": "The three graphs share one x-axis: f(x) = x⁴ − 4x³ on top, f′ in the middle and f″ below, each shaded by sign. Drag the cursor: f falls wherever f′ < 0, reaches its minimum at x = 3 where f′ changes from − to +, and is concave down exactly on 0 < x < 2 where f″ < 0. The critical number x = 0 is marked 'no extremum' because f′ touches 0 there without changing sign. The table under the graphs is the lesson's sign chart."}
+\`\`\`
+
 **Slant asymptotes.** If a rational function has top degree one greater than bottom degree, long division gives $f(x)=mx+b+(\\text{a term}\\to0)$, and the line $y=mx+b$ is a slant asymptote.`,
           resources: [
             openstax('4-5-derivatives-and-the-shape-of-a-graph', 'Derivatives and the shape of a graph', 'Both tests and concavity.', true),
@@ -2280,6 +2374,11 @@ $$
 gives $r^3=\\dfrac{V}{2\\pi}$, so $r=\\left(\\dfrac{500}{\\pi}\\right)^{1/3}\\approx5.42$ cm. Since $S''(r)=4\\pi+\\dfrac{4V}{r^3}>0$ for all $r>0$, this is the global minimum.
 
 The height is $h=\\dfrac{V}{\\pi r^2}=\\dfrac{2\\pi r^3}{\\pi r^2}=2r\\approx10.8$ cm. So the best can has height equal to its diameter, whatever the volume, which is the sort of general result that algebra with a symbol $V$ reveals and arithmetic with $1000$ would hide. Minimum area is $S\\approx554\\ \\text{cm}^2$.
+
+\`\`\`interactive
+can-optimisation
+{"title": "The 1000 cm³ can", "V": 1000, "r": 3, "rMax": 14, "caption": "Drag r, on the graph or with the slider. The constraint fixes the height h = V/(πr²), so the can on the left is always to scale and always holds 1000 cm³. A narrow can is tall and uses a lot of side; a wide one is a flat pancake with large lids. Both make S large. At r ≈ 5.42 cm the tangent to S is horizontal, S ≈ 554 cm², and h/r reads 2: the height equals the diameter."}
+\`\`\`
 
 Most supermarket cans are taller than this. Metal is not the only cost: rolling a side from a sheet and cutting tops wastes different amounts, and the objective changes. Modelling always involves such choices.
 
@@ -2390,7 +2489,12 @@ $$
 
 **Worked example 3.** To compute $\\sqrt2$, take $f(x)=x^2-2$, so $x_{n+1}=x_n-\\dfrac{x_n^2-2}{2x_n}=\\dfrac12\\left(x_n+\\dfrac{2}{x_n}\\right)$. From $x_0=1$: $x_1=1.5$, $x_2=1.41667$, $x_3=1.414216$, which already agrees with $\\sqrt2=1.414214$ to five decimals. Near a simple root, the number of correct digits about doubles at each step.
 
-It can fail. If $f'(x_n)=0$ the tangent is horizontal. A bad start can jump to another root or cycle. For $f(x)=x^{1/3}$ it diverges from every non-zero start. Always check that your answer really solves the equation.`,
+It can fail. If $f'(x_n)=0$ the tangent is horizontal. A bad start can jump to another root or cycle. For $f(x)=x^{1/3}$ it diverges from every non-zero start. Always check that your answer really solves the equation.
+
+\`\`\`interactive
+newton-method
+{"title": "Newton's method, step by step", "examples": [{"label": "√2", "f": "x^2 - 2", "name": "x^2-2", "x0": 1, "view": [-0.5, 3, -2.5, 4]}, {"label": "Cycle", "f": "x^3 - 2x + 2", "name": "x^3-2x+2", "x0": 0, "view": [-2.5, 2, -3, 6]}, {"label": "x^(1/3)", "f": "cbrt(x)", "name": "x^{1/3}", "x0": 1, "maxSteps": 6, "view": [-40, 40, -4, 4]}, {"label": "f′ = 0", "f": "x^2 - 2", "name": "x^2-2", "x0": 0, "view": [-2.5, 2.5, -2.5, 4]}, {"label": "Jumps", "f": "x^3 - x", "name": "x^3-x", "x0": 0.5, "view": [-1.6, 1.6, -1.5, 1.5]}], "caption": "Press Step to follow the tangent at (xₙ, f(xₙ)) down to the x-axis, or drag x₀. On the √2 tab the table reproduces worked example 3 (1.5, 1.41667, 1.414216, …) and the number of correct digits roughly doubles each step. The other tabs are the failures in the lesson: x³ − 2x + 2 from 0 cycles between 0 and 1; x^(1/3) doubles its distance from the root each step; a start at a horizontal tangent goes nowhere; and x³ − x from 0.5 jumps over the two nearest roots to land on −1."}
+\`\`\``,
           resources: [
             openstax('4-8-lhopitals-rule', "L'Hopital's rule", 'Includes all the indeterminate forms.', true),
             openstax('4-9-newtons-method', "Newton's method", 'Iteration, geometry and failure modes.'),
@@ -2606,6 +2710,11 @@ $$
 
 As $n\\to\\infty$, $\\dfrac{(n+1)(2n+1)}{n^2}\\to2$, so the integral is $\\dfrac83$. A small case shows how the approximation works: $R_4=\\tfrac12(0.25+1+2.25+4)=3.75$ overestimates, since $x^2$ is increasing and each rectangle pokes above the curve, and $L_4=\\tfrac12(0+0.25+1+2.25)=1.75$ underestimates.
 
+\`\`\`interactive
+riemann-sum
+{"title": "Riemann sums for x² on [0, 2]", "f": "x^2", "a": 0, "b": 2, "n": 4, "method": "right", "methods": ["left", "right", "midpoint", "upper", "lower"], "exact": 2.6666666666666665, "exactTex": "\\\\tfrac83", "view": [-0.25, 2.25, -0.4, 4.4], "caption": "With n = 4 the Right and Left tabs give the worked example's R₄ = 3.75 and L₄ = 1.75. Increase n and every choice of sample point closes in on 8/3. Because x² is increasing, the right sum equals the upper sum and the left sum the lower sum, and the true value is trapped between them. The midpoint sum is already within 0.05 at n = 4."}
+\`\`\`
+
 **Distance from velocity.** If $v(t)>0$, the distance travelled over a short interval is about $v(t_i)\\Delta t$, so the total is a Riemann sum and in the limit $\\int_a^bv(t)\\,dt$. This shows why area under a speed graph is a distance. The units agree too: height in m/s times width in s gives metres. In general the integral has the units of $f$ times the units of $x$, and the $dx$ is a reminder of the width.
 
 The limit computation above takes effort even for $x^2$. The fundamental theorem, two lessons from now, reduces it to one line.`,
@@ -2715,6 +2824,11 @@ $$
 
 Mixing these two up is a common error. For distance, split at the points where the velocity changes sign.
 
+\`\`\`interactive
+riemann-sum
+{"title": "Net signed area", "f": "x - 2", "a": 0, "b": 5, "n": 10, "method": "left", "methods": ["left", "right", "midpoint", "trapezoid"], "exact": 2.5, "exactTex": "\\\\tfrac52", "view": [-0.4, 5.4, -2.6, 3.6], "caption": "Here x plays the part of t and the curve is v(t) = t − 2. Rectangles below the axis are shaded in the second colour and count negatively. Whatever the rule, as n grows the sums tend to the displacement −2 + 9/2 = 5/2, not to the total distance 13/2: the negative pieces cancel part of the positive ones. (Midpoint and trapezoid are exact here at once, because v is a straight line.)"}
+\`\`\`
+
 **Worked example 3.** Bound $\\int_0^1e^{-x^2}dx$. On $[0,1]$, the integrand decreases from $1$ to $e^{-1}$, so the integral lies between $e^{-1}\\approx0.368$ and $1$. This integral has no formula in elementary functions, and yet this simple argument tells you something definite. Sharper bounds use the same reasoning on smaller pieces.`,
           resources: [
             openstax('5-2-the-definite-integral', 'The definite integral', 'Net signed area, properties and comparison.', true),
@@ -2813,6 +2927,11 @@ This is remarkable. A limit of sums over an entire interval depends only on two 
 Read part 2 as the **net change theorem**: $\\int_a^bF'(x)\\,dx=F(b)-F(a)$. Integrating a rate gives the total change. Integrating a flow rate gives the volume added, and integrating velocity gives displacement.
 
 **Worked example 1.** $\\displaystyle\\int_0^\\pi\\sin x\\,dx=\\left[-\\cos x\\right]_0^\\pi=1-(-1)=2$. One arch of the sine curve has an area of exactly $2$.
+
+\`\`\`interactive
+riemann-sum
+{"title": "The area function A(x)", "modes": ["accumulate"], "f": "sin(x)", "a": 0, "b": 6.283185307179586, "x": 1.2, "trig": true, "view": [-0.3, 6.6, -1.3, 1.3], "caption": "Drag the right edge x, or press Play. The shaded signed area is A(x) = ∫₀ˣ sin t dt, and the lower graph traces A. The dashed tangent to A at x always has slope f(x), the height of the curve above: that is part 1 of the theorem, and the thin strip at x is the extra area f(x)·h. At x = π the area is exactly 2, one arch. Beyond π the area below the axis counts negatively and A falls back to 0 at 2π, because A(x) = 1 − cos x."}
+\`\`\`
 
 **Worked example 2.** Differentiate $G(x)=\\int_1^{x^2}\\cos t\\,dt$. With $u=x^2$, the chain rule gives
 
@@ -3053,6 +3172,11 @@ $$
 A=\\int_{-1}^{2}(x+2-x^2)\\,dx=\\left[\\frac{x^2}{2}+2x-\\frac{x^3}{3}\\right]_{-1}^{2}=\\frac{10}{3}+\\frac76=\\frac92.
 $$
 
+\`\`\`interactive
+riemann-sum
+{"title": "Slices between two curves", "f": "x + 2", "g": "x^2", "a": -1, "b": 2, "n": 6, "method": "midpoint", "methods": ["left", "right", "midpoint"], "exact": 4.5, "exactTex": "\\\\tfrac92", "view": [-1.6, 2.6, -0.6, 4.6], "caption": "Each rectangle runs from the parabola y = x² up to the line y = x + 2, so its height is f(x) − g(x) at the sample point and its area (f − g)Δx. Increase n and the sum of the slices tends to the area 9/2 of worked example 1."}
+\`\`\`
+
 **Worked example 2.** Find the area between $y=\\sin x$ and $y=\\cos x$ on $[0,\\pi/2]$. They cross at $x=\\pi/4$. Cosine is on top before it, and sine after. So
 
 $$
@@ -3060,6 +3184,11 @@ A=\\int_0^{\\pi/4}(\\cos x-\\sin x)\\,dx+\\int_{\\pi/4}^{\\pi/2}(\\sin x-\\cos x
 $$
 
 Forgetting to split gives $\\int_0^{\\pi/2}(\\cos x-\\sin x)\\,dx=0$, which is plainly not the area.
+
+\`\`\`interactive
+riemann-sum
+{"title": "Why you must split at a crossing", "f": "cos(x)", "g": "sin(x)", "a": 0, "b": 1.5707963267948966, "n": 8, "method": "midpoint", "methods": ["midpoint", "trapezoid"], "exact": 0, "exactTex": "0", "trig": true, "view": [-0.2, 1.8, -0.2, 1.2], "caption": "The slices have height cos x − sin x. After x = π/4 sine is on top, so those slices are negative and shaded in the second colour. Their sum tends to 0, not to the area. The true area 2(√2 − 1) ≈ 0.828 counts both sets of slices as positive."}
+\`\`\`
 
 **Horizontal slices.** When a region is bounded on the left and right by curves in $y$, use slices of width $dy$ and length "right minus left":
 
@@ -3162,6 +3291,11 @@ $$
 V=\\pi\\int_0^4x\\,dx=8\\pi.
 $$
 
+\`\`\`interactive
+solid-of-revolution
+{"title": "Disks: √x about the x-axis", "f": "sqrt(x)", "fTex": "\\\\sqrt{x}", "a": 0, "b": 4, "axis": "x-axis", "methods": ["disk"], "n": 8, "exact": 25.132741228718345, "exactTex": "8\\\\pi", "caption": "Press Sweep to turn the region under y = √x round the x-axis, or drag the sweep slider; drag the 3D view to look at it from another side. The highlighted strip of width dx becomes a disk of radius R = √x, with volume πR² dx. Move it with the slice slider or by dragging it in the left picture. Build the solid from n disks and the sum of their volumes approaches 8π as n grows."}
+\`\`\`
+
 If the region has a gap between it and the axis, each slice is a **washer**, a disk with a hole, with outer radius $R$ and inner radius $r$. Then $A=\\pi(R^2-r^2)$. Note this is not $\\pi(R-r)^2$.
 
 **Worked example 2.** Rotate the region between $y=x$ and $y=x^2$, for $0\\le x\\le1$, about the $x$-axis. On this interval $x\\ge x^2$, so $R=x$ and $r=x^2$:
@@ -3176,7 +3310,12 @@ $$
 V=\\pi\\int_0^1\\big[(x+1)^2-(x^2+1)^2\\big]\\,dx=\\pi\\int_0^1(2x-x^2-x^4)\\,dx=\\pi\\left(1-\\frac13-\\frac15\\right)=\\frac{7\\pi}{15}.
 $$
 
-Always draw a typical slice and mark the radii as distances from the axis. If the axis is vertical, slice horizontally and integrate in $y$, with radii written as functions of $y$. The classic mistake when rotating about a shifted axis is to forget that the radii change.`,
+Always draw a typical slice and mark the radii as distances from the axis. If the axis is vertical, slice horizontally and integrate in $y$, with radii written as functions of $y$. The classic mistake when rotating about a shifted axis is to forget that the radii change.
+
+\`\`\`interactive
+solid-of-revolution
+{"title": "Washers, and a shifted axis", "f": "x", "g": "x^2", "gTex": "x^2", "a": 0, "b": 1, "axis": "x-axis", "axes": ["x-axis", "y = -1"], "methods": ["disk"], "n": 10, "exact": 0.41887902047863906, "exactTex": "\\\\tfrac{2\\\\pi}{15}", "caption": "The region between y = x and y = x² turns into a solid with a hole, so each slice is a washer with outer radius R and inner radius r, both measured from the axis. About the x-axis R = x and r = x², and the volume is 2π/15 ≈ 0.419 (worked example 2). Switch the axis to y = −1: both radii grow by 1, the hole widens, and the volume becomes 7π/15 ≈ 1.466 (worked example 3)."}
+\`\`\``,
           resources: [
             openstax('6-2-determining-volumes-by-slicing', 'Determining volumes by slicing', 'General slicing, disks and washers.', true),
             paul('VolumeWithRings', 'Volumes of solids of revolution: rings', 'Disks and washers about shifted axes.'),
@@ -3257,6 +3396,11 @@ $$
 
 No inverse function was needed.
 
+\`\`\`interactive
+solid-of-revolution
+{"title": "Shells about the y-axis", "f": "3x^2 - 2x^3", "fTex": "3x^2-2x^3", "a": 0, "b": 1, "axis": "y-axis", "methods": ["shell", "disk"], "method": "shell", "n": 8, "exact": 2.199114857512855, "exactTex": "\\\\tfrac{7\\\\pi}{10}", "caption": "A vertical strip at distance x from the y-axis sweeps out a thin tube of radius x, height 3x² − 2x³ and thickness dx, with volume about 2πx·h(x)·dx. Sweep the region round to see one shell form, then build the solid from n shells: their total approaches 7π/10. Switch to Disks / washers: the slices become horizontal, and each one's radii need x as a function of y, which is the cubic you would have had to solve."}
+\`\`\`
+
 **Worked example 1.** Rotate the region under $y=x-x^2$, for $0\\le x\\le1$, about the $y$-axis. The radius is $x$, the height $x-x^2$:
 
 $$
@@ -3278,6 +3422,11 @@ V=2\\pi\\int_0^1(2-y)(\\sqrt{y}-y)\\,dy=\\frac{8\\pi}{15}.
 $$
 
 The two agree, which is a strong check on the setup.
+
+\`\`\`interactive
+solid-of-revolution
+{"title": "Both methods about y = 2", "f": "x", "g": "x^2", "gTex": "x^2", "a": 0, "b": 1, "axis": "y = 2", "methods": ["disk", "shell"], "n": 10, "exact": 1.6755160819145563, "exactTex": "\\\\tfrac{8\\\\pi}{15}", "caption": "The region between y = x and y = x², turned about the line y = 2 (worked example 2). With washers the strip is vertical, R = 2 − x² and r = 2 − x. With shells the strip is horizontal at height y, its radius is 2 − y and its length √y − y. Switch between the methods: the slices look completely different, but both sums approach 8π/15."}
+\`\`\`
 
 **Choosing.** Use the method whose slice runs along a direction where the top and bottom (or left and right) are single simple formulas. Slices perpendicular to the axis give washers, and slices parallel to it give shells. Rotating about a vertical axis with functions of $x$ points to shells. Rotating about a horizontal axis with functions of $x$ points to washers.
 
