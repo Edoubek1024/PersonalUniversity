@@ -13,7 +13,7 @@ import { defineSubject } from '../define';
 export default defineSubject({
   id: 'operating-systems',
   title: 'Operating Systems',
-  category: 'cs',                       // 'cs' | 'physics' | 'astronomy'
+  category: 'cs',                       // 'cs' | 'data-science' | 'physics' | 'astronomy' | 'misc'
   tagline: 'One sentence shown on the subject card.',
   description: `Markdown, 2-4 paragraphs.`,
   difficulty: 'advanced',               // beginner | intermediate | advanced | expert
@@ -49,7 +49,8 @@ export default defineSubject({
    a TypeScript template literal, write `\\` for a LaTeX backslash (e.g. `$\\nabla \\cdot
    \\mathbf{E}$`). Avoid backticks inside template literals (use `\``) and avoid `${`.
 5. **Exercises are concrete.** State inputs, expected outputs, what to measure or derive.
-   CS exercises: write, debug, test and measure code. Physics: derive, solve, simulate.
+   CS exercises: write, debug, test and measure code. Data science: analyse real data, check
+   the result and say what it does and does not show. Physics: derive, solve, simulate.
    Astronomy: explain physically, compute, work with real data (SDSS, Gaia, NASA
    Exoplanet Archive, HEASARC, MAST, Planck, etc.).
 6. **Shared concepts link to a canonical lesson.** If a subject needs e.g. eigenvalues,
@@ -83,13 +84,14 @@ export default defineSubject({
 
 ## Coursework: machine problems and final projects
 
-Every CS subject has one coursework file, `src/data/coursework/<subject-id>.ts`, which
+Every CS and data science subject has one coursework file, `src/data/coursework/<subject-id>.ts`, which
 default-exports `defineCoursework({...})`. It is discovered automatically. The types in
 `src/data/types.ts` (`MachineProblemInput`, `FinalProjectInput`, `VsCodeSetup`) are the contract.
 `src/data/coursework/systems-programming.ts` is the reference for length, tone and specificity.
 Match it.
 
-A final project replaces the subject's `capstone` in the UI. Do not edit the capstone in the
+Coursework is optional for `misc` subjects, and validated the same way when present. A final
+project replaces the subject's `capstone` in the UI. Do not edit the capstone in the
 subject file.
 
 ### Machine problems (MPs)

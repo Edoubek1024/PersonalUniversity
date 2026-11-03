@@ -9,6 +9,13 @@ export const categories: Category[] = [
     accent: 'indigo',
   },
   {
+    id: 'data-science',
+    title: 'Data Science',
+    description:
+      'From your first DataFrame to validated models: the statistics, computing and mathematics of a data science degree, plus the ethics and stewardship of data.',
+    accent: 'teal',
+  },
+  {
     id: 'physics',
     title: 'Physics',
     description:
@@ -21,6 +28,12 @@ export const categories: Category[] = [
     description:
       'Stars, planets, galaxies and the universe as a whole, grounded in physics, observational evidence and real survey data.',
     accent: 'violet',
+  },
+  {
+    id: 'misc',
+    title: 'Miscellaneous',
+    description: 'Useful subjects outside the main tracks, starting with how to found, fund and run a company.',
+    accent: 'amber',
   },
 ];
 

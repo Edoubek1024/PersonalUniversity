@@ -26,7 +26,7 @@ export function Dashboard() {
           <p className="text-xs font-semibold uppercase tracking-widest text-ink-3">Your personal university</p>
           <h1 className="mt-1 text-3xl font-semibold tracking-tight">Dashboard</h1>
           <p className="mt-2 max-w-xl text-sm text-ink-2">
-            {subjects.length} subjects, {totalLessonCount} lessons and about {totalHours.toLocaleString()} hours of study across computer science, physics and astronomy.
+            {subjects.length} subjects, {totalLessonCount.toLocaleString()} lessons and about {totalHours.toLocaleString()} hours of study across computer science, data science, physics, astronomy and more.
           </p>
         </div>
         <div className="card flex items-center gap-4 px-5 py-4">
@@ -34,7 +34,7 @@ export function Dashboard() {
           <div className="text-sm">
             <div className="font-semibold">Overall progress</div>
             <div className="text-ink-2">
-              {doneCount} of {totalLessonCount} lessons
+              {doneCount} of {totalLessonCount.toLocaleString()} lessons
             </div>
             <div className="text-xs text-ink-3">≈ {Math.round(hoursDone)} h of {totalHours.toLocaleString()} h</div>
           </div>
@@ -43,7 +43,7 @@ export function Dashboard() {
 
       <section aria-labelledby="categories">
         <SectionTitle id="categories">Categories</SectionTitle>
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
           {categories.map((c) => {
             const subs = subjects.filter((s) => s.category === c.id);
             const total = subs.reduce((n, s) => n + s.lessonCount, 0);
@@ -56,7 +56,7 @@ export function Dashboard() {
                 <div className="min-w-0">
                   <div className={`text-[15px] font-semibold ${a.text}`}>{c.title}</div>
                   <div className="text-xs text-ink-3">
-                    {subs.length} subjects · {total} lessons
+                    {subs.length} {subs.length === 1 ? 'subject' : 'subjects'} · {total} lessons
                   </div>
                 </div>
                 <ArrowRight size={16} className="ml-auto text-ink-3 transition-transform group-hover:translate-x-0.5" aria-hidden />

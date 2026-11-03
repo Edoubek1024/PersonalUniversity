@@ -115,7 +115,9 @@ export function SubjectPage() {
                         <div>
                           <div className="text-xs font-semibold uppercase tracking-widest text-ink-3">Module {mi + 1}</div>
                           <h3 className="mt-0.5 text-base font-semibold">{m.title}</h3>
-                          <p className="mt-1 text-sm text-ink-2">{m.description}</p>
+                          <p className="mt-1 text-sm text-ink-2">
+                            <Inline>{m.description}</Inline>
+                          </p>
                         </div>
                         <span className="shrink-0 text-xs tabular-nums text-ink-3">
                           {mc.done}/{mc.total}

@@ -1,6 +1,6 @@
 # Curriculum plan
 
-Three categories, 25 core tracks, 10 additional recommended subjects. Each subject file in
+Five categories, 25 core tracks, 19 additional recommended subjects. Each subject file in
 `src/data/subjects/` is the source of truth for its own content; this document fixes the
 subject IDs, categories, prerequisite graph and the module outline each subject must cover.
 Subject IDs below are final and are referenced by `src/data/paths.ts` and by
@@ -38,6 +38,28 @@ Every CS subject also has two machine problems and a final project in `src/data/
 In the UI the final project replaces the subject's capstone; the `capstone` data stays in the
 subject file. See "Coursework" in `docs/AUTHORING.md`.
 
+## Data Science (`data-science`)
+
+These eight courses follow the Data Science core of the University of Illinois Urbana-Champaign
+BS in Information Sciences + Data Science (2026-27 catalog). The topics come from the public
+catalog descriptions, and the content here is original. It is not affiliated with Illinois.
+
+| ID | Title | Follows | Diff | Hrs | Prerequisites | Core |
+|---|---|---|---|---|---|---|
+| `data-science-discovery` | Data Science Discovery | STAT/CS/IS 107 | beginner | 70 | — | additional |
+| `calculus-for-data-science` | Calculus for Data Science | MATH 220 | beginner | 80 | — | additional |
+| `linear-algebra-for-data-science` | Linear Algebra for Data Science | MATH 227 | intermediate | 60 | data-science-discovery | additional |
+| `data-science-exploration` | Data Science Exploration | STAT 207 | intermediate | 80 | data-science-discovery | additional |
+| `algorithms-for-data-science` | Algorithms and Data Structures for Data Science | CS 277 | intermediate | 80 | data-science-exploration, calculus-for-data-science | additional |
+| `modeling-and-learning` | Modeling and Learning in Data Science | CS 307 | intermediate | 90 | data-science-exploration, linear-algebra-for-data-science | additional |
+| `data-management-reproducibility` | Data Management, Curation and Reproducibility | IS 477 | intermediate | 60 | data-science-exploration | additional |
+| `data-ethics-and-policy` | Ethics and Policy for Data Science | IS 467 | intermediate | 50 | data-science-discovery | additional |
+
+Every data science subject also has two machine problems and a final project, like the CS
+subjects. These are practical, applied courses. They lead into `probability-statistics`,
+`machine-learning`, `data-structures-algorithms` and `math-methods`, which go deeper, and they
+link to those courses instead of competing with them.
+
 ## Physics (`physics`)
 
 | ID | Title | Diff | Hrs | Prerequisites | Core |
@@ -61,6 +83,12 @@ subject file. See "Coursework" in `docs/AUTHORING.md`.
 | `stellar-astrophysics` | Stellar Astrophysics | advanced | 80 | intro-astronomy, thermodynamics-statistical-mechanics, quantum-mechanics | yes |
 | `galaxies-cosmology` | Galaxies and Cosmology | advanced | 90 | stellar-astrophysics, relativity | yes |
 | `high-energy-astrophysics` | High-Energy Astrophysics and Compact Objects | expert | 70 | stellar-astrophysics, relativity, electromagnetism | yes |
+
+## Miscellaneous (`misc`)
+
+| ID | Title | Diff | Hrs | Prerequisites | Core |
+|---|---|---|---|---|---|
+| `startup-founding-and-funding` | Building and Funding a Startup | beginner | 70 | — | additional |
 
 ## Module outlines
 
@@ -139,6 +167,108 @@ Capstone: a sensor node that logs and transmits data to a dashboard, with OTA up
 1. `models-and-fundamentals` 2. `rpc-and-time` 3. `replication-and-consensus` (Raft, Paxos) 4. `consistency-and-transactions` 5. `storage-and-data-processing` (GFS, MapReduce, Spanner) 6. `fault-tolerance-and-observability` 7. `case-studies`
 Capstone: a replicated key-value store with Raft, tested under partitions.
 
+### data-science-discovery (STAT/CS/IS 107)
+No programming assumed. Project-driven on real datasets, with short reflections on privacy and
+design throughout. Teaches only the Python it needs; `programming-fundamentals` goes deeper.
+1. DataFrames and Python basics: what data science is, notebooks, pandas, row selection, types of data, conditionals, lists and functions
+2. Study design: experiments, blocking, observational studies, confounders, stratification
+3. Exploratory data analysis: descriptive statistics, adding rows and columns, grouping, histograms, quartiles and box plots, basic visualisation
+4. Simulation: random numbers, for-loops, sample spaces, simple simulations, the normal distribution, the law of large numbers
+5. Probability for prediction: addition and multiplication rules, complements, conditional probability, Bayes' theorem
+6. Towards machine learning: correlation, simple linear regression, scikit-learn, train/test splits, clustering
+7. Polling and inference: random variables, Bernoulli and binomial, the central limit theorem, polling and sampling, confidence intervals, hypothesis tests
+Stops at the idea of inference. Does not teach multiple regression, Git or formal estimation.
+
+### calculus-for-data-science (MATH 220)
+A complete first calculus course for someone with algebra and no calculus, with applications
+drawn from data. Python is used for checks, and the course can be followed without it.
+1. Functions and limits: algebra review, exponentials and logarithms, trigonometric functions, limits, continuity
+2. Derivatives: definition, rules, product, quotient and chain rules, implicit differentiation
+3. Applications of derivatives: curve sketching, optimisation, Newton's method, loss functions on one parameter
+4. Integration: antiderivatives, Riemann sums, the fundamental theorem, substitution, integration by parts
+5. Applications of integrals: area, densities and cumulative distributions, expected value, numerical integration
+6. Towards many variables: Taylor approximation, partial derivatives, the gradient, gradient descent, the chain rule behind backpropagation
+Module 6 goes past MATH 220 because every later modeling course needs it.
+
+### linear-algebra-for-data-science (MATH 227)
+Practical and computer-based, as the catalog says: data analysis first, with Python and NumPy
+throughout, and honest about what linear methods cannot do.
+1. Vectors and matrices as data: NumPy, feature matrices, norms, distances, cosine similarity, matrix multiplication as an operation
+2. Linear systems: elimination, LU, rank, null space, basis and dimension, conditioning
+3. Orthogonality and regression: projections, QR, least squares, linear regression, residuals
+4. Eigenvalues and networks: eigenvectors, Markov chains, PageRank, graph Laplacians, network analysis
+5. SVD and PCA: the singular value decomposition, low-rank approximation, PCA, recommender-style factorisation
+6. Linear methods at scale and their limits: sparse matrices, iterative and randomised methods, outliers, non-linear structure
+
+### data-science-exploration (STAT 207)
+The whole pipeline from hypothesis to report, in Python and Git. Assumes Discovery.
+1. The data science pipeline: forming questions and hypotheses, data collection, Git and GitHub for analyses, project structure
+2. Data wrangling: loading, joining and reshaping, types, checking for and handling missing data
+3. Summary and visualisation: multivariate summaries, a visual grammar, honest graphics, written interpretation
+4. Sampling and probability models: random sampling, sampling bias, discrete and continuous models, fitting and checking a model
+5. Estimation and uncertainty: estimators, standard errors, maximum likelihood in practice, the bootstrap, confidence intervals
+6. Hypothesis testing: test logic, p-values, power, permutation tests, t and chi-square tests, multiple comparisons
+7. Regression: multiple linear regression, diagnostics, interactions, logistic regression, interpreting coefficients
+8. Classification and high-dimensional data: classifiers, cross-validation, ROC, regularisation, PCA for many features, reporting
+
+### algorithms-for-data-science (CS 277)
+Classical structures and algorithms applied to data work, in Python. Links to
+`data-structures-algorithms` for proofs and depth. Assumes Exploration and Calculus.
+1. Analysing algorithms: Big-O, timing and profiling, why vectorised code is fast, the cost of pandas operations
+2. Lists, stacks and queues: dynamic arrays, linked lists, stacks, queues, sliding windows on streams
+3. Trees and hashing: binary search trees, heaps and top-k, hash tables, sketches such as Bloom filters and count-min
+4. Graphs: representations, BFS, DFS, shortest paths, connected components, graph data at real sizes
+5. Design paradigms: divide and conquer, greedy, dynamic programming, sequence alignment and edit distance
+6. Discrete optimisation: knapsack and assignment, integer programs with a solver, local search, simulated annealing
+7. Continuous optimisation: convexity, gradient descent, stochastic and mini-batch methods, Newton's method, fitting a model as optimisation
+
+### modeling-and-learning (CS 307)
+Classical modeling and machine learning, applied in Python with heavy emphasis on interpreting
+results. No derivations of learning theory; `machine-learning` has those. Assumes Exploration
+and Linear Algebra.
+1. Modeling and linear models: the modeling workflow, linear regression as a model, feature engineering, baselines
+2. Model selection: bias and variance, cross-validation, ridge and lasso, pipelines, avoiding leakage
+3. Classification: logistic regression, metrics and thresholds, imbalance, calibration
+4. Trees and non-linear models: k-nearest neighbours, decision trees, random forests, gradient boosting, support vector machines
+5. Unsupervised learning: k-means, hierarchical clustering, mixture models, PCA, t-SNE and UMAP, choosing k
+6. Deep learning: neurons and layers, training with PyTorch, convolutional networks, transfer learning, embeddings, working on a CPU
+7. Interpretability and communication: coefficients, permutation importance, partial dependence, SHAP, correlation versus cause, reporting a model
+
+### data-management-reproducibility (IS 477)
+The data science life cycle as seen by someone who must keep work usable. One running case study
+across the course. Assumes Exploration.
+1. The data science life cycle: stages and roles, why results fail to reproduce, the running case study
+2. Research artifacts: identifying artifacts, file formats, tidy data, naming and organisation, versioning data and code
+3. Metadata and documentation: descriptive, structural and administrative metadata, standards and schemas, data dictionaries, data validation
+4. Reproducible workflows: environments and lockfiles, containers, workflow managers, provenance, literate reports, automation
+5. Repositories and preservation: FAIR principles, repositories, identifiers and citation, licences, the economics of preservation
+6. Data management plans: funder requirements, writing a plan, sensitive data, reviewing another project
+
+### data-ethics-and-policy (IS 467)
+Common ethical challenges around privacy, bias and data access, taught through real cases from
+companies, nonprofits, governments, academia and healthcare. Trade-offs are treated as real, and
+the question of who carries the burden comes up throughout.
+1. Ethics for data work: ethical frameworks, stakeholders, harms and benefits, trade-offs, sharing the burden
+2. Privacy: what privacy protects, de-identification and its failures, k-anonymity, differential privacy, surveillance
+3. Bias and fairness: where bias enters, fairness definitions and why they conflict, auditing, mitigation, recourse
+4. Data access: consent, research ethics and review boards, ownership, scraping, open data versus restricted data
+5. Sector cases: healthcare, government and public services, companies, academia, nonprofits
+6. Policy responses: organisational governance, institutional rules, US law (HIPAA, FERPA, state privacy law including Illinois BIPA), supranational law (GDPR, EU AI Act)
+This course gives no legal advice, and all laws must be stated as of a date.
+
+### startup-founding-and-funding
+How to start a company, fund it and run it as a private company, with US law and practice as the
+default and an honest account of the odds. Education, not legal, tax or investment advice.
+1. Startups and founders: what makes a startup different from a small business, base rates and risk, founder motives, choosing co-founders, when not to start one
+2. Finding a problem worth solving: where good ideas come from, customer interviews, market sizing, competition, validation
+3. Building to product-market fit: the minimum viable product, iteration, pricing, retention and activation, recognising product-market fit
+4. Reaching customers and staying alive: distribution channels, sales, customer acquisition cost, lifetime value, churn, burn, runway, a simple financial model
+5. Forming the company: choosing an entity, why a Delaware C corporation is the venture default, founder equity and vesting, the 83(b) election, assigning intellectual property, banking and basic compliance
+6. Funding options and how they work: bootstrapping, grants, friends and family, angels, accelerators, venture capital fund economics, debt and revenue-based finance, SAFEs and convertible notes, priced rounds, cap tables and dilution
+7. Running a fundraise: whether to raise, targeting investors, the pitch deck and narrative, the process, term sheets, due diligence and closing, securities law basics
+8. Running a private company: boards and fiduciary duties, hiring and employment, option plans and 409A valuations, taxes and compliance, investor updates, secondary sales
+9. Exits and endings: acquisitions, IPOs, liquidation waterfalls, down rounds, pivots, shutting a company down well
+
 ### math-methods
 1. `single-variable-calculus` 2. `multivariable-calculus` 3. `linear-algebra` 4. `ordinary-differential-equations` 5. `vector-calculus` 6. `fourier-and-complex-analysis` 7. `partial-differential-equations-and-special-functions`
 Capstone: a solutions portfolio plus a notebook that numerically checks every major derivation.
@@ -197,30 +327,33 @@ Capstone: analyse a real X-ray or gravitational-wave dataset and interpret it ph
 
 ## Completion status
 
-All 35 subjects are written. Every lesson is fully populated: none is marked `outline`.
+All 44 subjects are written. Every lesson is fully populated: none is marked `outline`.
 `npm run validate` reports no errors and no warnings.
 
 | Category | Subjects | Lessons |
 |---|---|---|
 | Computer Science | 21 | 522 |
+| Data Science | 8 | 225 |
 | Physics | 8 | 221 |
 | Astronomy | 6 | 158 |
-| **Total** | **35** | **901** |
+| Miscellaneous | 1 | 35 |
+| **Total** | **44** | **1,161** |
 
 Run `npm run validate` for the per-subject table (modules, lessons, hours).
 
-All 21 CS subjects have coursework: 42 machine problems and 21 final projects, about 1,705 hours
-on top of the subject hours. Specs were checked by script, by reasoning or on sample runs. Almost
-none has been built end to end, so treat numeric targets and timings as estimates.
+The CS, data science and startup subjects have coursework: 60 machine problems and 30 final
+projects, about 2,370 hours on top of the subject hours. Specs were checked by script, by reasoning
+or on sample runs. Almost none has been built end to end, so treat numeric targets and timings as
+estimates.
 
 ### Resource links
 
-The last full `npm run check-links` run covered 2,170 unique URLs (3,811 references): 2,004 OK.
+The last full `npm run check-links` run covered 2,674 unique URLs (4,733 references): 2,491 OK.
 All true 404s found were replaced. Remaining non-OK results fall into two groups:
 
-- **Unverified (156).** Sites such as the Feynman Lectures, NASA ADS, Wiley and some
+- **Unverified (166).** Sites such as the Feynman Lectures, NASA ADS, Wiley and some
   university pages return 403 or 429 to scripts but work in a browser.
-- **Unreachable from the authoring machine (10).** Requests to gnu.org, SIMBAD, NASA GISTEMP,
+- **Unreachable from the authoring machine (12).** Requests to gnu.org, SIMBAD, DAMTP Cambridge,
   in-the-sky.org, LIGO, Penn State STAT courses, Fourmilab and a few others failed at the
   network level. These are long-standing sites and are expected to work in a normal browser.
 

@@ -141,11 +141,13 @@
   }
   .prose-lesson code {
     @apply rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[13px] text-ink;
+    overflow-wrap: anywhere;
   }
   .prose-lesson pre {
     @apply my-4 overflow-x-auto rounded-xl border border-line bg-surface-2 p-4 text-[13px] leading-6;
   }
   .prose-lesson pre code {
+    overflow-wrap: normal;
     @apply bg-transparent p-0;
   }
   .prose-lesson blockquote {

@@ -1,12 +1,13 @@
-# Teach Me — a personal university for CS, Physics and Astronomy
+# Teach Me — a personal university for CS, Data Science, Physics and Astronomy
 
 A self-directed learning system: a course catalog, a learning-management dashboard and a personal
-knowledge base in one local web app. Thirty-five subjects (25 core tracks plus 10 additional
-subjects, 901 lessons, about 2,890 study hours), each with a full curriculum of modules, lessons,
+knowledge base in one local web app. Forty-four subjects (25 core tracks plus 19 additional
+subjects, 1,161 lessons, about 3,530 study hours), each with a full curriculum of modules, lessons,
 learning objectives, curated free resources, exercises, projects and a mastery checklist. Physics
-and astronomy subjects end in a capstone. All 21 CS subjects have two machine problems and a final
-project for GitHub, 63 projects in all, adding about 1,700 hours. Progress, notes and bookmarks are
-stored in your browser; nothing leaves your machine.
+and astronomy subjects end in a capstone. The 21 CS subjects, 8 data science subjects and the
+startup course each have two machine problems and a final project for GitHub, 90 projects in all,
+adding about 2,370 hours. Progress, notes and bookmarks are stored in your browser; nothing leaves
+your machine.
 
 ## Running it
 
@@ -43,14 +44,14 @@ progress. Use Settings > Export / Import to move it between them.
   which arranges subjects in tiers so you can see what unlocks what.
 - **Subject page**: description, prerequisites with your completion in each, the full module and
   lesson list, module projects, the capstone or CS coursework, and the mastery checklist.
-- **Machine problems and final projects** (CS subjects): a spec you can build from in VS Code, with
+- **Machine problems and final projects** (CS, data science and startup subjects): a spec you can build from in VS Code, with
   setup, requirement checkboxes, acceptance tests and, for final projects, GitHub publishing steps.
   MPs appear between the modules they follow, and each course's last lesson links to its final
   project.
 - **Lesson page**: objectives, concepts, a real explanation, resources (free/paid marked), exercises
   with checkboxes and hints, a self-assessment with reveal-and-rate, your notes (Markdown + LaTeX),
   previous/next navigation and links to canonical lessons in other subjects.
-- **Learning paths**: seven suggested orders through the catalog. Progress is per subject, so a
+- **Learning paths**: eight suggested orders through the catalog. Progress is per subject, so a
   subject that appears in several paths is only ever completed once.
 - **Bookmarks** and **Notes** pages collect what you saved.
 - **Settings**: theme, export/import of all progress as JSON (merge or replace), and reset.

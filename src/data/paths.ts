@@ -80,6 +80,24 @@ export const learningPaths: LearningPath[] = [
       'You can take a raw dataset to a validated, deployed model and explain the maths behind every step.',
   },
   {
+    id: 'data-science-degree',
+    title: 'Data Science Degree Core',
+    description:
+      'The eight core courses of the University of Illinois data science bachelor\'s, in a workable order. Calculus and linear algebra run alongside the first two statistics courses.',
+    subjectIds: [
+      'data-science-discovery',
+      'calculus-for-data-science',
+      'linear-algebra-for-data-science',
+      'data-science-exploration',
+      'algorithms-for-data-science',
+      'modeling-and-learning',
+      'data-management-reproducibility',
+      'data-ethics-and-policy',
+    ],
+    outcome:
+      'You can run a data science project from question to report: collect and clean data, model it, explain the results, reproduce the work and answer for its ethics.',
+  },
+  {
     id: 'embedded-iot',
     title: 'Embedded Systems and IoT',
     description:

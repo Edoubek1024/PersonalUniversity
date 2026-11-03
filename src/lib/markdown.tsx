@@ -40,6 +40,11 @@ export function Markdown({ children, className = '' }: { children: string; class
               {children}
             </a>
           ),
+          table: ({ children }) => (
+            <div className="overflow-x-auto">
+              <table>{children}</table>
+            </div>
+          ),
         }}
       >
         {children}

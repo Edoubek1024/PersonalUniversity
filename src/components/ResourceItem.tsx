@@ -1,5 +1,6 @@
 import { ExternalLink } from 'lucide-react';
 import type { ResourceInput } from '@/data/types';
+import { Inline } from '@/lib/markdown';
 
 const costLabel = { free: 'Free', paid: 'Paid', freemium: 'Freemium' } as const;
 const costStyle = {
@@ -21,7 +22,11 @@ export function ResourceItem({ r }: { r: ResourceInput }) {
           <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${costStyle[r.cost]}`}>{costLabel[r.cost]}</span>
           {r.primary && <span className="text-accent">Primary</span>}
         </div>
-        {r.note && <p className="mt-1 text-sm text-ink-2">{r.note}</p>}
+        {r.note && (
+          <p className="mt-1 text-sm text-ink-2">
+            <Inline>{r.note}</Inline>
+          </p>
+        )}
       </div>
     </li>
   );

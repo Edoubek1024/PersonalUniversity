@@ -53,6 +53,15 @@ const KNOWN_SUBJECT_IDS = [
   'typescript-web',
   'go-programming',
   'bash-scripting',
+  'data-science-discovery',
+  'calculus-for-data-science',
+  'linear-algebra-for-data-science',
+  'data-science-exploration',
+  'algorithms-for-data-science',
+  'modeling-and-learning',
+  'data-management-reproducibility',
+  'data-ethics-and-policy',
+  'startup-founding-and-funding',
 ];
 
 type Level = 'ERROR' | 'WARN';
@@ -127,6 +136,8 @@ const KNOWN_EXTENSIONS = new Set([
   'james-yu.latex-workshop',
   'humao.rest-client',
   'ms-vscode.hexeditor',
+  'quarto.quarto',
+  'mechatroner.rainbow-csv',
 ]);
 
 function wordCount(s: string): number {
@@ -137,7 +148,7 @@ function checkSubject(s: Subject, allLessonIds: Set<string>, presentSubjects: Se
   const id = s.id;
   if (!KNOWN_SUBJECT_IDS.includes(id)) warn(id, 'id', 'subject id is not in the curriculum plan (docs/CURRICULUM-PLAN.md)');
   if (!s.title) err(id, 'title', 'missing');
-  if (!['cs', 'physics', 'astronomy'].includes(s.category)) err(id, 'category', `invalid "${s.category}"`);
+  if (!['cs', 'data-science', 'physics', 'astronomy', 'misc'].includes(s.category)) err(id, 'category', `invalid "${s.category}"`);
   if (!s.tagline) err(id, 'tagline', 'missing');
   if (wordCount(s.description) < 60) warn(id, 'description', `short (${wordCount(s.description)} words; aim for 2-4 paragraphs)`);
   if (!(s.estimatedHours > 0)) err(id, 'estimatedHours', 'must be > 0');
@@ -237,7 +248,7 @@ function checkCoursework(s: Subject) {
   const id = s.id;
   const cw = s.coursework;
   if (!cw) {
-    if (s.category === 'cs') err(id, 'coursework', 'CS subject has no machine problems or final project');
+    if (s.category === 'cs' || s.category === 'data-science') err(id, 'coursework', 'subject has no machine problems or final project');
     return;
   }
   if (cw.machineProblems.length !== MP_COUNT) err(id, 'coursework', `has ${cw.machineProblems.length} machine problems (need ${MP_COUNT})`);

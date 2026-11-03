@@ -145,7 +145,7 @@ A subtle case makes this interesting. If \`v1\` becomes \`v2\` while \`v2\` beco
           type: 'documentation',
           cost: 'free',
           provider: 'GNU Bash (maintainer copy)',
-          note: 'Quoting the pattern in ${name//"$old"/"$new"} makes the match literal.',
+          note: 'Quoting the pattern in `${name//"$old"/"$new"}` makes the match literal.',
         },
       ],
       stretchGoals: [
