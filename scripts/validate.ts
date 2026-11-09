@@ -93,6 +93,8 @@ const KNOWN_SUBJECT_IDS = [
   'applied-linear-algebra',
   'statistics-and-probability-2',
   'rust-programming',
+  'microeconomic-principles',
+  'macroeconomic-principles',
 ];
 
 type Level = 'ERROR' | 'WARN';
@@ -179,7 +181,7 @@ function checkSubject(s: Subject, allLessonIds: Set<string>, presentSubjects: Se
   const id = s.id;
   if (!KNOWN_SUBJECT_IDS.includes(id)) warn(id, 'id', 'subject id is not in the curriculum plan (docs/CURRICULUM-PLAN.md)');
   if (!s.title) err(id, 'title', 'missing');
-  if (!['cs', 'data-science', 'math', 'statistics', 'physics', 'astronomy', 'misc'].includes(s.category)) err(id, 'category', `invalid "${s.category}"`);
+  if (!['cs', 'data-science', 'math', 'statistics', 'economics', 'physics', 'astronomy', 'misc'].includes(s.category)) err(id, 'category', `invalid "${s.category}"`);
   if (!s.tagline) err(id, 'tagline', 'missing');
   if (wordCount(s.description) < 60) warn(id, 'description', `short (${wordCount(s.description)} words; aim for 2-4 paragraphs)`);
   if (!(s.estimatedHours > 0)) err(id, 'estimatedHours', 'must be > 0');

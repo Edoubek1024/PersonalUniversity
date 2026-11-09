@@ -14,7 +14,7 @@
  * within their parent. Never rename a slug once progress may exist for it.
  */
 
-export type CategoryId = 'cs' | 'data-science' | 'math' | 'statistics' | 'physics' | 'astronomy' | 'misc';
+export type CategoryId = 'cs' | 'data-science' | 'math' | 'statistics' | 'economics' | 'physics' | 'astronomy' | 'misc';
 
 export type Difficulty = 'beginner' | 'intermediate' | 'advanced' | 'expert';
 

@@ -1,6 +1,6 @@
 # Curriculum plan
 
-Seven categories, 25 core tracks, 44 additional recommended subjects. Each subject file in
+Eight categories, 25 core tracks, 46 additional recommended subjects. Each subject file in
 `src/data/subjects/` is the source of truth for its own content; this document fixes the
 subject IDs, categories, prerequisite graph and the module outline each subject must cover.
 Subject IDs below are final and are referenced by `src/data/paths.ts` and by
@@ -105,6 +105,18 @@ unaffected. `probability-statistics` keeps its machine problems and final projec
 |---|---|---|---|---|---|---|
 | `probability-statistics` | Probability and Statistics for Scientists | — | intermediate | 70 | math-methods | additional |
 | `statistics-and-probability-2` | Statistics and Probability II | STAT 410 | advanced | 80 | probability-theory, calculus-3 | additional |
+
+## Economics (`economics`)
+
+These follow the University of Illinois Urbana-Champaign principles courses ECON 102 and 103.
+Topics come from the public catalog descriptions, and the content here is original. It is not
+affiliated with Illinois. The two courses can be taken in either order, as at Illinois. They use
+module projects and a capstone built on real data, and have no machine problems.
+
+| ID | Title | Follows | Diff | Hrs | Prerequisites | Core |
+|---|---|---|---|---|---|---|
+| `microeconomic-principles` | Microeconomic Principles | ECON 102 | beginner | 80 | — | additional |
+| `macroeconomic-principles` | Macroeconomic Principles | ECON 103 | beginner | 76 | — | additional |
 
 ## Physics (`physics`)
 
@@ -509,6 +521,35 @@ at the level of `probability-theory`. Module 1 reviews the STAT 400 statistics i
 6. Confidence intervals: pivots, exact and large-sample intervals, intervals from likelihood
 7. Hypothesis testing: the Neyman-Pearson lemma, uniformly most powerful and unbiased tests, likelihood ratio tests, chi-square tests
 
+### microeconomic-principles (ECON 102)
+Individual decision-makers, consumers and producers, within the larger economic system: product
+markets, the theory of the firm under competition and monopoly, and government's role in
+efficiency. Algebra throughout; calculus helps but is optional.
+1. Thinking like an economist: scarcity, opportunity cost, marginal thinking, incentives, models, positive vs normative, the production possibilities frontier
+2. Trade and markets: comparative advantage, gains from trade and who loses, the price system
+3. Supply and demand: demand, supply, equilibrium, changes in equilibrium
+4. Elasticity: price elasticity, total revenue, income, cross-price and supply elasticity, tax incidence
+5. Welfare and government in markets: consumer and producer surplus, price ceilings and floors, taxes, subsidies and deadweight loss, international trade and tariffs
+6. Consumer choice: utility and the best affordable bundle, income and substitution effects, behavioural economics
+7. Production and costs: economic profit, the production function, short-run and long-run costs, scale
+8. Market structures: perfect competition in the short and long run, monopoly, price discrimination, regulation and antitrust, monopolistic competition, oligopoly and game theory
+9. Market failure and government: externalities, Coase and cap and trade, public goods and common resources, labour markets and the minimum wage, asymmetric information
+Capstone: a market and policy analysis with real data.
+
+### macroeconomic-principles (ECON 103)
+Aggregate output, employment, prices and growth, with emphasis on monetary and fiscal policy,
+inflation, unemployment and the international economy. Real US data with dates throughout.
+1. Measuring output: what macroeconomics studies, GDP three ways, real GDP and the deflator, what GDP misses
+2. Prices and jobs: the CPI, its biases and indexing, the costs of inflation, measuring unemployment, types of unemployment
+3. Long-run growth: compound growth, productivity and its sources, Solow and convergence, institutions and ideas
+4. Saving, investment and the financial system: loanable funds, present value and bonds, the financial system
+5. Money and banking: what money is, the Federal Reserve, banks and money creation, the quantity theory
+6. Short-run fluctuations: business cycles, the Keynesian cross, the multiplier, aggregate demand and supply, shocks and adjustment
+7. Monetary policy: how the Fed sets rates, the transmission mechanism, the zero lower bound and QE, inflation targeting and rules
+8. Fiscal policy and debt: the federal budget, fiscal policy and automatic stabilisers, debt dynamics
+9. Inflation, unemployment and the open economy: the Phillips curve, two great inflations, the balance of payments, exchange rates and PPP
+Capstone: a state-of-the-economy report from FRED data, ending in a policy recommendation.
+
 ### physics-mechanics (PHYS 211)
 Calculus-based. Assumes Calculus I, with Calculus II alongside. `classical-mechanics` is the next step.
 1. Kinematics: vectors, motion in one and two dimensions, relative motion
@@ -602,7 +643,7 @@ Capstone: analyse a real X-ray or gravitational-wave dataset and interpret it ph
 
 ## Completion status
 
-All 69 subjects are written. Every lesson is fully populated: none is marked `outline`.
+All 71 subjects are written. Every lesson is fully populated: none is marked `outline`.
 `npm run validate` reports no errors and no warnings.
 
 | Category | Subjects | Lessons |
@@ -611,10 +652,11 @@ All 69 subjects are written. Every lesson is fully populated: none is marked `ou
 | Data Science | 8 | 225 |
 | Mathematics | 19 | 468 |
 | Statistics | 2 | 56 |
+| Economics | 2 | 72 |
 | Physics | 12 | 300 |
 | Astronomy | 6 | 158 |
 | Miscellaneous | 1 | 35 |
-| **Total** | **69** | **1,766** |
+| **Total** | **71** | **1,838** |
 
 Run `npm run validate` for the per-subject table (modules, lessons, hours).
 

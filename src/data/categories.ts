@@ -30,6 +30,13 @@ export const categories: Category[] = [
     accent: 'lime',
   },
   {
+    id: 'economics',
+    title: 'Economics',
+    description:
+      'How people, firms and governments choose under scarcity, and what that adds up to: markets, prices, competition, then output, unemployment, inflation and policy.',
+    accent: 'orange',
+  },
+  {
     id: 'physics',
     title: 'Physics',
     description:
