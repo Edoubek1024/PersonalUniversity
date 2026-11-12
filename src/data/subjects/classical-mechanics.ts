@@ -144,6 +144,50 @@ Work through OpenStax chapters 3 and 4 quickly if this is review, then MIT 8.01S
                 'Yes: uniform circular motion, a = v^2/r directed toward the centre; the acceleration changes direction, not speed.',
             },
           ],
+          quiz: [
+            {
+              question:
+                'A ball is launched from flat ground at 25 m/s, $30^\\circ$ above the horizontal. Ignoring air resistance and taking $g = 9.8$ m/s², how far away does it land?',
+              options: ['27.6 m', '31.9 m', '55.2 m', '63.8 m'],
+              answer: 2,
+              explanation:
+                'The flight time is $2v_0\\sin\\theta/g = 2.55$ s and the horizontal speed is $v_0\\cos\\theta = 21.7$ m/s, so $R = v_0^2\\sin 2\\theta/g = 625 \\times 0.866/9.8 = 55.2$ m. 31.9 m uses $\\sin\\theta$ in place of $\\sin 2\\theta$; 27.6 m uses only the time to the top; 63.8 m is the maximum range, reached at $45^\\circ$.',
+            },
+            {
+              question:
+                'A bead slides outward along a rotating spoke with $\\dot r = 2$ m/s and $\\dot\\theta = 3$ rad/s, both constant. At the instant $r = 0.5$ m, what are the polar components of its acceleration, in m/s²?',
+              options: [
+                '$a_r = -4.5$, $a_\\theta = 12$',
+                '$a_r = -4.5$, $a_\\theta = 6$',
+                '$a_r = 0$, $a_\\theta = 0$',
+                '$a_r = 4.5$, $a_\\theta = 12$',
+              ],
+              answer: 0,
+              explanation:
+                '$a_r = \\ddot r - r\\dot\\theta^2 = 0 - 0.5 \\times 9 = -4.5$ and $a_\\theta = r\\ddot\\theta + 2\\dot r\\dot\\theta = 0 + 2 \\times 2 \\times 3 = 12$. Constant rates do not mean zero acceleration, because the basis vectors rotate. 6 drops the factor 2 in the Coriolis term.',
+            },
+            {
+              question:
+                'A boat heads straight across a 60 m wide river at 4 m/s relative to the water, and the river flows at 3 m/s. How far downstream of the point directly opposite does it land?',
+              options: ['0 m', '45 m', '75 m', '80 m'],
+              answer: 1,
+              explanation:
+                'Velocities add as vectors (the Galilean transformation). The cross-river component is 4 m/s, so crossing takes $60/4 = 15$ s, and the current carries the boat $3 \\times 15 = 45$ m downstream. 75 m is the length of the whole diagonal path at 5 m/s; 0 m forgets that the heading is not the track.',
+            },
+            {
+              question:
+                'A car goes round a circular track of radius 50 m at a constant speed of 20 m/s. Which statement is correct?',
+              options: [
+                'Its acceleration is zero, since its speed is constant',
+                'Its acceleration is 0.4 m/s², toward the centre',
+                'Its acceleration is 8 m/s², along its velocity',
+                'Its acceleration is 8 m/s², toward the centre',
+              ],
+              answer: 3,
+              explanation:
+                'The speed is constant, so $d|\\mathbf v|/dt = 0$, but the velocity vector rotates: $|\\mathbf a| = v^2/r = 400/50 = 8$ m/s², all of it normal to the path (toward the centre) and none tangential. 0.4 is $v/r$, the angular velocity in rad/s, not an acceleration.',
+            },
+          ],
           relatedLessons: ['math-methods/single-variable-calculus/limits-and-derivatives'],
         },
         {
@@ -252,6 +296,45 @@ Work through MIT 8.01SC week 2 (Newton's laws) and week 3 (circular motion is ne
               question: 'What determines the normal force on a block on an incline?',
               answerOutline:
                 'It is whatever value makes the acceleration perpendicular to the surface vanish; it equals mg cos(theta) only for a static incline with no other perpendicular forces.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'An Atwood machine has masses of 3.0 kg and 5.0 kg on a massless string over a massless, frictionless pulley. With $g = 9.8$ m/s², what is the tension in the string, to 3 significant figures?',
+              options: ['29.4 N', '36.8 N', '39.2 N', '49.0 N'],
+              answer: 1,
+              explanation:
+                'The constraint makes the accelerations equal and opposite: $a = (5 - 3)g/8 = 2.45$ m/s². For the 3 kg block, $T - 3g = 3a$, so $T = 3(9.8 + 2.45) = 36.8$ N. 29.4 N and 49.0 N are the two weights; the tension must lie between them because one block accelerates up and the other down. 39.2 N is the average weight.',
+            },
+            {
+              question:
+                'A 60 kg person stands on a bathroom scale in a lift that is moving **downward** and slowing down at 2.0 m/s². What does the scale read? ($g = 9.8$ m/s²)',
+              options: ['120 N', '468 N', '588 N', '708 N'],
+              answer: 3,
+              explanation:
+                'Slowing while moving down means the acceleration points up, so $N - mg = ma$ with $a = +2.0$ m/s², and $N = 60 \\times 11.8 = 708$ N. 468 N assumes the acceleration points the way the lift is moving; acceleration follows the change in velocity, not the velocity.',
+            },
+            {
+              question:
+                'A lamp hangs at rest from a cord. What is the third-law partner of "the cord pulls up on the lamp"?',
+              options: [
+                'The lamp pulls down on the cord',
+                'Earth\'s gravity pulls down on the lamp',
+                'The ceiling pulls up on the cord',
+                'The lamp pulls up on the Earth',
+              ],
+              answer: 0,
+              explanation:
+                'A third-law pair is one interaction seen from both bodies, so the partner acts on the cord: the lamp pulls down on it. Earth\'s pull on the lamp is equal and opposite to the cord\'s pull only because the lamp is in equilibrium (that is the second law); it acts on the same body and is a different interaction, whose partner is the lamp\'s pull on the Earth.',
+            },
+            {
+              question:
+                'A 2.0 kg block on a frictionless $30^\\circ$ incline is held still by a horizontal force pushing it toward the slope. What is the normal force on the block? ($g = 9.8$ m/s²)',
+              options: ['11.3 N', '17.0 N', '22.6 N', '26.8 N'],
+              answer: 2,
+              explanation:
+                'Along the slope, $F\\cos\\theta = mg\\sin\\theta$ gives $F = mg\\tan\\theta = 11.3$ N. Perpendicular to it, $N = mg\\cos\\theta + F\\sin\\theta = 17.0 + 5.7 = 22.6$ N (equivalently $mg/\\cos\\theta$). 17.0 N is the reflex $mg\\cos\\theta$, which ignores the push: the normal force is whatever the constraint needs. 26.8 N takes the wrong component of the push, $F\\cos\\theta$.',
             },
           ],
         },
@@ -369,6 +452,40 @@ Read Taylor chapter 2 if you have it; the free equivalent is Fitzpatrick's chapt
                 'Check limiting cases against analytic results (no drag, small drag), check convergence as tolerance is tightened, check conserved quantities when drag is off, compare with published ranges.',
             },
           ],
+          quiz: [
+            {
+              question:
+                'A 4.0 kg crate rests on a floor with $\\mu_s = 0.60$ and $\\mu_k = 0.40$. You push it horizontally with 15 N. What friction force acts on it? ($g = 9.8$ m/s²)',
+              options: ['0 N', '15 N', '15.7 N', '23.5 N'],
+              answer: 1,
+              explanation:
+                'The maximum static friction is $\\mu_s N = 0.60 \\times 39.2 = 23.5$ N, more than the push, so the crate stays put and static friction just balances the push: 15 N. 23.5 N is only the ceiling, reached on the verge of slipping; 15.7 N ($\\mu_k N$) applies only once it slides.',
+            },
+            {
+              question:
+                'A 0.050 kg bead is released from rest in a fluid with linear drag $b = 0.20$ kg/s. How fast is it falling after 0.50 s? ($g = 9.8$ m/s²)',
+              options: ['0.33 m/s', '2.12 m/s', '2.45 m/s', '4.90 m/s'],
+              answer: 1,
+              explanation:
+                '$v_t = mg/b = 2.45$ m/s and $\\tau = m/b = 0.25$ s, so 0.50 s is $2\\tau$ and the speed is $2.45(1 - e^{-2}) = 2.12$ m/s. It has not yet reached terminal speed, which takes several $\\tau$. 4.90 m/s is free fall, $gt$; 0.33 m/s uses $e^{-t/\\tau}$ in place of $1 - e^{-t/\\tau}$.',
+            },
+            {
+              question:
+                'Two balls of the same size and surface fall through air in the quadratic-drag regime; one has 4 times the mass of the other. What is the ratio of their terminal speeds, heavy to light?',
+              options: ['1', '2', '4', '16'],
+              answer: 1,
+              explanation:
+                'Quadratic drag balances gravity when $cv_t^2 = mg$, so $v_t = \\sqrt{mg/c}$ and the ratio is $\\sqrt 4 = 2$. 4 is the linear-drag answer, $v_t = mg/b$. 1 would be true only with no drag at all, when there is no terminal speed.',
+            },
+            {
+              question:
+                'Forward Euler with step $h = 0.1$ is applied to $\\ddot x = -x$, and each step multiplies the energy by $1 + h^2$. By roughly what factor has the energy changed after 100 steps?',
+              options: ['0.37', '1.0', '2.0', '2.7'],
+              answer: 3,
+              explanation:
+                'The growth compounds: $1.01^{100} \\approx e = 2.7$. 2.0 adds 1% per step without compounding; 1.0 is what an energy-conserving method would give (RK4 comes close). The exact solution has constant energy, so the growth is purely an artefact of the method.',
+            },
+          ],
           relatedLessons: ['math-methods/ordinary-differential-equations/first-order-odes'],
         },
         {
@@ -410,8 +527,8 @@ The pitfall is mixing frames: either work in the inertial frame with real forces
               primary: true,
             },
             {
-              title: 'David Tong — Classical Dynamics, section 6: Non-inertial frames',
-              url: 'https://www.damtp.cam.ac.uk/user/tong/dynamics.html',
+              title: 'David Tong — Dynamics and Relativity, Non-Inertial Frames',
+              url: 'https://www.damtp.cam.ac.uk/user/tong/relativity.html',
               type: 'textbook',
               cost: 'free',
               provider: 'University of Cambridge (DAMTP)',
@@ -480,6 +597,50 @@ The pitfall is mixing frames: either work in the inertial frame with real forces
               question: 'What is the minimum speed at the top of a vertical loop for a roller-coaster car to stay on the track?',
               answerOutline:
                 'The normal force vanishes when g = v^2/r, so v_min = sqrt(g r); below this the track would need to pull, which it cannot.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'A frictionless curve of radius 80 m is banked so that cars can take it at 20 m/s with no sideways friction. What is the bank angle? ($g = 9.8$ m/s²)',
+              options: ['14.3°', '27.0°', '30.7°', '63.0°'],
+              answer: 1,
+              explanation:
+                'Vertically $N\\cos\\theta = mg$; horizontally $N\\sin\\theta = mv^2/r$ toward the centre. Dividing, $\\tan\\theta = v^2/rg = 400/784 = 0.510$, so $\\theta = 27.0^\\circ$. 30.7° comes from $\\sin\\theta = 0.510$, which wrongly takes $N = mg$; 63.0° inverts the ratio.',
+            },
+            {
+              question:
+                'A plumb bob hangs from the ceiling of a train that is speeding up at 2.0 m/s². In the train\'s frame, at what angle from the vertical does it hang, and which way? ($g = 9.8$ m/s²)',
+              options: [
+                '0°: the string stays vertical',
+                '11.5°, toward the front',
+                '11.5°, toward the rear',
+                '11.8°, toward the rear',
+              ],
+              answer: 2,
+              explanation:
+                'In the train\'s frame add the fictitious force $-m\\mathbf A$, pointing to the rear. The effective gravity tilts back by $\\tan\\theta = A/g = 0.204$, so $\\theta = 11.5^\\circ$ toward the rear. In the ground frame the same answer comes from the string\'s horizontal pull supplying $mA$ forward. 11.8° uses sine instead of tangent.',
+            },
+            {
+              question:
+                'A car takes a flat curve at constant speed, held on its path by friction. In the **ground** frame, which horizontal forces belong on its free-body diagram?',
+              options: [
+                'Static friction toward the centre, and nothing else',
+                'None, since its speed is constant',
+                'Static friction toward the centre, balanced by a centrifugal force',
+                'Kinetic friction pointing outward',
+              ],
+              answer: 0,
+              explanation:
+                'In the inertial frame the only horizontal force is static friction, and it is unbalanced: it supplies the centripetal force $mv^2/r$. Adding a centrifugal force mixes frames. It belongs only in the car\'s rotating frame, where the car is at rest and friction does balance it.',
+            },
+            {
+              question:
+                'The swing plane of a Foucault pendulum at the pole makes one turn per 24 h. How long does one turn take at latitude $30^\\circ$ N?',
+              options: ['12 h', '24 h', '27.7 h', '48 h'],
+              answer: 3,
+              explanation:
+                'Only the vertical component of Earth\'s rotation turns the local horizontal plane, so the rate is $\\omega\\sin\\lambda$ and one turn takes $24/\\sin 30^\\circ = 48$ h. 27.7 h uses $\\cos\\lambda$, the horizontal component, which does not turn the swing plane; 12 h multiplies by $\\sin\\lambda$ instead of dividing.',
             },
           ],
         },
@@ -611,6 +772,44 @@ The vector-calculus background (gradient, line integrals, curl, the fundamental 
                 'It is perpendicular to the velocity, so F dot v = 0 at every instant; tension in a pendulum string is the same case.',
             },
           ],
+          quiz: [
+            {
+              question:
+                'A 2.0 kg block starts from rest and slides 3.0 m down a $30^\\circ$ incline with $\\mu_k = 0.20$. Using the work-energy theorem, what is its speed at the bottom? ($g = 9.8$ m/s²)',
+              options: ['4.20 m/s', '4.38 m/s', '4.85 m/s', '5.42 m/s'],
+              answer: 1,
+              explanation:
+                'Gravity does $mgd\\sin\\theta = 29.4$ J and friction does $-\\mu_k mg\\cos\\theta\\,d = -10.2$ J, so $\\tfrac12 mv^2 = 19.2$ J and $v = 4.38$ m/s. 5.42 m/s ignores friction; 4.85 m/s uses $\\sin\\theta$ in the normal force; 4.20 m/s takes $N = mg$.',
+            },
+            {
+              question: 'Which of these force fields in the plane is conservative?',
+              options: [
+                '$\\mathbf F = (y, x)$',
+                '$\\mathbf F = (-y, x)$',
+                '$\\mathbf F = (y, -x)$',
+                '$\\mathbf F = (xy, 0)$',
+              ],
+              answer: 0,
+              explanation:
+                'Apply the curl test, $\\partial F_y/\\partial x - \\partial F_x/\\partial y$: it is $1 - 1 = 0$ for $(y, x)$, which is $-\\nabla U$ with $U = -xy$. It is $2$ for $(-y, x)$ and $-2$ for $(y, -x)$: both circulate round the origin, so the work round a loop is not zero. For $(xy, 0)$ it is $-x$.',
+            },
+            {
+              question:
+                'A particle moves on a line in the potential $U(x) = 3x^2 - 2x^3$ (U in J, x in m). What force acts on it at $x = 2$ m?',
+              options: ['−12 N', '−4 N', '4 N', '12 N'],
+              answer: 3,
+              explanation:
+                '$F = -dU/dx = -(6x - 6x^2) = -(12 - 24) = +12$ N, in the $+x$ direction, which is downhill in $U$ (the potential is falling there). −12 N is the sign error of taking $F = +dU/dx$; −4 N is the value of $U$ itself.',
+            },
+            {
+              question:
+                'A 1200 kg car climbs a road inclined at $5.0^\\circ$ at a steady 20 m/s. Ignoring drag and friction losses, at what rate must the engine do work? ($g = 9.8$ m/s²)',
+              options: ['0 kW, since the speed is constant', '20.5 kW', '234 kW'],
+              answer: 1,
+              explanation:
+                'Power is $P = \\mathbf F\\cdot\\mathbf v$. The driving force balances the component of gravity along the road, $mg\\sin\\theta$, so $P = mgv\\sin\\theta = 1200 \\times 9.8 \\times 20 \\times 0.0872 = 20.5$ kW. The net work is zero (constant kinetic energy), but the engine\'s work is not: it goes into potential energy. 234 kW uses $\\cos\\theta$.',
+            },
+          ],
           relatedLessons: ['math-methods/vector-calculus/line-and-surface-integrals'],
         },
         {
@@ -651,8 +850,8 @@ The pitfall is reading $U$ as if it were the trajectory: a particle in a well do
               primary: true,
             },
             {
-              title: 'David Tong — Classical Dynamics, section 2.2-2.3: Energy and one-dimensional motion',
-              url: 'https://www.damtp.cam.ac.uk/user/tong/dynamics.html',
+              title: 'David Tong — Dynamics and Relativity, Forces: energy and one-dimensional motion',
+              url: 'https://www.damtp.cam.ac.uk/user/tong/relativity.html',
               type: 'textbook',
               cost: 'free',
               provider: 'University of Cambridge (DAMTP)',
@@ -715,6 +914,53 @@ The pitfall is reading $U$ as if it were the trajectory: a particle in a well do
               question: 'Does the period of an oscillator in a non-quadratic potential depend on amplitude? Give an example either way.',
               answerOutline:
                 'Yes, in general: the pendulum period grows with amplitude; only the pure quadratic potential is isochronous. A potential steeper than quadratic gives a period that decreases with amplitude.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'A 0.50 kg particle moves on a line with $U(x) = 2x^4 - 4x^2$ (U in J, x in m). What is the angular frequency of small oscillations about either stable equilibrium?',
+              options: ['2.83 rad/s', '4.00 rad/s', '5.66 rad/s', '32.0 rad/s'],
+              answer: 2,
+              explanation:
+                '$U\' = 8x^3 - 8x$ vanishes at $x = 0, \\pm1$, and $U\'\' = 24x^2 - 8$ is 16 N/m at $x = \\pm1$. So $\\omega = \\sqrt{U\'\'/m} = \\sqrt{16/0.5} = 5.66$ rad/s. 4.00 forgets to divide by $m$, 2.83 multiplies by it, and 32.0 is $\\omega^2$.',
+            },
+            {
+              question: 'For the same potential, $U(x) = 2x^4 - 4x^2$, which statement about $x = 0$ is correct?',
+              options: [
+                'It is stable, because $U\'(0) = 0$',
+                'It is neutral, because $U(0) = 0$',
+                'It is not an equilibrium',
+                'It is unstable, because $U\'\'(0) < 0$',
+              ],
+              answer: 3,
+              explanation:
+                '$U\'(0) = 0$ makes $x = 0$ an equilibrium, but $U\'\'(0) = -8 < 0$ makes it a local maximum of $U$, so small displacements grow, here at rate $\\sqrt{8/0.5} = 4$ s$^{-1}$. Zero force says nothing about stability by itself; the second derivative decides.',
+            },
+            {
+              question:
+                'In the same potential, the particle has total energy $E = -1$ J and starts near $x = 1$ m. Where are its turning points?',
+              options: [
+                '$x = 0$ and $1.31$ m',
+                '$x = 0.29$ and $1.71$ m',
+                '$x = 0.54$ and $1.31$ m',
+                '$x = -1.31$ and $1.31$ m',
+              ],
+              answer: 2,
+              explanation:
+                'Turning points satisfy $U = E$: $2x^4 - 4x^2 + 1 = 0$ gives $x^2 = 1 \\pm 1/\\sqrt2$, so $x = 0.54$ and $1.31$ m. The barrier at $x = 0$ has $U = 0 > E$, so the particle is trapped in the right-hand well and never reaches $-1.31$ m. 0.29 and 1.71 are the values of $x^2$, not $x$.',
+            },
+            {
+              question:
+                'A pendulum is released from rest at $60^\\circ$. How does its exact period, found by quadrature, compare with $2\\pi\\sqrt{L/g}$?',
+              options: [
+                'The same: the period of SHM does not depend on amplitude',
+                'Longer, and it grows further with amplitude',
+                'Shorter, because the bob moves faster at the bottom',
+              ],
+              answer: 1,
+              explanation:
+                'The pendulum\'s potential $-mgL\\cos\\theta$ is flatter than the parabola $\\tfrac12 mgL\\theta^2$ away from the bottom, so the restoring force is weaker than the linear one and the quadrature integral gives a longer period that grows with amplitude. Amplitude independence holds only in the small-angle limit, where the potential is quadratic.',
             },
           ],
         },
@@ -825,6 +1071,50 @@ Work through 8.01SC weeks 7-8 and OpenStax chapter 9. The pitfall to watch: "mom
                 'm2/(m1 + m2): the CM kinetic energy is retained, the relative kinetic energy (1/2) mu v_rel^2 is lost.',
             },
           ],
+          quiz: [
+            {
+              question:
+                'A 2.0 kg cart moving at 6.0 m/s hits a 4.0 kg cart at rest, and they stick together. How much kinetic energy is lost?',
+              options: ['0 J, since momentum is conserved', '12 J', '24 J', '36 J'],
+              answer: 2,
+              explanation:
+                'Momentum gives a common speed of $12/6 = 2.0$ m/s, so $T$ falls from 36 J to $\\tfrac12 \\times 6 \\times 2^2 = 12$ J: 24 J is lost, matching $\\tfrac12\\mu v_{\\text{rel}}^2$ with $\\mu = 4/3$ kg. 12 J is what remains, not the loss. Momentum conservation does not imply energy conservation.',
+            },
+            {
+              question:
+                'A 1.0 kg ball moving at 4.0 m/s collides elastically and head-on with a 3.0 kg ball at rest. What are the velocities afterwards, in m/s, positive in the original direction?',
+              options: [
+                '$v_1\' = -2$, $v_2\' = 2$',
+                '$v_1\' = 0$, $v_2\' = 4$',
+                '$v_1\' = 1$, $v_2\' = 1$',
+                '$v_1\' = 2$, $v_2\' = 2/3$',
+              ],
+              answer: 0,
+              explanation:
+                'Momentum: $v_1\' + 3v_2\' = 4$. For an elastic 1D collision the relative velocity reverses: $v_1\' - v_2\' = -4$. Solving, $v_2\' = 2$ and $v_1\' = -2$, so the light ball bounces back. (0, 4) is the equal-mass result and violates momentum here; (1, 1) is the perfectly inelastic outcome; (2, 2/3) conserves momentum but not kinetic energy.',
+            },
+            {
+              question:
+                'A 0.15 kg ball hits a wall at 20 m/s and rebounds along the same line at 15 m/s; the contact lasts 0.010 s. What is the average force of the wall on the ball?',
+              options: ['75 N', '225 N', '300 N', '525 N'],
+              answer: 3,
+              explanation:
+                'Impulse equals the change of momentum, a vector: $\\Delta p = 0.15 \\times (15 - (-20)) = 5.25$ N·s, so $\\bar F = 5.25/0.010 = 525$ N. 75 N subtracts the speeds, forgetting that the velocity reversed; 300 N counts only stopping the ball. The ball\'s momentum is not conserved: the wall (and so the Earth) supplies an external impulse.',
+            },
+            {
+              question:
+                'In a ballistic pendulum a bullet embeds itself in a hanging block, which then swings up. Which conservation law applies to each stage?',
+              options: [
+                'Mechanical energy in both stages',
+                'Momentum in both stages',
+                'Mechanical energy in the collision, momentum in the swing',
+                'Momentum in the collision, mechanical energy in the swing',
+              ],
+              answer: 3,
+              explanation:
+                'In the brief collision the impulse approximation holds, so momentum is conserved, but the embedding is perfectly inelastic and most of the kinetic energy becomes heat. During the swing, gravity and the string act, so momentum is not conserved; but only gravity, which is conservative, does work (the tension is perpendicular to the motion), so $T + U$ is.',
+            },
+          ],
         },
         {
           slug: 'systems-of-particles-and-variable-mass',
@@ -864,8 +1154,8 @@ Work through 8.01SC week 9 (the rocket problem is a standout) and the OpenStax r
               primary: true,
             },
             {
-              title: 'David Tong — Classical Dynamics, section 5: Systems of particles',
-              url: 'https://www.damtp.cam.ac.uk/user/tong/dynamics.html',
+              title: 'David Tong — Dynamics and Relativity, Systems of Particles',
+              url: 'https://www.damtp.cam.ac.uk/user/tong/relativity.html',
               type: 'textbook',
               cost: 'free',
               provider: 'University of Cambridge (DAMTP)',
@@ -925,6 +1215,40 @@ Work through 8.01SC week 9 (the rocket problem is a standout) and the OpenStax r
               question: 'State König\'s theorem for kinetic energy and explain why the cross term vanishes.',
               answerOutline:
                 'T = (1/2) M V^2 + T_internal; the cross term is V dot sum(m_i v_i\') which is zero because the total momentum relative to the CM vanishes by definition.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'A rocket in free space has exhaust speed 3.0 km/s and burns fuel until its mass is one quarter of its initial mass. What is its change of speed?',
+              options: ['1.81 km/s', '2.25 km/s', '4.16 km/s', '9.00 km/s'],
+              answer: 2,
+              explanation:
+                'Tsiolkovsky: $\\Delta v = v_e\\ln(m_0/m_f) = 3.0\\ln 4 = 4.16$ km/s. The logarithm comes from integrating $dv = -v_e\\,dm/m$. 9.00 km/s uses $m_0/m_f - 1$ and 2.25 km/s uses $1 - m_f/m_0$ in place of the logarithm; 1.81 km/s uses $\\log_{10}$.',
+            },
+            {
+              question:
+                'One stage with mass ratio $m_0/m_f = 4$ gives a certain $\\Delta v$. With the same exhaust speed, what mass ratio would a single stage need for twice that $\\Delta v$?',
+              options: ['7', '8', '16'],
+              answer: 2,
+              explanation:
+                'Doubling $\\ln(m_0/m_f)$ squares the mass ratio: $4^2 = 16$. 8 assumes $\\Delta v$ grows in proportion to the mass ratio, and 7 doubles $m_0/m_f - 1$. This exponential cost is why rockets are staged.',
+            },
+            {
+              question:
+                'A 2.0 m rod has a linear density that grows in proportion to the distance from one end, $\\lambda = cx$. How far from that end is its centre of mass?',
+              options: ['0.67 m', '1.00 m', '1.33 m', '1.50 m'],
+              answer: 2,
+              explanation:
+                '$X = \\int_0^L x\\lambda\\,dx \\big/ \\int_0^L \\lambda\\,dx = (cL^3/3)/(cL^2/2) = 2L/3 = 1.33$ m, toward the heavy end. 1.00 m is the midpoint, right only for a uniform rod; 0.67 m puts the centre of mass toward the light end; 1.50 m is the answer for $\\lambda \\propto x^2$.',
+            },
+            {
+              question:
+                'A shell that would land 600 m away on flat ground explodes at the top of its flight into two equal fragments. One drops straight down from the explosion point, starting from rest. Where does the other land, measured from the launch point?',
+              options: ['600 m', '750 m', '900 m', '1200 m'],
+              answer: 2,
+              explanation:
+                'The centre of mass keeps to the original parabola and lands at 600 m (both fragments land together, as neither has vertical velocity just after the explosion). The first fragment lands at 300 m, so $(300 + x)/2 = 600$ gives $x = 900$ m. 1200 m doubles the range, forgetting that the centre of mass lies midway between the fragments.',
             },
           ],
         },
@@ -1033,6 +1357,45 @@ Learn the standard results (thin rod about end and centre, hoop, disc, solid and
                 'Finite rotations do not commute so they are not vectors; infinitesimal rotations and hence angular velocities do add as vectors.',
             },
           ],
+          quiz: [
+            {
+              question:
+                'A uniform rod of mass 1.5 kg and length 0.80 m swings about an axis perpendicular to it, 0.20 m from one end. What is its moment of inertia about that axis?',
+              options: ['0.080 kg·m²', '0.140 kg·m²', '0.320 kg·m²', '0.380 kg·m²'],
+              answer: 1,
+              explanation:
+                'The axis is $d = 0.40 - 0.20 = 0.20$ m from the centre, so $I = \\tfrac1{12}ML^2 + Md^2 = 0.080 + 0.060 = 0.140$ kg·m². 0.080 is $I_{\\text{CM}}$ alone; 0.320 is the end-axis value $\\tfrac13 ML^2$; 0.380 adds $Md^2$ to the end value, but the parallel-axis theorem only shifts from the centre of mass.',
+            },
+            {
+              question:
+                'A uniform disc has mass 2.0 kg and radius 0.30 m. What is its moment of inertia about a line in its own plane that touches the rim (a tangent)?',
+              options: ['0.045 kg·m²', '0.180 kg·m²', '0.225 kg·m²', '0.270 kg·m²'],
+              answer: 2,
+              explanation:
+                'By the perpendicular-axis theorem a diameter has $I_d = \\tfrac12 I_z = \\tfrac14 MR^2 = 0.045$ kg·m². The tangent is parallel to a diameter at distance $R$, so $I = \\tfrac14 MR^2 + MR^2 = \\tfrac54 MR^2 = 0.225$ kg·m². 0.270 starts from the symmetry-axis value $\\tfrac12 MR^2$, which belongs to a different axis; 0.180 is the hoop value $MR^2$.',
+            },
+            {
+              question:
+                'A solid-disc flywheel of mass 50 kg and radius 0.40 m spins at 300 rad/s about its axis. How much kinetic energy does it store?',
+              options: ['90 kJ', '180 kJ', '360 kJ', '720 kJ'],
+              answer: 1,
+              explanation:
+                '$I = \\tfrac12 MR^2 = 4.0$ kg·m², so $T = \\tfrac12 I\\omega^2 = \\tfrac12 \\times 4.0 \\times 9.0\\times10^4 = 180$ kJ. 360 kJ uses the hoop value $MR^2$ (or drops the $\\tfrac12$ in $T$); 90 kJ uses the diameter value $\\tfrac14 MR^2$; 720 kJ drops both halves.',
+            },
+            {
+              question:
+                'A disc spins with $\\boldsymbol\\omega = 4\\,\\hat{\\mathbf z}$ rad/s about an axis through the origin. What is the velocity of the point of the disc at $\\mathbf r = (0.5, 0, 0)$ m?',
+              options: [
+                '2 m/s along $+\\hat{\\mathbf y}$',
+                '2 m/s along $-\\hat{\\mathbf y}$',
+                '2 m/s along $+\\hat{\\mathbf z}$',
+                '8 m/s along $+\\hat{\\mathbf y}$',
+              ],
+              answer: 0,
+              explanation:
+                '$\\mathbf v = \\boldsymbol\\omega\\times\\mathbf r = 4 \\times 0.5\\,(\\hat{\\mathbf z}\\times\\hat{\\mathbf x}) = 2\\,\\hat{\\mathbf y}$ m/s: anticlockwise seen from $+z$, by the right-hand rule. $-\\hat{\\mathbf y}$ comes from $\\mathbf r\\times\\boldsymbol\\omega$, the wrong order. The velocity is never along $\\boldsymbol\\omega$, which only marks the axis; 8 m/s is $\\omega/r$ rather than $\\omega r$.',
+            },
+          ],
         },
         {
           slug: 'torque-angular-momentum-and-rolling',
@@ -1139,6 +1502,45 @@ The usual errors: assuming friction is $\\mu N$ (it is static, so it is whatever
                 'Her muscles do positive work pulling her arms against the centrifugal tendency; L is conserved, so T = L^2/2I rises as I drops.',
             },
           ],
+          quiz: [
+            {
+              question:
+                'A solid sphere rolls without slipping down a $30^\\circ$ incline. What is its acceleration? ($g = 9.8$ m/s²)',
+              options: ['2.45 m/s²', '3.27 m/s²', '3.50 m/s²', '4.90 m/s²'],
+              answer: 2,
+              explanation:
+                '$a = g\\sin\\theta/(1 + I_{\\text{CM}}/MR^2) = 4.9/(1 + 2/5) = 3.50$ m/s², whatever the mass and radius. 4.90 m/s² forgets the rotational kinetic energy (it is a frictionless slide); 3.27 is a solid disc ($I = \\tfrac12 MR^2$); 2.45 is a hoop.',
+            },
+            {
+              question:
+                'A skater spins at 2.0 rev/s with moment of inertia 3.0 kg·m², then pulls her arms in to 1.2 kg·m². Ignoring friction from the ice, what happens?',
+              options: [
+                '5.0 rev/s; kinetic energy unchanged',
+                '3.2 rev/s; kinetic energy unchanged',
+                '0.8 rev/s; kinetic energy ÷ 2.5',
+                '5.0 rev/s; kinetic energy × 2.5',
+              ],
+              answer: 3,
+              explanation:
+                'There is no external torque about the vertical axis, so $L = I\\omega$ is conserved: $\\omega = 2.0 \\times 3.0/1.2 = 5.0$ rev/s. Then $T = L^2/2I$ rises by $3.0/1.2 = 2.5$; her muscles do the work. 3.2 rev/s comes from conserving kinetic energy instead of angular momentum.',
+            },
+            {
+              question:
+                'A 3.0 kg solid cylinder rolls without slipping down a $30^\\circ$ incline. What static friction force acts on it? ($g = 9.8$ m/s²)',
+              options: ['0 N', '4.90 N', '9.80 N', '14.7 N'],
+              answer: 1,
+              explanation:
+                'With $a = g\\sin\\theta/(1 + \\tfrac12) = \\tfrac23 g\\sin\\theta$, the force equation $Mg\\sin\\theta - f = Ma$ gives $f = \\tfrac13 Mg\\sin\\theta = 4.90$ N (check with torques about the CM: $fR = I\\alpha = \\tfrac12 MRa$). 14.7 N is all of $Mg\\sin\\theta$ and 9.80 N is $Ma$. The friction is static, fixed by the rolling constraint rather than $\\mu N$, and does no work because the contact point is at rest.',
+            },
+            {
+              question:
+                'A 2.0 kg uniform rod, 1.0 m long, turns freely on a fixed axle through its centre. A 0.50 kg lump of clay moving at 4.0 m/s, perpendicular to the rod, hits one end and sticks. What is the angular velocity just afterwards?',
+              options: ['1.26 rad/s', '1.60 rad/s', '3.43 rad/s', '6.00 rad/s'],
+              answer: 2,
+              explanation:
+                'The axle exerts a force but no torque about the centre, so angular momentum about the axle is conserved (linear momentum is not): $L = 0.50 \\times 4.0 \\times 0.50 = 1.0$ kg·m²/s and $I = \\tfrac1{12}(2.0)(1.0)^2 + 0.50(0.50)^2 = 0.292$ kg·m², so $\\omega = 3.43$ rad/s. 6.00 rad/s leaves out the clay\'s own moment of inertia; 1.60 rad/s wrongly conserves linear momentum; 1.26 rad/s uses the end-axis $\\tfrac13 ML^2$ for the rod.',
+            },
+          ],
         },
         {
           slug: 'the-inertia-tensor-and-principal-axes',
@@ -1238,6 +1640,43 @@ Numerically, building the tensor from a point cloud or a mesh and calling \`nump
               question: 'What does it mean to balance a wheel dynamically as opposed to statically?',
               answerOutline:
                 'Static balance puts the CM on the axle (no net force); dynamic balance makes the axle a principal axis (no net torque), which also requires the products of inertia to vanish.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'Two 1.0 kg point masses at $(1, 1, 0)$ m and $(-1, -1, 0)$ m are joined by a light rod and spun with $\\boldsymbol\\omega = (3, 0, 0)$ rad/s about the origin. What is $\\mathbf L$, in kg·m²/s?',
+              options: ['$(6, 0, 0)$', '$(6, -6, 0)$', '$(6, 6, 0)$', '$(12, 0, 0)$'],
+              answer: 1,
+              explanation:
+                '$I_{xx} = \\sum m(y^2 + z^2) = 2$ and the product of inertia $I_{yx} = -\\sum m\\,xy = -2$, so $\\mathbf L = (I_{xx}\\omega, I_{yx}\\omega, I_{zx}\\omega) = (6, -6, 0)$. The option $(6, 0, 0)$ assumes $\\mathbf L \\parallel \\boldsymbol\\omega$, which fails because the $x$-axis is not a principal axis; $(6, 6, 0)$ misses the minus sign in the products of inertia; $(12, 0, 0)$ uses $r^2$ instead of $r_\\perp^2$.',
+            },
+            {
+              question: 'For the same dumbbell, what are the principal moments of inertia, in kg·m²?',
+              options: ['2, 2, 4', '0, 2, 4', '0, 4, 4', '2, 4, 4'],
+              answer: 2,
+              explanation:
+                'The $xy$ block of the tensor has $I_{xx} = I_{yy} = 2$ and $I_{xy} = -2$, with eigenvalue 0 along the rod, $(1, 1, 0)$, and 4 along $(1, -1, 0)$; also $I_{zz} = 4$. Point masses on a line have no moment about that line and $2m(\\sqrt2)^2 = 4$ about any perpendicular axis. 2, 2, 4 reads off the diagonal, which gives the principal moments only in the principal frame.',
+            },
+            {
+              question: 'Which of these is a symmetric top, with $I_1 = I_2 \\ne I_3$?',
+              options: ['A uniform cube', 'A closed book', 'A tennis racket', 'A uniform thin disc'],
+              answer: 3,
+              explanation:
+                'The disc\'s symmetry axis is principal and the two moments perpendicular to it are equal by symmetry: $I_1 = I_2 = \\tfrac14 MR^2 \\ne I_3 = \\tfrac12 MR^2$. A cube is a spherical top (all three equal, though it does not look like a sphere); a book and a racket are asymmetric tops with three different moments.',
+            },
+            {
+              question:
+                'A wheel turns at constant $\\boldsymbol\\omega$ on a fixed axle that is **not** a principal axis. Which is true?',
+              options: [
+                '$\\mathbf L$ turns with the wheel, so the bearings supply a rotating torque',
+                '$\\mathbf L \\parallel \\boldsymbol\\omega$, so the bearings carry no torque',
+                '$\\mathbf L$ is constant, because $\\boldsymbol\\omega$ is constant',
+                'The wheel\'s kinetic energy changes during each turn',
+              ],
+              answer: 0,
+              explanation:
+                'Off a principal axis the products of inertia tilt $\\mathbf L$ away from $\\boldsymbol\\omega$, and $\\mathbf L$ is carried round the axle with the body. So $\\dot{\\mathbf L} \\ne 0$ although $\\boldsymbol\\omega$ is constant, and the bearings must supply $\\boldsymbol\\tau = \\dot{\\mathbf L}$: an unbalanced wheel. $T = \\tfrac12\\boldsymbol\\omega\\cdot\\mathsf I\\boldsymbol\\omega$ stays constant, since the body looks the same from the axle at every instant.',
             },
           ],
           relatedLessons: ['math-methods/linear-algebra/eigenvalues-and-eigenvectors'],
@@ -1353,6 +1792,50 @@ Tong section 3.4-3.7 and 8.223's rigid-body lectures are the references. Integra
               question: 'Why is the Chandler wobble period not equal to the rigid-body prediction?',
               answerOutline:
                 'Earth is elastic and has a fluid core and oceans; deformation lengthens the period from about 305 to about 433 days.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'A gyroscope\'s 0.50 kg rotor, with $I = 2.0\\times10^{-3}$ kg·m², spins at 200 rad/s with its axis horizontal; its centre of mass is 0.10 m from the pivot. What is the precession rate? ($g = 9.8$ m/s²)',
+              options: ['0.0061 rad/s', '0.82 rad/s', '1.23 rad/s', '245 rad/s'],
+              answer: 2,
+              explanation:
+                'The gravitational torque $mgl = 0.49$ N·m is perpendicular to $\\mathbf L$, so it turns $\\mathbf L$ at $\\Omega = mgl/I\\omega = 0.49/0.40 = 1.23$ rad/s. 0.82 rad/s inverts the ratio; 245 rad/s leaves out $\\omega$; 0.0061 rad/s divides by $\\omega^2$. The formula assumes the spin is fast.',
+            },
+            {
+              question:
+                'A book has principal moments $I_1 < I_2 < I_3$. Tossed spinning almost exactly about one principal axis, about which axis is the spin unstable?',
+              options: [
+                '$I_1$, the smallest',
+                '$I_2$, the intermediate',
+                '$I_3$, the largest',
+                'None: torque-free spin is always stable',
+              ],
+              answer: 1,
+              explanation:
+                'Linearising Euler\'s equations about spin along axis 2 gives $\\ddot\\omega_1 = \\frac{(I_2 - I_3)(I_1 - I_2)}{I_1 I_3}\\,\\omega_2^2\\,\\omega_1$. Both brackets are negative, so the coefficient is positive and the perturbation grows exponentially: the tennis-racket flip. About axes 1 and 3 the coefficient is negative and the perturbation oscillates.',
+            },
+            {
+              question:
+                'A torque-free symmetric top has $I_1 = I_2 = 0.040$ kg·m², $I_3 = 0.050$ kg·m² and spins with $\\omega_3 = 20$ rad/s. At what rate does $\\boldsymbol\\omega$ precess around the symmetry axis in the body frame?',
+              options: ['4.0 rad/s', '5.0 rad/s', '20 rad/s', '25 rad/s'],
+              answer: 1,
+              explanation:
+                '$\\Omega_b = \\omega_3(I_3 - I_1)/I_1 = 20 \\times 0.010/0.040 = 5.0$ rad/s. 4.0 rad/s divides by $I_3$ instead of $I_1$; 25 rad/s uses $I_3/I_1$ without the difference. The rate measures how far the body is from a sphere: with $I_3 = I_1$ there is no wobble.',
+            },
+            {
+              question:
+                'For a rigid body rotating with no torque, which quantities stay constant when computed from the body-frame components $\\omega_1, \\omega_2, \\omega_3$?',
+              options: [
+                '$L^2$ and $T$',
+                'Each $\\omega_i$ separately',
+                'Each $L_i = I_i\\omega_i$ separately',
+                'Only $T$, since $L^2$ changes as the body turns',
+              ],
+              answer: 0,
+              explanation:
+                '$\\mathbf L$ is fixed in space, so its magnitude is the same in any frame; no torque means no work, so $T$ is constant too. The body-frame components themselves change, because Euler\'s equations couple them: that is the wobble and the tennis-racket flip. The body-frame path of $\\mathbf L$ lies where the sphere of constant $L^2$ meets the ellipsoid of constant $T$.',
             },
           ],
         },
@@ -1492,6 +1975,45 @@ The pitfall is the pendulum: $\\ddot\\theta = -(g/L)\\sin\\theta$ is only SHM fo
                 'Q = omega_0 / (2 beta); Q = 2 pi (energy stored)/(energy lost per cycle); also omega_0/(FWHM of the resonance) in the driven case.',
             },
           ],
+          quiz: [
+            {
+              question:
+                'A 0.25 kg mass on a spring with $k = 100$ N/m oscillates with amplitude 4.0 cm. What are its maximum speed and its total energy?',
+              options: ['0.13 m/s and 0.080 J', '0.80 m/s and 0.16 J', '0.13 m/s and 0.16 J', '0.80 m/s and 0.080 J'],
+              answer: 3,
+              explanation:
+                '$\\omega_0 = \\sqrt{k/m} = 20$ rad/s, so $v_{\\max} = A\\omega_0 = 0.80$ m/s and $E = \\tfrac12 kA^2 = 0.080$ J (the same as $\\tfrac12 mv_{\\max}^2$). 0.13 m/s uses the frequency $f = \\omega_0/2\\pi$ instead of $\\omega_0$; 0.16 J drops the $\\tfrac12$.',
+            },
+            {
+              question:
+                'A 2.0 kg mass on a spring with $k = 50$ N/m has viscous damping $b = 12$ kg/s. Written as $\\ddot x + 2\\beta\\dot x + \\omega_0^2 x = 0$, how does it move?',
+              options: [
+                'Underdamped, oscillating at 4.0 rad/s',
+                'Underdamped, oscillating at 5.0 rad/s',
+                'Critically damped',
+                'Overdamped, with no oscillation',
+              ],
+              answer: 0,
+              explanation:
+                '$\\beta = b/2m = 3.0$ s$^{-1}$ and $\\omega_0 = \\sqrt{50/2} = 5.0$ rad/s, so $\\beta < \\omega_0$: underdamped, at $\\omega_1 = \\sqrt{25 - 9} = 4.0$ rad/s. Damping lowers the frequency, so 5.0 rad/s is wrong. Calling it overdamped comes from comparing $b/m = 6$, rather than $\\beta$, with $\\omega_0$.',
+            },
+            {
+              question:
+                'An oscillator has $\\omega_0 = 20$ rad/s and $\\beta = 0.050$ s$^{-1}$. What is its quality factor, and how long does its energy take to fall by a factor of $e$?',
+              options: ['$Q = 100$; 10 s', '$Q = 200$; 10 s', '$Q = 200$; 20 s', '$Q = 400$; 20 s'],
+              answer: 1,
+              explanation:
+                '$Q = \\omega_0/2\\beta = 200$. The amplitude decays as $e^{-\\beta t}$, so the energy, which goes as amplitude squared, decays as $e^{-2\\beta t}$ and falls by $e$ in $1/2\\beta = 10$ s, while the phase advances $20 \\times 10 = 200$ radians: the meaning of $Q$. 20 s is the amplitude time, and $Q = 400$ uses $\\omega_0/\\beta$.',
+            },
+            {
+              question:
+                'A block of wood 0.25 m tall floats upright in water with 0.10 m of it submerged. Pushed down slightly and released, with what period does it bob? (Ignore the motion of the water; $g = 9.8$ m/s².)',
+              options: ['0.10 s', '0.63 s', '1.00 s', '1.58 s'],
+              answer: 1,
+              explanation:
+                'Pushing it down by $x$ adds a buoyant force $\\rho_w gAx$, so $k = \\rho_w gA$; floating means $m = \\rho_w Ad$ with $d = 0.10$ m. Then $\\omega_0^2 = k/m = g/d$ and $T = 2\\pi\\sqrt{d/g} = 0.63$ s. 1.00 s uses the full height instead of the submerged depth; 0.10 s forgets the $2\\pi$; 1.58 is the frequency in Hz, not the period.',
+            },
+          ],
           relatedLessons: ['math-methods/ordinary-differential-equations/second-order-linear-odes-and-oscillators'],
         },
         {
@@ -1522,7 +2044,7 @@ whose modulus is the amplitude and whose argument is minus the phase lag $\\delt
 
 Near resonance with high $Q$, the power absorbed $P(\\omega) \\propto \\beta\\omega^2|\\tilde A|^2$ is a **Lorentzian** with full width at half maximum $2\\beta = \\omega_0/Q$. This is the practical meaning of $Q$: a sharply tuned system responds only in a narrow band. The same Lorentzian describes spectral lines, nuclear resonances and the response of a LIGO mirror.
 
-The full solution is this **steady state** plus any solution of the homogeneous equation, needed to satisfy the initial conditions. The homogeneous part decays on the timescale $1/\\beta$, so it is a **transient**; while it lasts, the two frequencies $\\omega$ and $\\omega_1$ beat against each other, producing the characteristic build-up when a resonance is driven from rest. Simulate it: the ring-up time is $Q$ periods, not one.
+The full solution is this **steady state** plus any solution of the homogeneous equation, needed to satisfy the initial conditions. The homogeneous part decays on the timescale $1/\\beta$, so it is a **transient**; while it lasts, the two frequencies $\\omega$ and $\\omega_1$ beat against each other, producing the characteristic build-up when a resonance is driven from rest. Simulate it: the transient dies away on the timescale $1/\beta = Q/\pi$ periods, so the ring-up takes a few of those, of order $Q$ periods, not one.
 
 The pitfall is claiming the peak of $|\\tilde A|$ sits exactly at $\\omega_0$; it is at $\\sqrt{\\omega_0^2 - 2\\beta^2}$, below both $\\omega_0$ and $\\omega_1$, though for $Q \\gg 1$ the distinction is negligible. Read Feynman chapters 23-24, then 8.03SC's first lectures, which treat the same material with the complex method used throughout the waves subject.`,
           resources: [
@@ -1602,6 +2124,50 @@ The pitfall is claiming the peak of $|\\tilde A|$ sits exactly at $\\omega_0$; i
                 'The natural-frequency part is a homogeneous solution that decays with damping; only the forced particular solution survives, and it must oscillate at the driving frequency to balance the equation.',
             },
           ],
+          quiz: [
+            {
+              question:
+                'A lightly damped oscillator with $Q = 50$ is displaced 2.0 mm by a steady force $f_0$. If a force of the same amplitude is applied sinusoidally at exactly $\\omega_0$, what is the steady-state amplitude?',
+              options: ['0.04 mm', '2.0 mm', '100 mm', '200 mm'],
+              answer: 2,
+              explanation:
+                'At $\\omega = \\omega_0$ the denominator is $2i\\beta\\omega_0$, so $|\\tilde A| = (f_0/m)/2\\beta\\omega_0 = (f_0/k)\\,\\omega_0/2\\beta = Q f_0/k = 50 \\times 2.0 = 100$ mm. 200 mm uses $\\omega_0/\\beta$ for $Q$; 2.0 mm ignores resonance; 0.04 mm divides by $Q$.',
+            },
+            {
+              question:
+                'The same oscillator is driven at $\\omega = 3\\omega_0$. How does its steady-state displacement relate to the driving force?',
+              options: [
+                'Nearly opposite to the force',
+                'Nearly in phase with the force',
+                'Lagging the force by $\\pi/2$',
+                'Leading the force by $\\pi/2$',
+              ],
+              answer: 0,
+              explanation:
+                'Above resonance the term $\\omega_0^2 - \\omega^2 = -8\\omega_0^2$ dominates the denominator, so $\\tilde A$ is nearly negative real: $\\tan\\delta = 2\\beta\\omega/(\\omega_0^2 - \\omega^2) = -0.0075$ and $\\delta \\approx \\pi - 0.008$ rad. The mass moves opposite to the force. A lag of $\\pi/2$ happens only at $\\omega_0$; in phase is the low-frequency limit.',
+            },
+            {
+              question:
+                'A resonator has $\\omega_0 = 1000$ rad/s and $Q = 200$. What is the full width at half maximum of its power-absorption peak?',
+              options: ['0.2 rad/s', '2.5 rad/s', '5.0 rad/s', '10 rad/s'],
+              answer: 2,
+              explanation:
+                'The Lorentzian\'s full width at half maximum is $2\\beta = \\omega_0/Q = 1000/200 = 5.0$ rad/s. 2.5 rad/s is $\\beta$, the half-width; 10 rad/s doubles it again; 0.2 rad/s is $Q/\\omega_0$.',
+            },
+            {
+              question:
+                'An oscillator with $Q = 100$ and a period of 0.010 s is driven at resonance, starting from rest. Roughly how long does it take to reach its steady-state amplitude?',
+              options: [
+                'About 0.01 s, one period',
+                'About 1 s, of order $Q$ periods',
+                'About 100 s',
+                'Never: at resonance the amplitude grows without bound',
+              ],
+              answer: 1,
+              explanation:
+                'The transient (the homogeneous part) decays on the timescale $1/\\beta = 2Q/\\omega_0 \\approx 0.3$ s, so the amplitude builds up over a time of order $Q$ periods, about 1 s. Unbounded growth happens only with no damping; with damping, the energy lost per cycle eventually matches the energy fed in.',
+            },
+          ],
         },
         {
           slug: 'newtonian-gravitation',
@@ -1644,12 +2210,12 @@ Work through 8.01SC week 14 and Tong section 4.1-4.3. The common pitfall is the 
               primary: true,
             },
             {
-              title: 'David Tong — Classical Dynamics, section 4: Central forces',
-              url: 'https://www.damtp.cam.ac.uk/user/tong/dynamics.html',
+              title: 'David Tong — Dynamics and Relativity, Central Forces',
+              url: 'https://www.damtp.cam.ac.uk/user/tong/relativity.html',
               type: 'textbook',
               cost: 'free',
               provider: 'University of Cambridge (DAMTP)',
-              note: 'Sections 4.1-4.3: reduction to one body, the effective potential, stability of circular orbits.',
+              note: 'The first half of the chapter: reduction to one body, the effective potential, stability of circular orbits.',
             },
             {
               title: 'OpenStax University Physics Vol. 1 — Ch. 13: Gravitation',
@@ -1710,6 +2276,50 @@ Work through 8.01SC week 14 and Tong section 4.1-4.3. The common pitfall is the 
                 'A uniform shell acts on an external point as a point mass at its centre and exerts no net force inside. Inside a uniform Earth, g is proportional to r, giving SHM through a tunnel.',
             },
           ],
+          quiz: [
+            {
+              question:
+                'A probe leaves the surface of an airless planet at exactly the escape speed, 5.0 km/s. What is its speed when it is 4 planetary radii from the centre?',
+              options: ['0 km/s', '0.31 km/s', '1.25 km/s', '2.5 km/s'],
+              answer: 3,
+              explanation:
+                'Escape speed means $E = \\tfrac12 mv^2 - GMm/r = 0$, so $v = \\sqrt{2GM/r}$ at every radius, falling as $r^{-1/2}$: $5.0/\\sqrt4 = 2.5$ km/s. 1.25 km/s scales the speed as $1/r$ and 0.31 km/s as $1/r^2$. The probe reaches zero speed only at infinity, where $U = 0$.',
+            },
+            {
+              question:
+                'Treat the Earth as a uniform solid sphere with surface gravity 9.8 m/s². What is the gravitational field strength halfway to the centre?',
+              options: ['0 m/s²', '4.9 m/s²', '9.8 m/s²', '39 m/s²'],
+              answer: 1,
+              explanation:
+                'By the shell theorem the outer shell exerts no net force, and the inner sphere of radius $R/2$ holds $1/8$ of the mass: $g = G(M/8)/(R/2)^2 = g_s/2 = 4.9$ m/s², the linear growth $g \\propto r$. 39 m/s² applies the inverse-square law to the whole mass; 0 applies "no force inside a shell" to a solid sphere.',
+            },
+            {
+              question:
+                'Two stars of masses $3.0\\times10^{30}$ kg and $6.0\\times10^{30}$ kg orbit each other. Which mass appears in the equation of relative motion, $\\mu\\ddot{\\mathbf r} = F(r)\\hat{\\mathbf r}$?',
+              options: [
+                '$2.0\\times10^{30}$ kg',
+                '$4.5\\times10^{30}$ kg',
+                '$9.0\\times10^{30}$ kg',
+                '$1.8\\times10^{61}$ kg',
+              ],
+              answer: 0,
+              explanation:
+                '$\\mu = m_1m_2/(m_1 + m_2) = (18/9)\\times10^{30} = 2.0\\times10^{30}$ kg, smaller than either mass. $9.0\\times10^{30}$ kg is the total, which carries the centre of mass and appears in Kepler\'s third law; $4.5\\times10^{30}$ kg is the average and $1.8\\times10^{61}$ forgets to divide.',
+            },
+            {
+              question:
+                'A body moves under an attractive inverse-square force with energy slightly above the minimum of $U_{\\text{eff}}(r)$ but below zero. What kind of motion is this?',
+              options: [
+                'A circular orbit',
+                'An unbound orbit that escapes to infinity',
+                'A fall into the centre',
+                'A bound orbit, with $r$ oscillating between two turning points',
+              ],
+              answer: 3,
+              explanation:
+                'The energy line cuts $U_{\\text{eff}}$ at two radii, so $r$ oscillates between them (an ellipse, as the next lesson shows). A circular orbit needs $E$ exactly at the minimum, escape needs $E \\ge 0$, and the centrifugal barrier $L^2/2\\mu r^2$ prevents a fall to the centre whenever $L \\ne 0$.',
+            },
+          ],
         },
         {
           slug: 'keplers-laws-and-orbits',
@@ -1744,8 +2354,8 @@ Why are Kepler orbits *closed*, when a generic central force gives a rosette? Be
 Work through Tong section 4.4-4.5 and the 8.01SC Kepler material; the PhET gravity and orbits simulation is good for intuition and your own solve_ivp orbit integrator is better.`,
           resources: [
             {
-              title: 'David Tong — Classical Dynamics, section 4.4-4.5: The Kepler problem',
-              url: 'https://www.damtp.cam.ac.uk/user/tong/dynamics.html',
+              title: 'David Tong — Dynamics and Relativity, Central Forces: the Kepler problem',
+              url: 'https://www.damtp.cam.ac.uk/user/tong/relativity.html',
               type: 'textbook',
               cost: 'free',
               provider: 'University of Cambridge (DAMTP)',
@@ -1820,6 +2430,55 @@ Work through Tong section 4.4-4.5 and the 8.01SC Kepler material; the PhET gravi
               question: 'How do you find the mass of a distant star with a planet?',
               answerOutline:
                 'Measure the planet\'s period and semi-major axis and apply Kepler\'s third law in the form T^2 = 4 pi^2 a^3 / G (M + m).',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'A planet orbits a star on a near-circular orbit of radius $1.0\\times10^{11}$ m with period $2.0\\times10^{7}$ s. With $G = 6.67\\times10^{-11}$ N·m²/kg² and the planet\'s mass negligible, what is the star\'s mass?',
+              options: [
+                '$3.7\\times10^{28}$ kg',
+                '$2.4\\times10^{29}$ kg',
+                '$1.5\\times10^{30}$ kg',
+                '$3.0\\times10^{37}$ kg',
+              ],
+              answer: 2,
+              explanation:
+                'Kepler\'s third law, $T^2 = 4\\pi^2a^3/GM$, gives $M = 4\\pi^2a^3/GT^2 = 39.5\\times10^{33}/(6.67\\times10^{-11} \\times 4.0\\times10^{14}) = 1.5\\times10^{30}$ kg. $3.7\\times10^{28}$ drops the $4\\pi^2$, $2.4\\times10^{29}$ uses $2\\pi$, and $3.0\\times10^{37}$ uses $T$ for $T^2$.',
+            },
+            {
+              question:
+                'A spacecraft in a circular orbit of radius $R$, moving at 7.0 km/s, starts a Hohmann transfer to a circular orbit of radius $4R$. Using vis-viva, how big is the first burn?',
+              options: ['1.85 km/s', '2.26 km/s', '2.39 km/s', '2.90 km/s'],
+              answer: 0,
+              explanation:
+                'The transfer ellipse has $a = (R + 4R)/2 = 2.5R$. At $r = R$, vis-viva gives $v^2 = (GM/R)(2 - 1/2.5) = 1.6\\,GM/R$, so $v = 1.265 \\times 7.0 = 8.85$ km/s and the burn is 1.85 km/s. 2.26 km/s takes $a = 4R$ and 2.39 km/s takes $a = 5R$; 2.90 km/s is the burn to escape speed, $(\\sqrt2 - 1) \\times 7.0$.',
+            },
+            {
+              question:
+                'Satellites A and B pass the same point at the same speed, A moving horizontally and B climbing at $30^\\circ$ above the horizontal. Which is true?',
+              options: [
+                'Same semi-major axis and period, different eccentricity',
+                'Same eccentricity, different periods',
+                'B has the longer period, because it is climbing',
+                'Their orbits are identical',
+              ],
+              answer: 0,
+              explanation:
+                'Same $r$ and speed means the same energy, and $a = -k/2E$ depends on energy alone (that is vis-viva), so $a$ and, by Kepler\'s third law, $T$ agree. Their angular momenta differ (B has $L = \\mu rv\\cos 30^\\circ$), and $e$ depends on both $E$ and $L$, so the shapes differ.',
+            },
+            {
+              question:
+                'Why does an orbit under a slightly perturbed central force precess, while a pure inverse-square orbit closes on itself?',
+              options: [
+                'It breaks the symmetry that conserves the Laplace-Runge-Lenz vector',
+                'It destroys conservation of angular momentum',
+                'It removes energy from the orbit',
+                'All central forces close orbits, so it must be non-central',
+              ],
+              answer: 0,
+              explanation:
+                'For the $1/r$ potential the LRL vector $\\mathbf A = \\mathbf p\\times\\mathbf L - \\mu k\\hat{\\mathbf r}$ is conserved and fixes the major axis. A perturbed central force still conserves $\\mathbf L$ and $E$, but not $\\mathbf A$, so the axis turns. Generic central forces give rosettes; by Bertrand\'s theorem only the $1/r$ and $r^2$ potentials give closed orbits.',
             },
           ],
         },
@@ -1954,6 +2613,48 @@ Work through Tong section 2.1 and Feynman II-19; Cline's open textbook on variat
                 'They kill the boundary term from integrating by parts, so only the bulk integrand must vanish; free endpoints add natural boundary conditions instead.',
             },
           ],
+          quiz: [
+            {
+              question: 'Which equation makes $\\int (y\'^2 + 4y^2)\\,dx$ stationary?',
+              options: ['$y\'\' = 4y$', '$y\'\' = -4y$', '$y\'\' = 8y$', '$y\'\' = 2y$'],
+              answer: 0,
+              explanation:
+                '$\\partial F/\\partial y\' = 2y\'$ and $\\partial F/\\partial y = 8y$, so $\\frac{d}{dx}(2y\') - 8y = 0$, that is $y\'\' = 4y$. $y\'\' = -4y$ comes from adding the two terms instead of subtracting; $8y$ and $2y$ each drop one of the factors of 2.',
+            },
+            {
+              question:
+                'A particle of mass $m$ moves on a line in the potential $U = \\lambda x^4$. Which equation of motion follows from Hamilton\'s principle with $L = T - U$?',
+              options: [
+                '$m\\ddot x = -4\\lambda x^3$',
+                '$m\\ddot x = 4\\lambda x^3$',
+                '$m\\ddot x = -\\lambda x^4$',
+                '$m\\ddot x = -12\\lambda x^2$',
+              ],
+              answer: 0,
+              explanation:
+                '$\\partial L/\\partial\\dot x = m\\dot x$ and $\\partial L/\\partial x = -4\\lambda x^3$, so $m\\ddot x = -4\\lambda x^3 = -dU/dx$: Newton\'s law. The $+$ sign is what $L = T + U$ would give, a force pushing uphill in $U$; $-\\lambda x^4$ is the potential, not its derivative; $-12\\lambda x^2$ differentiates twice.',
+            },
+            {
+              question:
+                'A free 2.0 kg particle goes from $x = 0$ at $t = 0$ to $x = 6.0$ m at $t = 3.0$ s. What is the action $S = \\int L\\,dt$ along the true path?',
+              options: ['6 J·s', '12 J·s', '16 J·s', '24 J·s'],
+              answer: 1,
+              explanation:
+                'The true path has constant velocity 2.0 m/s, so $L = \\tfrac12 mv^2 = 4.0$ J for 3.0 s and $S = 12$ J·s. 24 J·s drops the $\\tfrac12$. 16 J·s is the action of the false path $x = \\tfrac23 t^2$, which meets the same endpoints; it is larger, since for a free particle the true path minimises the action.',
+            },
+            {
+              question: 'What does Hamilton\'s principle actually require of the true path between fixed endpoints?',
+              options: [
+                'The action is always a minimum',
+                'The total energy is a minimum',
+                'The travel time is a minimum',
+                'The action is stationary; for long paths it can be a saddle',
+              ],
+              answer: 3,
+              explanation:
+                '$\\delta S = 0$ to first order in the variation is all the Euler-Lagrange equations encode. For short paths the stationary point is a minimum, but for long enough trajectories it becomes a saddle, so "least action" is a misnomer. Minimum travel time is the brachistochrone, a different functional.',
+            },
+          ],
         },
         {
           slug: 'generalised-coordinates-and-the-euler-lagrange-equations',
@@ -2065,6 +2766,54 @@ Pitfalls: writing $T$ in terms of the wrong velocity (always express the *inerti
               question: 'How many degrees of freedom does a rigid body have, and a double pendulum in a plane?',
               answerOutline:
                 'Six (three translational, three rotational) for a free rigid body; two for a planar double pendulum.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'A particle moves in a plane with $L = \\tfrac12 m(\\dot r^2 + r^2\\dot\\theta^2) - \\tfrac12 kr^2$. What is the radial equation of motion?',
+              options: [
+                '$m\\ddot r = -kr$',
+                '$m\\ddot r = -mr\\dot\\theta^2 - kr$',
+                '$m\\ddot r = mr\\dot\\theta^2 + kr$',
+                '$m\\ddot r = mr\\dot\\theta^2 - kr$',
+              ],
+              answer: 3,
+              explanation:
+                '$\\partial L/\\partial\\dot r = m\\dot r$ and $\\partial L/\\partial r = mr\\dot\\theta^2 - kr$ (with $\\dot r$ and $\\dot\\theta$ held fixed), so $m\\ddot r = mr\\dot\\theta^2 - kr$. The $mr\\dot\\theta^2$ term is the centripetal part of the polar acceleration, appearing with no rotating-frame argument; dropping it treats $r$ as if it were Cartesian.',
+            },
+            {
+              question: 'In the same Lagrangian, what is the momentum conjugate to $\\theta$, and is it conserved?',
+              options: [
+                '$mr\\dot\\theta$; conserved',
+                '$mr^2\\dot\\theta$; conserved, because $\\theta$ is cyclic',
+                '$mr^2\\dot\\theta$; not conserved, because $r$ changes',
+                '$m\\dot\\theta$; conserved',
+              ],
+              answer: 1,
+              explanation:
+                '$p_\\theta = \\partial L/\\partial\\dot\\theta = mr^2\\dot\\theta$, the angular momentum. $L$ does not contain $\\theta$, so $\\dot p_\\theta = \\partial L/\\partial\\theta = 0$. It is $p_\\theta$ that is conserved, not $\\dot\\theta$: as $r$ changes, $\\dot\\theta$ changes to keep $mr^2\\dot\\theta$ fixed.',
+            },
+            {
+              question:
+                'Three particles move in three dimensions, joined in a chain by two rigid rods (1 to 2 and 2 to 3) with a free joint at particle 2. How many degrees of freedom does the system have?',
+              options: ['5', '6', '7', '9'],
+              answer: 2,
+              explanation:
+                '$3N$ minus the number of constraints: $9 - 2 = 7$, for example the position of particle 2 plus two angles for each rod. 9 ignores the constraints; 6 is a rigid body, which this is not, because the chain can bend at particle 2.',
+            },
+            {
+              question:
+                'A bead slides on a frictionless hoop of radius $R$ that is driven to spin at constant $\\omega$ about its vertical diameter; $\\theta$ is the bead\'s angle from the bottom. Which kinetic energy goes into $L$?',
+              options: [
+                '$\\tfrac12 mR^2\\dot\\theta^2$',
+                '$\\tfrac12 mR^2(\\dot\\theta^2 + \\omega^2)$',
+                '$\\tfrac12 mR^2(\\dot\\theta + \\omega)^2$',
+                '$\\tfrac12 mR^2(\\dot\\theta^2 + \\omega^2\\sin^2\\theta)$',
+              ],
+              answer: 3,
+              explanation:
+                'Use the inertial-frame velocity: $R\\dot\\theta$ along the hoop plus $\\omega R\\sin\\theta$ round the vertical axis (the bead is $R\\sin\\theta$ from it), and these are perpendicular. $\\tfrac12 mR^2\\dot\\theta^2$ uses the velocity relative to the rotating hoop, the classic pitfall; $\\dot\\theta^2 + \\omega^2$ forgets that the distance from the axis is $R\\sin\\theta$.',
             },
           ],
         },
@@ -2179,6 +2928,49 @@ Read Tong section 2.5 and Cline chapter 6-7; the Feynman chapter on symmetry in 
                 'When the transformation from Cartesian to generalised coordinates is time-independent (so T is homogeneous quadratic in the generalised velocities) and U is velocity-independent.',
             },
           ],
+          quiz: [
+            {
+              question:
+                'A skier starts from rest at the top of a frictionless hemispherical hill. Solving for the constraint force (the normal force), at what angle from the vertical does she leave the surface?',
+              options: ['41.8°', '48.2°', '60.0°', '70.5°'],
+              answer: 1,
+              explanation:
+                'Energy gives $v^2 = 2gR(1 - \\cos\\theta)$ and the radial equation gives $N = mg\\cos\\theta - mv^2/R$. Setting $N = 0$: $\\cos\\theta = 2(1 - \\cos\\theta)$, so $\\cos\\theta = 2/3$ and $\\theta = 48.2^\\circ$, whatever $R$ and $g$. 41.8° solves $\\sin\\theta = 2/3$; 60.0° comes from $\\cos\\theta = 1/2$, dropping the 2 in $v^2$; 70.5° solves $\\cos\\theta = 1/3$.',
+            },
+            {
+              question:
+                'Which quantity, besides the energy, is conserved for $L = \\tfrac12 m(\\dot x^2 + \\dot y^2) - U(x - y)$?',
+              options: ['$p_x - p_y$', '$p_x + p_y$', '$p_x$ and $p_y$ separately', 'Nothing else'],
+              answer: 1,
+              explanation:
+                'Shifting both coordinates, $x \\to x + \\epsilon$ and $y \\to y + \\epsilon$, leaves $x - y$ and hence $L$ unchanged. With $K = (1, 1)$ the Noether charge is $p_xK_x + p_yK_y = p_x + p_y$. Neither is conserved separately, because $U$ depends on each; $p_x - p_y$ would need invariance under $x \\to x + \\epsilon$, $y \\to y - \\epsilon$.',
+            },
+            {
+              question:
+                'For the bead on a hoop driven at constant $\\omega$, $L$ has no explicit time dependence. Which is true?',
+              options: [
+                '$T + U$ is conserved',
+                '$h$ equals $T + U$, and it is conserved',
+                'Nothing is conserved, because a motor acts',
+                '$h = \\sum p\\dot q - L$ is conserved, but it is not $T + U$',
+              ],
+              answer: 3,
+              explanation:
+                'Time-translation invariance conserves $h$. But $T$ contains $\\tfrac12 mR^2\\omega^2\\sin^2\\theta$, which is not quadratic in $\\dot\\theta$, so $h = \\tfrac12 mR^2(\\dot\\theta^2 - \\omega^2\\sin^2\\theta) - mgR\\cos\\theta \\ne T + U$. $T + U$ itself is not conserved, because the motor that keeps $\\omega$ fixed does work on the bead.',
+            },
+            {
+              question: 'Which of these constraints is non-holonomic?',
+              options: [
+                'A bead on a fixed circular wire',
+                'A pendulum bob on a rigid rod',
+                'Two particles joined by a rigid rod',
+                'A coin rolling upright on a table without slipping',
+              ],
+              answer: 3,
+              explanation:
+                'Rolling without slipping constrains velocities in a way that cannot be integrated into a condition on positions: the coin can reach any position and orientation, just not along arbitrary paths. The other three are equations $f(\\mathbf r) = 0$ on positions, so they can be built into the coordinates.',
+            },
+          ],
         },
         {
           slug: 'small-oscillations-and-applications',
@@ -2274,6 +3066,44 @@ Pitfalls: Euler angle conventions differ between books (physics uses z-x-z; aero
               question: 'What is a sleeping top and when does it wake up?',
               answerOutline:
                 'A top spinning upright, stable while omega_3^2 > 4 I_1 M g l / I_3^2; as friction reduces the spin below this the vertical position becomes unstable and it begins to nutate and precess.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'Two 0.50 kg carts on a track are connected wall–spring–cart–spring–cart–spring–wall, all three springs having $k = 8.0$ N/m. What are the normal-mode angular frequencies?',
+              options: ['2.0 and 3.5 rad/s', '4.0 and 5.7 rad/s', '4.0 and 6.9 rad/s', '5.7 rad/s for both'],
+              answer: 2,
+              explanation:
+                '$\\mathsf T = m\\mathsf 1$ and $\\mathsf V$ has diagonal entries $2k$ and off-diagonal entries $-k$, so $\\det(\\mathsf V - \\omega^2\\mathsf T) = 0$ gives $\\omega^2 = k/m$ and $3k/m$: 4.0 and 6.9 rad/s. "5.7 for both" is $\\sqrt{2k/m}$, each cart on its two springs with the coupling ignored; 2.0 and 3.5 multiply by $m$ instead of dividing.',
+            },
+            {
+              question: 'In the same system, what does the lower-frequency normal mode look like?',
+              options: [
+                'The carts move together, in phase, with equal amplitudes',
+                'The carts move in opposite directions with equal amplitudes',
+                'Only one cart moves',
+                'The carts move in phase, one with twice the amplitude',
+              ],
+              answer: 0,
+              explanation:
+                'For $\\mathbf a = (1, 1)$ the middle spring is never stretched, so each cart feels only its outer spring: $\\omega^2 = k/m$. In the antiphase mode $(1, -1)$ the middle spring stretches by twice the displacement, adding $2k$ to the outer $k$ for $\\omega^2 = 3k/m$, the higher frequency.',
+            },
+            {
+              question:
+                'In the heavy-top Lagrangian $L = \\tfrac12 I_1(\\dot\\theta^2 + \\dot\\phi^2\\sin^2\\theta) + \\tfrac12 I_3(\\dot\\psi + \\dot\\phi\\cos\\theta)^2 - Mg\\ell\\cos\\theta$, which coordinates are cyclic?',
+              options: ['$\\theta$ only', '$\\psi$ only', 'All three', '$\\phi$ and $\\psi$'],
+              answer: 3,
+              explanation:
+                '$L$ contains $\\dot\\phi$ and $\\dot\\psi$ but not $\\phi$ or $\\psi$, so $p_\\phi$ and $p_\\psi$ are conserved; with the energy, these three constants reduce the motion to one dimension in $\\theta$. $\\theta$ appears explicitly, in $\\sin\\theta$, $\\cos\\theta$ and the potential, so it is not cyclic. $\\phi$ is cyclic even though $\\dot\\phi$ appears in two terms.',
+            },
+            {
+              question:
+                'A symmetric top has $I_1 = 4.0\\times10^{-4}$ kg·m², $I_3 = 2.0\\times10^{-4}$ kg·m², $M = 0.10$ kg and $\\ell = 0.040$ m. Using $\\omega_3^2 > 4I_1Mg\\ell/I_3^2$, above what spin can it sleep upright? ($g = 9.8$ m/s²)',
+              options: ['14.0 rad/s', '19.8 rad/s', '39.6 rad/s', '1570 rad/s'],
+              answer: 2,
+              explanation:
+                '$4I_1Mg\\ell/I_3^2 = 4 \\times 4.0\\times10^{-4} \\times 0.10 \\times 9.8 \\times 0.040/(4.0\\times10^{-8}) = 1570$ s$^{-2}$, so $\\omega_3 > 39.6$ rad/s. 1570 is $\\omega_3^2$, without the square root; 19.8 drops the factor 4; 14.0 swaps $I_1$ and $I_3$.',
             },
           ],
         },
@@ -2409,6 +3239,55 @@ Pitfall: $H$ must be written as a function of $(q, p)$ only, never $\\dot q$; st
                 'Replacing p by p - qA (and adding q phi) in the free Hamiltonian; the same prescription carries over unchanged to the Schrodinger equation.',
             },
           ],
+          quiz: [
+            {
+              question:
+                'A 2.0 kg mass on a spring with $k = 8.0$ N/m has $H = p^2/2m + \\tfrac12 kx^2$. At the instant $x = 0.50$ m and $p = 3.0$ kg·m/s, what do Hamilton\'s equations give?',
+              options: [
+                '$\\dot x = 1.5$ m/s, $\\dot p = -4.0$ N',
+                '$\\dot x = 1.5$ m/s, $\\dot p = +4.0$ N',
+                '$\\dot x = 6.0$ m/s, $\\dot p = -4.0$ N',
+                '$\\dot x = 1.5$ m/s, $\\dot p = -1.0$ N',
+              ],
+              answer: 0,
+              explanation:
+                '$\\dot x = \\partial H/\\partial p = p/m = 1.5$ m/s and $\\dot p = -\\partial H/\\partial x = -kx = -4.0$ N. Dropping the minus sign in $\\dot p$ gives an outward push of $+4.0$ N; $-1.0$ N is minus the potential energy $\\tfrac12 kx^2$ rather than its derivative; 6.0 m/s multiplies by $m$.',
+            },
+            {
+              question:
+                'An external agent slowly stiffens a spring, so $H = p^2/2m + \\tfrac12 k(t)x^2$. Which is true?',
+              options: [
+                '$H = T + U$, and it is conserved',
+                '$H = T + U$, but it is not conserved',
+                '$H$ is conserved, but it is not $T + U$',
+                '$H$ is undefined, because $L$ depends on $t$',
+              ],
+              answer: 1,
+              explanation:
+                'The coordinate is Cartesian and $U$ does not depend on velocity, so $H = T + U$. But $dH/dt = \\partial H/\\partial t = \\tfrac12\\dot k x^2 \\ne 0$: the agent stiffening the spring does work. The two conditions are separate; the bead on the rotating hoop is the opposite case, conserved but not $T + U$.',
+            },
+            {
+              question:
+                'A charged particle has $H = (\\mathbf p - q\\mathbf A)^2/2m + q\\phi$. What is its velocity, $\\dot{\\mathbf r} = \\partial H/\\partial\\mathbf p$?',
+              options: [
+                '$\\mathbf p/m$',
+                '$(\\mathbf p + q\\mathbf A)/m$',
+                '$q\\mathbf A/m$',
+                '$(\\mathbf p - q\\mathbf A)/m$',
+              ],
+              answer: 3,
+              explanation:
+                'Differentiating the square gives $\\dot{\\mathbf r} = (\\mathbf p - q\\mathbf A)/m$, so the canonical momentum is $\\mathbf p = m\\dot{\\mathbf r} + q\\mathbf A$. It is not $m\\mathbf v$ when a vector potential is present, which is why $\\mathbf p/m$ is wrong.',
+            },
+            {
+              question:
+                'A free relativistic particle has $H = \\sqrt{p^2c^2 + m^2c^4}$. If $pc = 3.0$ GeV and $mc^2 = 4.0$ GeV, what is its speed?',
+              options: ['$0.60c$', '$0.75c$', '$0.80c$', '$c$'],
+              answer: 0,
+              explanation:
+                '$\\dot x = \\partial H/\\partial p = pc^2/E$ with $E = \\sqrt{9 + 16} = 5.0$ GeV, so $v = (3/5)c = 0.60c$. $0.75c$ is the Newtonian $p/m$, which would exceed $c$ for larger $p$; $0.80c$ is $mc^2/E$.',
+            },
+          ],
         },
         {
           slug: 'phase-space-and-liouvilles-theorem',
@@ -2513,6 +3392,55 @@ Pitfall: Liouville's theorem is about *ensembles*, not single trajectories; a si
               question: 'Why do symplectic integrators have bounded energy error while RK4 drifts?',
               answerOutline:
                 'A symplectic map exactly conserves a nearby "shadow" Hamiltonian, so the true energy oscillates around it; RK4 is not symplectic and its per-step errors accumulate secularly.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'A pendulum on a light rigid rod of length 0.50 m is at the bottom. What is the smallest angular speed there that takes it over the top, from libration to rotation? ($g = 9.8$ m/s²)',
+              options: ['4.43 rad/s', '6.26 rad/s', '8.85 rad/s', '9.90 rad/s'],
+              answer: 2,
+              explanation:
+                'The separatrix is $E = mgL$, with $H = \\tfrac12 mL^2\\dot\\theta^2 - mgL\\cos\\theta$. At the bottom $E = \\tfrac12 mL^2\\dot\\theta^2 - mgL$, so crossing needs $\\dot\\theta^2 > 4g/L$: $\\dot\\theta > 8.85$ rad/s. 6.26 rad/s raises the bob by only $L$ instead of $2L$; 9.90 rad/s, $\\sqrt{5g/L}$, is the condition for a bob on a string, which must stay taut at the top.',
+            },
+            {
+              question:
+                'In the pendulum\'s phase portrait, what kinds of fixed point are $\\theta = 0$ and $\\theta = \\pi$?',
+              options: [
+                'Both centres',
+                'A centre and a saddle',
+                'A saddle and a centre',
+                'A stable spiral and a saddle',
+              ],
+              answer: 1,
+              explanation:
+                'Near $\\theta = 0$ the potential has a minimum: closed ellipses round a centre. Near $\\theta = \\pi$ it has a maximum: hyperbolic trajectories round a saddle, through which the separatrix runs. A spiral needs damping, which a Hamiltonian system does not have.',
+            },
+            {
+              question:
+                'A small blob of initial conditions with area 0.01 (in units of $q$ times $p$) evolves under a one-degree-of-freedom Hamiltonian. What happens to it?',
+              options: [
+                'Its area stays 0.01, though it may stretch into a long filament',
+                'It shrinks toward a point as trajectories approach an attractor',
+                'Its area grows as the trajectories separate',
+                'It keeps its shape and area exactly, moving rigidly',
+              ],
+              answer: 0,
+              explanation:
+                'Liouville: $\\nabla\\cdot(\\dot q, \\dot p) = \\partial^2 H/\\partial q\\partial p - \\partial^2 H/\\partial p\\partial q = 0$, so the flow preserves area but not shape. In the pendulum, points nearer the separatrix have longer periods and fall behind, shearing the blob into a filament. Shrinking onto an attractor needs dissipation.',
+            },
+            {
+              question:
+                'You integrate a planetary orbit for $10^6$ steps with RK4 and with leapfrog (kick-drift-kick), using the same step size. What do you expect to see in the energy?',
+              options: [
+                'Leapfrog\'s error oscillates without growing; RK4\'s drifts',
+                'RK4 conserves it exactly, being fourth order',
+                'Both drift steadily at similar rates',
+                'Leapfrog is exact; RK4 oscillates',
+              ],
+              answer: 0,
+              explanation:
+                'A symplectic integrator preserves phase-space area exactly and conserves a slightly modified Hamiltonian, so its energy error stays bounded. RK4 is more accurate per step but not symplectic, and its small errors accumulate into a steady drift over long runs. Higher order is not the same as preserving structure.',
             },
           ],
         },
@@ -2624,6 +3552,37 @@ Read Tong section 4.4-4.6 and 4.8 (the Hamilton-Jacobi material there is optiona
                 'A quantity (the action I = (1/2pi) closed-integral p dq) conserved under slow changes of parameters; e.g. E/omega for a pendulum whose length is slowly changed, or the magnetic moment of a charged particle in a slowly varying B.',
             },
           ],
+          quiz: [
+            {
+              question: 'For one degree of freedom, what is $\\{q^2, p^2\\}$?',
+              options: ['$0$', '$2qp$', '$4qp$', '$-4qp$'],
+              answer: 2,
+              explanation:
+                '$\\{q^2, p^2\\} = \\frac{\\partial q^2}{\\partial q}\\frac{\\partial p^2}{\\partial p} - \\frac{\\partial q^2}{\\partial p}\\frac{\\partial p^2}{\\partial q} = (2q)(2p) - 0 = 4qp$. $-4qp$ is $\\{p^2, q^2\\}$, the bracket in the wrong order; the bracket is antisymmetric.',
+            },
+            {
+              question: 'For the oscillator $H = p^2/2m + \\tfrac12 kq^2$, what is $\\frac{d}{dt}(qp)$?',
+              options: ['$0$', '$p^2/m + kq^2$', '$kq^2 - p^2/m$', '$p^2/m - kq^2$'],
+              answer: 3,
+              explanation:
+                '$\\frac{d}{dt}(qp) = \\{qp, H\\} = \\frac{\\partial(qp)}{\\partial q}\\frac{\\partial H}{\\partial p} - \\frac{\\partial(qp)}{\\partial p}\\frac{\\partial H}{\\partial q} = p\\cdot\\frac{p}{m} - q\\cdot kq$. It is not zero, so $qp$ is not conserved. $kq^2 - p^2/m$ is $\\{H, qp\\}$, the wrong order.',
+            },
+            {
+              question: 'Which of these transformations is canonical?',
+              options: ['$Q = 2q$, $P = 2p$', '$Q = p$, $P = q$', '$Q = 2q$, $P = p/2$', '$Q = q^2$, $P = p$'],
+              answer: 2,
+              explanation:
+                'Check $\\{Q, P\\} = 1$: for $(2q, p/2)$ it is $2 \\times \\tfrac12 = 1$. $(2q, 2p)$ gives 4 and $(q^2, p)$ gives $2q$. Swapping to $Q = p$, $P = q$ gives $-1$; the lesson\'s swap $Q = p$, $P = -q$ is canonical only because of its minus sign.',
+            },
+            {
+              question:
+                'A harmonic oscillator has energy 0.60 J at $\\omega = 3.0$ rad/s. Its frequency is then raised **slowly** to 6.0 rad/s. What is its energy afterwards?',
+              options: ['0.30 J', '0.60 J', '1.2 J', '2.4 J'],
+              answer: 2,
+              explanation:
+                'The action $I = E/\\omega = 0.20$ J·s is an adiabatic invariant, so $E = \\omega I = 6.0 \\times 0.20 = 1.2$ J. Energy is not conserved, because changing the parameter does work on the system ($H$ depends on time). 2.4 J assumes $E \\propto \\omega^2$, as it would be at fixed amplitude.',
+            },
+          ],
         },
         {
           slug: 'symmetry-hamilton-jacobi-and-the-road-to-quantum-mechanics',
@@ -2729,6 +3688,49 @@ Read Tong section 4.7-4.8 and the 8.09 notes on Hamilton-Jacobi theory; skim Cli
               question: 'How does the Schrödinger equation reduce to Hamilton-Jacobi?',
               answerOutline:
                 'Substitute psi = exp(iS/hbar); the leading order in hbar is the HJ equation, so classical mechanics is the short-wavelength (eikonal) limit of quantum mechanics, just as ray optics is of wave optics.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'With $L_z = xp_y - yp_x$, what is $\\{x, L_z\\}$?',
+              options: ['$y$', '$-y$', '$p_y$', '$0$'],
+              answer: 1,
+              explanation:
+                'Only one term survives: $\\{x, L_z\\} = \\frac{\\partial x}{\\partial x}\\frac{\\partial L_z}{\\partial p_x} = -y$. So $\\delta x = \\epsilon\\{x, L_z\\} = -\\epsilon y$ and likewise $\\delta y = +\\epsilon x$: a rotation by $\\epsilon$ about $z$, which is what it means for $L_z$ to generate rotations. $+y$ is $\\{L_z, x\\}$, the wrong order.',
+            },
+            {
+              question:
+                'A particle moves in the plane with $H = (p_x^2 + p_y^2)/2m + U(x)$, where $U$ depends on $x$ only. Which quantity is conserved, and why?',
+              options: [
+                '$p_x$, because the force is along $x$',
+                '$L_z$, because $H$ has rotational symmetry',
+                '$p_x$ and $p_y$, because $T$ is symmetric in them',
+                '$p_y$, because it generates $y$-translations, which leave $H$ unchanged',
+              ],
+              answer: 3,
+              explanation:
+                '$p_y$ generates $\\delta y = \\epsilon$, and $H$ does not depend on $y$, so $\\{p_y, H\\} = -\\partial H/\\partial y = 0$. The force $-U\'(x)\\,\\hat{\\mathbf x}$ changes $p_x$, and $U(x)$ is not rotationally symmetric, so $L_z$ is not conserved either.',
+            },
+            {
+              question:
+                'For a free particle, $H = p^2/2m$, which $W$ results from separating $S = W(x) - Et$ in the Hamilton-Jacobi equation?',
+              options: ['$W = \\sqrt{2mE}\\,x$', '$W = \\sqrt{2E/m}\\,x$', '$W = Ex$', '$W = \\tfrac12 mx^2$'],
+              answer: 0,
+              explanation:
+                'The Hamilton-Jacobi equation becomes $(W\')^2/2m = E$, so $W\' = \\sqrt{2mE}$, which is the momentum $p = \\partial S/\\partial x$, and $W = \\sqrt{2mE}\\,x$. $\\sqrt{2E/m}$ is the velocity, not the momentum, and $Ex$ has the wrong dimensions for an action.',
+            },
+            {
+              question:
+                'A harmonic oscillator of energy $E$ traces an ellipse of area $2\\pi E/\\omega$ in phase space. What energies does Bohr-Sommerfeld quantisation, $\\oint p\\,dq = nh$, allow?',
+              options: [
+                '$E_n = n\\hbar\\omega$',
+                '$E_n = nh\\omega$',
+                '$E_n = n\\hbar\\omega/2\\pi$',
+                '$E_n = n\\hbar/\\omega$',
+              ],
+              answer: 0,
+              explanation:
+                '$\\oint p\\,dq$ is the enclosed area, so $2\\pi E/\\omega = nh$ gives $E_n = nh\\omega/2\\pi = n\\hbar\\omega$: equally spaced levels, because the rule quantises the action $I = E/\\omega$. $nh\\omega$ forgets that $\\hbar = h/2\\pi$; $n\\hbar/\\omega$ inverts the relation between $E$ and $I$.',
             },
           ],
         },
@@ -2849,6 +3851,42 @@ Strogatz's book is the standard, and his Cornell lectures are free; read chapter
                 'An isolated closed orbit that attracts (or repels) nearby trajectories; attraction requires phase-space volume contraction, which Liouville\'s theorem forbids.',
             },
           ],
+          quiz: [
+            {
+              question: 'Classify the fixed point at the origin of $\\dot x = y$, $\\dot y = -5x - 2y$.',
+              options: ['Stable node', 'Unstable spiral', 'Centre', 'Stable spiral'],
+              answer: 3,
+              explanation:
+                'The Jacobian has trace $-2$ and determinant 5, so the eigenvalues solve $\\lambda^2 + 2\\lambda + 5 = 0$: $\\lambda = -1 \\pm 2i$. Complex with negative real part is a stable spiral. A node needs real eigenvalues, which requires trace$^2 > 4\\,$det, and here $4 < 20$.',
+            },
+            {
+              question: 'As $\\mu$ increases through zero, which bifurcation does $\\dot x = \\mu x - x^2$ undergo?',
+              options: ['Saddle-node', 'Transcritical', 'Pitchfork', 'Hopf'],
+              answer: 1,
+              explanation:
+                'The fixed points $x = 0$ and $x = \\mu$ exist for every $\\mu$, pass through each other at $\\mu = 0$ and swap stability ($f\'(0) = \\mu$, $f\'(\\mu) = -\\mu$): transcritical. A saddle-node, as in $\\dot x = \\mu - x^2$, creates or destroys a pair; a pitchfork, as in $\\mu x - x^3$, needs the symmetry $x \\to -x$; a Hopf needs at least two dimensions.',
+            },
+            {
+              question: 'Which fixed points of $\\dot x = 4x - x^3$ are stable?',
+              options: ['$x = 0$ only', '$x = \\pm 2$ only', 'All three', 'None'],
+              answer: 1,
+              explanation:
+                '$f\'(x) = 4 - 3x^2$ is $+4$ at $x = 0$, which is unstable, and $-8$ at $x = \\pm 2$, which are stable. A zero of $f$ is not automatically stable; the sign of the slope there decides, just as $U\'\'$ did for potentials.',
+            },
+            {
+              question:
+                'Why can a two-dimensional autonomous flow $\\dot{\\mathbf x} = \\mathbf f(\\mathbf x)$ not be chaotic?',
+              options: [
+                'It can: the van der Pol oscillator is chaotic',
+                'Two-dimensional flows are always linear',
+                'Two-dimensional flows always conserve energy',
+                'Poincaré-Bendixson: its attractors can only be fixed points or limit cycles',
+              ],
+              answer: 3,
+              explanation:
+                'In the plane trajectories cannot cross, and that so constrains them that bounded motion must settle onto a fixed point or a closed orbit. The van der Pol oscillator has a limit cycle, which is periodic, not chaotic. Chaos needs three dimensions, such as the driven pendulum\'s $(\\theta, \\dot\\theta, t)$.',
+            },
+          ],
         },
         {
           slug: 'the-driven-pendulum-and-routes-to-chaos',
@@ -2952,6 +3990,50 @@ Other routes to chaos exist (quasiperiodicity, intermittency), and the drive fre
               question: 'Does sensitive dependence mean the pendulum is random?',
               answerOutline:
                 'No: it is deterministic; two identical initial states give identical futures. Sensitive dependence means finite-precision knowledge of the state loses predictive power exponentially fast.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'For the logistic map $x_{n+1} = rx_n(1 - x_n)$ with $r = 2.8$, what is the non-zero fixed point, and is it stable?',
+              options: ['0.643, stable', '0.643, unstable', '0.357, stable', '0.357, unstable'],
+              answer: 0,
+              explanation:
+                '$x^* = rx^*(1 - x^*)$ gives $x^* = 1 - 1/r = 0.643$. Stability needs $|f\'(x^*)| < 1$, and $f\'(x^*) = r(1 - 2x^*) = 2 - r = -0.8$, so it is stable, with iterates alternating sides as they close in. 0.357 is $1/r$. Above $r = 3$, $|2 - r| > 1$ and the first period doubling begins.',
+            },
+            {
+              question:
+                'Suppose the driven pendulum\'s first two period doublings occur at $F = 1.0663$ and $F = 1.0793$. Using the Feigenbaum ratio $\\delta = 4.669$, where do you expect the third?',
+              options: ['1.0821', '1.0858', '1.0923', '1.1400'],
+              answer: 0,
+              explanation:
+                'Successive gaps shrink by the factor $\\delta$: $0.0130/4.669 = 0.0028$, so $F_3 \\approx 1.0793 + 0.0028 = 1.0821$. 1.0923 repeats the same gap, 1.0858 halves it, and 1.1400 multiplies by $\\delta$ instead of dividing.',
+            },
+            {
+              question:
+                'Two simulations of the driven pendulum in its chaotic regime start $10^{-10}$ rad apart, and after a minute of simulated time their angles are completely different. What does this show?',
+              options: [
+                'Deterministic chaos: tiny differences grow exponentially',
+                'The equations of motion contain hidden random noise',
+                'The integrator must be faulty',
+                'The motion cannot be reproduced even from identical initial conditions',
+              ],
+              answer: 0,
+              explanation:
+                'The equations are deterministic: the same initial condition gives the same trajectory every time. Sensitive dependence means that nearby initial conditions separate exponentially, so any uncertainty grows to the size of the system in a finite time. That is unpredictability, not randomness.',
+            },
+            {
+              question:
+                'A stroboscopic section of the driven pendulum, sampled once per drive period, shows four points visited in turn, over and over. What is the motion?',
+              options: [
+                'Period-1 motion with four harmonics',
+                'Chaotic motion on a strange attractor',
+                'A fixed point of the pendulum',
+                'A periodic orbit that repeats every four drive periods',
+              ],
+              answer: 3,
+              explanation:
+                'Samples are one drive period apart, so returning to the same point after four samples means period 4, two doublings into the cascade. Period-1 motion is a single point; chaos is a dust of points that never repeats and settles onto a fractal.',
             },
           ],
         },
@@ -3058,6 +4140,40 @@ Read Strogatz chapters 9 and 11 and the corresponding lectures. Everything in th
               question: 'What is the Lyapunov time and how does it limit prediction?',
               answerOutline:
                 '1/lambda, the e-folding time of errors; to predict k Lyapunov times ahead you need the initial state known e^k times better, so prediction horizons grow only logarithmically with measurement precision.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'The Lorenz system has $\\lambda \\approx 0.906$. Roughly how long, in the system\'s time units, does an initial error of $10^{-8}$ take to grow to $10^{-2}$?',
+              options: ['1.1', '6.6', '15', '$1.1\\times10^{6}$'],
+              answer: 2,
+              explanation:
+                '$\\delta = \\delta_0e^{\\lambda t}$ gives $t = \\ln(10^6)/0.906 = 13.8/0.906 \\approx 15$. 6.6 uses $\\log_{10}$ instead of $\\ln$; 1.1 is a single Lyapunov time, which multiplies the error only by $e$; $1.1\\times10^6$ assumes linear growth. Because of the logarithm, a million times better initial data buys only about 14 Lyapunov times.',
+            },
+            {
+              question:
+                'The Lorenz system with $\\sigma = 10$, $\\beta = 8/3$ has $\\nabla\\cdot\\mathbf f = -(\\sigma + 1 + \\beta)$. Its Lyapunov exponents are $\\lambda_1 = 0.906$, $\\lambda_2 = 0$ (along the flow) and $\\lambda_3$. What is $\\lambda_3$?',
+              options: ['$-14.6$', '$-13.7$', '$-12.8$', '$-0.906$'],
+              answer: 0,
+              explanation:
+                'The exponents sum to the divergence, $-(10 + 1 + 2.67) = -13.67$, so $\\lambda_3 = -13.67 - 0.906 = -14.6$. $-0.906$ assumes the sum is zero, which holds only for Hamiltonian flows; $-12.8$ adds $\\lambda_1$ instead of subtracting it. Stretching in one direction and stronger contraction in another is how a dissipative flow can still be chaotic.',
+            },
+            {
+              question:
+                'A Poincaré section of a three-dimensional flow shows the crossings filling out a single smooth closed curve. What is the motion?',
+              options: ['A periodic orbit', 'Chaos', 'A fixed point of the flow', 'Quasiperiodic motion on a torus'],
+              answer: 3,
+              explanation:
+                'A periodic orbit crosses the section at a finite set of points. Quasiperiodic motion winds round a torus without ever repeating, so its crossings fill a closed curve. Chaos gives a scattered cloud with fine structure.',
+            },
+            {
+              question:
+                'In a box-counting measurement on a strange attractor, halving the box size multiplies the number of occupied boxes by 4.17. What is the box-counting dimension?',
+              options: ['0.485', '1.43', '2.06', '4.17'],
+              answer: 2,
+              explanation:
+                '$N \\propto \\varepsilon^{-D}$, so halving $\\varepsilon$ multiplies $N$ by $2^D$, and $D = \\ln 4.17/\\ln 2 = 2.06$. 1.43 forgets to divide by $\\ln 2$; 0.485 inverts the ratio, $\\ln 2/\\ln 4.17$; 4.17 is the box-count factor itself. A dimension a little above 2 is the zero-volume, infinitely layered sheet of the Lorenz attractor.',
             },
           ],
         },
@@ -3170,6 +4286,59 @@ Read Tong section 4.6-4.7 on integrability and action-angle variables, then the 
               question: 'Is the solar system stable?',
               answerOutline:
                 'It is chaotic with a Lyapunov time of about 5 Myr, so exact positions are unpredictable beyond ~100 Myr, yet the orbits are confined and collisions or ejections are unlikely within the Sun\'s lifetime (small but nonzero probability for Mercury).',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'Iterate the standard map once from $\\theta_0 = \\pi/2$, $p_0 = 0$ with $K = 0.50$. What are $p_1$ and $\\theta_1$?',
+              options: [
+                '$p_1 = 0.50$, $\\theta_1 = 2.07$',
+                '$p_1 = 0.50$, $\\theta_1 = 1.57$',
+                '$p_1 = 0$, $\\theta_1 = 1.57$',
+                '$p_1 = 0.50$, $\\theta_1 = 0.50$',
+              ],
+              answer: 0,
+              explanation:
+                'First the kick, $p_1 = p_0 + K\\sin\\theta_0 = 0.50$; then the drift uses the **new** momentum, $\\theta_1 = \\theta_0 + p_1 = 1.571 + 0.50 = 2.07$. Using $p_0$ in the drift gives 1.57, and that map would not preserve area. 0.50 forgets to add $\\theta_0$.',
+            },
+            {
+              question: 'When is a Hamiltonian system with two degrees of freedom integrable?',
+              options: [
+                'When its energy is conserved',
+                'Only when it has four independent conserved quantities',
+                'When its equations can be integrated numerically',
+                'When it has two independent conserved quantities in involution',
+              ],
+              answer: 3,
+              explanation:
+                'Integrability needs $n = 2$ independent conserved quantities in involution, $\\{F_1, F_2\\} = 0$ (one can be $H$); bounded motion then lies on 2-tori. Energy alone is only one, so a two-degree-of-freedom system such as Hénon-Heiles conserves energy and can still be chaotic. Any system can be integrated numerically; that is a different thing.',
+            },
+            {
+              question:
+                'Under a small perturbation $\\epsilon H_1$, which invariant tori of an integrable system does the KAM theorem say survive?',
+              options: [
+                'All of them, slightly deformed',
+                'Those with rational frequency ratios',
+                'Those with sufficiently irrational frequency ratios',
+                'None: any perturbation makes all motion chaotic',
+              ],
+              answer: 2,
+              explanation:
+                'Resonant (rational) tori break into island chains with chaotic layers (Poincaré-Birkhoff), while tori with sufficiently irrational frequency ratios are deformed but survive, filling most of phase space as $\\epsilon \\to 0$. So order and chaos coexist: neither "all survive" nor "all destroyed" is right.',
+            },
+            {
+              question:
+                'In the standard map with $K = 0.50$, can an orbit that starts near $p = 0$ wander up to $p = 10$?',
+              options: [
+                'Yes: any $K > 0$ makes the momentum diffuse',
+                'Yes, but only along a resonant island chain',
+                'No: at $K = 0.50$ every orbit is periodic',
+                'No: surviving KAM tori that span the $\\theta$ direction block it',
+              ],
+              answer: 3,
+              explanation:
+                'Below $K_c \\approx 0.9716$, some invariant curves that wind all the way round in $\\theta$ survive. In a two-dimensional area-preserving map an orbit cannot cross them, so chaotic layers stay trapped between them. Only above $K_c$, when the last such torus breaks, does a connected chaotic sea let $p$ diffuse without bound.',
             },
           ],
         },

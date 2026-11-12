@@ -8,11 +8,13 @@ import {
   CheckCircle2,
   ChevronDown,
   Circle,
+  CircleX,
   Clock,
   Link2,
+  RotateCcw,
 } from 'lucide-react';
 import { lessonById, subjectById } from '@/data/subjects';
-import type { Exercise, SelfCheck } from '@/data/types';
+import type { Exercise, QuizQuestion, SelfCheck } from '@/data/types';
 import { useProgress } from '@/store/progress';
 import { Inline, Markdown } from '@/lib/markdown';
 import { hours } from '@/lib/format';
@@ -37,7 +39,7 @@ export function LessonPage() {
   const lessonId = `${subjectId}/${moduleSlug}/${lessonSlug}`;
   const lesson = lessonById.get(lessonId);
   const subject = subjectById.get(subjectId);
-  const { completedLessons, toggleLesson, checks, toggleCheck, notes, setNote, bookmarks, toggleBookmark, visit, selfChecks, setSelfCheck } = useProgress();
+  const { completedLessons, toggleLesson, checks, toggleCheck, notes, setNote, bookmarks, toggleBookmark, visit, selfChecks, setSelfCheck, quizAnswers, setQuizAnswer } = useProgress();
   const [noteDraft, setNoteDraft] = useState(notes[lessonId] ?? '');
 
   useEffect(() => {
@@ -211,6 +213,25 @@ export function LessonPage() {
         </ol>
       </section>
 
+      {lesson.quiz.length > 0 && (
+        <section aria-labelledby="quiz">
+          <div className="mb-1 flex items-end justify-between">
+            <h2 id="quiz" className="text-xl font-semibold tracking-tight">
+              Quiz
+            </h2>
+            <span className="text-xs tabular-nums text-ink-3">
+              {lesson.quiz.filter((q) => quizAnswers[q.id] === q.answer).length}/{lesson.quiz.length} correct
+            </span>
+          </div>
+          <p className="mb-3 text-sm text-ink-2">Choose an answer to check it. The explanation appears once you answer.</p>
+          <ol className="space-y-3">
+            {lesson.quiz.map((q, i) => (
+              <QuizItem key={q.id} q={q} n={i + 1} chosen={quizAnswers[q.id]} onChoose={(v) => setQuizAnswer(q.id, v)} />
+            ))}
+          </ol>
+        </section>
+      )}
+
       <section aria-labelledby="notes">
         <h2 id="notes" className="mb-2 text-xl font-semibold tracking-tight">
           Your notes
@@ -317,6 +338,62 @@ function ExerciseItem({ ex, n, checked, onToggle }: { ex: Exercise; n: number; c
           )}
         </div>
       </div>
+    </li>
+  );
+}
+
+function QuizItem({ q, n, chosen, onChoose }: { q: QuizQuestion; n: number; chosen: number | undefined; onChoose: (v: number | null) => void }) {
+  const answered = chosen !== undefined;
+  const right = chosen === q.answer;
+  const letter = (i: number) => String.fromCharCode(65 + i);
+  return (
+    <li className="card p-4">
+      <div className="flex items-baseline gap-2 text-sm font-medium">
+        <span className="shrink-0">{n}.</span>
+        <Markdown className="min-w-0 flex-1 text-sm font-medium leading-6 [&>p:first-child]:mt-0 [&>p:last-child]:mb-0">{q.question}</Markdown>
+      </div>
+      <div role="radiogroup" aria-label={`Question ${n} options`} className="mt-3 space-y-1.5">
+        {q.options.map((opt, i) => {
+          const isAnswer = i === q.answer;
+          const isChosen = i === chosen;
+          const tone = !answered
+            ? 'border-line hover:border-accent/60 hover:bg-surface-2'
+            : isAnswer
+              ? 'border-emerald-500/60 bg-emerald-500/10'
+              : isChosen
+                ? 'border-rose-500/60 bg-rose-500/10'
+                : 'border-line opacity-70';
+          return (
+            <button
+              key={i}
+              type="button"
+              role="radio"
+              aria-checked={isChosen}
+              disabled={answered}
+              onClick={() => onChoose(i)}
+              className={`flex w-full items-start gap-2.5 rounded-lg border px-3 py-2 text-left text-sm transition-colors disabled:cursor-default ${tone}`}
+            >
+              <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-line text-[11px] font-semibold text-ink-2">{letter(i)}</span>
+              <span className="min-w-0 flex-1">
+                <Inline>{opt}</Inline>
+              </span>
+              {answered && isAnswer && <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-emerald-500" aria-label="Correct answer" />}
+              {answered && isChosen && !isAnswer && <CircleX size={16} className="mt-0.5 shrink-0 text-rose-500" aria-label="Your answer" />}
+            </button>
+          );
+        })}
+      </div>
+      {answered && (
+        <div className="mt-3 space-y-2 animate-fade" aria-live="polite">
+          <div className={`text-sm font-semibold ${right ? 'text-emerald-600 dark:text-emerald-300' : 'text-rose-600 dark:text-rose-300'}`}>
+            {right ? 'Correct.' : `Not quite. The answer is ${letter(q.answer)}.`}
+          </div>
+          <Markdown className="rounded-lg bg-surface-2 p-3 text-sm leading-6 [&>p:first-child]:mt-0 [&>p:last-child]:mb-0">{q.explanation}</Markdown>
+          <button type="button" onClick={() => onChoose(null)} className="btn-ghost px-2 py-1 text-xs">
+            <RotateCcw size={13} aria-hidden /> Try again
+          </button>
+        </div>
+      )}
     </li>
   );
 }

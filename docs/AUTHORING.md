@@ -84,6 +84,31 @@ export default defineSubject({
 - Keep each `concepts` entry short: a term or a term with a 3-8 word gloss.
 - `answerOutline` is a compact rubric, not an essay.
 
+## Quizzes
+
+A lesson may end with multiple-choice questions, checked on the page. The learner's choice is
+saved with their progress, and the explanation appears once they answer.
+
+```ts
+quiz: [
+  {
+    question: 'A founder owns 4,000,000 of 10,000,000 shares. After a round that issues 2,500,000 new shares, what does she own?',
+    options: ['40%', '32%', '30%', '25%'],
+    answer: 1, // 0-based: '32%'
+    explanation: '4,000,000 / 12,500,000 = 32%. Her share count is unchanged; the total grew by 25%.',
+  },
+],
+```
+
+- 3-5 options, exactly one correct, all plausible: each wrong option should be a real mistake
+  a learner might make, not filler. Vary which position holds the correct answer; the validator
+  warns when more than half of a subject's answers share one position.
+- Test understanding, not recall of a phrase from the explanation. A good question applies the
+  idea to a small new case or separates two ideas that are easy to confuse.
+- `explanation` says why the answer is right and why the most tempting wrong option is wrong.
+- Questions and explanations are Markdown with maths, options are inline Markdown. As
+  everywhere, a bare `$` starts maths, so write amounts as `USD 20` or `20 dollars`.
+
 ## Interactive widgets
 
 A lesson explanation, exercise prompt or hint can embed an interactive widget with a fenced

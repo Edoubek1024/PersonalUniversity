@@ -46,6 +46,7 @@ function defineLesson(input: LessonInput, moduleId: string, subjectId: string, i
     resources: input.resources.map((r, i) => ({ ...r, id: `${id}#res:${i + 1}` })),
     exercises,
     selfAssessment: input.selfAssessment.map((s, i) => ({ ...s, id: `${id}#sa:${i + 1}` })),
+    quiz: (input.quiz ?? []).map((q, i) => ({ ...q, id: `${id}#quiz:${i + 1}` })),
   };
 }
 

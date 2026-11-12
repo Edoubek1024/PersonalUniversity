@@ -183,6 +183,46 @@ Read OpenStax 1.1 and 2.1 first, then watch the MRU video on opportunity cost an
               answerOutline: 'A cost is sunk if it has already been incurred and cannot be recovered whichever option you choose now, so it is the same for every option and cannot change the ranking.',
             },
           ],
+          quiz: [
+            {
+              question: 'You are deciding whether to take a summer course. Tuition is USD 2,000 and books USD 300. Instead you could work a summer job paying USD 6,000 after tax. You would spend USD 1,500 on food either way. What is the opportunity cost of the course?',
+              options: ['USD 2,300', 'USD 6,000', 'USD 8,300', 'USD 9,800'],
+              answer: 2,
+              explanation:
+                'Count everything that differs between the two choices: $2{,}000 + 300 + 6{,}000 = 8{,}300$. The forgone wage is an implicit cost, so USD 2,300 (money paid out only) is too low. Food is paid either way, so adding it (USD 9,800) is wrong.',
+            },
+            {
+              question: 'You have USD 80 for games and films. A game costs USD 20 and a film USD 8. With games on the horizontal axis, what is the opportunity cost of one game?',
+              options: ['0.4 films', '2.5 films', '4 games', '10 films'],
+              answer: 1,
+              explanation:
+                'One game uses money that would buy $20/8 = 2.5$ films, and that is minus the slope of the budget line. 0.4 films is the ratio upside down (the cost of a film in games). 10 films and 4 games are the two intercepts, not the trade-off.',
+            },
+            {
+              question: 'Saturday you can work a shift for USD 120, tutor for USD 90, or go hiking (free). You choose the hike. What is the opportunity cost of the hike?',
+              options: [
+                'USD 210, both earnings given up',
+                'Nothing, since the hike is free',
+                'USD 90',
+                'USD 120',
+              ],
+              answer: 3,
+              explanation:
+                'Opportunity cost is the value of the *best* alternative given up. You could only have done one of the two jobs, so the cost is USD 120. Adding both jobs (USD 210) counts an option you could never have had at the same time.',
+            },
+            {
+              question: 'A firm has spent USD 2 million developing a product. Finishing it would cost another USD 1 million, and the finished product would bring in USD 1.5 million. Nothing spent so far can be recovered. What should it do, and why?',
+              options: [
+                'Finish it: the USD 1 million still to spend is less than the USD 1.5 million it brings in',
+                'Abandon it: the total cost of USD 3 million exceeds the USD 1.5 million revenue',
+                'Finish it, so the USD 2 million already spent is not wasted',
+                'Either: the firm loses money whatever it does',
+              ],
+              answer: 0,
+              explanation:
+                'The USD 2 million is sunk, the same for both options, so compare only what is still to come: finishing adds $1.5 - 1 = 0.5$ million. "Finish so it is not wasted" picks the right action for the sunk cost fallacy\'s reason. Abandoning leaves the firm USD 2 million down and finishing USD 1.5 million down, so the choice is not a matter of indifference.',
+            },
+          ],
         },
         {
           slug: 'marginal-thinking-and-incentives',
@@ -272,6 +312,51 @@ The habit to build: for any choice, ask what changes at the margin and who respo
                 'Any clear case, e.g. Mexico City\'s driving ban led households to buy second cars: the rule raised the cost of driving one car on its banned day, and buying another car was the cheapest way round it.',
             },
           ],
+          quiz: [
+            {
+              question: 'Each extra practice set gives marginal benefits of 12, 9, 7, 5 and 3 (1st to 5th set) and has marginal costs of 4, 5, 6, 7 and 8. How many sets should you do, and what is the net benefit?',
+              options: [
+                '5 sets, net benefit 6',
+                '4 sets, net benefit 11',
+                '3 sets, net benefit 13',
+                '2 sets, net benefit 12',
+              ],
+              answer: 2,
+              explanation:
+                'Do a set while MB ≥ MC: $12 \\ge 4$, $9 \\ge 5$, $7 \\ge 6$, but $5 < 7$. So 3 sets, with net benefit $(12 + 9 + 7) - (4 + 5 + 6) = 13$. Five sets maximises total benefit (36) but costs 30, leaving only 6.',
+            },
+            {
+              question: 'Optional calculus: benefit is $B(q) = 30q - q^2$ and cost is $C(q) = 6q$. Which $q$ maximises net benefit?',
+              options: ['$q = 12$', '$q = 15$', '$q = 18$', '$q = 24$'],
+              answer: 0,
+              explanation:
+                'Set $B\'(q) = C\'(q)$: $30 - 2q = 6$, so $q = 12$. $q = 15$ is where total benefit peaks ($30 - 2q = 0$), which ignores the cost; $q = 24$ comes from forgetting the 2 in the derivative.',
+            },
+            {
+              question: 'A café\'s first four workers bring in USD 1,000 of revenue in total, USD 250 each on average. A fifth worker would cost USD 200 for the day and add USD 150 of revenue. Should the café hire the fifth worker?',
+              options: [
+                'Yes: average revenue per worker (USD 250) exceeds the wage',
+                'No: the fifth worker adds USD 150, less than the USD 200 cost',
+                'Yes: total revenue still rises',
+                'No: average revenue per worker would fall below USD 250, which always signals a loss',
+              ],
+              answer: 1,
+              explanation:
+                'The decision is about the *marginal* worker: USD 150 added against USD 200 cost, a loss of USD 50. The average of USD 250 describes the first four workers, not the fifth. Revenue rising is not enough; it has to rise by more than the cost.',
+            },
+            {
+              question: 'A city starts charging USD 5 for every bag of household rubbish it collects, to cut waste. Which response is an *unintended* one of the kind the lesson warns about?',
+              options: [
+                'Households recycle more of their packaging',
+                'Households buy goods with less packaging',
+                'Some households dump rubbish illegally or cram more into each bag',
+                'Nothing changes, because USD 5 is too small to matter',
+              ],
+              answer: 2,
+              explanation:
+                'The fee raises the marginal cost of each bag, and people look for every cheaper way round it, including ones the designer did not want, as with Mexico City\'s driving ban and the extra cars households bought. Recycling and buying less packaging are the intended responses. The bag tax evidence (Homonoff 2018) shows small charges can change behaviour a lot.',
+            },
+          ],
         },
         {
           slug: 'models-and-positive-normative',
@@ -353,6 +438,51 @@ Read OpenStax 1.3 and appendix A on mathematics, and work every graphing exercis
             {
               question: 'What are the slope and intercept of P = 12 − 0.1Q, and what does each mean?',
               answerOutline: 'Intercept 12: the price at which quantity demanded falls to zero. Slope −0.1: each extra unit sold requires a price 0.1 lower.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Which of these statements is **positive**?',
+              options: [
+                'Rent control should be abolished',
+                'Raising tariffs has no effect on the prices consumers pay',
+                'The minimum wage is unfairly low',
+                'Governments ought to tax sugary drinks',
+              ],
+              answer: 1,
+              explanation:
+                'A positive statement can be checked against evidence, even if it turns out to be false, as this one very likely is. The others say what *should* be or judge fairness, so they are normative whatever the facts.',
+            },
+            {
+              question: 'Find the straight line through the points $(20, 60)$ and $(50, 15)$.',
+              options: ['$y = 60 - 1.5x$', '$y = 90 + 1.5x$', '$y = 73.3 - 0.67x$', '$y = 90 - 1.5x$'],
+              answer: 3,
+              explanation:
+                'Slope $m = (15 - 60)/(50 - 20) = -45/30 = -1.5$, intercept $b = 60 + 1.5 \\cdot 20 = 90$. Check: $90 - 1.5 \\cdot 50 = 15$. Using 60 as the intercept forgets that the first point is at $x = 20$, not $x = 0$; $-0.67$ is the slope upside down.',
+            },
+            {
+              question: 'Cities with more police officers per person have more crime. What is the best reason not to conclude that police cause crime?',
+              options: [
+                'Cities with more crime hire more police, so the causation may run the other way',
+                'A correlation between two variables can never tell us anything',
+                'Police and crime are measured in different units',
+                'The statement is normative, so evidence cannot test it',
+              ],
+              answer: 0,
+              explanation:
+                'Reverse causation (and other factors, like city size) can produce the correlation, just as summer drives both ice-cream sales and drownings. The claim is positive and testable, and correlations are useful evidence; they just do not settle causation on their own.',
+            },
+            {
+              question: 'Which design is closest to a **natural experiment** on how the minimum wage affects employment?',
+              options: [
+                'Compare employment in all states with high and low minimum wages in one year',
+                'Ask restaurant owners how they would respond to a higher minimum wage',
+                'Compare restaurants on both sides of a border where one state raised its minimum wage and its neighbour did not',
+                'Survey economists on whether minimum wages reduce employment',
+              ],
+              answer: 2,
+              explanation:
+                'A policy change in one state but not a similar neighbour works like a random assignment, so the neighbour shows what would have happened otherwise. A one-year comparison across all states mixes the minimum wage with every other way high- and low-wage states differ.',
             },
           ],
         },
@@ -442,6 +572,46 @@ Read OpenStax 2.2, then do the exercises using the widget to check your graphs.`
             {
               question: 'Can the frontier tell you which point society should choose? Why or why not?',
               answerOutline: 'No. All points on it are productively efficient; choosing the allocatively efficient point needs information about what people value (preferences, prices).',
+            },
+          ],
+          quiz: [
+            {
+              question: 'An economy can produce these combinations of food and tools: A (0, 40), B (10, 36), C (20, 28), D (30, 16), E (40, 0). What is the opportunity cost of one unit of food between C and D?',
+              options: ['0.83 tools', '1 tool', '1.2 tools', '12 tools'],
+              answer: 2,
+              explanation:
+                'Moving from C to D gains 10 food and loses $28 - 16 = 12$ tools, so each unit of food costs $12/10 = 1.2$ tools. 12 tools is the cost of all 10 units, 0.83 is the ratio upside down, and 1 tool is the average over the whole frontier (40/40), which hides the rising cost.',
+            },
+            {
+              question: 'Same frontier: A (0, 40), B (10, 36), C (20, 28), D (30, 16), E (40, 0), with straight lines between points. Which point could describe the economy during a recession?',
+              options: ['(15, 30)', '(25, 25)', '(20, 28)', '(40, 0)'],
+              answer: 0,
+              explanation:
+                'Halfway between B and C the frontier gives $(36 + 28)/2 = 32$ tools at 15 food, so (15, 30) is inside it: resources are idle, as in a recession. (25, 25) is outside, since the frontier gives only 22 tools at 25 food; (20, 28) and (40, 0) are on it.',
+            },
+            {
+              question: 'If every worker and acre were equally good at producing food and medicine, what would the frontier look like?',
+              options: [
+                'Bowed out, as usual',
+                'Bowed in towards the origin',
+                'A straight line, with a constant opportunity cost',
+                'A single point',
+              ],
+              answer: 2,
+              explanation:
+                'The frontier bows out because resources are specialised: moving more into food uses resources ever worse at farming, so each unit of food costs more medicine. With perfectly interchangeable resources the cost never changes, and a constant slope is a straight line.',
+            },
+            {
+              question: 'Which statement about efficiency is correct?',
+              options: [
+                'Every point on the frontier is allocatively efficient',
+                'Every point on the frontier is productively efficient; which one is allocatively efficient depends on what people value',
+                'The midpoint of the frontier is always the allocatively efficient point',
+                'A point inside the frontier can be productively efficient if people prefer that mix',
+              ],
+              answer: 1,
+              explanation:
+                'On the frontier you cannot make more of one good without less of the other, so all those points are productively efficient. Only one mix is allocatively efficient, and the frontier alone cannot say which: that needs preferences, expressed through prices. Points inside waste resources, so they are never productively efficient.',
             },
           ],
         },
@@ -542,6 +712,56 @@ Read OpenStax 19.1 and 19.2, then watch the MRU comparative advantage video.`,
               answerOutline: 'Each producer gains only if it gets more for its export than its own opportunity cost of producing the import itself. Outside that range one side would rather produce both goods itself.',
             },
           ],
+          quiz: [
+            {
+              question: 'In a day, Lena can make 12 pies or 4 shirts, and Omar 6 pies or 3 shirts. Who has the comparative advantage in shirts?',
+              options: [
+                'Lena, because she can make more shirts than Omar',
+                'Lena, because a shirt costs her only 1/3 of a pie',
+                'Omar, because a shirt costs him 2 pies against Lena\'s 3',
+                'Neither: Lena is better at both, so there is nothing to gain',
+              ],
+              answer: 2,
+              explanation:
+                'With an output table, a shirt costs Lena $12/4 = 3$ pies and Omar $6/3 = 2$ pies, so Omar gives up less. Making more shirts is Lena\'s *absolute* advantage, which does not decide specialisation. 1/3 is a pie\'s cost in shirts, the ratio inverted.',
+            },
+            {
+              question: 'Labour-hours needed per unit: in Aland, cheese 4 and wine 8; in Beland, cheese 6 and wine 9. What is the opportunity cost of a unit of wine, and who has the comparative advantage in it?',
+              options: [
+                'Aland: wine costs it 0.5 cheese',
+                'Beland: wine costs it 0.67 cheese',
+                'Aland: it needs fewer hours for wine',
+                'Beland: wine costs it 1.5 cheese, against 2 cheese in Aland',
+              ],
+              answer: 3,
+              explanation:
+                'With an input table, divide the labour requirements: the 9 hours for a wine in Beland could make $9/6 = 1.5$ cheese, while in Aland they make $8/4 = 2$. Beland gives up less. Fewer hours is Aland\'s absolute advantage in both goods; 0.5 and 0.67 come from dividing the wrong way round.',
+            },
+            {
+              question: 'Producer X\'s opportunity cost of wheat is 0.5 cloth. Producer Y\'s opportunity cost of cloth is 1.5 wheat. Who has the comparative advantage in cloth?',
+              options: [
+                'Y, because cloth costs X 2 wheat',
+                'X, because 0.5 is less than 1.5',
+                'X, because X has a comparative advantage in both goods',
+                'Neither, since the numbers cannot be compared',
+              ],
+              answer: 0,
+              explanation:
+                'For one producer the two opportunity costs are reciprocals, so cloth costs X $1/0.5 = 2$ wheat, more than Y\'s 1.5. Comparing 0.5 with 1.5 directly mixes a cost of wheat with a cost of cloth. No producer can have a comparative advantage in both goods.',
+            },
+            {
+              question: 'Home can make at most 50 wheat or 25 cloth, along a straight line. After specialising and trading, it consumes 30 wheat and 12 cloth. Could it have consumed that on its own?',
+              options: [
+                'Yes: the point is on Home\'s frontier',
+                'No: with 30 wheat its frontier allows only 10 cloth, so the point lies outside it',
+                'Yes: the point lies inside Home\'s frontier',
+                'No: Home can never consume more than 25 cloth',
+              ],
+              answer: 1,
+              explanation:
+                'A wheat costs Home $25/50 = 0.5$ cloth, so with 30 wheat it can make $25 - 0.5 \\times 30 = 10$ cloth. Consuming 12 is beyond its own frontier, which is what gains from trade look like. Home could consume up to 25 cloth only by making no wheat.',
+            },
+          ],
         },
         {
           slug: 'gains-from-trade',
@@ -625,6 +845,56 @@ ppf
               answerOutline: 'Economies of scale and demand for variety drive intra-industry trade between similar countries (e.g. cars traded both ways).',
             },
           ],
+          quiz: [
+            {
+              question: 'Country A can make 80 phones or 40 tables; country B can make 30 phones or 45 tables. At which terms of trade do both gain from A exporting phones to B?',
+              options: [
+                'Between 0.67 and 2 tables per phone',
+                'Between 0.5 and 1.5 tables per phone',
+                'Below 0.5 tables per phone',
+                'Above 1.5 tables per phone',
+              ],
+              answer: 1,
+              explanation:
+                'A phone costs A $40/80 = 0.5$ tables and B $45/30 = 1.5$ tables. A gains only if it gets more than 0.5 tables for a phone, and B only if it pays less than 1.5. The 0.67 and 2 are the costs of a *table* in phones, the right numbers in the wrong unit.',
+            },
+            {
+              question: 'Home can make 60 wheat or 30 cloth and without trade makes 45 wheat and 7.5 cloth. It specialises in wheat (60) and exports 10 wheat at 0.8 cloth per wheat. What does Home consume?',
+              options: [
+                '50 wheat and 8 cloth',
+                '50 wheat and 12.5 cloth',
+                '60 wheat and 8 cloth',
+                '45 wheat and 8 cloth',
+              ],
+              answer: 0,
+              explanation:
+                'It keeps $60 - 10 = 50$ wheat and receives $10 \\times 0.8 = 8$ cloth, more of both than its 45 and 7.5 without trade. 12.5 cloth divides by the price instead of multiplying; 60 wheat forgets that exported wheat is no longer there to eat.',
+            },
+            {
+              question: 'A furniture factory closes because of import competition, while national income rises. Which statement fits the lesson?',
+              options: [
+                'National income cannot have risen if a whole factory closed',
+                'The workers will quickly find equally paid jobs, as the model assumes',
+                'Both can be true: total output rises, while losses can be lasting for the workers and region involved',
+                'The closure proves the country had no comparative advantage in anything',
+              ],
+              answer: 2,
+              explanation:
+                'Trade raises total output, but it does not promise that every person gains. Autor, Dorn and Hanson (2013) found lasting falls in employment and wages in US areas exposed to Chinese imports, explaining about a quarter of the 1990–2007 manufacturing decline. Every country has a comparative advantage in something, so a closure does not show otherwise.',
+            },
+            {
+              question: 'Germany and Japan each export cars to the other. What does the lesson say drives trade like this?',
+              options: [
+                'Each country has a comparative advantage in cars over the other',
+                'Differences in climate and land',
+                'Tariffs that force each country to buy foreign cars',
+                'Economies of scale and consumers\' taste for variety',
+              ],
+              answer: 3,
+              explanation:
+                'Intra-industry trade between similar rich economies swaps varieties of the same product, and it is driven by economies of scale and love of variety. Comparative advantage cannot explain it: two countries cannot each have the lower opportunity cost of the same good.',
+            },
+          ],
         },
         {
           slug: 'markets-and-the-price-system',
@@ -702,6 +972,44 @@ Friedrich Hayek's 1945 essay "The Use of Knowledge in Society" makes the point w
             {
               question: 'Give two reasons a market outcome might not be efficient.',
               answerOutline: 'Any two of: externalities, public goods, market power, asymmetric information (or missing institutions such as property rights).',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A new use for copper is discovered and the copper price rises. A plumber in another country starts using plastic pipe where she can. What did she need to know to respond this way?',
+              options: [
+                'Only that the price of copper had risen',
+                'What the new use for copper is',
+                'How much copper the world mines each year',
+                'What a central planner had decided copper should be used for',
+              ],
+              answer: 0,
+              explanation:
+                'This is Hayek\'s point: the price summarises dispersed knowledge, so each user economises in the way that suits her own circumstances without knowing why copper became scarcer. A planner would need to know her circumstances, and millions of others\', which no one can collect.',
+            },
+            {
+              question: 'In 1973–74 and 1979, US price controls held gasoline prices below market-clearing levels. What happened?',
+              options: [
+                'The shortage disappeared because buyers cut back',
+                'Queues, rationing days and empty stations, with no incentive for extra supply',
+                'Suppliers increased output to meet demand at the lower price',
+                'Gasoline went to the buyers who valued it most, as at a market price',
+              ],
+              answer: 1,
+              explanation:
+                'Below the equilibrium price quantity demanded exceeds quantity supplied, so the shortage remained. Waiting time replaced money as the way gasoline was allocated, and a low price gives suppliers no reason to produce more.',
+            },
+            {
+              question: 'Which case is a market failure caused by an **externality**?',
+              options: [
+                'The only water utility in a town sets a high price',
+                'Nobody can be stopped from watching a city\'s fireworks display',
+                'Sellers of used cars know much more about them than buyers do',
+                'A factory\'s smoke harms people living nearby',
+              ],
+              answer: 3,
+              explanation:
+                'An externality harms (or benefits) people outside the transaction, like smoke. The water utility is market power, the fireworks a public good (non-payers cannot be excluded), and the used cars asymmetric information: four different reasons the invisible hand can fail.',
             },
           ],
         },
@@ -807,6 +1115,51 @@ Read OpenStax 3.1 and the demand part of 3.2, and watch the two MRU videos on de
               answerOutline: 'Everyone faces the same market price, and the market quantity at that price is the total bought by all buyers.',
             },
           ],
+          quiz: [
+            {
+              question: 'At USD 3 buyers want 540 units and at USD 5 they want 460, and demand is linear. What is the demand curve?',
+              options: [
+                '$Q_d = 540 - 40P$',
+                '$Q_d = 660 + 40P$',
+                '$Q_d = 660 - 40P$',
+                '$Q_d = 660 - 0.025P$',
+              ],
+              answer: 2,
+              explanation:
+                'Each extra dollar lowers quantity by $80/2 = 40$, and $540 = a - 40 \\cdot 3$ gives $a = 660$. Check: $660 - 200 = 460$. Writing 540 as the intercept forgets that it is the quantity at USD 3, not at USD 0; $-0.025$ is the slope of the inverse demand $P = 16.5 - 0.025Q$.',
+            },
+            {
+              question: 'Cara\'s demand is $q_C = 10 - 2P$ and Dev\'s is $q_D = 6 - P$ (zero when negative). What is market quantity demanded at $P = 3$ and at $P = 5.5$?',
+              options: ['7 and 0.5', '7 and −0.5', '7 and 0', '5.3 and 0'],
+              answer: 0,
+              explanation:
+                'At 3: $4 + 3 = 7$. At 5.5 Cara buys nothing (her demand ends at 5) and Dev buys $6 - 5.5 = 0.5$. Using the summed formula $16 - 3P$ above the kink gives $-0.5$, because it lets Cara buy a negative amount. 5.3 comes from adding prices instead of quantities.',
+            },
+            {
+              question: 'Suppose long bus journeys are an **inferior good**. Which event shifts the demand curve for bus journeys to the right?',
+              options: [
+                'Incomes rise',
+                'The bus fare falls',
+                'Incomes fall',
+                'Petrol for cars becomes cheaper',
+              ],
+              answer: 2,
+              explanation:
+                'For an inferior good demand falls as income rises, so falling incomes raise demand. A lower fare is a movement along the curve (more quantity demanded), not a shift. Cheaper petrol makes driving, a substitute, more attractive, which shifts bus demand left.',
+            },
+            {
+              question: 'The price of strawberries falls from USD 6 to USD 5 and buyers buy more. A reporter writes that "demand for strawberries rose". What is the correct description?',
+              options: [
+                'Correct: buyers bought more, so demand rose',
+                'Demand fell, because the price fell',
+                'Supply rose, because buyers bought more',
+                'Quantity demanded rose: a movement along an unchanged demand curve',
+              ],
+              answer: 3,
+              explanation:
+                'A change in the good\'s own price moves you along the curve: a change in *quantity demanded*. Demand, the whole curve, shifts only when something else changes, such as income, related prices or tastes.',
+            },
+          ],
         },
         {
           slug: 'supply',
@@ -902,6 +1255,41 @@ Read the supply parts of OpenStax 3.1 and 3.2.`,
             {
               question: 'A supply curve shifts up by USD 1.5 at every quantity. If its slope is 0.05 USD per unit, how far does it shift left?',
               answerOutline: '1.5 / 0.05 = 30 units at every price.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'At USD 4 a group of firms supplies nothing and at USD 10 it supplies 300 units, and supply is linear. What is the supply curve?',
+              options: ['$Q_s = 30P$', '$Q_s = 50P - 200$', '$Q_s = 50P + 200$', '$Q_s = 0.02P - 4$'],
+              answer: 1,
+              explanation:
+                'The slope is $300/(10 - 4) = 50$ units per dollar, and $Q_s = 0$ at $P = 4$ gives $Q_s = 50P - 200$ (inverse: $P = 4 + 0.02Q$). $30P$ divides by the price instead of the price change, so it wrongly supplies 120 at USD 4; $0.02P - 4$ mixes the inverse form into the direct one.',
+            },
+            {
+              question: 'Supply is $P = 2 + 0.025Q$. A rise in input costs raises the cost of every unit by USD 2. How does quantity supplied at each price change?',
+              options: ['It falls by 80', 'It falls by 2', 'It falls by 0.05', 'It rises by 80'],
+              answer: 0,
+              explanation:
+                'The curve shifts up by 2, to $P = 4 + 0.025Q$. At a given price that takes $2/0.025 = 80$ fewer units. 0.05 multiplies by the slope instead of dividing, and "rises" mistakes an upward shift for a rightward one: up means left for supply.',
+            },
+            {
+              question: 'Builders can put up either apartments or offices. Office rents jump. What happens in the market for apartments?',
+              options: [
+                'Apartment supply shifts right',
+                'The quantity of apartments supplied falls along an unchanged supply curve',
+                'Apartment demand shifts left',
+                'Apartment supply shifts left',
+              ],
+              answer: 3,
+              explanation:
+                'A higher price of another good the sellers could produce draws them towards it, so fewer apartments are offered at every apartment rent: supply shifts left. A movement along the curve would need a change in the apartment rent itself.',
+            },
+            {
+              question: 'Four orchards can each supply 20 thousand pints a week, at costs of USD 2, 3, 4 and 5 a pint. How much is supplied at a price of USD 4.50?',
+              options: ['20 thousand pints', '60 thousand pints', '80 thousand pints', '90 thousand pints'],
+              answer: 1,
+              explanation:
+                'An orchard supplies when the price covers its cost, so the USD 2, 3 and 4 orchards supply: $3 \\times 20 = 60$ thousand. The USD 5 orchard stays out. That staircase is why supply slopes up: more output needs a price that covers higher marginal cost.',
             },
           ],
         },
@@ -1001,6 +1389,51 @@ Read it: anything that raises $a$ (more demand) raises the price, and anything t
               answerOutline: 'Markets with a few traders who knew only their own value or cost converged quickly to the competitive equilibrium price and quantity in a double auction.',
             },
           ],
+          quiz: [
+            {
+              question: 'Solve for equilibrium: $Q_d = 150 - 3P$ and $Q_s = 2P - 10$.',
+              options: [
+                '$P = 28$, $Q = 66$',
+                '$P = 54$, $Q = 32$',
+                '$P = 30$, $Q = 60$',
+                '$P = 32$, $Q = 54$',
+              ],
+              answer: 3,
+              explanation:
+                '$150 - 3P = 2P - 10$ gives $160 = 5P$, $P = 32$, and $Q = 150 - 96 = 54$; check $64 - 10 = 54$. $P = 28$ comes from a sign slip ($140 = 5P$), which fails the supply check ($56 - 10 = 46 \\ne 66$). Always check in both equations.',
+            },
+            {
+              question: 'In the same market ($Q_d = 150 - 3P$, $Q_s = 2P - 10$), the price is held at USD 25. What results?',
+              options: ['A shortage of 35', 'A surplus of 35', 'A shortage of 7', 'A shortage of 14'],
+              answer: 0,
+              explanation:
+                'At 25, $Q_d = 75$ and $Q_s = 40$, so buyers want 35 more than sellers offer: a shortage, because the price is below the equilibrium of 32. 7 is the gap in price, not quantity; 14 compares supply with the equilibrium quantity ($54 - 40$) instead of with demand.',
+            },
+            {
+              question: 'Concert tickets priced at USD 50 sell out in a minute and thousands of fans are left wanting one. How would an economist describe this?',
+              options: [
+                'Equilibrium, since every ticket was sold',
+                'A surplus, since demand is high',
+                'A shortage: at USD 50 quantity demanded exceeds quantity supplied',
+                'Scarcity, which would disappear at a higher price',
+              ],
+              answer: 2,
+              explanation:
+                'Excess demand at the going price is a shortage, and it means the price is below equilibrium. Scarcity is different: the tickets would be scarce at any price, but the shortage disappears once the price reaches equilibrium. Selling every ticket is not equilibrium if buyers are turned away.',
+            },
+            {
+              question: 'In a classroom double auction like Vernon Smith\'s, four buyers value one unit each at 12, 10, 8 and 6, and four sellers have costs of 5, 7, 9 and 11. What does the supply and demand model predict?',
+              options: [
+                '4 units, one for each buyer and seller',
+                '2 units, at a price between 8 and 9',
+                '3 units, at a price of about 8.5',
+                '2 units, at a price of 6',
+              ],
+              answer: 1,
+              explanation:
+                'Pair the highest values with the lowest costs: $12 > 5$ and $10 > 7$ trade, but $8 < 9$ does not. For exactly two buyers and two sellers to want to trade the price must lie between 8 and 9. Smith found that prices in such markets converge quickly towards this prediction.',
+            },
+          ],
         },
         {
           slug: 'changes-in-equilibrium',
@@ -1086,6 +1519,56 @@ supply-demand
             {
               question: 'Why does a supply shock raise the price more when demand is steep (inelastic)?',
               answerOutline: 'With inelastic demand, buyers cut purchases little as price rises, so the price must rise a lot to reduce quantity demanded to the smaller quantity supplied.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Demand is $Q_d = 200 - 5P$ and supply $Q_s = 15P - 40$, so $P^* = 12$ and $Q^* = 140$. Demand rises by 40 units at every price. What is the new equilibrium?',
+              options: [
+                '$P = 12$, $Q = 180$',
+                '$P = 14$, $Q = 180$',
+                '$P = 10$, $Q = 110$',
+                '$P = 14$, $Q = 170$',
+              ],
+              answer: 3,
+              explanation:
+                'Solve $240 - 5P = 15P - 40$: $P = 14$ and $Q = 240 - 70 = 170$ (check $210 - 40 = 170$). Quantity rises by less than the shift of 40 because the higher price cuts some of the extra quantity demanded. $P = 10$ comes from shifting demand the wrong way.',
+            },
+            {
+              question: 'Demand falls and supply rises at the same time. What can you say for sure?',
+              options: [
+                'Price falls; the change in quantity is ambiguous',
+                'Quantity falls; the change in price is ambiguous',
+                'Both price and quantity fall',
+                'Price rises and quantity is ambiguous',
+              ],
+              answer: 0,
+              explanation:
+                'Both shifts push the price down, so it certainly falls. Lower demand cuts quantity and higher supply raises it, so the net change depends on the sizes of the shifts and the slopes.',
+            },
+            {
+              question: 'Tourists raise the demand for strawberries, and growers now sell 80 thousand pints a week instead of 60. Did the supply of strawberries increase?',
+              options: [
+                'Yes: growers are supplying more',
+                'No: quantity supplied rose along an unchanged supply curve, because the price rose',
+                'Yes: higher demand always shifts supply right',
+                'No: supply fell, because the price rose',
+              ],
+              answer: 1,
+              explanation:
+                'Only the demand curve shifted. The higher price moved growers up their unchanged supply curve, a change in *quantity supplied*. Supply itself shifts only when a determinant such as costs or technology changes.',
+            },
+            {
+              question: 'The same leftward supply shift hits two markets. In which does the price rise the most?',
+              options: [
+                'The market where demand is flat, with many close substitutes',
+                'Neither: the same shift raises price by the same amount everywhere',
+                'The market where demand is steep, with few substitutes',
+                'The market with the larger number of buyers',
+              ],
+              answer: 2,
+              explanation:
+                'When buyers cut back little as price rises, the price must rise a lot to bring quantity demanded down to the smaller quantity supplied, as with eggs during avian flu. With flat demand the same shift mostly lowers quantity instead.',
             },
           ],
         },
@@ -1208,6 +1691,46 @@ supply-demand
               answerOutline: 'Over time people can change cars, commutes, jobs and homes; in the short run they mainly drive a bit less.',
             },
           ],
+          quiz: [
+            {
+              question: 'The price of a ticket rises from USD 8 to USD 12, and quantity demanded falls from 110 to 90. What is the price elasticity of demand by the midpoint method?',
+              options: ['$-0.36$, inelastic', '$-2$, elastic', '$-0.5$, inelastic', '$-5$, elastic'],
+              answer: 2,
+              explanation:
+                '$\\%\\Delta Q = -20/100 = -20\\%$ and $\\%\\Delta P = 4/10 = 40\\%$, so $\\varepsilon_d = -0.5$. Using the starting values as bases gives $(-20/110)/(4/8) \\approx -0.36$, which is why the midpoint method exists. $-5$ is the slope $\\Delta Q/\\Delta P$, which has units; $-2$ divides the other way up.',
+            },
+            {
+              question: 'Demand is $Q_d = 90 - 3P$. What is the point elasticity at $P = 20$?',
+              options: ['$-3$', '$-2$', '$-4.5$', '$-0.22$'],
+              answer: 1,
+              explanation:
+                'At $P = 20$, $Q = 30$, so $\\varepsilon_d = (\\Delta Q/\\Delta P)(P/Q) = -3 \\cdot 20/30 = -2$: elastic. $-3$ is the slope alone, $-4.5$ uses $Q/P$ instead of $P/Q$, and $-0.22$ uses the slope of the inverse demand ($-1/3$).',
+            },
+            {
+              question: 'Point A is high up a straight-line demand curve and point B is low down on the same line. Which is true?',
+              options: [
+                'Demand is equally elastic at A and B, because the slope is the same',
+                'Demand is more elastic at B, where more is bought',
+                'Demand is more elastic at A, even though the slope is the same',
+                'Elasticity cannot be compared without knowing the units',
+              ],
+              answer: 2,
+              explanation:
+                'Elasticity is slope times $P/Q$. The slope is constant along a line, but $P/Q$ is large at high prices and small at low ones, so demand is elastic near the top and inelastic near the bottom. Elasticity is unit-free, which is the reason for using it.',
+            },
+            {
+              question: 'Which of these has the most price-elastic demand?',
+              options: [
+                'Food in general',
+                'Electricity for your home over the next month',
+                'Tap water',
+                'One particular brand of bottled water in a supermarket',
+              ],
+              answer: 3,
+              explanation:
+                'A narrowly defined product with many close substitutes on the same shelf is very elastic: a small price rise sends buyers to the next brand. Food in general and tap water have few substitutes, and a month is too short to change how you use electricity.',
+            },
+          ],
         },
         {
           slug: 'elasticity-and-total-revenue',
@@ -1302,6 +1825,46 @@ function-explorer
               answerOutline: 'There marginal revenue is negative: cutting output raises revenue and lowers cost, so profit rises.',
             },
           ],
+          quiz: [
+            {
+              question: 'A museum faces a price elasticity of demand of $-0.3$ and raises its ticket price by 10%. Roughly what happens to its ticket revenue?',
+              options: [
+                'It rises by about 7%',
+                'It falls by about 3%',
+                'It rises by 10%',
+                'It falls by about 7%',
+              ],
+              answer: 0,
+              explanation:
+                'Quantity falls by about $0.3 \\times 10\\% = 3\\%$, so $\\%\\Delta TR \\approx 10\\% - 3\\% = 7\\%$. Demand is inelastic, so the higher price on each ticket outweighs the fewer tickets sold. A fall of 3% is the change in quantity, not in revenue.',
+            },
+            {
+              question: 'Demand is $Q_d = 300 - 15P$. Which price maximises total revenue?',
+              options: ['USD 5', 'USD 10', 'USD 15', 'USD 20'],
+              answer: 1,
+              explanation:
+                'Revenue peaks at the middle of the line, $P = a/(2b) = 300/30 = 10$, where demand is unit elastic: $TR = 10 \\times 150 = 1{,}500$. USD 5 and USD 15 both give $1{,}125$ (the hill is symmetric), and USD 20 is the price at which nobody buys.',
+            },
+            {
+              question: 'A city\'s bus demand has a price elasticity of about $-0.4$ in the first year and $-1.3$ after several years. The city raises fares. What should it expect?',
+              options: [
+                'Revenue rises in the first year but falls over several years',
+                'Revenue falls at once and keeps falling',
+                'Revenue rises both in the first year and later, since bus demand is inelastic',
+                'Revenue is unchanged, since the two elasticities average about 1',
+              ],
+              answer: 0,
+              explanation:
+                'With inelastic demand ($|\\varepsilon| < 1$) a price rise raises revenue; once riders have time to find alternatives demand becomes elastic and the same fare rise lowers revenue. The answer depends on the time horizon, not on an average of the two.',
+            },
+            {
+              question: 'Optional calculus: inverse demand is $P = 20 - 0.5Q$. What is marginal revenue at $Q = 25$?',
+              options: ['$7.5$', '$0$', '$15$', '$-5$'],
+              answer: 3,
+              explanation:
+                '$TR = 20Q - 0.5Q^2$, so $MR = 20 - Q = -5$ at $Q = 25$: past the midpoint ($Q = 20$) demand is inelastic and selling one more unit lowers revenue. $7.5$ is the price, which is *average* revenue, not marginal revenue.',
+            },
+          ],
         },
         {
           slug: 'income-cross-and-supply-elasticity',
@@ -1381,6 +1944,51 @@ function-explorer
             {
               question: 'Name two reasons supply is more elastic in the long run.',
               answerOutline: 'Firms can build capacity, new firms can enter, inputs can be bought or trained, and production can be reorganised; in the short run some inputs are fixed.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Incomes rise by 4% and spending on ski holidays rises by 10%, with prices unchanged. What is the income elasticity, and what kind of good is this?',
+              options: [
+                '0.4: a necessity',
+                '2.5: a necessity, because it is positive',
+                '2.5: a luxury',
+                '10: a luxury',
+              ],
+              answer: 2,
+              explanation:
+                '$\\varepsilon_I = 10\\%/4\\% = 2.5$, above 1, so a luxury: its budget share rises with income. A positive elasticity makes a good *normal*; a necessity is a normal good with elasticity between 0 and 1. 0.4 divides the wrong way round.',
+            },
+            {
+              question: 'The price of hot dogs rises by 25% and sales of hot dog buns fall by 10%. What is the cross-price elasticity of buns with respect to hot dogs, and what are they?',
+              options: [
+                '$-0.4$: substitutes',
+                '$-2.5$: complements',
+                '$0.4$: substitutes',
+                '$-0.4$: complements',
+              ],
+              answer: 3,
+              explanation:
+                '$\\varepsilon_{XY} = -10\\%/25\\% = -0.4$. A negative cross elasticity means complements, used together. Substitutes have a positive one. $-2.5$ divides the price change by the quantity change.',
+            },
+            {
+              question: 'Inverse supply is $P = 2 + 0.04Q$. What is the price elasticity of supply at $P = 6$?',
+              options: ['$0.0024$', '$1.5$', '$0.67$', '$6$'],
+              answer: 1,
+              explanation:
+                'Write supply with $Q$ on the left: $Q = 25P - 50$, and at $P = 6$, $Q = 100$. Then $\\varepsilon_s = 25 \\cdot 6/100 = 1.5$. $0.0024$ wrongly uses the inverse coefficient 0.04, and $0.67$ is $0.04 \\cdot 100/6$, which also uses $Q/P$ instead of $P/Q$.',
+            },
+            {
+              question: 'Demand to live in a city with strict height limits and little free land rises. What does the lesson predict for the next few years?',
+              options: [
+                'Mostly higher prices, with few extra homes',
+                'Mostly more homes, with prices nearly unchanged',
+                'Lower prices, as builders compete for buyers',
+                'Prices and the number of homes rise by the same percentage',
+              ],
+              answer: 0,
+              explanation:
+                'Housing supply is inelastic, especially where regulation and geography restrict building, so a rise in demand shows up mostly in price. Where supply is elastic, the same demand rise would add homes instead.',
             },
           ],
         },
@@ -1474,6 +2082,51 @@ Incidence analysis is positive economics. Whether a tax is fair is a normative q
             {
               question: 'With demand P = 12 − 0.1Q, supply P = 3 + 0.05Q and t = 1.5, find Q, Pb and Ps.',
               answerOutline: 'Q = 50, Pb = 7, Ps = 5.5.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Demand is $P_b = 20 - 0.2Q$ and supply $P_s = 5 + 0.1Q$ (so without a tax, $Q = 50$ and $P = 10$). A tax of USD 3 a unit is imposed. Find $Q$, $P_b$ and $P_s$.',
+              options: [
+                '$Q = 50$, $P_b = 11.5$, $P_s = 8.5$',
+                '$Q = 40$, $P_b = 12$, $P_s = 9$',
+                '$Q = 40$, $P_b = 13$, $P_s = 10$',
+                '$Q = 60$, $P_b = 8$, $P_s = 11$',
+              ],
+              answer: 1,
+              explanation:
+                'Subtract: $(20 - 0.2Q) - (5 + 0.1Q) = 3$, so $15 - 0.3Q = 3$ and $Q = 40$; then $P_b = 12$ and $P_s = 9$. Buyers pay 2 more and sellers keep 1 less, a two-thirds share for buyers ($0.2/0.3$). Splitting the tax evenly at an unchanged quantity ignores the curves; $Q = 60$ comes from adding the tax instead of subtracting.',
+            },
+            {
+              question: 'At the original equilibrium, the price elasticity of supply is 1.5 and the price elasticity of demand is $-0.5$. What share of a small per-unit tax do buyers bear?',
+              options: ['25%', '50%', '75%', '100%'],
+              answer: 2,
+              explanation:
+                'Buyers\' share $= \\varepsilon_s/(\\varepsilon_s + |\\varepsilon_d|) = 1.5/2 = 75\\%$. Demand is the less elastic side, so buyers bear more. 25% puts the demand elasticity on top; 50% is the legal-split instinct, which the curves do not respect.',
+            },
+            {
+              question: 'A USD 1 per-unit tax that was collected from sellers is changed so that buyers pay it to the government instead. What happens to the quantity traded, the price buyers pay in total and the price sellers keep?',
+              options: [
+                'Nothing changes',
+                'Buyers now pay USD 1 more than before and sellers keep USD 1 more',
+                'The quantity traded falls further',
+                'Sellers keep the full USD 1 that they used to pay',
+              ],
+              answer: 0,
+              explanation:
+                'Taxing sellers shifts supply up by USD 1; taxing buyers shifts demand down by USD 1. Either way the market ends at the same $Q$, $P_b$ and $P_s$. Statutory incidence (who writes the cheque) does not decide economic incidence; the elasticities do.',
+            },
+            {
+              question: 'US employers pay 7.65% payroll tax on wages, and labour supply is fairly inelastic. Who does the lesson say bears most of the employer\'s share?',
+              options: [
+                'Employers, because they write the cheque',
+                'Consumers, through higher prices of everything',
+                'It is split equally, as the law intends',
+                'Workers, through lower wages',
+              ],
+              answer: 3,
+              explanation:
+                'The less elastic side bears more of a tax. Workers are the sellers of labour and cannot easily stop working, so most of the employer\'s share shows up as lower wages, the standard view supported by studies such as Gruber (1997) on Chile.',
             },
           ],
         },
@@ -1578,6 +2231,51 @@ supply-demand
               answerOutline: 'Willingness to pay reflects income, so it weights the rich more; it ignores distribution and effects on people outside the market.',
             },
           ],
+          quiz: [
+            {
+              question: 'Demand is $P = 40 - 0.5Q$ and supply $P = 10 + Q$. At the competitive equilibrium, what are consumer and producer surplus?',
+              options: [
+                '$CS = 200$, $PS = 400$',
+                '$CS = 100$, $PS = 300$',
+                '$CS = 200$, $PS = 100$',
+                '$CS = 100$, $PS = 200$',
+              ],
+              answer: 3,
+              explanation:
+                '$40 - 0.5Q = 10 + Q$ gives $Q = 20$, $P = 30$. $CS = \\tfrac12 \\times 20 \\times (40 - 30) = 100$ and $PS = \\tfrac12 \\times 20 \\times (30 - 10) = 200$. Forgetting the $\\tfrac12$ doubles both; $PS = 300$ measures down to a price of zero instead of to the supply curve, which starts at 10.',
+            },
+            {
+              question: 'Four buyers would pay 60, 45, 30 and 20 for one unit each; four sellers have costs of 10, 25, 35 and 50. What is the largest total surplus the market can produce?',
+              options: ['65', '70', '135', '41'],
+              answer: 1,
+              explanation:
+                'Only trades where value exceeds cost add surplus: $(60 - 10) + (45 - 25) = 70$. The third pair (30 and 35) would subtract 5, giving 65. The price does not change the total, only how it is split; 41 is the buyers\' share at a price of 32.',
+            },
+            {
+              question: 'A regulation requires a competitive market to produce more than its equilibrium quantity. What happens to total surplus?',
+              options: [
+                'It rises, because more trades take place',
+                'It is unchanged, because what buyers gain sellers lose',
+                'It falls, because the extra units cost more to make than buyers value them',
+                'It rises, because consumers get more of the good',
+              ],
+              answer: 2,
+              explanation:
+                'Beyond $Q^*$ the supply curve (cost) lies above the demand curve (value), so every extra unit subtracts surplus: a deadweight loss. More trade is better only up to the point where value and cost meet.',
+            },
+            {
+              question: 'A policy raises total surplus by USD 10 million but leaves low-income households worse off. What does the surplus measure tell you?',
+              options: [
+                'The policy is efficient; whether it is fair is a separate question the measure does not answer',
+                'The policy is fair, because total surplus rose',
+                'The policy cannot be efficient if anyone is worse off',
+                'The measure already gives extra weight to low-income households',
+              ],
+              answer: 0,
+              explanation:
+                '"Efficient" means no gains from trade are wasted, not that the gains are shared fairly. Willingness to pay depends on income, so the measure if anything weights the rich more. Economists report efficiency and distribution separately.',
+            },
+          ],
         },
         {
           slug: 'price-ceilings-and-floors',
@@ -1665,6 +2363,51 @@ The triangle is the *smallest* possible loss: it assumes the 50 thousand apartme
             {
               question: 'Why is the deadweight-loss triangle under a ceiling a lower bound on the true loss?',
               answerOutline: 'It assumes the scarce units go to the highest-value buyers with no search or queuing costs; real allocation wastes more.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Demand for apartments is $P = 2000 - 10Q$ and supply $P = 400 + 10Q$ ($Q$ in thousands, $P$ monthly rent in USD), so the equilibrium is $Q = 80$, $P = 1{,}200$. A rent ceiling of USD 900 is imposed. What results?',
+              options: [
+                'A shortage of 30 thousand apartments',
+                'A surplus of 60 thousand apartments',
+                'No effect, because the ceiling does not bind',
+                'A shortage of 60 thousand apartments',
+              ],
+              answer: 3,
+              explanation:
+                'At 900, landlords supply $(900 - 400)/10 = 50$ and renters want $(2000 - 900)/10 = 110$, a shortage of 60. 30 is only the drop in apartments rented ($80 - 50$), which leaves out the extra renters drawn in by the lower rent. A ceiling below equilibrium binds.',
+            },
+            {
+              question: 'In the same market ($P = 2000 - 10Q$, $P = 400 + 10Q$, ceiling USD 900, 50 thousand apartments rented), what is the deadweight loss, assuming apartments go to the renters who value them most?',
+              options: ['4,500', '9,000', '18,000', 'Zero, because renters gain what landlords lose'],
+              answer: 1,
+              explanation:
+                'At $Q = 50$ the demand price is $2000 - 500 = 1{,}500$ and the supply price 900. The triangle is $\\tfrac12 \\times (80 - 50) \\times (1500 - 900) = 9{,}000$ thousand USD a month. 18,000 forgets the $\\tfrac12$; 4,500 uses the gap between the equilibrium rent and the ceiling (300) as the height instead of the gap between the curves.',
+            },
+            {
+              question: 'The equilibrium rent in a market is USD 1,400. Which of these controls would actually change the outcome?',
+              options: [
+                'A ceiling of USD 1,600',
+                'A floor of USD 1,200',
+                'A floor of USD 1,000',
+                'A ceiling of USD 1,200',
+              ],
+              answer: 3,
+              explanation:
+                'A ceiling binds only below the equilibrium price and a floor only above it. A ceiling of 1,600 or a floor of 1,200 or 1,000 leaves the market at 1,400; the 1,200 ceiling forces the rent down and creates a shortage.',
+            },
+            {
+              question: 'What did Diamond, McQuade and Qian (2019) find about San Francisco\'s 1994 extension of rent control?',
+              options: [
+                'Covered tenants were more likely to stay, but landlords cut rental supply by 15%, raising market rents across the city by about 5%',
+                'Rents fell across the whole city, with no effect on supply',
+                'Covered tenants gained nothing, and supply was unchanged',
+                'Landlords built more rental housing to take advantage of stable tenants',
+              ],
+              answer: 0,
+              explanation:
+                'The study found both a real benefit (covered tenants about 20% more likely to stay) and a cost (converted and redeveloped buildings cut supply by 15%, pushing up rents for everyone else). Effects like these build up over years, because long-run supply is more elastic.',
             },
           ],
         },
@@ -1756,6 +2499,56 @@ supply-demand
               answerOutline: 'The base shrinks: quantity falls toward zero, so beyond the peak the fall in quantity outweighs the higher rate.',
             },
           ],
+          quiz: [
+            {
+              question: 'Demand is $P = 60 - Q$ and supply $P = 10 + Q$, so without a tax $Q = 25$ and $P = 35$. A tax of 10 per unit is imposed. What are the tax revenue and the deadweight loss?',
+              options: [
+                'Revenue 250, deadweight loss 25',
+                'Revenue 200, deadweight loss 25',
+                'Revenue 200, deadweight loss 50',
+                'Revenue 200, deadweight loss 0',
+              ],
+              answer: 1,
+              explanation:
+                'With the tax, $(60 - Q) - (10 + Q) = 10$ gives $Q = 20$. Revenue is $10 \\times 20 = 200$ and the triangle is $\\tfrac12 \\times 10 \\times (25 - 20) = 25$. Revenue 250 uses the quantity before the tax; 50 forgets the $\\tfrac12$.',
+            },
+            {
+              question: 'In the same market ($P = 60 - Q$, $P = 10 + Q$), the tax doubles from 10 to 20. What happens to revenue and deadweight loss?',
+              options: [
+                'Revenue doubles to 400; deadweight loss doubles to 50',
+                'Revenue rises to 300; deadweight loss doubles to 50',
+                'Revenue rises to 300; deadweight loss quadruples to 100',
+                'Revenue doubles to 400; deadweight loss quadruples to 100',
+              ],
+              answer: 2,
+              explanation:
+                'At $t = 20$, $Q = (50 - 20)/2 = 15$: revenue $20 \\times 15 = 300$ and $DWL = \\tfrac12 \\times 20 \\times 10 = 100$. The loss rises with $t^2$ because both the wedge and the lost quantity double. Revenue rises by less than double because the base shrinks.',
+            },
+            {
+              question: 'Two goods have the same price, quantity and supply curve. Demand for one is very inelastic and for the other very elastic. The same per-unit tax is put on each. Which loses more surplus?',
+              options: [
+                'The good with elastic demand',
+                'The good with inelastic demand',
+                'Both lose the same, since the tax is the same',
+                'Neither, since the government collects all that buyers lose',
+              ],
+              answer: 0,
+              explanation:
+                'With elastic demand, quantity falls a lot for a given wedge, so the triangle is large. Inelastic demand barely changes quantity, so the tax is mostly a transfer to the government. This is why taxing inelastic goods wastes the least, though they are often necessities.',
+            },
+            {
+              question: 'In the market $P = 60 - Q$, $P = 10 + Q$ (equilibrium $Q = 25$), sellers receive a subsidy of 4 per unit. What does it cost taxpayers, and what is the deadweight loss?',
+              options: [
+                'Cost 100, deadweight loss 4',
+                'Cost 108, deadweight loss 8',
+                'Cost 100, deadweight loss 0, since the money goes to buyers and sellers',
+                'Cost 108, deadweight loss 4',
+              ],
+              answer: 3,
+              explanation:
+                '$P_s - P_b = 4$ gives $(10 + Q) - (60 - Q) = 4$, so $Q = 27$, $P_b = 33$, $P_s = 37$. The cost is $4 \\times 27 = 108$, and the units from 25 to 27 cost more than buyers value them: $\\tfrac12 \\times 4 \\times 2 = 4$. Cost 100 uses the quantity before the subsidy.',
+            },
+          ],
         },
         {
           slug: 'international-trade-and-tariffs',
@@ -1842,6 +2635,51 @@ A **quota** limits the quantity imported. A quota of 20 has the same price effec
             {
               question: 'What does "complete pass-through" of a tariff mean, and why did it matter for the 2018 evidence?',
               answerOutline: 'Import prices before tariff did not fall, so the domestic price rose by the full tariff: domestic buyers bore the cost, not foreign exporters.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A small economy\'s demand for aluminium is $P = 900 - 5Q$ and its supply $P = 100 + 5Q$. Without trade the price is 500. The border opens at a world price of 300. What happens?',
+              options: ['It exports 80', 'It imports 40', 'It imports 80', 'It imports 120'],
+              answer: 2,
+              explanation:
+                'At 300, buyers want $(900 - 300)/5 = 120$ and domestic producers supply $(300 - 100)/5 = 40$, so imports fill the gap of 80. 40 and 120 are domestic production and consumption on their own. A world price below the no-trade price means imports, not exports.',
+            },
+            {
+              question: 'In the same market ($P = 900 - 5Q$, $P = 100 + 5Q$, world price 300), a tariff of 100 is imposed. What are imports, tariff revenue and the total deadweight loss?',
+              options: [
+                'Imports 40, revenue 4,000, deadweight loss 2,000',
+                'Imports 40, revenue 8,000, deadweight loss 2,000',
+                'Imports 40, revenue 4,000, deadweight loss 1,000',
+                'Imports 40, revenue 4,000, deadweight loss 4,000',
+              ],
+              answer: 0,
+              explanation:
+                'At 400, demand is 100 and domestic supply 60, so imports are 40 and revenue $100 \\times 40 = 4{,}000$. The production triangle is $\\tfrac12 \\times 20 \\times 100 = 1{,}000$ and the consumption triangle the same, 2,000 in total. 1,000 counts only one triangle; 8,000 applies the tariff to the old imports.',
+            },
+            {
+              question: 'Instead of the tariff, the government sets an import quota with the same effect on the domestic price. What is different?',
+              options: [
+                'Domestic consumers pay less than under the tariff',
+                'Domestic production is higher than under the tariff',
+                'There is no deadweight loss, because no tax is collected',
+                'The money the tariff would have raised goes as quota rents to whoever holds the import licences',
+              ],
+              answer: 3,
+              explanation:
+                'With the same domestic price, consumption, production and the two deadweight triangles are the same. The difference is who gets the rectangle: the government with a tariff, licence holders (often foreign exporters) with a quota.',
+            },
+            {
+              question: 'Studies of the 2018 US tariffs found close to complete pass-through into US import prices. What does that mean?',
+              options: [
+                'Foreign exporters cut their prices by about the tariff, so they bore the cost',
+                'Import prices before tariff did not fall, so US prices rose by about the full tariff and US buyers bore the cost',
+                'The tariffs passed through customs without being collected',
+                'US producers absorbed the tariffs out of their profits',
+              ],
+              answer: 1,
+              explanation:
+                'Pass-through measures how much of a tariff shows up in the price buyers pay. Close to complete pass-through means foreign exporters did not lower their prices, so the tariff was paid by US importers and buyers, the reverse of the terms-of-trade hope that foreigners would bear part of it.',
             },
           ],
         },
@@ -1965,6 +2803,56 @@ If coffee gave more utility per dollar than sandwiches, moving a dollar from san
               answerOutline: 'Price reflects marginal value. Water is plentiful so its marginal utility is low despite huge total utility; diamonds are scarce so their marginal utility is high.',
             },
           ],
+          quiz: [
+            {
+              question: 'You have USD 18 for tea (USD 2 a cup) and cake (USD 4 a slice). Marginal utility of tea: 16, 12, 8, 4. Marginal utility of cake: 40, 24, 16, 8. Which bundle maximises utility?',
+              options: [
+                '1 tea and 4 cakes',
+                '4 teas and 2 cakes',
+                '3 teas and 3 cakes',
+                '4 teas and 3 cakes',
+              ],
+              answer: 2,
+              explanation:
+                'MU per dollar: tea 8, 6, 4, 2; cake 10, 6, 4, 2. Buying in that order reaches 3 teas and 3 cakes, spending $6 + 12 = 18$, with the last unit of each giving 4 per dollar. Utility is $36 + 80 = 116$, against 104 for 1 tea and 4 cakes or 4 teas and 2 cakes. 4 teas and 3 cakes cost USD 20, more than the budget.',
+            },
+            {
+              question: 'At your current bundle, the last dollar spent on books gives 6 units of utility and the last dollar spent on films gives 9. What should you do?',
+              options: [
+                'Spend a little more on films and less on books',
+                'Nothing, as long as the whole budget is spent',
+                'Spend more on books, so their marginal utility rises',
+                'Buy whichever good has the higher marginal utility per unit, whatever its price',
+              ],
+              answer: 0,
+              explanation:
+                'Moving a dollar from books to films loses 6 and gains 9. As you buy more films their marginal utility falls, and as you buy fewer books theirs rises, until $MU_x/P_x = MU_y/P_y$. Spending the budget is necessary but not enough; and what matters is utility per *dollar*, not per unit.',
+            },
+            {
+              question: 'Lost in a desert, a traveller would give a diamond for a litre of water. How does the lesson explain this?',
+              options: [
+                'Water\'s total utility has become larger than the diamond\'s',
+                'In the desert the traveller values water as a luxury',
+                'Water is now scarce, so the marginal utility of one more litre is very high',
+                'The diamond\'s total utility has fallen to zero',
+              ],
+              answer: 2,
+              explanation:
+                'Value at the margin depends on how much you already have. Normally water is so plentiful that one more litre adds little; with none, the next litre is worth a great deal. Water\'s *total* utility was always huge, which is why total utility cannot explain prices.',
+            },
+            {
+              question: 'Ana\'s utility from a bundle is 200 and Ben\'s utility from the same bundle is 100. What can you conclude?',
+              options: [
+                'Ana enjoys the bundle twice as much as Ben',
+                'Ana would pay twice as much for the bundle',
+                'Ben would gain more from one more unit',
+                'Nothing about who enjoys it more: utility only ranks bundles for each person',
+              ],
+              answer: 3,
+              explanation:
+                'Utility numbers rank one person\'s bundles; their units mean nothing in themselves, so they cannot be compared across people. Scale Ben\'s numbers by 10 and nothing about his choices changes.',
+            },
+          ],
         },
         {
           slug: 'income-and-substitution-effects',
@@ -2056,6 +2944,56 @@ function-explorer
               answerOutline: 'The MRS equals the price ratio Px/Py: the indifference curve is tangent to the budget line.',
             },
           ],
+          quiz: [
+            {
+              question: 'A consumer spends half her income on each good, so $x = M/(2P_x)$. Income is 240, $P_x = 8$ and $P_y = 4$, so she buys $x = 15$ and $y = 30$. $P_x$ falls to 4. What are the substitution and income effects on $x$?',
+              options: [
+                'Substitution +7.5, income +7.5',
+                'Substitution +15, income 0',
+                'Substitution +22.5, income +7.5',
+                'Substitution 0, income +15',
+              ],
+              answer: 0,
+              explanation:
+                'The new choice is $x = 240/8 = 30$. Compensating income to afford the old bundle at the new price is $4 \\times 15 + 4 \\times 30 = 180$, with which she buys $x = 180/8 = 22.5$. Substitution effect $22.5 - 15 = 7.5$, income effect $30 - 22.5 = 7.5$. 22.5 is the substitution-effect *bundle*, not the effect.',
+            },
+            {
+              question: 'The price of an inferior good falls, and it is not a Giffen good. What happens?',
+              options: [
+                'Both effects raise quantity demanded',
+                'The substitution effect raises quantity, the income effect lowers it, and quantity rises overall',
+                'The substitution effect lowers quantity, the income effect raises it, and quantity falls overall',
+                'The income effect lowers quantity by more than the substitution effect raises it',
+              ],
+              answer: 1,
+              explanation:
+                'Cheaper relative to other goods, it is bought more (substitution). Feeling richer, the consumer buys less of an inferior good (income). Without Giffen behaviour the substitution effect wins. The last option describes a Giffen good.',
+            },
+            {
+              question: 'In Jensen and Miller\'s study in Hunan, some very poor households bought **less** rice when a voucher lowered its price. Why?',
+              options: [
+                'Rice is a normal good, so its income effect is positive',
+                'The voucher made rice relatively dearer than meat',
+                'Rice was an inferior staple taking a large share of the budget, so the money saved went on preferred foods such as meat',
+                'Households expected rice prices to fall further',
+              ],
+              answer: 2,
+              explanation:
+                'Giffen behaviour needs an inferior good with a large budget share, so the income effect outweighs the substitution effect. Cheaper rice freed money, and households used it to replace some rice with meat. The substitution effect still pointed towards more rice, since rice became relatively cheaper.',
+            },
+            {
+              question: 'A large pay rise leads a surgeon to work fewer hours. What explains this?',
+              options: [
+                'The income effect outweighs the substitution effect',
+                'The substitution effect: leisure has become cheaper',
+                'The surgeon\'s labour supply curve has shifted left',
+                'The substitution effect outweighs the income effect',
+              ],
+              answer: 0,
+              explanation:
+                'A higher wage makes each hour of leisure cost more (substitution effect: work more) and makes the surgeon richer (income effect: take more leisure). Fewer hours means the income effect won, the backward-bending part of labour supply. Leisure became dearer, not cheaper.',
+            },
+          ],
         },
         {
           slug: 'behavioural-economics',
@@ -2139,6 +3077,51 @@ Behavioural findings refine rather than replace the supply and demand model: mar
             {
               question: 'Why do published nudge effects tend to overstate effects at scale?',
               answerOutline: 'Selective publication of large, significant results from small samples; large nudge-unit trials found much smaller average effects (1.4 vs 8.7 percentage points).',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A person values any payoff after today at $\\beta = 0.75$ times its face value (ignore other discounting). Which does she choose: USD 100 today or USD 120 tomorrow; and USD 100 on day 60 or USD 120 on day 61?',
+              options: [
+                'USD 120 tomorrow; and USD 120 on day 61',
+                'USD 100 today; and USD 100 on day 60',
+                'USD 120 tomorrow; and USD 100 on day 60',
+                'USD 100 today; and USD 120 on day 61',
+              ],
+              answer: 3,
+              explanation:
+                'Tomorrow\'s 120 is worth $0.75 \\times 120 = 90 < 100$ today, so she takes the 100. Both later payoffs are scaled by the same 0.75, so she compares 75 with 90 and waits for 120. The same one-day wait, two different choices: present bias. Ignoring $\\beta$ gives the first option, the standard model\'s answer.',
+            },
+            {
+              question: 'Concert tickets are given out by lottery. Winners ask about USD 300 to sell theirs, while fans who missed out would pay only about USD 150. Which pattern is this?',
+              options: ['The endowment effect', 'Present bias', 'Mental accounting', 'A default effect'],
+              answer: 0,
+              explanation:
+                'Once you own the ticket, giving it up feels like a loss, and losses weigh more than equal gains, so owners ask far more than non-owners will pay, as with Kahneman, Knetsch and Thaler\'s mugs. In the standard model, willingness to pay and to accept should be about the same.',
+            },
+            {
+              question: 'A company switches new employees\' retirement plan from opt-in to automatic enrolment, with easy opt-out. What did Madrian and Shea find in this kind of switch?',
+              options: [
+                'Participation barely changed, because opting in only took minutes',
+                'Most employees opted out and chose their own rate',
+                'Participation fell, because employees resented being enrolled',
+                'Participation rose dramatically, and most people stayed at the default contribution rate',
+              ],
+              answer: 3,
+              explanation:
+                'Inertia, procrastination and reading the default as advice made it powerful. "Barely changed" is the standard model\'s prediction, since switching costs are small, and the evidence rejected it.',
+            },
+            {
+              question: 'A nudge raised take-up by 8 percentage points in a published academic trial. Based on DellaVigna and Linos (2022), what should a government nudge unit expect when it runs similar nudges?',
+              options: [
+                'About the same effect, since the trial was randomised',
+                'A larger effect, because the government reaches more people',
+                'A much smaller effect: nudge-unit trials averaged 1.4 points against 8.7 in journals',
+                'No effect at all, since nudges do not work',
+              ],
+              answer: 2,
+              explanation:
+                'Most of the gap came from selective publication of large effects. That does not mean nudges fail: the main patterns are robust, but individual effect sizes are often smaller than first reported.',
             },
           ],
         },
@@ -2240,6 +3223,51 @@ Diminishing marginal returns is the root of the U-shaped cost curves in the next
               answerOutline: 'It falls, because the new worker adds less than the current average.',
             },
           ],
+          quiz: [
+            {
+              question: 'Jon quits a USD 60,000 job to run a shop and invests USD 100,000 of savings that would otherwise earn 6% a year. The shop takes in USD 250,000 and pays USD 160,000 in wages, rent and supplies. What are accounting and economic profit?',
+              options: [
+                'Accounting USD 90,000, economic USD 30,000',
+                'Accounting USD 90,000, economic USD 24,000',
+                'Accounting USD 90,000, economic −USD 70,000',
+                'Accounting USD 24,000, economic USD 90,000',
+              ],
+              answer: 1,
+              explanation:
+                'Accounting profit $= 250{,}000 - 160{,}000 = 90{,}000$. Implicit costs are the forgone salary (60,000) and forgone interest ($6\\% \\times 100{,}000 = 6{,}000$), leaving economic profit of 24,000. USD 30,000 forgets the interest; −70,000 subtracts the whole 100,000 of savings, which is not used up, instead of what it would have earned.',
+            },
+            {
+              question: 'A firm earns exactly zero economic profit. What does that mean?',
+              options: [
+                'Its accounting profit is also zero',
+                'It should close, since it earns nothing',
+                'Its owners earn just what their time and money would earn in their next-best use',
+                'Its revenue does not cover its explicit costs',
+              ],
+              answer: 2,
+              explanation:
+                'Zero economic profit is a normal profit: revenue covers explicit costs *and* the opportunity cost of the owners\' resources. Accounting profit is then positive, equal to those implicit costs. It is the long-run norm in competitive industries, not a reason to close.',
+            },
+            {
+              question: 'With a fixed plant, output with 0 to 5 workers is 0, 8, 20, 30, 36 and 38. What are the marginal product of the 4th worker and the average product with 4 workers?',
+              options: ['MP 6, AP 9', 'MP 9, AP 6', 'MP 10, AP 9', 'MP 36, AP 9'],
+              answer: 0,
+              explanation:
+                'The 4th worker raises output from 30 to 36, so MP = 6; average product is $36/4 = 9$. MP 10 is the 3rd worker\'s contribution ($30 - 20$), and 36 is total output, not the extra output.',
+            },
+            {
+              question: 'In the same table (0, 8, 20, 30, 36, 38), where do diminishing marginal returns begin?',
+              options: [
+                'With the 2nd worker',
+                'With the 5th worker, where output barely rises',
+                'Nowhere: output rises with every worker',
+                'With the 3rd worker',
+              ],
+              answer: 3,
+              explanation:
+                'Marginal products are 8, 12, 10, 6 and 2. They rise up to the 2nd worker and start falling with the 3rd. Diminishing returns means each extra worker adds *less*, not that output falls, so total output can keep rising while returns diminish.',
+            },
+          ],
         },
         {
           slug: 'short-run-costs',
@@ -2334,6 +3362,46 @@ These curves are the raw material for every decision in the next module: a firm 
               answerOutline: 'No. It raises TC, AFC and ATC, but MC and AVC depend only on variable cost.',
             },
           ],
+          quiz: [
+            {
+              question: 'A shop\'s fixed cost is 50. Total cost at outputs 0 to 5 is 50, 80, 100, 130, 180 and 250. What are the marginal cost of the 4th unit and the average total cost at 4 units?',
+              options: ['MC 45, ATC 50', 'MC 180, ATC 45', 'MC 50, ATC 45', 'MC 50, ATC 32.5'],
+              answer: 2,
+              explanation:
+                'MC of the 4th unit is $180 - 130 = 50$, and $ATC = 180/4 = 45$. 32.5 is average *variable* cost, $(180 - 50)/4$; 180 is total cost, not the extra cost of one unit.',
+            },
+            {
+              question: 'At a firm\'s current output, marginal cost is 12 and average total cost is 15. What happens to ATC if it produces one more unit?',
+              options: [
+                'It rises, because marginal cost is positive',
+                'It falls, because the extra unit costs less than the current average',
+                'It stays the same',
+                'It rises, because marginal cost is rising',
+              ],
+              answer: 1,
+              explanation:
+                'A unit costing less than the average pulls the average down, just as an exam score below your average lowers it. ATC rises only once MC is above it, which is why MC cuts ATC at its minimum. MC can be rising while still below ATC.',
+            },
+            {
+              question: 'Each worker costs USD 120 a day, and the 5th worker adds 8 units of output. What is the marginal cost of output produced by that worker?',
+              options: ['USD 15', 'USD 960', 'USD 24', 'USD 8'],
+              answer: 0,
+              explanation:
+                'Marginal cost is the wage divided by marginal product: $120/8 = 15$ per unit. USD 24 divides by the number of workers instead of by the extra output; 960 multiplies. As marginal product falls, this ratio rises: diminishing returns become rising marginal cost.',
+            },
+            {
+              question: 'A bakery\'s rent rises by USD 40 a day. Which cost curves change?',
+              options: [
+                'Marginal cost and average variable cost rise',
+                'All the cost curves rise by the same proportion',
+                'Only total cost changes; every average stays the same',
+                'Average fixed cost and average total cost rise; marginal cost and AVC do not change',
+              ],
+              answer: 3,
+              explanation:
+                'Rent is a fixed cost. It raises TC, AFC ($FC/Q$) and ATC, but marginal cost and AVC depend only on variable cost, which has not changed. That is why a rise in fixed cost does not change how much a firm chooses to produce in the short run.',
+            },
+          ],
         },
         {
           slug: 'long-run-costs-and-scale',
@@ -2416,6 +3484,51 @@ Real cost curves are hard to observe, but engineering studies and the observed s
             {
               question: 'Why does a large minimum efficient scale relative to the market lead to few firms?',
               answerOutline: 'Only a few firms can each produce at the efficient scale before supplying the whole market; smaller firms have higher costs and are driven out.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'At an output of 6, a small plant has ATC 14, a medium plant 10.4 and a large plant 21. The medium plant\'s lowest ATC is 8, at an output of 10. What is long-run average cost at an output of 6?',
+              options: ['8', '10.4', '14', '15.1'],
+              answer: 1,
+              explanation:
+                'In the long run the firm picks the cheapest plant for each output, so LRATC at 6 is the lowest of the three, 10.4: the curve is the lower envelope of the short-run curves. 8 is available only at an output of 10, and 15.1 averages the plants, which no firm would choose.',
+            },
+            {
+              question: 'A factory adds more workers to the same machines, and each extra worker adds less output than the last. What is this?',
+              options: [
+                'Diseconomies of scale',
+                'Constant returns to scale',
+                'Diminishing marginal returns',
+                'Economies of scale',
+              ],
+              answer: 2,
+              explanation:
+                'One input grows while another (the machines) is fixed: that is diminishing marginal returns, a short-run idea. Diseconomies of scale need *all* inputs to grow together and average cost to rise. A firm can have diminishing returns in each plant and still enjoy economies of scale across plant sizes.',
+            },
+            {
+              question: 'A firm doubles every input, including plant size, and its output triples. What does this show?',
+              options: [
+                'Diseconomies of scale',
+                'Diminishing marginal returns',
+                'Constant returns to scale',
+                'Economies of scale',
+              ],
+              answer: 3,
+              explanation:
+                'Costs double while output triples, so long-run average cost falls: economies of scale. Constant returns would double output; diseconomies would raise it by less than double. Diminishing returns are about adding one input to a fixed one.',
+            },
+            {
+              question: 'Minimum efficient scale in an industry is 4 million units a year, and market demand at a price equal to minimum average cost is 12 million. What does this suggest about the industry?',
+              options: [
+                'About 3 efficient-size firms, so only a few firms are likely',
+                'About 48 firms, so it can be highly competitive',
+                'Fewer than one efficient-size firm, so a natural monopoly',
+                'Minimum efficient scale says nothing about how many firms there are',
+              ],
+              answer: 0,
+              explanation:
+                'At most $12/4 = 3$ firms can each produce at minimum efficient scale. When MES is a large share of the market only a few firms survive, as in aircraft manufacturing. A natural monopoly needs MES larger than the market (here the ratio is upside down in that option).',
             },
           ],
         },
@@ -2515,6 +3628,56 @@ Perfect competition is an ideal type. Its value is as a benchmark: it shows what
               answerOutline: 'The part of its MC curve above minimum AVC (zero output below that price).',
             },
           ],
+          quiz: [
+            {
+              question: 'A competitive firm has $TC = 64 + 4Q + Q^2$, so $MC = 4 + 2Q$. The market price is 24. What output does it choose, and what is its profit?',
+              options: [
+                '$Q = 10$, profit 100',
+                '$Q = 20$, profit −64',
+                '$Q = 10$, profit 36',
+                '$Q = 10$, profit 240',
+              ],
+              answer: 2,
+              explanation:
+                'Set $P = MC$: $4 + 2Q = 24$ gives $Q = 10$. Profit $= 240 - (64 + 40 + 100) = 36$, or $(24 - 20.4) \\times 10$ using ATC. Profit 100 leaves out the fixed cost of 64; 240 is revenue. $Q = 20$ sets price equal to AVC ($4 + Q$) instead of MC.',
+            },
+            {
+              question: 'For the same firm ($TC = 64 + 4Q + Q^2$, $MC = 4 + 2Q$, $AVC = 4 + Q$, ATC lowest at $Q = 8$), what are the shutdown price and the break-even price?',
+              options: [
+                'Shutdown 4, break-even 8',
+                'Shutdown 20, break-even 4',
+                'Shutdown 12, break-even 20',
+                'Shutdown 4, break-even 20',
+              ],
+              answer: 3,
+              explanation:
+                'The shutdown price is minimum AVC: $4 + Q$ is lowest as $Q$ approaches 0, at 4. Break-even is minimum ATC: at $Q = 8$, $ATC = 64/8 + 4 + 8 = 20$, which equals $MC = 20$ there. 12 is AVC at $Q = 8$, not its minimum; 8 is the break-even *output*.',
+            },
+            {
+              question: 'Same firm, but the price falls to 10. Its best output is then $Q = 3$, where AVC is 7 and ATC about 28.3. What should it do in the short run?',
+              options: [
+                'Shut down, because price is below ATC',
+                'Produce 3 units: it loses about 55, less than the 64 it would lose by shutting down',
+                'Shut down, because any loss is worse than producing nothing',
+                'Produce 3 units, because it makes a profit whenever price exceeds AVC',
+              ],
+              answer: 1,
+              explanation:
+                'Revenue $30$ covers variable cost $21$ and part of the fixed cost, so the loss is $30 - (64 + 12 + 9) = -55$; closing loses the whole fixed cost of 64. Price below ATC means a loss, not a reason to close; price above AVC means producing beats closing, not that it makes a profit.',
+            },
+            {
+              question: 'What is a perfectly competitive firm\'s short-run supply curve?',
+              options: [
+                'Its average total cost curve',
+                'Its whole marginal cost curve, including the falling part',
+                'Its average variable cost curve',
+                'Its marginal cost curve above minimum average variable cost',
+              ],
+              answer: 3,
+              explanation:
+                'At each price the firm produces where $P = MC$ on the rising part of MC, and below minimum AVC it shuts down and supplies nothing. The falling part of MC is never a profit-maximising choice, and the average curves decide *whether* to produce, not how much.',
+            },
+          ],
         },
         {
           slug: 'perfect-competition-long-run',
@@ -2601,6 +3764,51 @@ This is a precise version of the invisible hand. Its conditions are strong (many
             {
               question: 'Name the two efficiency conditions met in long-run competitive equilibrium.',
               answerOutline: 'P = MC (allocative efficiency) and P = min ATC (productive efficiency).',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Every firm in a competitive industry has minimum ATC of 20 at an output of 8. Market demand is $Q_d = 2000 - 50P$. How many firms are there in long-run equilibrium?',
+              options: ['50', '125', '250', '1,000'],
+              answer: 1,
+              explanation:
+                'Entry and exit push the price to minimum ATC, 20. The market then buys $2000 - 50 \\times 20 = 1{,}000$ units, and at 8 per firm that takes $1000/8 = 125$ firms. 1,000 is the market quantity, not the number of firms; 50 divides by the price instead of by firm output.',
+            },
+            {
+              question: 'In the same constant-cost industry (minimum ATC 20 at $q = 8$), demand rises to $Q_d = 2400 - 50P$. What is the new long-run equilibrium?',
+              options: [
+                'Price above 20, with the same 125 firms each earning a profit',
+                'Price 20, with 125 firms each producing more',
+                'Price 20, with 175 firms',
+                'Price above 20, with 175 firms',
+              ],
+              answer: 2,
+              explanation:
+                'In the short run the price rises and existing firms profit; that attracts entry until the price is back at minimum ATC. Then the market buys $2400 - 1000 = 1{,}400$ units, made by $1400/8 = 175$ firms. The first option is the short-run outcome. In a constant-cost industry long-run supply is horizontal, so the price ends where it started.',
+            },
+            {
+              question: 'As an industry grows, it bids up the wages of a limited pool of skilled engineers. What does its long-run supply curve look like?',
+              options: [
+                'Horizontal: entry always brings the price back to its old level',
+                'Downward-sloping: more firms mean more competition',
+                'Vertical: the number of engineers is fixed',
+                'Upward-sloping: firms\' costs rise as the industry expands',
+              ],
+              answer: 3,
+              explanation:
+                'When expansion raises the price of a scarce input, every firm\'s cost curves shift up as the industry grows, so a higher price is needed for more output: an increasing-cost industry. A horizontal curve needs costs that do not change with industry size; a downward slope needs costs that *fall* as the industry grows.',
+            },
+            {
+              question: 'In long-run competitive equilibrium, which condition shows which kind of efficiency?',
+              options: [
+                '$P = MC$ shows productive efficiency; $P = \\min ATC$ shows allocative efficiency',
+                'Both conditions show allocative efficiency',
+                '$P = MC$ shows allocative efficiency; $P = \\min ATC$ shows productive efficiency',
+                'Zero profit shows allocative efficiency',
+              ],
+              answer: 2,
+              explanation:
+                '$P = MC$ means the value of the last unit to buyers equals its cost, so the quantity maximises total surplus (allocative). $P = \\min ATC$ means each unit is made at the lowest possible average cost (productive). The first option swaps them.',
             },
           ],
         },
@@ -2697,6 +3905,41 @@ cost-curves
               answerOutline: 'Output is below the efficient level where demand meets MC; units valued above their cost are not produced.',
             },
           ],
+          quiz: [
+            {
+              question: 'A monopolist faces demand $P = 80 - 2Q$ and has constant marginal cost 20. What output and price does it choose?',
+              options: [
+                '$Q = 30$, $P = 20$',
+                '$Q = 15$, $P = 20$',
+                '$Q = 20$, $P = 40$',
+                '$Q = 15$, $P = 50$',
+              ],
+              answer: 3,
+              explanation:
+                '$MR = 80 - 4Q$, and $MR = MC$ gives $Q = 15$; the price is read off the demand curve, $80 - 30 = 50$. $Q = 30$ at 20 is the competitive outcome (demand = MC); $P = 20$ at 15 reads the price from MC instead of demand; $Q = 20$ maximises revenue ($MR = 0$), ignoring cost.',
+            },
+            {
+              question: 'For the same monopolist ($P = 80 - 2Q$, $MC = 20$, monopoly output 15 at a price of 50), what is the deadweight loss compared with the efficient outcome?',
+              options: ['112.5', '225', '450', '900'],
+              answer: 1,
+              explanation:
+                'The efficient output is where demand meets MC: $80 - 2Q = 20$, so $Q = 30$. The triangle is $\\tfrac12 \\times (30 - 15) \\times (50 - 20) = 225$. 450 forgets the $\\tfrac12$ (and happens to equal the monopoly profit, $30 \\times 15$, a different area).',
+            },
+            {
+              question: 'A monopolist sells 10 units at USD 50. To sell an 11th, it must cut the price to USD 48 on every unit. What is the marginal revenue of the 11th unit?',
+              options: ['USD 28', 'USD 48', 'USD 2', 'USD 528'],
+              answer: 0,
+              explanation:
+                'Revenue goes from $500$ to $11 \\times 48 = 528$, so MR = 28: the 48 from the extra unit minus 2 lost on each of the first 10. 48 is the price, which equals MR only for a price taker. That is why the MR line lies below demand.',
+            },
+            {
+              question: 'At a monopolist\'s chosen output, marginal cost is 30 and the price elasticity of demand is $-4$. What price does it charge?',
+              options: ['37.5', '40', '120', '34'],
+              answer: 1,
+              explanation:
+                'The Lerner index gives $(P - MC)/P = -1/\\varepsilon_d = 0.25$, so $P - 30 = 0.25P$ and $P = 40$. 37.5 adds 25% of MC instead of 25% of price; 120 multiplies MC by the elasticity. Less elastic demand would mean a higher markup.',
+            },
+          ],
         },
         {
           slug: 'price-discrimination-and-regulation',
@@ -2783,6 +4026,51 @@ cost-curves
             {
               question: 'What is the problem with marginal-cost pricing for a natural monopoly?',
               answerOutline: 'With falling ATC, MC is below ATC, so P = MC means a loss; the firm needs a subsidy or another way to cover fixed cost.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A firm with constant marginal cost 6 can separate two groups. Group A has demand $P = 30 - Q_A$ and group B has $P = 18 - Q_B$. What price does each group pay?',
+              options: ['A pays 12, B pays 18', 'A pays 18, B pays 12', 'Both pay 6', 'Both pay 15'],
+              answer: 1,
+              explanation:
+                'Set MR = MC in each group: $30 - 2Q_A = 6$ gives $Q_A = 12$ at 18; $18 - 2Q_B = 6$ gives $Q_B = 6$ at 12. The group with lower willingness to pay, which is more elastic at these prices, gets the lower price. A price of 6 is marginal-cost pricing, which a profit-maximising firm would not choose.',
+            },
+            {
+              question: 'Which of these is **not** needed for a firm to price discriminate?',
+              options: [
+                'Some market power',
+                'A way to tell buyers apart or get them to sort themselves',
+                'A way to prevent resale between buyers',
+                'Different costs of serving different groups',
+              ],
+              answer: 3,
+              explanation:
+                'Price discrimination is charging different prices for reasons *unrelated* to cost, so cost differences are not part of it. The other three are the conditions: without market power the firm cannot set prices, without sorting it cannot target them, and with resale the low-price buyers would sell to the rest.',
+            },
+            {
+              question: 'A natural monopoly has demand $P = 60 - Q$ and $TC = 400 + 10Q$. The regulator requires $P = MC$. What happens?',
+              options: [
+                '50 units at a price of 10, and a loss of 400 that needs a subsidy',
+                '50 units at a price of 10, with zero profit',
+                '40 units at a price of 20, with zero profit',
+                '25 units at a price of 35, with a profit of 225',
+              ],
+              answer: 0,
+              explanation:
+                'At $P = 10$ buyers take 50, efficient output, but revenue equals variable cost and the fixed cost of 400 is not covered. 40 units at 20 is average-cost pricing ($60 - Q = 10 + 400/Q$), which breaks even; 25 at 35 is the unregulated monopoly ($MR = 60 - 2Q = 10$).',
+            },
+            {
+              question: 'Under US antitrust law, which of these is illegal?',
+              options: [
+                'Having a monopoly because of a better product',
+                'Charging a price above marginal cost',
+                'Keeping a monopoly through exclusionary conduct such as exclusive default deals',
+                'Being the only seller in a small town',
+              ],
+              answer: 2,
+              explanation:
+                'Having a monopoly is not illegal under the Sherman Act; acquiring or keeping one by exclusionary conduct is. That was the finding against Google in August 2024, partly because of exclusive default-placement deals.',
             },
           ],
         },
@@ -2873,6 +4161,56 @@ Against that, consumers get **variety**. A city with fifty different cafés has 
             {
               question: 'Why is monopolistic competition not simply "inefficient"?',
               answerOutline: 'Consumers value product variety; the higher costs and markup buy choice, and the model alone cannot say whether the variety is worth it.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A café has $TC = 100 + 10Q + Q^2$ (so $MC = 10 + 2Q$) and demand $P = 70 - 4Q$. What are its output, price and profit in the short run?',
+              options: [
+                '$Q = 6$, $P = 46$, profit 80',
+                '$Q = 6$, $P = 46$, profit 180',
+                '$Q = 10$, $P = 30$, profit 0',
+                '$Q = 6$, $P = 22$, profit −64',
+              ],
+              answer: 0,
+              explanation:
+                '$MR = 70 - 8Q = 10 + 2Q$ gives $Q = 6$, and the demand curve gives $P = 46$. Profit $= 276 - (100 + 60 + 36) = 80$. 180 leaves out the fixed cost; $Q = 10$ sets price equal to MC, as a price taker would; $P = 22$ reads the price off MC instead of demand.',
+            },
+            {
+              question: 'Which describes long-run equilibrium in monopolistic competition?',
+              options: [
+                '$P = MC = \\min ATC$, as in perfect competition',
+                '$P$ is above ATC, because brands protect profits',
+                '$P = ATC$ at minimum ATC, but above MC',
+                '$P = ATC$ on the falling part of ATC, with $P$ above MC and output below the cost-minimising level',
+              ],
+              answer: 3,
+              explanation:
+                'Entry pushes profit to zero, so $P = ATC$. Because the firm\'s demand slopes down, it touches ATC where ATC is still falling: excess capacity. And since MR is below price, $P > MC$. The perfect-competition conditions fail on both counts.',
+            },
+            {
+              question: 'A rival café with a similar menu opens next door to a profitable café. What happens to the existing café\'s demand curve?',
+              options: [
+                'It shifts left, and often becomes more elastic',
+                'It shifts right, because the street attracts more customers',
+                'It is unchanged; only the rival\'s demand matters',
+                'It becomes perfectly elastic at once',
+              ],
+              answer: 0,
+              explanation:
+                'The newcomer takes some customers and offers a close substitute, so the café sells less at every price and its customers respond more to its price. Entry like this continues until profit is zero. Demand stays downward-sloping as long as products are differentiated.',
+            },
+            {
+              question: 'A city with fifty different cafés has higher average costs than it would with five giant ones. Does that show there are too many cafés?',
+              options: [
+                'Yes: any excess capacity is pure waste',
+                'Yes: the efficient number is where each café produces at minimum ATC',
+                'No: consumers value variety, and the model alone cannot say whether it is worth the higher cost',
+                'No: monopolistic competition has no inefficiency at all',
+              ],
+              answer: 2,
+              explanation:
+                'Excess capacity and the markup are real costs, but they buy variety in location, atmosphere and style. Whether there is too much or too little variety is not settled by the model; it depends on how much people value the choice.',
             },
           ],
         },
@@ -2971,6 +4309,51 @@ Game theory reaches far beyond oligopoly: arms races, climate agreements (CORE's
             {
               question: 'How can repetition sustain cooperation?',
               answerOutline: 'The threat of future punishment (e.g. grim trigger) makes cheating costly; if firms value the future enough (δ above a threshold), cooperating is a best response.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Row player A chooses Up or Down; column player B chooses Left or Right. Payoffs (A, B): (Up, Left) = (4, 3); (Up, Right) = (1, 2); (Down, Left) = (3, 1); (Down, Right) = (2, 4). Which are the pure-strategy Nash equilibria?',
+              options: [
+                '(Up, Left) only',
+                '(Down, Right) only',
+                'None, because neither player has a dominant strategy',
+                '(Up, Left) and (Down, Right)',
+              ],
+              answer: 3,
+              explanation:
+                'Check each cell for best responses. At (Up, Left): A gets 4 > 3 and B gets 3 > 2, so neither wants to switch. At (Down, Right): A gets 2 > 1 and B gets 4 > 1. The other two cells each have a player who would switch. A Nash equilibrium does not need dominant strategies; this game has none and still has two equilibria.',
+            },
+            {
+              question: 'Two cartel members each choose Keep quota or Cheat. Payoffs: (Keep, Keep) = (10, 10); (Keep, Cheat) = (4, 14); (Cheat, Keep) = (14, 4); (Cheat, Cheat) = (6, 6). What happens if they play once?',
+              options: [
+                'Both keep the quota, since that is best for both',
+                'Both cheat, since cheating is each one\'s dominant strategy',
+                'One cheats and the other keeps the quota',
+                'There is no equilibrium',
+              ],
+              answer: 1,
+              explanation:
+                'Whatever the other does, cheating pays more: 14 > 10 and 6 > 4. So both cheat and get 6, though both would get 10 by keeping the quota. That is the prisoner\'s dilemma, and why cartels are unstable. (Keep, Keep) is best for both but not an equilibrium, since each would gain by deviating.',
+            },
+            {
+              question: 'The same game is repeated forever, and both firms use grim trigger. What is the smallest discount factor $\\delta$ that sustains cooperation?',
+              options: ['0.29', '0.4', '0.5', '2'],
+              answer: 2,
+              explanation:
+                'Cooperation is worth $10/(1 - \\delta)$; deviating is worth $14 + 6\\delta/(1 - \\delta)$. Cooperation wins when $\\delta \\ge (14 - 10)/(14 - 6) = 0.5$. 0.4 is the threshold for the lesson\'s pricing game, not this one; 0.29 divides by 14 instead of by the gap $14 - 6$; 2 is the ratio upside down.',
+            },
+            {
+              question: 'Which of these is clearly illegal under the Sherman Act?',
+              options: [
+                'Rival executives meeting to agree on prices, as in the lysine case',
+                'Firms independently matching a rival\'s price cut',
+                'A market having only three sellers',
+                'A firm raising its price after watching its rival do so',
+              ],
+              answer: 0,
+              explanation:
+                'Explicit price-fixing agreements violate the Sherman Act, which is how Archer Daniels Midland executives went to prison in the 1990s. Tacit collusion without an agreement, the kind the repeated game describes, is much harder to prosecute, and having few sellers is not illegal in itself.',
             },
           ],
         },
@@ -3082,6 +4465,56 @@ The federal gasoline tax (18.4 cents a gallon since 1993) and taxes on tobacco a
               answerOutline: 'It removes a pre-existing distortion; the quantity moves toward the efficient level, so it reduces rather than creates deadweight loss.',
             },
           ],
+          quiz: [
+            {
+              question: 'Demand is $P = 90 - Q$ and private marginal cost $P = 10 + Q$. Each unit causes USD 16 of damage to others. What are the market quantity, the efficient quantity and the deadweight loss of the market outcome?',
+              options: [
+                'Market 40, efficient 32, deadweight loss 128',
+                'Market 32, efficient 40, deadweight loss 64',
+                'Market 40, efficient 24, deadweight loss 64',
+                'Market 40, efficient 32, deadweight loss 64',
+              ],
+              answer: 3,
+              explanation:
+                'The market solves $90 - Q = 10 + Q$: $Q = 40$. Social MC is $26 + Q$, so $90 - Q = 26 + Q$ gives $Q = 32$. The triangle is $\\tfrac12 \\times (40 - 32) \\times 16 = 64$. 128 forgets the $\\tfrac12$; 24 subtracts the damage from the quantity instead of adding it to the cost; with a negative externality the market produces *more* than is efficient, not less.',
+            },
+            {
+              question: 'In the same market (demand $P = 90 - Q$, private MC $10 + Q$, damage USD 16 per unit), the government sets a Pigouvian tax. What tax, and what prices result?',
+              options: [
+                'A tax of 8, half the damage, since buyers and sellers share it',
+                'A tax of 16: output 32, buyers pay 58 and sellers keep 42',
+                'A tax of 16: buyers pay 16 more than before, 66',
+                'A tax of 64, equal to the deadweight loss',
+              ],
+              answer: 1,
+              explanation:
+                'The tax equals the external cost per unit, 16. Then $(90 - Q) - (10 + Q) = 16$ gives $Q = 32$, the efficient output, with $P_b = 58$ and $P_s = 42$. Buyers bear 8 and sellers 8 here, but the *tax* is still the full damage. Unlike most taxes, it removes a deadweight loss rather than creating one.',
+            },
+            {
+              question: 'Each flu shot protects people the patient meets, an external benefit of USD 10 a shot. Left alone, what does the market do, and what fixes it?',
+              options: [
+                'Too many shots; a tax of 10 a shot',
+                'The efficient number, since patients pay for what they get',
+                'Too few shots; a subsidy of 10 a shot',
+                'Too few shots; a tax on people who are not vaccinated equal to the price of a shot',
+              ],
+              answer: 2,
+              explanation:
+                'Buyers count only their own benefit, so social marginal benefit lies 10 above demand and the market stops short of the efficient quantity. A Pigouvian subsidy equal to the external benefit makes buyers act as if they counted it. A tax would push output further in the wrong direction.',
+            },
+            {
+              question: 'Why do estimates of the social cost of carbon differ by large factors?',
+              options: [
+                'Mainly because of the discount rate, how to value damages far in the future and in poor countries, and how to treat uncertainty',
+                'Mainly because economists disagree about whether carbon dioxide causes any damage',
+                'Because the number is set by the market price of carbon permits',
+                'Because the EPA fixed it by law at USD 190 a tonne',
+              ],
+              answer: 0,
+              explanation:
+                'The lesson names those three issues: damage decades ahead shrinks a lot at a higher discount rate, and valuing distant or poor people\'s losses involves value judgements. The EPA\'s USD 190 (2023) was a central estimate, and an executive order in January 2025 directed agencies to stop relying on such estimates.',
+            },
+          ],
         },
         {
           slug: 'coase-and-pollution-policy',
@@ -3168,6 +4601,51 @@ A tax fixes the **price** of pollution and lets the quantity adjust; a cap fixes
               answerOutline: 'A tax sets the price and lets quantity adjust; a cap sets the quantity and lets the permit price adjust.',
             },
           ],
+          quiz: [
+            {
+              question: 'Noise from a bar does USD 600 a year of harm to a neighbour. Soundproofing would cost the bar USD 450; the neighbour could fit double-glazed windows for USD 250. Bargaining is cheap. What happens under the Coase theorem?',
+              options: [
+                'Windows are fitted whoever holds the right; only who pays for them differs',
+                'The bar soundproofs if the neighbour has the right to quiet; the neighbour fits windows if the bar has the right to make noise',
+                'Nothing is done if the bar has the right to make noise',
+                'The bar soundproofs whoever holds the right, because it caused the harm',
+              ],
+              answer: 0,
+              explanation:
+                'Windows are the cheapest fix (250 < 450 < 600). If the neighbour holds the right, the bar pays her between 250 and 450 to fit them rather than soundproof; if the bar holds it, she fits them herself rather than suffer 600. The right decides who pays, not what is done.',
+            },
+            {
+              question: 'Why does Coasean bargaining rarely solve air pollution in a large city?',
+              options: [
+                'Because property rights in air can never be defined',
+                'Because the polluters always hold the rights',
+                'Because bargaining always leads to too little pollution',
+                'Because transaction costs are huge: millions of victims, hard-to-value damages, and everyone hoping others will negotiate',
+              ],
+              answer: 3,
+              explanation:
+                'The theorem needs cheap bargaining. With millions affected, identifying victims and enforcing a deal costs too much, and each person free rides on others\' efforts. Coase himself stressed that this is why the theorem usually does not apply.',
+            },
+            {
+              question: 'Plant A\'s marginal abatement cost is $0.5q$ and plant B\'s is $1.5q$. Together they must cut 60 tonnes. What emissions tax (or permit price) achieves this at the lowest cost?',
+              options: ['15', '22.5', '30', '45'],
+              answer: 1,
+              explanation:
+                'Equalise marginal costs: $0.5q_A = 1.5q_B$ with $q_A + q_B = 60$ gives $q_A = 45$, $q_B = 15$, both at 22.5. The total cost is $506.25 + 168.75 = 675$, against 900 for a uniform 30 each. 15 and 45 are the two plants\' marginal costs under that uniform rule; 30 is the uniform cut itself.',
+            },
+            {
+              question: 'Damage rises sharply once emissions pass a known threshold, and firms\' abatement costs are uncertain. Which tool gives more certainty about the thing that matters most here?',
+              options: [
+                'An emissions tax, because it fixes the quantity of emissions',
+                'Cap and trade, because it fixes the price of emissions',
+                'Cap and trade, because it fixes the quantity of emissions and lets the permit price adjust',
+                'An emissions tax, because it fixes the price and lets emissions adjust to the threshold',
+              ],
+              answer: 2,
+              explanation:
+                'A cap fixes the quantity, so emissions stay below the threshold whatever costs turn out to be; the permit price absorbs the uncertainty. A tax fixes the price and leaves the quantity to adjust, which gives cost certainty instead. The first two options mix up which instrument fixes what.',
+            },
+          ],
         },
         {
           slug: 'public-goods-and-common-resources',
@@ -3251,6 +4729,46 @@ A tax fixes the **price** of pollution and lets the quantity adjust; a cap fixes
             {
               question: 'What did Elinor Ostrom show about the tragedy of the commons?',
               answerOutline: 'Many communities manage common resources sustainably through local rules, monitoring and sanctions, without privatisation or central control.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'An ocean fishery is open to any boat. What kind of good are its fish?',
+              options: ['A public good', 'A club good', 'A private good', 'A common resource'],
+              answer: 3,
+              explanation:
+                'A fish caught by one boat cannot be caught by another (rival), but boats are hard to keep out (non-excludable): a common resource, at risk of overuse. A public good is non-rival as well as non-excludable; a club good is excludable but non-rival.',
+            },
+            {
+              question: 'Three neighbours value extra street lamps at $MB_1 = 30 - Q$, $MB_2 = 24 - Q$ and $MB_3 = 12 - Q$ (USD a month per extra lamp). A lamp costs 36 a month. How many lamps are efficient?',
+              options: ['0, since no neighbour would buy one alone', '10', '12'],
+              answer: 1,
+              explanation:
+                'Everyone uses the same lamps, so add marginal benefits vertically: $66 - 3Q = 36$ gives $Q = 10$ (all three MBs are still positive there). Zero is what voluntary purchase gives, since each person\'s own MB is below 36, which is exactly the free-rider failure. 12 is where the third neighbour\'s MB reaches zero, not where total MB meets cost.',
+            },
+            {
+              question: 'A podcast is free for anyone to download and asks listeners for voluntary donations. Most listeners never donate. Why?',
+              options: [
+                'Non-payers cannot be excluded, so each listener can enjoy it without paying: free riding',
+                'Listeners do not value the podcast',
+                'The podcast is a rival good, so listeners crowd each other out',
+                'Donations are a tax, so listeners avoid them',
+              ],
+              answer: 0,
+              explanation:
+                'Listening is non-excludable (as distributed) and non-rival, so it behaves like a public good: each listener gets the benefit whether or not they pay. Low donations do not show low value; they show that voluntary payment underprovides such goods.',
+            },
+            {
+              question: 'What did Elinor Ostrom find about common resources?',
+              options: [
+                'Only privatisation can prevent their overuse',
+                'Only central government control can prevent their overuse',
+                'Many communities manage them well for centuries with local rules, monitoring by users and graduated sanctions',
+                'They always collapse eventually, as with Atlantic cod',
+              ],
+              answer: 2,
+              explanation:
+                'Ostrom documented Swiss pastures, Japanese forests and irrigation systems that have lasted under local rules, neither privatised nor centrally run. The tragedy of the commons is a risk, not a law; the cod collapse shows the risk.',
             },
           ],
         },
@@ -3351,6 +4869,51 @@ supply-demand
               answerOutline: 'As a median within a wide range (about zero to 3.7 million with two-thirds probability), reflecting genuine uncertainty about labour demand elasticity, alongside wage gains for about 17 million workers.',
             },
           ],
+          quiz: [
+            {
+              question: 'A firm\'s 1st to 5th workers have marginal products of 20, 16, 12, 8 and 4 units a day. Output sells for USD 6 a unit and the daily wage is USD 70. How many workers does it hire?',
+              options: ['2', '3', '4', '5'],
+              answer: 1,
+              explanation:
+                'Marginal revenue product is $6 \\times MP$: 120, 96, 72, 48 and 24. Hire while MRP is at least the wage: the 3rd worker adds 72 ≥ 70, the 4th only 48. Hiring 4 or 5 compares something other than the *marginal* worker\'s value with the wage.',
+            },
+            {
+              question: 'In a competitive labour market, demand is $W = 30 - 0.2L$ and supply $W = 6 + 0.1L$ ($L$ in thousands), so $L = 80$ at $W = 14$. A minimum wage of 16 is set. What happens?',
+              options: [
+                'Employment falls by 10 thousand to 70, and 30 thousand more people want work than there are jobs',
+                'Employment falls by 30 thousand',
+                'Employment rises to 100 thousand, because more people want to work',
+                'Nothing, because the minimum wage is close to the market wage',
+              ],
+              answer: 0,
+              explanation:
+                'At 16, employers want $(30 - 16)/0.2 = 70$ thousand and $(16 - 6)/0.1 = 100$ thousand want jobs. Employment is set by the short side, demand, so it falls by 10; the excess supply of 30 is not the job loss, since 20 of those are newly drawn in by the higher wage.',
+            },
+            {
+              question: 'Why can a minimum wage *raise* employment when an employer has monopsony power?',
+              options: [
+                'Because the monopsonist no longer has to raise everyone\'s pay to hire one more worker, so hiring more becomes worthwhile',
+                'Because a higher wage always makes workers more productive',
+                'Because the minimum wage shifts labour demand to the right',
+                'Because monopsonists must hire everyone who applies',
+              ],
+              answer: 0,
+              explanation:
+                'A monopsonist holds hiring down because each extra hire means paying a higher wage to everyone. A floor between the monopsony and competitive wages fixes the wage, removing that cost of hiring more, so employment can rise. In the competitive model the same floor lowers employment.',
+            },
+            {
+              question: 'In 2019 the CBO estimated that a USD 15 federal minimum by 2025 would cost a median 1.3 million jobs, with a two-thirds chance that the loss lay between about zero and 3.7 million. What is the right way to read this?',
+              options: [
+                'Exactly 1.3 million jobs would be lost',
+                'Job losses were certain to exceed 3.7 million',
+                'The policy would certainly create jobs',
+                'A central estimate within a wide range, reflecting real uncertainty about how employment responds',
+              ],
+              answer: 3,
+              explanation:
+                'A median is the middle of a distribution of possible outcomes, and the range runs from roughly no loss to a large one. That width honestly reflects the disagreement in the evidence, alongside the CBO\'s estimate of higher pay for about 17 million workers.',
+            },
+          ],
         },
         {
           slug: 'information-problems',
@@ -3428,6 +4991,51 @@ supply-demand
             {
               question: 'What makes a signal credible?',
               answerOutline: 'It must be cheaper for high-quality types than for low-quality types, so low types do not find it worth copying.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'In a used-car market 70% of cars are good and 30% are lemons. Buyers value good cars at USD 900 and lemons at USD 300; sellers value them at USD 800 and USD 200. Buyers cannot tell them apart. What happens?',
+              options: [
+                'Buyers pay up to USD 720 and every car sells',
+                'Buyers pay up to USD 600, the average of the two values',
+                'Buyers pay up to USD 720; good-car owners withdraw, and only lemons trade, at up to USD 300',
+                'Good cars sell for USD 900 because buyers value them at that',
+              ],
+              answer: 2,
+              explanation:
+                'The expected value of a random car is $0.7 \\times 900 + 0.3 \\times 300 = 720$, below the 800 that good-car owners need, so they withdraw. Buyers then know only lemons remain and pay at most 300. 600 averages the two values without weighting by the shares.',
+            },
+            {
+              question: 'After buying phone insurance with no deductible, a student starts leaving her phone on café tables. Which problem is this?',
+              options: ['Adverse selection', 'Moral hazard', 'Signalling', 'Screening'],
+              answer: 1,
+              explanation:
+                'Behaviour changed *after* the contract because the insurer now bears the cost: hidden action, or moral hazard. Adverse selection is about hidden type *before* the deal, such as careless people being more likely to buy insurance. A deductible would leave some cost with her.',
+            },
+            {
+              question: 'An insurer offers two policies: a low premium with a high deductible, and a high premium with a low deductible. What is it doing?',
+              options: [
+                'Screening: customers reveal their risk by the policy they choose',
+                'Signalling: the insurer shows it is reliable',
+                'Creating moral hazard',
+                'Price discrimination based on costs',
+              ],
+              answer: 0,
+              explanation:
+                'Screening is a move by the *uninformed* side: a menu that makes high- and low-risk customers choose differently. Signalling is a move by the *informed* side, such as a seller offering a warranty.',
+            },
+            {
+              question: 'Which warranty would work as a credible signal that a seller\'s cars are good?',
+              options: [
+                'One that costs every seller USD 100, whatever their cars are like',
+                'One that costs good-car sellers USD 400 and lemon sellers USD 30',
+                'Any warranty, as long as it is advertised widely',
+                'One that costs good-car sellers USD 30 and lemon sellers USD 400',
+              ],
+              answer: 3,
+              explanation:
+                'A signal is credible only if it is much cheaper for high-quality types, so low-quality types do not find it worth copying. A warranty costing everyone the same tells buyers nothing, and one that is cheaper for lemon sellers would be offered by the wrong sellers.',
             },
           ],
         },

@@ -194,6 +194,12 @@ function checkSubject(s: Subject, allLessonIds: Set<string>, presentSubjects: Se
     else if (!presentSubjects.has(p)) warn(id, 'prerequisites', `"${p}" is planned but its file is not written yet`);
   }
 
+  const answers = s.lessons.flatMap((l) => l.quiz.map((q) => q.answer));
+  if (answers.length >= 8) {
+    const top = Math.max(...[0, 1, 2, 3, 4].map((k) => answers.filter((a) => a === k).length));
+    if (top / answers.length > 0.5) warn(id, 'quiz', `${top} of ${answers.length} quiz answers are the same option; vary the position of the correct choice`);
+  }
+
   for (const m of s.modules) {
     if (m.lessons.length < 3) warn(id, m.id, `only ${m.lessons.length} lessons (aim for 3-8)`);
     if (m.lessons.length > 8) warn(id, m.id, `${m.lessons.length} lessons (consider splitting)`);
@@ -237,6 +243,14 @@ function checkSubject(s: Subject, allLessonIds: Set<string>, presentSubjects: Se
       for (const sa of l.selfAssessment) {
         if (!sa.answerOutline) err(id, w, 'self-assessment item missing answerOutline');
       }
+      l.quiz.forEach((q, i) => {
+        const where = `quiz ${i + 1}`;
+        if (!q.question.trim()) err(id, w, `${where}: question missing`);
+        if (q.options.length < 3 || q.options.length > 5) err(id, w, `${where}: needs 3-5 options (has ${q.options.length})`);
+        if (new Set(q.options.map((o) => o.trim().toLowerCase())).size !== q.options.length) err(id, w, `${where}: duplicate options`);
+        if (!Number.isInteger(q.answer) || q.answer < 0 || q.answer >= q.options.length) err(id, w, `${where}: answer ${q.answer} is not an option index`);
+        if (!q.explanation.trim()) err(id, w, `${where}: explanation missing`);
+      });
       for (const ref of [...(l.relatedLessons ?? []), ...(l.prerequisiteLessons ?? [])]) {
         if (allLessonIds.has(ref)) continue;
         const refSubject = ref.split('/')[0];

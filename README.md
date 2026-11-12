@@ -4,9 +4,9 @@ A self-directed learning system: a course catalog, a learning-management dashboa
 knowledge base in one local web app. Seventy-one subjects (25 core tracks plus 46 additional
 subjects, 1,838 lessons, about 5,600 study hours), each with a full curriculum of modules, lessons,
 learning objectives, curated free resources, exercises, projects and a mastery checklist.
-Mathematics, economics, physics and astronomy subjects end in a capstone. The 21 CS subjects, 8 data science
-subjects, Probability and Statistics for Scientists, and the startup course each have two machine
-problems and a final project for GitHub, 93 projects in all, adding about 2,460 hours. Progress, notes and bookmarks are stored in your browser; nothing leaves
+Mathematics, economics, physics and astronomy subjects and the startup course end in a capstone. The 21 CS
+subjects, 8 data science subjects and Probability and Statistics for Scientists each have two machine
+problems and a final project for GitHub, 90 projects in all, adding about 2,380 hours. Progress, notes and bookmarks are stored in your browser; nothing leaves
 your machine.
 
 ## Running it
@@ -44,7 +44,7 @@ progress. Use Settings > Export / Import to move it between them.
   which arranges subjects in tiers so you can see what unlocks what.
 - **Subject page**: description, prerequisites with your completion in each, the full module and
   lesson list, module projects, the capstone or CS coursework, and the mastery checklist.
-- **Machine problems and final projects** (CS, data science and startup subjects): a spec you can build from in VS Code, with
+- **Machine problems and final projects** (CS and data science subjects, and Probability and Statistics for Scientists): a spec you can build from in VS Code, with
   setup, requirement checkboxes, acceptance tests and, for final projects, GitHub publishing steps.
   MPs appear between the modules they follow, and each course's last lesson links to its final
   project.

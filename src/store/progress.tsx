@@ -20,6 +20,8 @@ export interface ProgressState {
   lastVisited: Record<string, string>;
   /** selfAssessment item id -> whether the learner felt confident */
   selfChecks: Record<string, 'yes' | 'no'>;
+  /** quiz question id -> index of the option the learner chose */
+  quizAnswers: Record<string, number>;
 }
 
 const STORAGE_KEY = 'teachme:progress:v1';
@@ -32,6 +34,7 @@ export const emptyProgress = (): ProgressState => ({
   bookmarks: {},
   lastVisited: {},
   selfChecks: {},
+  quizAnswers: {},
 });
 
 function load(): ProgressState {
@@ -72,6 +75,7 @@ interface ProgressActions {
   toggleBookmark: (id: string) => void;
   visit: (lessonId: string) => void;
   setSelfCheck: (id: string, value: 'yes' | 'no' | null) => void;
+  setQuizAnswer: (id: string, option: number | null) => void;
   resetAll: () => void;
   resetSubject: (subject: Subject) => void;
   exportJson: () => string;
@@ -162,6 +166,15 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const setQuizAnswer = useCallback((id: string, option: number | null) => {
+    setState((s) => {
+      const quizAnswers = { ...s.quizAnswers };
+      if (option === null) delete quizAnswers[id];
+      else quizAnswers[id] = option;
+      return { ...s, quizAnswers };
+    });
+  }, []);
+
   const resetAll = useCallback(() => setState(emptyProgress()), []);
 
   const resetSubject = useCallback((subject: Subject) => {
@@ -176,6 +189,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         notes: strip(s.notes),
         lastVisited: strip(s.lastVisited),
         selfChecks: strip(s.selfChecks),
+        quizAnswers: strip(s.quizAnswers),
       };
     });
   }, []);
@@ -197,6 +211,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
               bookmarks: { ...s.bookmarks, ...parsed.bookmarks },
               lastVisited: { ...s.lastVisited, ...(parsed.lastVisited ?? {}) },
               selfChecks: { ...s.selfChecks, ...(parsed.selfChecks ?? {}) },
+              quizAnswers: { ...s.quizAnswers, ...(parsed.quizAnswers ?? {}) },
             },
       );
       return { ok: true };
@@ -215,12 +230,13 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       toggleBookmark,
       visit,
       setSelfCheck,
+      setQuizAnswer,
       resetAll,
       resetSubject,
       exportJson,
       importJson,
     }),
-    [state, toggleLesson, setLessonComplete, toggleCheck, setNote, toggleBookmark, visit, setSelfCheck, resetAll, resetSubject, exportJson, importJson],
+    [state, toggleLesson, setLessonComplete, toggleCheck, setNote, toggleBookmark, visit, setSelfCheck, setQuizAnswer, resetAll, resetSubject, exportJson, importJson],
   );
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>;

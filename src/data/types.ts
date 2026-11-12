@@ -83,6 +83,21 @@ export interface SelfCheck extends SelfCheckInput {
   id: string;
 }
 
+export interface QuizQuestionInput {
+  /** Markdown + LaTeX. */
+  question: string;
+  /** 3-5 answer choices, inline Markdown + LaTeX. Exactly one is correct. */
+  options: string[];
+  /** 0-based index into `options` of the correct choice. Vary its position across questions. */
+  answer: number;
+  /** Why the answer is right (and the tempting wrong one wrong); shown once the learner answers. */
+  explanation: string;
+}
+
+export interface QuizQuestion extends QuizQuestionInput {
+  id: string;
+}
+
 export interface ProjectInput {
   slug: string;
   title: string;
@@ -127,12 +142,14 @@ export interface LessonInput {
   relatedLessons?: string[];
   /** Lesson IDs within or outside the subject that should be done first. */
   prerequisiteLessons?: string[];
+  /** Optional multiple-choice questions shown at the end of the lesson and checked on the page. */
+  quiz?: QuizQuestionInput[];
   /** 'outline' marks a lesson whose body is still a stub. Defaults to 'complete'. */
   status?: LessonStatus;
 }
 
 export interface Lesson
-  extends Omit<LessonInput, 'resources' | 'exercises' | 'selfAssessment' | 'status'> {
+  extends Omit<LessonInput, 'resources' | 'exercises' | 'selfAssessment' | 'status' | 'quiz'> {
   id: string;
   subjectId: string;
   moduleId: string;
@@ -141,6 +158,7 @@ export interface Lesson
   resources: Resource[];
   exercises: Exercise[];
   selfAssessment: SelfCheck[];
+  quiz: QuizQuestion[];
   status: LessonStatus;
 }
 

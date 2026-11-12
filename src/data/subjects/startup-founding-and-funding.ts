@@ -12,14 +12,14 @@ The course is deliberately sober. Most new businesses close, and most venture-ba
 
 US law and practice are the default throughout, and rules vary by state and country. **This course is education, not legal, tax or investment advice.** Legal and tax statements are dated, are checked against primary sources where possible, and are stated as of 2 November 2026. They will change. Market figures such as round sizes go stale faster, so each is dated and the lessons show you how to look up current numbers. Lessons also say when to hire a lawyer or an accountant, which for a real company is early.
 
-Two machine problems and a final project turn the ideas into Python tools you can test. You build a discovery and metrics toolkit, a cap table simulator that reproduces the published worked examples in the Y Combinator SAFE User Guide, and an open-source company model for a clearly labelled fictional company. No real customers, money or company are needed.`,
+No programming is needed anywhere in the course. Everything is worked by hand, with a calculator or in a spreadsheet, and each lesson ends with a short multiple-choice quiz that checks the key idea or calculation. The module projects and the capstone are where you apply the material: a discovery and metrics workbook, a cap table workbook that reproduces the published worked examples in the Y Combinator SAFE User Guide, and a spreadsheet model and investor package for a clearly labelled fictional company. No real customers, money or company are needed.`,
   difficulty: 'beginner',
   estimatedHours: 70,
   prerequisites: [],
   recommendedBackground: [
     'Comfort with percentages and basic algebra',
-    'For the coursework: enough Python to write functions, read CSV files and run tests',
-    'No business, law or finance background is assumed',
+    'Basic spreadsheet use (Excel, Google Sheets or LibreOffice Calc): formulas, copying a formula down a column and making a simple chart',
+    'No programming, business, law or finance background is assumed',
   ],
   tags: ['startups', 'entrepreneurship', 'venture capital', 'fundraising', 'cap tables', 'equity', 'business'],
   core: false,
@@ -96,7 +96,7 @@ A company can move between these. Read Graham's essay for the argument and note 
               slug: 'compound-growth',
               title: 'Compound a growth rate',
               prompt:
-                'A product has USD 2,000 in weekly revenue. Compute weekly revenue after 26 and after 52 weeks at 2%, 5% and 8% weekly growth. Then find the weekly rate that turns USD 2,000 into USD 100,000 in exactly 52 weeks. Use a spreadsheet or a few lines of Python, and show the formula.',
+                'A product has USD 2,000 in weekly revenue. Compute weekly revenue after 26 and after 52 weeks at 2%, 5% and 8% weekly growth. Then find the weekly rate that turns USD 2,000 into USD 100,000 in exactly 52 weeks. Use a spreadsheet or a calculator with a power key, and show the formula.',
               kind: 'problem',
               difficulty: 1,
               hint: 'The rate g satisfies (1 + g) to the power 52 equals 50.',
@@ -125,6 +125,27 @@ A company can move between these. Read Graham's essay for the argument and note 
               question: 'Why should you be careful with benchmarks such as 5-7% weekly growth?',
               answerOutline:
                 'It is one investor\'s rule of thumb for early companies in an accelerator. It is not a law, it does not persist for long, and an investor\'s incentives favour growth.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Weekly revenue is USD 1,000 and grows 5% every week for 52 weeks. Roughly what is weekly revenue at the end?',
+              options: ['USD 2,600', 'USD 3,600', 'USD 12,640', 'USD 142,040'],
+              answer: 2,
+              explanation:
+                'Growth compounds: $1{,}000 \\times 1.05^{52} \\approx 1{,}000 \\times 12.64$. USD 3,600 is the tempting mistake of adding 5% of the *starting* figure each week (USD 50 a week for 52 weeks), which ignores that each week grows from a bigger base. USD 142,040 is the 10% row of the table.',
+            },
+            {
+              question: 'Which business is most clearly **scalable** in the lesson\'s sense?',
+              options: [
+                'A consultancy that wins more work every time it hires another consultant',
+                'A software tool where serving the next customer costs almost nothing',
+                'A popular restaurant that opens a second site with its own staff',
+                'A two-year-old app with one founder and a modest, steady income',
+              ],
+              answer: 1,
+              explanation:
+                'Scalability means revenue can grow much faster than costs. Extra software copies cost almost nothing to deliver. The consultancy and the restaurant are good businesses, but their revenue needs more people or more sites, so costs rise with it. The app\'s age and size say nothing about whether its costs scale.',
             },
           ],
         },
@@ -166,7 +187,7 @@ A company can move between these. Read Graham's essay for the argument and note 
 
 **Opportunity cost** is what you give up. If you take USD 90,000 a year less than a job would pay for five years, you give up USD 450,000 before investment returns. If you have a 27% chance of any payoff at all, your payoff in those cases must average about USD 1.67 million just to match the salary, before counting risk. That simple division ignores your skills, what you learn and how much you value independence, all of which are real. It is a floor on the conversation, not a verdict.`,
           resources: [
-            { title: 'BLS Business Employment Dynamics, Table 7: survival of private sector establishments by opening year', url: 'https://www.bls.gov/bdm/us_age_naics_00_table7.txt', type: 'dataset', cost: 'free', provider: 'US Bureau of Labor Statistics', note: 'The figures above are from the table with data through March 2026. BLS blocks scripts, so open it in a browser.', primary: true },
+            { title: 'BLS Business Employment Dynamics, Table 7: survival of private sector establishments by opening year', url: 'https://www.bls.gov/bdm/us_age_naics_00_table7.txt', type: 'dataset', cost: 'free', provider: 'US Bureau of Labor Statistics', note: 'The figures above are from the table with data through March 2026. BLS blocks automated downloads, so open it in a browser.', primary: true },
             { title: 'The Burden of the Nondiversifiable Risk of Entrepreneurship', url: 'https://www.nber.org/papers/w14219', type: 'article', cost: 'free', provider: 'Hall and Woodward, NBER', note: 'Read the introduction and the section on the distribution of exit values.' },
             { title: 'Entrepreneurship as Experimentation', url: 'https://www.nber.org/papers/w20358', type: 'article', cost: 'free', provider: 'Kerr, Nanda and Rhodes-Kropf, NBER', note: 'Explains why even skilled investors cannot pick winners in advance.' },
             { title: 'Age and High-Growth Entrepreneurship', url: 'https://www.nber.org/papers/w24489', type: 'article', cost: 'free', provider: 'Azoulay, Jones, Kim and Miranda, NBER' },
@@ -184,8 +205,8 @@ A company can move between these. Read Graham's essay for the argument and note 
               slug: 'skew-simulation',
               title: 'Mean versus median in a skewed payoff',
               prompt:
-                'Simulate 10,000 founders in Python with this payoff: 73% receive USD 0, 20% receive USD 500,000, 6% receive USD 5 million and 1% receive USD 100 million. Report the mean, the median and the share of total payoff going to the top 1%. Explain in three sentences why the mean is a poor description of a typical founder. These probabilities are made up to illustrate shape, so do not present them as data.',
-              kind: 'simulation',
+                'Imagine 100 founders with this payoff: 73 receive USD 0, 20 receive USD 500,000, 6 receive USD 5 million and 1 receives USD 100 million. By hand or in a spreadsheet with one row per founder, compute the mean, the median and the share of the total payoff that goes to the top founder. Explain in three sentences why the mean is a poor description of a typical founder. These numbers are made up to illustrate shape, so do not present them as data.',
+              kind: 'problem',
               difficulty: 2,
             },
             {
@@ -217,6 +238,27 @@ A company can move between these. Read Graham's essay for the argument and note 
               question: 'Name two limits of Carta\'s seed-to-Series A figures.',
               answerOutline:
                 'It covers only companies on Carta, not all startups. Reaching Series A is one path, so not graduating does not always mean failure. Recent cohorts have had less time.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Using the BLS figures for the March 2015 opening year (79.6% open after 1 year, 50.2% after 5), how many of 1,000 openings closed during years 2 to 5?',
+              options: ['204', '294', '498', '502'],
+              answer: 1,
+              explanation:
+                'After one year 796 were open; after five, 502. So $796 - 502 = 294$ closed in years 2 to 5. 498 is everyone who closed within five years, including the 204 that closed in the first year, and 502 is the number still open.',
+            },
+            {
+              question: 'In a made-up group of founders, 70% receive USD 0, 25% receive USD 1 million and 5% receive USD 40 million. What are the mean and the median payoff?',
+              options: [
+                'Mean USD 2.25 million, median USD 0',
+                'Mean USD 2.25 million, median USD 1 million',
+                'Mean USD 13.67 million, median USD 1 million',
+                'Mean USD 0, median USD 0',
+              ],
+              answer: 0,
+              explanation:
+                'Mean: $0.25 \\times 1 + 0.05 \\times 40 = 2.25$ million. Median: line the founders up by payoff, and the middle one is among the 70% who got nothing. The tempting USD 1 million median takes the middle of the three *outcomes*, not the middle *founder*. USD 13.67 million averages the three outcomes as if each were equally likely.',
             },
           ],
         },
@@ -301,6 +343,20 @@ A company can move between these. Read Graham's essay for the argument and note 
               question: 'What is dead equity, and how do you prevent it?',
               answerOutline:
                 'Ownership held by someone no longer contributing, which burdens those who remain and deters investors. Vesting from day one with a repurchase right prevents it.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Two founders split 50/50 with **no vesting**. One leaves after nine months to take a job. What is the main problem the remaining founder now faces?',
+              options: [
+                'The company must buy back the departing founder\'s shares at their market value',
+                'The departing founder\'s shares are cancelled automatically, so nothing changes',
+                'The remaining founder\'s shares double to keep the split fair',
+                'The departing founder keeps half the company for good while contributing nothing, which can make the company hard to fund',
+              ],
+              answer: 3,
+              explanation:
+                'Without vesting there is no repurchase right, so the shares are simply hers. That is dead equity: half the company is held by someone no longer working on it, and investors may refuse to fund the business. A buy-back at market value is not automatic, and nothing cancels the shares. Vesting from day one is the fix.',
             },
           ],
         },
@@ -390,6 +446,27 @@ A company can move between these. Read Graham's essay for the argument and note 
               question: 'What is the rich versus king trade-off?',
               answerOutline:
                 'Wasserman\'s observation that founders tend to trade control for financial upside. Outside capital tends to increase value but reduce control, and keeping control tends to limit value.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'You spend USD 4,500 a month, want 18 months with no salary, and add a 20% buffer on top. How much personal savings do you need?',
+              options: ['USD 81,000', 'USD 85,500', 'USD 97,200', 'USD 64,800'],
+              answer: 2,
+              explanation:
+                '$4{,}500 \\times 18 = 81{,}000$, and a 20% buffer makes $81{,}000 \\times 1.2 = 97{,}200$. USD 81,000 forgets the buffer, which is exactly the underestimate the lesson warns about. USD 64,800 takes 20% off instead of adding it.',
+            },
+            {
+              question: 'In California you build an app on your own time and your own laptop, but it is closely related to your employer\'s business. Does Labor Code section 2870 clearly protect your ownership?',
+              options: [
+                'No: the protection has an exception for inventions that relate to the employer\'s business, so read your agreement and take legal advice',
+                'Yes: anything built on your own time and equipment is always yours in California',
+                'Yes, as long as you do not tell your employer about it',
+                'No: in California every invention made during employment belongs to the employer',
+              ],
+              answer: 0,
+              explanation:
+                'Section 2870 limits invention assignment for work done on your own time without employer resources, *unless* it relates to the employer\'s business. Own time and own laptop help, but they are not the whole test. The rule is a limit on employers, not a blanket grant to them, and secrecy changes nothing. Other states differ.',
             },
           ],
         },
@@ -490,6 +567,20 @@ Graham also argues that the best ideas seem bad at first, because obviously good
                 'It suffers from selection: many bad-looking ideas are simply bad. Strangeness is not evidence, so you still need demand evidence.',
             },
           ],
+          quiz: [
+            {
+              question: 'Which is the best sign that an idea is **organic** rather than made up?',
+              options: [
+                'Friends you described it to said they would definitely use it',
+                'An industry report says the market is worth USD 50 billion',
+                'It seems like a bad idea to most people you mention it to',
+                'You hit the problem every month at work, and your colleagues already pay for a clumsy workaround',
+              ],
+              answer: 3,
+              explanation:
+                'An organic idea grows out of a real problem you have seen first-hand, and an existing paid workaround shows the pain is real and people spend on it. Friends\' enthusiasm is politeness, a top-down market figure says nothing about who wants this, and "seems bad at first" is not evidence, because most bad-seeming ideas are just bad.',
+            },
+          ],
         },
         {
           slug: 'customer-interviews-and-validation',
@@ -532,7 +623,7 @@ Do not pitch. Talk less than a third of the time, take notes on what they actual
 3. Already spends money or staff time on it.
 4. Makes a **commitment**: gives you time, an introduction, a signed **letter of intent** (a written statement of intent to buy, usually not binding), a paid pilot or a deposit.
 
-Tag your notes this way so you can count them, which is exactly what MP 1 asks you to automate. Stop when you keep hearing the same things, often after 10 to 20 conversations within one segment, but there is no magic number. Interviews tell you what people did and why. They do not prove demand at scale.
+Tag your notes this way so you can count them, which is easy in a spreadsheet with one row per interview and one column per tag, as the Module 3 project asks you to do. Stop when you keep hearing the same things, often after 10 to 20 conversations within one segment, but there is no magic number. Interviews tell you what people did and why. They do not prove demand at scale.
 
 **Test demand honestly.** A **smoke test** is a page describing a product so you can measure interest. It is reasonable if you make clear that the product is coming, for example with a waitlist. Do not take money for something that does not exist without saying so and offering a refund, and do not fake traction. The line between testing and deceiving is easy to see if you ask whether the customer would feel misled on learning the facts.
 
@@ -583,6 +674,20 @@ Tag your notes this way so you can count them, which is exactly what MP 1 asks y
               question: 'What makes a smoke test deceptive rather than honest?',
               answerOutline:
                 'If it leads people to believe a product exists or takes money without disclosure. An honest test says it is coming or offers a waitlist, and any money is clearly refundable.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'After a week of interviews with clinic managers, which result is the **strongest** evidence of demand?',
+              options: [
+                'Ten managers said they would definitely buy it at USD 50 a month',
+                'One manager signed a non-binding letter of intent to buy',
+                'One manager paid a USD 500 deposit for a paid pilot',
+                'One manager described last week\'s billing mess in vivid detail',
+              ],
+              answer: 2,
+              explanation:
+                'Evidence gets stronger with what the person gives up, and a deposit costs real money. A letter of intent is a commitment too, but it is usually not binding. A vivid past pain is useful (step 1 of the ladder), while "I would definitely buy" is a hypothetical and counts for nothing however many people say it.',
             },
           ],
         },
@@ -676,6 +781,27 @@ Two views conflict here. Peter Thiel argues in Zero to One that competition dest
               question: 'Can a USD 36 million SAM be a good business?',
               answerOutline:
                 'Yes, potentially excellent as a private company. It may simply not suit a large venture fund, whose return arithmetic needs much larger outcomes.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'An illustrative product for veterinary practices costs USD 2,400 a year. There are 12,000 practices, and 50% use software your product works with. What is the **SAM**?',
+              options: ['USD 14.4 million', 'USD 28.8 million', 'USD 1.44 million', 'USD 0.72 million'],
+              answer: 0,
+              explanation:
+                'TAM is $12{,}000 \\times 2{,}400 = 28.8$ million. SAM is the part you can actually serve: $50\\% \\times 28.8 = 14.4$ million. USD 28.8 million is the TAM, the tempting slip of skipping the compatibility filter. USD 0.72 million would be a three-year SOM of 5% of SAM.',
+            },
+            {
+              question: 'You are building an invoicing tool for small plumbing firms. Most of them track jobs on paper and chase payments by phone. What is your main competition?',
+              options: [
+                'Other invoicing startups that target plumbers',
+                'Doing nothing different: the paper and phone routine they already have',
+                'Large accounting software suites',
+                'There is none yet, which is a strong point for investors',
+              ],
+              answer: 1,
+              explanation:
+                'Your competition is whatever people do today, and here that is non-consumption: carrying on with paper. It is often the hardest rival, because it is free and familiar. Other tools matter too, but they are not what most of these customers use. "No competitors" tells an investor you have not looked.',
             },
           ],
         },
@@ -780,6 +906,20 @@ Quality disagreements are real. Some founders argue that in a crowded market a b
                 'Anywhere with safety or legal duties: medical devices, drugs, payments, products handling sensitive personal data, aviation.',
             },
           ],
+          quiz: [
+            {
+              question: 'Your scheduling tool was built for dental clinics. Evidence shows veterinary clinics want it far more, so you stop selling to dentists and sell the same product to vets. What is this?',
+              options: [
+                'An iteration, because the product itself is unchanged',
+                'Neither, since nothing was rebuilt',
+                'A sign that the MVP failed and the company should stop',
+                'A pivot, because the customer, one of the basic hypotheses, has changed',
+              ],
+              answer: 3,
+              explanation:
+                'A pivot changes a fundamental hypothesis: the customer, the problem or the business model. Changing who you sell to is a change of customer even if no line of the product changes. Iteration would be improving the product for the same dentists. A pivot based on evidence is neither failure nor virtue.',
+            },
+          ],
         },
         {
           slug: 'pricing',
@@ -852,8 +992,9 @@ You would earn more with fewer customers. At USD 24 each customer contributes US
               slug: 'price-rise-math',
               title: 'Break-even on a price change',
               prompt:
-                'You have 2,000 customers at USD 30 a month with a delivery cost of USD 9 each. Compute monthly profit after delivery. For a rise to USD 36 and a cut to USD 24, compute the number of customers at which profit equals today\'s. Write a small Python function for any starting point and print a table of break-even losses for rises of 10%, 20% and 50%.',
-              kind: 'coding',
+                'You have 2,000 customers at USD 30 a month with a delivery cost of USD 9 each. Compute monthly profit after delivery. For a rise to USD 36 and a cut to USD 24, compute the number of customers at which profit equals today\'s. Then set up a spreadsheet with the inputs (customers, price, delivery cost) in their own cells and a formula for the break-even customer count, and fill in a table of break-even losses for rises of 10%, 20% and 50%. Check: today\'s profit is USD 42,000, the USD 36 price breaks even at about 1,556 customers, and the 10% rise can lose 250 customers (12.5%).',
+              kind: 'problem',
+              hint: 'Break-even customers = today\'s profit divided by the new contribution per customer (new price minus delivery cost).',
               difficulty: 2,
             },
             {
@@ -880,6 +1021,22 @@ You would earn more with fewer customers. At USD 24 each customer contributes US
               question: 'Why might profit rise after a price increase that loses customers?',
               answerOutline:
                 'Each remaining customer contributes more. Profit falls only after losses exceed the break-even count.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'You have 500 customers paying USD 40 a month, and each costs USD 10 to serve. You raise the price to USD 50. How many customers can you lose before profit after delivery costs falls below today\'s?',
+              options: ['100', '125', '50', '200'],
+              answer: 1,
+              explanation:
+                'Today\'s profit is $500 \\times (40 - 10) = 15{,}000$. At USD 50 each customer contributes USD 40, so $15{,}000 / 40 = 375$ customers keep profit level, and you can lose 125. The tempting 100 keeps *revenue* level ($20{,}000 / 50 = 400$) and forgets that lost customers also stop costing USD 10 each.',
+            },
+            {
+              question: 'A customer pays USD 80 a month. Delivering the product costs USD 6 of hosting, USD 3 of payment fees, USD 15 of AI model usage and USD 4 of support. Marketing spends USD 20 per customer. What is the gross margin?',
+              options: ['83.75%', '40%', '65%', '35%'],
+              answer: 2,
+              explanation:
+                'Direct delivery costs are $6 + 3 + 15 + 4 = 28$, so gross margin is $(80 - 28)/80 = 65\\%$. Marketing is a cost of *acquiring* customers, not of delivering the product, so it is left out (including it gives 40%). Leaving out the AI usage gives 83.75%, the classic-software margin the lesson warns you not to assume.',
             },
           ],
         },
@@ -927,7 +1084,7 @@ The drop in early weeks is normal. What matters is the shape: this curve **flatt
 
 No single good number exists. A healthy rate differs enormously by product. A tax tool used once a year and a messaging app used hourly cannot be compared, so choose a period that fits how often the need arises, and compare your own cohorts over time. Treat benchmarks you see online carefully, since they often have unknown samples.
 
-**Right-censoring** means some users have not been around long enough to be measured. If a cohort started two weeks ago, you do not know its week-8 retention. Leave that cell blank rather than showing zero, and do not average across cohorts of different ages without care. MP 1 makes you handle this properly, because many dashboards get it wrong.
+**Right-censoring** means some users have not been around long enough to be measured. If a cohort started two weeks ago, you do not know its week-8 retention. Leave that cell blank rather than showing zero, and do not average across cohorts of different ages without care. The cohort exercise below and the Module 3 project make you handle this properly, because many dashboards get it wrong.
 
 **Vanity metrics** make you feel good and do not drive decisions: total sign-ups, cumulative downloads, page views, press mentions. They can only go up. Useful metrics change your behaviour: activation rate, weekly active users doing the core action, retention by cohort and revenue retention. Total sign-ups rising from 1,000 to 10,000 while weekly active users stay at 300 is a bad sign that looks like a good one.
 
@@ -948,11 +1105,12 @@ No single good number exists. A healthy rate differs enormously by product. A ta
             },
             {
               slug: 'cohort-table-pandas',
-              title: 'Build a cohort table from events',
+              title: 'Build a cohort table in a spreadsheet',
               prompt:
-                'Write a Python script that generates fake events for 300 users over 10 weeks, with stated retention probabilities, then builds a weekly cohort table without looking at the generator\'s settings. Leave cells blank when a cohort has not reached that week. Plot retention curves for three cohorts and confirm that your output recovers the probabilities within sampling error.',
-              kind: 'coding',
+                'Four weekly cohorts signed up: 200 users (week of 5 January), 160 (12 January), 240 (19 January) and 180 (26 January). Active users doing the core action in weeks 1, 2, 3 and so on after sign-up were: 90, 70, 62, 58, 56 for the first cohort; 75, 58, 51, 48 for the second; 120, 96, 86 for the third; and 72, 54 for the fourth, whose later weeks have not happened yet. In a spreadsheet, lay this out as a triangle with one row per cohort, convert it to retention percentages, and leave the cells that cannot be known yet blank. Compute blended retention for each week using only the cohorts that have that cell, and compare week 4 with what you get if the blanks are treated as zero. Chart the four curves on one line chart and say which cohort looks best.',
+              kind: 'data-analysis',
               difficulty: 2,
+              hint: 'Blended week 2 is (70 + 58 + 96 + 54) / 780, about 35.6%. Blended week 4 uses only the first two cohorts: 106 / 360, about 29.4%. Treating blanks as zero gives 106 / 780, about 13.6%, which is wrong.',
             },
             {
               slug: 'spot-the-vanity',
@@ -978,6 +1136,32 @@ No single good number exists. A healthy rate differs enormously by product. A ta
               question: 'Total sign-ups doubled while weekly active users stayed flat. What should you conclude?',
               answerOutline:
                 'The product is not retaining the new users. Marketing may be working, but value is not. Investigate activation and retention.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A January cohort of 200 users has 60 active in week 4. A February cohort of 300 users signed up only two weeks ago. A dashboard reports week-4 retention as 60 / 500 = 12%. What is the honest week-4 figure?',
+              options: [
+                '30%, using only the cohort old enough to have a week-4 number',
+                '12%, as the dashboard says',
+                '15%, the average of 30% for January and 0% for February',
+                '0%, because the newest cohort has no week-4 users yet',
+              ],
+              answer: 0,
+              explanation:
+                'February\'s week-4 cell is right-censored: it is unknown, not zero. Only January has reached week 4, so the figure is $60/200 = 30\\%$. Putting February\'s 300 users in the denominator (12%) or averaging in a zero (15%) treats "not measured yet" as "everyone left".',
+            },
+            {
+              question: 'Product A keeps 60% of a cohort in week 1, then loses about 5 points a week and is at 20% in week 8, still falling. Product B keeps 40% in week 1 and has stayed flat at 22% since week 4. Which shows stronger evidence of lasting value?',
+              options: [
+                'A, because it keeps more users early on',
+                'They are about the same, since both are near 20% at week 8',
+                'Neither can be judged without total sign-ups',
+                'B, because its curve has flattened, so a stable group keeps using it',
+              ],
+              answer: 3,
+              explanation:
+                'The shape matters more than the early level. A flat tail means a group has found lasting value. A curve still sliding is heading for zero, so A must keep replacing everyone it loses. Total sign-ups are a vanity metric and would not settle this.',
             },
           ],
         },
@@ -1043,9 +1227,10 @@ Beware false positives. Friends who use your product to be kind, customers paid 
               slug: 'wilson-interval',
               title: 'Compute the interval',
               prompt:
-                'Implement the Wilson 95% interval in Python with z = 1.96. Reproduce the four rows in the lesson. Then find the smallest number of responses at which a score of exactly 40% has an interval no wider than 10 percentage points in total. Explain what that means for an early company with 50 active users.',
-              kind: 'coding',
+                'Set up the Wilson 95% interval in a spreadsheet, with z = 1.96, the number of very-disappointed answers k and the number of valid responses n in their own cells, and the formula in the hint. Reproduce the four rows in the lesson. Then copy the formula down a column of n values in steps of 5 (so that 40% is a whole number of responses) and find the smallest n at which a score of exactly 40% has an interval no wider than 10 percentage points in total. Explain what that means for an early company with 50 active users.',
+              kind: 'problem',
               difficulty: 2,
+              hint: 'With p = k/n, the centre is (p + z²/(2n)) / (1 + z²/n) and the half-width is z × √(p(1 − p)/n + z²/(4n²)) / (1 + z²/n). Check: 12 of 30 gives 24.6% to 57.7%. The answer to the second part is between 350 and 400; at 50 responses, 40% spans about 27.6% to 53.8%.',
             },
             {
               slug: 'survey-design',
@@ -1081,9 +1266,50 @@ Beware false positives. Friends who use your product to be kind, customers paid 
                 'Spending heavily on growth before fit. It buys customers who churn and uses up cash that could have funded learning.',
             },
           ],
+          quiz: [
+            {
+              question: 'You get 150 survey replies. 20 come from people who have not used the product in the last two weeks, so you exclude them. Of the rest, 52 say *very disappointed*, 48 *somewhat* and 30 *not disappointed*. What is the score?',
+              options: ['34.7%', '40%', '76.9%', '52%'],
+              answer: 1,
+              explanation:
+                'Only recent, real users count, so the base is $150 - 20 = 130$ and the score is $52/130 = 40\\%$. 34.7% divides by all 150 replies. 76.9% wrongly adds the *somewhat* answers: the test counts only *very disappointed*.',
+            },
+            {
+              question: 'An early product scores 50% very disappointed from 24 responses. What is the fairest reading?',
+              options: [
+                'Fit is proven, since 50% is well above the 40% benchmark',
+                'It means half the users will soon stop using the product',
+                'Weak evidence: the 95% Wilson interval runs from about 31% to 69%, and keen users may be over-represented',
+                'The result is invalid, because the survey needs at least 1,000 responses',
+              ],
+              answer: 2,
+              explanation:
+                'With 24 responses the interval is so wide that the true score could be well below 40%, and people who answer surveys tend to be the keenest. That does not make it worthless or invalid; it makes it one weak signal to combine with retention and organic demand. The score says nothing directly about churn.',
+            },
+          ],
           relatedLessons: ['probability-statistics/estimation-and-confidence/confidence-intervals'],
         },
       ],
+      project: {
+        slug: 'discovery-and-metrics-workbook',
+        title: 'A discovery and metrics workbook',
+        description: `Founders fool themselves in predictable ways: they remember compliments, count sign-ups and quote one survey number with no margin of error. In this project you build a spreadsheet workbook (Excel, Google Sheets or LibreOffice Calc) that makes that harder, for a clearly labelled **fictional** company. Make up the data, or use real interviews only with permission and with names removed.
+
+The workbook has five tabs. **Interviews:** one row per interview and one column per tag (pain, workaround, spent, commitment, compliment, hypothetical), with each problem scored by weights of 1, 2, 3 and 4 for the first four tags and 0 for compliments and hypotheticals. **Cohorts:** a weekly retention triangle in which cells a cohort has not reached are blank, never zero, and a blended row that uses only the cohorts that have each cell, with a line chart. **Activation:** an exact definition (event and time window) and the share of users who reach it. **Survey:** the very-disappointed score with its Wilson 95% interval, flagged as weak when there are fewer than 40 valid responses. **Market:** a bottom-up TAM, SAM and SOM in which every input has a source or a stated reason.
+
+Check your formulas with these numbers. Two segments, 30,000 customers at 40% reachable and USD 3,000 a year, and 4,000 at 25% and USD 12,000, give a TAM of USD 138 million and a SAM of USD 48 million, and 5% of SAM is USD 2.4 million. A survey with 84 very disappointed out of 200 valid responses gives 42% with an interval of 35.4% to 48.9%. Then write a one-page discovery memo with the headings Problem, Who Has It, Evidence, Market Size, Competing Alternatives, Riskiest Assumption and Decision, where the Decision is persevere, pivot or stop, with a reason. The workbook should never say "we have product-market fit". It shows signals, and you decide.`,
+        deliverables: [
+          'A workbook with Interviews, Cohorts, Activation, Survey and Market tabs, with inputs kept separate from formulas',
+          'A retention chart in which unknown cells are blank and the blended curve uses only cohorts that have each cell',
+          'A survey score with its Wilson interval and a weak-sample flag below 40 valid responses',
+          'A one-page discovery memo, marked fictional, whose numbers match the workbook',
+        ],
+        estimatedHours: 10,
+        stretchGoals: [
+          'Split retention and the survey score by customer segment, and show which segment drives the result.',
+          'Ask someone sceptical to try to break your workbook with odd inputs, such as a cohort of zero users, and fix what they find.',
+        ],
+      },
     },
     {
       slug: 'reaching-customers',
@@ -1193,6 +1419,27 @@ The **sales cycle** is how long a deal takes from first contact to signature. Bu
                 'The message and targeting work, but the product, price or fit fails on closer inspection.',
             },
           ],
+          quiz: [
+            {
+              question: 'Your funnel converts 10% of contacts to replies, 50% of replies to demos and 20% of demos to customers. How many prospects must you contact to win 12 customers a month?',
+              options: ['240', '600', '2,400', '1,200'],
+              answer: 3,
+              explanation:
+                'Overall conversion is $0.10 \\times 0.50 \\times 0.20 = 1\\%$, so $12 / 0.01 = 1{,}200$ contacts. 240 forgets the close rate ($12 / 0.05$), and 600 forgets the reply rate. Multiplying every stage is the point: each weak stage cuts the whole funnel.',
+            },
+            {
+              question: 'A quarter of the people you email reply, and many take a demo, but only 1 demo in 30 becomes a customer. Where is the problem most likely to be?',
+              options: [
+                'The product, the price or the fit, which fail when buyers look closely',
+                'The targeting and the message',
+                'The channel, so move the budget to paid ads',
+                'Nowhere: close rates this low are normal in every business',
+              ],
+              answer: 0,
+              explanation:
+                'A high reply rate shows the targeting and message work: the right people are interested. Losing them at the demo points at what they see there, the product, its price or its fit to their need. Changing channels would bring in more people to lose at the same stage.',
+            },
+          ],
         },
         {
           slug: 'unit-economics',
@@ -1260,9 +1507,10 @@ Compute all of this by cohort when you can, and write down definitions. Investor
               slug: 'unit-econ-calculator',
               title: 'Build a unit economics calculator',
               prompt:
-                'Write a Python function taking spend, new customers, monthly price, gross margin and monthly churn, returning CAC, LTV, LTV to CAC, payback and annual churn. Test it on the lesson\'s example (expect 200, 800, 4.0, 6.25 and 0.387). Print a table of LTV to CAC for churn of 2%, 4%, 6% and 8%. It should reject zero churn with a clear error.',
-              kind: 'coding',
+                'Build a small spreadsheet calculator: input cells for sales and marketing spend, new customers, monthly price, gross margin and monthly churn, and formula cells for CAC, LTV, LTV to CAC, payback and annual churn. Check it on the lesson\'s example (expect USD 200, USD 800, 4.0, 6.25 months and 38.7%). Add a table of LTV to CAC for churn of 2%, 4%, 6% and 8%. Make the LTV cell show a warning text instead of an error when churn is zero, and explain why zero churn makes the formula meaningless.',
+              kind: 'problem',
               difficulty: 1,
+              hint: 'Annual churn is 1 minus (1 minus monthly churn) to the power 12. The LTV to CAC ratios should come out at 8.0, 4.0, 2.67 and 2.0. A formula such as IF(churn = 0, "churn must be above zero", ...) handles the warning.',
             },
             {
               slug: 'blended-vs-paid',
@@ -1300,6 +1548,22 @@ Compute all of this by cohort when you can, and write down definitions. Investor
               question: 'What does net revenue retention above 100% mean?',
               answerOutline:
                 'Revenue from an existing cohort grows after a year, because upgrades exceed churn and downgrades.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'You spent USD 45,000 on sales and marketing and won 300 customers. Each pays USD 50 a month at 60% gross margin, and monthly churn is 5%. What is the CAC payback period?',
+              options: ['3 months', '20 months', '5 months', '4 months'],
+              answer: 2,
+              explanation:
+                'CAC is $45{,}000 / 300 = 150$. Each customer brings $50 \\times 0.60 = 30$ of gross profit a month, so payback is $150 / 30 = 5$ months. Three months divides by revenue instead of gross profit, which ignores delivery costs. Twenty months is the expected lifetime ($1/0.05$), and 4 is the LTV to CAC ratio ($600/150$).',
+            },
+            {
+              question: 'Monthly customer churn is a steady 3%. Roughly what share of a cohort is lost over a year?',
+              options: ['36%', '30.6%', '3%', '69.4%'],
+              answer: 1,
+              explanation:
+                'Each month keeps 97% of those left, so after a year $0.97^{12} \\approx 69.4\\%$ remain and about 30.6% are gone. 36% multiplies 3% by 12, which double-counts customers already lost. 69.4% is the share retained, not lost.',
             },
           ],
         },
@@ -1367,16 +1631,17 @@ A financial model is not a forecast. It is a tool for showing your assumptions a
               slug: 'default-alive-simulator',
               title: 'Build a default-alive check',
               prompt:
-                'Write a Python function taking cash, monthly costs, monthly revenue and a monthly growth rate. Simulate month by month and return whether the company reaches revenue above costs with cash still positive. Reproduce the lesson: starting from USD 900,000, USD 95,000 costs and USD 20,000 revenue, growth of 8% runs out in month 18 and growth of 10% survives. Then find the break-even growth rate to one decimal place.',
-              kind: 'coding',
+                'In a spreadsheet, put cash, monthly costs, starting monthly revenue and a monthly growth rate in input cells. Below them, make one row per month for 36 months with revenue, costs, net cash flow and closing cash, and a cell that says whether revenue passes costs before cash goes below zero. Reproduce the lesson: starting from USD 900,000, USD 95,000 costs and USD 20,000 revenue, growth of 8% runs out in month 18 and growth of 10% survives. Then change the growth cell by hand, in steps of 0.1 percentage points, to find the break-even growth rate to one decimal place.',
+              kind: 'problem',
               difficulty: 2,
+              hint: 'The lesson\'s table grows revenue in month 1 as well, so month 1 revenue is 20,000 times (1 + g). With that convention 5% runs out in month 14, and the break-even rate lies between 8% and 9%.',
             },
             {
               slug: 'driver-model',
               title: 'Build a driver model',
               prompt:
-                'In a spreadsheet or Python, build a 24-month model from drivers for an imagined company: price, new customers per month, churn, gross margin, team size and salaries, and other costs. Label each input as measured or assumed. Report the month of lowest cash and the runway. Check that a total at the end matches the sum of the monthly flows.',
-              kind: 'simulation',
+                'In a spreadsheet, build a 24-month model from drivers for an imagined company: price, new customers per month, churn, gross margin, team size and salaries, and other costs. Label each input as measured or assumed. Report the month of lowest cash and the runway. Check that a total at the end matches the sum of the monthly flows.',
+              kind: 'problem',
               difficulty: 2,
             },
             {
@@ -1402,6 +1667,27 @@ A financial model is not a forecast. It is a tool for showing your assumptions a
               question: 'A customer prepays USD 12,000 for a year. How does this differ in cash and in revenue?',
               answerOutline:
                 'Cash rises USD 12,000 now. Accrual revenue is USD 1,000 a month over the year, with the rest held as deferred revenue.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A company has USD 1.2 million in the bank, spends USD 140,000 a month and collects USD 40,000 a month in revenue. What is its runway?',
+              options: ['8.6 months', '30 months', '6 months', '12 months'],
+              answer: 3,
+              explanation:
+                'Net burn is $140{,}000 - 40{,}000 = 100{,}000$ a month, so runway is $1{,}200{,}000 / 100{,}000 = 12$ months. 8.6 months divides by gross burn and ignores the revenue coming in. 30 months divides by revenue, which means nothing here.',
+            },
+            {
+              question: 'In January a customer prepays USD 24,000 for a two-year contract. Under accrual accounting, what happens in January?',
+              options: [
+                'Cash rises by USD 24,000; revenue of USD 1,000 is recognised',
+                'Cash rises by USD 24,000; revenue of USD 24,000 is recognised',
+                'Cash rises by USD 1,000; revenue of USD 1,000 is recognised',
+                'Cash rises by USD 12,000; revenue of USD 12,000 is recognised',
+              ],
+              answer: 0,
+              explanation:
+                'All the cash arrives now, but revenue is recognised as it is earned, here over 24 months: $24{,}000 / 24 = 1{,}000$ a month, with the rest held as deferred revenue. Booking all USD 24,000 as January revenue confuses cash with profit, which is the point of the lesson.',
             },
           ],
         },
@@ -1468,11 +1754,12 @@ A Delaware LLC pays a flat USD 400 by 1 June, per the Division's instructions.
           exercises: [
             {
               slug: 'franchise-tax-calculator',
-              title: 'Implement both franchise tax methods',
+              title: 'Work both franchise tax methods',
               prompt:
-                'Write Python functions for both Delaware methods using the Division\'s rules, with integer or Decimal arithmetic. Test them against the Division\'s examples: 10,005 shares gives USD 335, 100,000 shares gives USD 1,015, and its assumed par example gives USD 1,600. Then show USD 85,165 versus USD 400 for the lesson\'s startup. Add the USD 50 report fee to the total due.',
-              kind: 'coding',
+                'Using the Division\'s rules on its "How to Calculate Franchise Taxes" page, work both Delaware methods by hand or in a two-column spreadsheet, one column per method. Check yourself against the Division\'s examples: 10,005 shares gives USD 335, 100,000 shares gives USD 1,015, and its assumed par example gives USD 1,600. Then show USD 85,165 versus USD 400 for the lesson\'s startup, step by step. Add the USD 50 report fee to the total due, and write one sentence on what you would do if the state\'s notice showed the larger figure.',
+              kind: 'problem',
               difficulty: 2,
+              hint: 'Authorized shares: USD 250 for 5,001 to 10,000 shares, plus USD 85 for each further 10,000 or part of 10,000. Assumed par value capital: gross assets divided by issued shares, times authorized shares, then USD 400 per million or part of a million, with a USD 400 minimum.',
             },
             {
               slug: 'entity-memo',
@@ -1506,6 +1793,27 @@ A Delaware LLC pays a flat USD 400 by 1 June, per the Division's instructions.
               question: 'When might an LLC beat a C corporation?',
               answerOutline:
                 'A profitable company not planning venture capital, where pass-through avoids double taxation and owners can use losses. Taking advice is sensible.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A Delaware startup has 5,000,000 authorized shares (all with a tiny par value), 4,000,000 issued shares and USD 200,000 of gross assets. What is the lower of the two franchise tax figures, before the USD 50 report fee?',
+              options: ['USD 42,665', 'USD 400', 'USD 175', 'USD 100'],
+              answer: 1,
+              explanation:
+                'Authorized shares method: $250 + 85 \\times 499 = 42{,}665$. Assumed par value capital: $200{,}000 / 4{,}000{,}000 = 0.05$ a share, times 5,000,000 authorized shares, is USD 250,000. That is a quarter of a million, so the tax would be USD 100, but the method\'s minimum is USD 400. USD 100 forgets the minimum, and USD 175 is the minimum of the *other* method.',
+            },
+            {
+              question: 'Two consultants run a steadily profitable advisory firm and have no plan to raise venture capital. Which structure does the lesson suggest is often the better fit?',
+              options: [
+                'A Delaware C corporation, because investors expect one',
+                'An S corporation, part-owned by a venture fund',
+                'An LLC, whose profits pass through to the owners\' returns',
+                'A sole proprietorship, which still shields them from the firm\'s debts',
+              ],
+              answer: 2,
+              explanation:
+                'Without venture funding, a C corporation\'s double taxation and paperwork buy little, and pass-through taxation suits a profitable service firm. A venture fund cannot own S corporation stock, and a sole proprietorship gives no liability shield. They should still take advice on their own facts.',
             },
           ],
         },
@@ -1563,11 +1871,12 @@ The founder who leaves at month 9 gets nothing, which protects the others from d
           exercises: [
             {
               slug: 'vesting-function',
-              title: 'Write a vesting function',
+              title: 'Build a vesting schedule',
               prompt:
-                'Write vested_shares(total, start_date, as_of, months=48, cliff_months=12) in Python using integer arithmetic. A month is counted on the monthly anniversary. Round down, and make sure the full amount vests at month 48 with no share lost to rounding. Test the lesson\'s table, and a start date of 31 January where the anniversary falls in a shorter month.',
-              kind: 'coding',
+                'Build a 48-row vesting schedule in a spreadsheet for 4,000,000 shares on four years with a one-year cliff: month number, vest date, cumulative vested shares and shares the company could still repurchase. Compute the cumulative figure as total times months served divided by 48, rounded down, so that each month\'s slice is the difference between two rounded totals and no share is lost: month 48 must show exactly 4,000,000. Check the lesson\'s table. Then take a start date of 31 January 2027 and write out the vest dates for months 12, 13 and 14, using the last day of the month when the 31st does not exist. Say why the agreement, not you, should settle that convention.',
+              kind: 'problem',
               difficulty: 2,
+              hint: 'Month 13 is 4,000,000 × 13 / 48 = 1,083,333.33, so 1,083,333. The dates are 31 January 2028, 29 February 2028 (2028 is a leap year) and 31 March 2028.',
             },
             {
               slug: 'departure-scenarios',
@@ -1600,6 +1909,27 @@ The founder who leaves at month 9 gets nothing, which protects the others from d
               question: 'Why do buyers dislike single-trigger acceleration?',
               answerOutline:
                 'The team becomes fully vested on the sale, so the buyer loses the incentive for them to stay and may reduce its price or demand re-vesting.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A founder holds 3,600,000 shares on the standard schedule: four years, a one-year cliff, then monthly. How many are vested after 20 months?',
+              options: ['1,500,000', '900,000', '1,800,000', '0'],
+              answer: 0,
+              explanation:
+                'Past the cliff, vesting is in proportion to months served: $3{,}600{,}000 \\times 20/48 = 1{,}500{,}000$. 900,000 is only the quarter that vests at the cliff, ignoring the eight monthly slices since. Zero would be right only before month 12.',
+            },
+            {
+              question: 'A founder has **double-trigger** acceleration. The company is sold, and she stays on with the buyer and is not let go. What happens to her unvested shares?',
+              options: [
+                'They all vest at the sale',
+                'Half of them vest at the sale',
+                'The buyer repurchases them at her original price',
+                'Nothing accelerates yet: they keep vesting, and accelerate only if she is also terminated without cause within the agreed period',
+              ],
+              answer: 3,
+              explanation:
+                'Double trigger needs two events, usually the sale *and* a termination without cause within a set period. The sale alone is one trigger, so her schedule simply continues. Vesting everything at the sale is single trigger, which buyers resist because it removes the reason to stay.',
             },
           ],
         },
@@ -1649,11 +1979,12 @@ Under Internal Revenue Code section 83, when you receive property for services a
           exercises: [
             {
               slug: 'deadline-calculator',
-              title: 'Write a deadline calculator',
+              title: 'Work out 83(b) deadlines on a calendar',
               prompt:
-                'Write due_83b(transfer_date, holidays) in Python: add 30 calendar days, then roll forward over Saturdays, Sundays and dates in the holidays set. Test: 15 January 2027 gives 16 February 2027, and 2 December 2026 gives 4 January 2027, because 1 January is a holiday and the following days are a weekend. Note in a comment that this is a planning aid, and that you would file well before the date.',
-              kind: 'coding',
+                'With a calendar, work out the last day to file for three transfer dates: add 30 calendar days, then move forward past any Saturday, Sunday or federal legal holiday. Check two cases: 15 January 2027 gives Tuesday 16 February 2027, and 2 December 2026 gives Monday 4 January 2027, because 1 January is a holiday and the next two days are a weekend. Then do 8 April 2027 yourself, and for each case write the date in the first week by which you would actually file. Note beside your answers that this is a planning aid only.',
+              kind: 'problem',
               difficulty: 1,
+              hint: 'Day 1 is the day after the transfer. A spreadsheet can check the arithmetic: a date plus 30 is 30 days later, and a weekday function tells you if it is a weekend.',
             },
             {
               slug: 'with-and-without',
@@ -1691,6 +2022,22 @@ Under Internal Revenue Code section 83, when you receive property for services a
               question: 'Name two valid ways to file as of November 2026.',
               answerOutline:
                 'By mailing Form 15620 or a compliant written statement to the proper IRS office, or submitting Form 15620 online through an IRS Online Account. Use one only, and give a copy to the company.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Founder shares are transferred on Thursday 8 April 2027. Under the regulation\'s 30-day rule and section 7503, what is the last day an 83(b) election is timely?',
+              options: ['Friday 7 May 2027', 'Saturday 8 May 2027', 'Monday 10 May 2027', 'Tuesday 8 June 2027'],
+              answer: 2,
+              explanation:
+                'Thirty calendar days after 8 April is Saturday 8 May. Because day 30 falls on a weekend, section 7503 moves the last day to the next day that is not a Saturday, Sunday or legal holiday: Monday 10 May. Friday 7 May counts the transfer day itself as day 1. Knowing the last day is not a plan: file in the first week.',
+            },
+            {
+              question: 'A founder buys 2,000,000 shares at USD 0.0001 each with **no** 83(b) election. At the cliff, 500,000 shares vest when they are worth USD 0.50 each. How much ordinary income does she have from that vesting?',
+              options: ['USD 250,000', 'USD 249,950', 'USD 0', 'USD 999,800'],
+              answer: 1,
+              explanation:
+                'Without an election, each slice is income when it vests: value minus price paid, $500{,}000 \\times (0.50 - 0.0001) = 249{,}950$. USD 250,000 forgets the USD 50 she paid for those shares. USD 999,800 taxes all 2,000,000 shares, but only the vested slice counts now, and more income follows as the rest vests. With a timely election at a fair price, the income would have been zero.',
             },
           ],
         },
@@ -1786,6 +2133,27 @@ Under Internal Revenue Code section 83, when you receive property for services a
                 'Only USD 250,000 per depositor per bank per ownership category is FDIC insured. Spread funds or use an insured sweep programme.',
             },
           ],
+          quiz: [
+            {
+              question: 'A freelancer built your app under an emailed quote. You paid every invoice in full, but nobody signed anything about intellectual property. Who most likely owns the copyright in the code?',
+              options: [
+                'The company, because it paid in full',
+                'The company, because commissioned software is a work made for hire',
+                'The company and the freelancer jointly',
+                'The freelancer, until they sign a written assignment to the company',
+              ],
+              answer: 3,
+              explanation:
+                'Under 17 USC 101 a contractor\'s software rarely qualifies as a work made for hire: it is not an employee\'s work, and software is usually not in the listed categories that a signed writing can cover. Paying for the work does not move the copyright. A signed assignment does, which is why investors check for one.',
+            },
+            {
+              question: 'Your company keeps USD 1.6 million in one account at one FDIC-insured bank, in a single ownership category. How much of it is insured?',
+              options: ['USD 250,000', 'USD 1.6 million', 'USD 500,000', 'None, because business deposits are not covered'],
+              answer: 0,
+              explanation:
+                'Cover is USD 250,000 per depositor, per insured bank, per ownership category, so USD 1.35 million is uninsured. In the Silicon Valley Bank failure regulators protected everyone, but the lesson\'s point is that you cannot count on that. Spread the money or use an insured sweep programme.',
+            },
+          ],
         },
       ],
     },
@@ -1844,7 +2212,7 @@ Comparing these requires one question: what does each option cost if you do well
             { title: 'SBA press release: SBIR-STTR reauthorization', url: 'https://legacy.sba.gov/article/2026/04/13/administrator-loeffler-applauds-sbir-sttr-reauthorization', type: 'documentation', cost: 'free', provider: 'US Small Business Administration', note: 'The dated source for the April 2026 reauthorization.', primary: true },
             { title: 'About SBIR', url: 'https://www.sbir.gov/about', type: 'documentation', cost: 'free', provider: 'SBIR.gov', note: 'Check current solicitations and eligibility here.' },
             { title: '7(a) loans', url: 'https://www.sba.gov/funding-programs/loans/7a-loans', type: 'documentation', cost: 'free', provider: 'US Small Business Administration' },
-            { title: 'Exempt offerings', url: 'https://www.sec.gov/resources-small-businesses/exempt-offerings', type: 'documentation', cost: 'free', provider: 'US Securities and Exchange Commission', note: 'Crowdfunding and other limits. The SEC blocks scripts, so use a browser.' },
+            { title: 'Exempt offerings', url: 'https://www.sec.gov/resources-small-businesses/exempt-offerings', type: 'documentation', cost: 'free', provider: 'US Securities and Exchange Commission', note: 'Crowdfunding and other limits. The SEC blocks automated downloads, so use a browser.' },
             { title: 'Getting Real', url: 'https://basecamp.com/gettingreal', type: 'textbook', cost: 'free', provider: '37signals', note: 'The case for small, profitable software companies.' },
           ],
           exercises: [
@@ -1852,9 +2220,10 @@ Comparing these requires one question: what does each option cost if you do well
               slug: 'rbf-cost',
               title: 'Compute a revenue-based finance cost',
               prompt:
-                'A company receives USD 300,000, must repay USD 450,000 and pays 10% of monthly revenue. Starting from USD 100,000 of revenue, simulate repayment at 0%, 3% and 6% monthly growth. Report the months to repay and an implied annual interest rate, using numpy-financial or your own bisection on monthly cash flows. Explain why the rate rises with growth.',
-              kind: 'coding',
+                'A company receives USD 300,000, must repay USD 450,000 and pays 10% of monthly revenue. Revenue is USD 100,000 in month 1 and then grows at 0%, 3% or 6% a month. In a spreadsheet, make one row per month with revenue, the payment (10% of revenue, or whatever is left of the USD 450,000 if that is less) and the balance still owed, and report the months to repay in each case. Then put the cash flows in one column (plus 300,000 at month 0, minus each payment after) and use the spreadsheet\'s IRR function to get a monthly rate, and convert it to an annual rate. Explain why the rate rises with growth.',
+              kind: 'problem',
               difficulty: 2,
+              hint: 'Check: 45, 29 and 23 months. The annual rate is (1 + monthly IRR) to the power 12, minus 1: about 25%, 35% and 43%.',
             },
             {
               slug: 'funding-fit',
@@ -1888,6 +2257,27 @@ Comparing these requires one question: what does each option cost if you do well
               question: 'Why does revenue-based finance get more expensive as you grow faster?',
               answerOutline:
                 'The total repayment is fixed, so faster revenue repays the same fee over a shorter time, raising the effective annual rate.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A revenue-based finance deal gives you USD 200,000. You repay 1.4x in total by paying 8% of monthly revenue, which stays at USD 50,000. How many months does repayment take?',
+              options: ['50', '35', '70', '56'],
+              answer: 2,
+              explanation:
+                'You owe $200{,}000 \\times 1.4 = 280{,}000$ and pay $8\\% \\times 50{,}000 = 4{,}000$ a month, so $280{,}000 / 4{,}000 = 70$ months. Fifty months repays only the USD 200,000 received and forgets the USD 80,000 fee. If revenue grew, the same fee would be paid sooner, at a higher annual rate.',
+            },
+            {
+              question: 'Which of these can cost a founder most personally if the company fails?',
+              options: [
+                'A SAFE sold to an angel investor',
+                'An SBA loan the founder signed a personal guarantee for',
+                'An SBIR Phase I award',
+                'Selling 10% of the company to a friend for cash',
+              ],
+              answer: 1,
+              explanation:
+                'Equity and SAFEs cost nothing if the company fails: the investor simply loses the money. A grant is not repaid. A personal guarantee makes the founder liable for the loan, which can reach savings or a home. That is why the lesson asks what each option costs if you fail, not only if you succeed.',
             },
           ],
         },
@@ -1984,6 +2374,27 @@ The YC USD 125,000 for 7% implies a post-money valuation of about USD 1.79 milli
                 'No. They are requests for comment on possible new designations, with comments due 4 December 2026. Nothing was adopted as of 2 November 2026.',
             },
           ],
+          quiz: [
+            {
+              question: 'You take the YC deal in the lesson\'s table: USD 125,000 for 7% plus USD 375,000 on an uncapped MFN SAFE. Your next SAFE has a USD 25 million post-money cap. Roughly how much of the company have the YC investments bought in total, before any priced round?',
+              options: ['8.5%', '1.5%', '9%', '9.5%'],
+              answer: 0,
+              explanation:
+                'The MFN SAFE takes the later cap: $375{,}000 / 25{,}000{,}000 = 1.5\\%$, plus the 7%, gives 8.5%. 1.5% forgets the 7%. 9.5% is YC\'s own example at a USD 15 million cap, and 9% wrongly puts all USD 500,000 on the new cap and still adds the 7%.',
+            },
+            {
+              question: 'An engineer earned USD 250,000 two years ago, USD 180,000 last year and expects USD 230,000 this year. Her net worth is USD 400,000 not counting her home, which is worth USD 900,000. Is she an accredited investor under Rule 501(a)?',
+              options: [
+                'Yes: her income has averaged over USD 200,000',
+                'Yes: counting her home, her net worth is over USD 1 million',
+                'Yes: she expects more than USD 200,000 this year',
+                'No: her income was under USD 200,000 in one of the last two years, and her net worth excluding her home is under USD 1 million',
+              ],
+              answer: 3,
+              explanation:
+                'The income test needs more than USD 200,000 in *each* of the two most recent years, plus a reasonable expectation for this year, so last year\'s USD 180,000 fails it; averaging does not count. The net worth test excludes a primary residence, leaving USD 400,000. Unless she holds a qualifying licence, she is not accredited.',
+            },
+          ],
         },
         {
           slug: 'venture-capital-fund-economics',
@@ -2041,7 +2452,7 @@ A company that returns the whole fund on its own is called a **fund returner**. 
           resources: [
             { title: 'Performance Data and the Babe Ruth Effect in Venture Capital', url: 'https://a16z.com/performance-data-and-the-babe-ruth-effect-in-venture-capital/', type: 'article', cost: 'free', provider: 'Chris Dixon, Andreessen Horowitz', primary: true },
             { title: 'Black Swan Farming', url: 'https://paulgraham.com/swan.html', type: 'article', cost: 'free', provider: 'Paul Graham', note: 'Why investors accept many failures.' },
-            { title: 'VC Fund Performance: Q2 2026', url: 'https://carta.com/data/vc-fund-performance-q2-2026/', type: 'dataset', cost: 'free', provider: 'Carta', note: 'Carta blocks scripts, so open it in a browser. Use it to update the figures above.' },
+            { title: 'VC Fund Performance: Q2 2026', url: 'https://carta.com/data/vc-fund-performance-q2-2026/', type: 'dataset', cost: 'free', provider: 'Carta', note: 'Carta blocks automated downloads, so open it in a browser. Use it to update the figures above.' },
             { title: "Venture Capital's Role in Financing Innovation", url: 'https://www.nber.org/papers/w27492', type: 'article', cost: 'free', provider: 'Lerner and Nanda, NBER', note: 'A clear review of what VC does and does not do well.' },
           ],
           exercises: [
@@ -2049,9 +2460,10 @@ A company that returns the whole fund on its own is called a **fund returner**. 
               slug: 'fund-model',
               title: 'Model a fund',
               prompt:
-                'Write a Python function taking fund size, fee percentage, fee years, carry and target net multiple, returning fees, investable capital, proceeds needed, carry dollars and the gross multiple on invested capital. Test the USD 100 million case (expect 20 million, 80 million, 350 million, 50 million, 4.375x). Then show the effect of a 2.5% fee and 25% carry.',
-              kind: 'coding',
+                'Build a one-sheet fund model in a spreadsheet, with input cells for fund size, fee percentage, fee years, carry and target net multiple, and formula cells for fees, investable capital, proceeds needed, carry in dollars and the gross multiple on invested capital. Check the USD 100 million case (expect 20 million, 80 million, 350 million, 50 million and 4.375x). Then show the effect of a 2.5% fee alone, 25% carry alone, and both together, and say which hurts more.',
+              kind: 'problem',
               difficulty: 2,
+              hint: 'Proceeds needed = fund size + (LP target − fund size) / (1 − carry), because carry is paid on profit above the committed capital. Both changes together need about USD 366.7 million, or 4.89x on USD 75 million invested.',
             },
             {
               slug: 'exit-needed',
@@ -2063,11 +2475,12 @@ A company that returns the whole fund on its own is called a **fund returner**. 
             },
             {
               slug: 'portfolio-simulation',
-              title: 'Simulate a power law',
+              title: 'Feel the power law',
               prompt:
-                'Simulate 25-investment portfolios 10,000 times by drawing multiples with replacement from the lesson\'s list of outcomes. Report the median and 10th and 90th percentile fund multiple, and the share of portfolios whose top company delivers over 40% of proceeds. State why this is only an illustration, and what a real distribution would change.',
-              kind: 'simulation',
+                'Treat the lesson\'s 25 outcomes as a bag: a new 25-company portfolio draws each company\'s multiple at random from the bag, with replacement. By hand, compute (a) the chance that a portfolio contains no 40x company at all, (b) the chance it contains neither the 40x nor the 15x, and (c) the lesson portfolio\'s multiple if its 40x company had instead returned 0.2x. Optionally, draw a few portfolios in a spreadsheet with a random-number function and watch how much the result jumps. State why this is only an illustration, and what a real distribution would change.',
+              kind: 'problem',
               difficulty: 2,
+              hint: 'Each draw misses the 40x with probability 24/25, so (a) is (24/25) to the power 25, about 36%. For (b) use 23/25, giving about 12%. For (c), the total falls from 82 units to 42.2, so 1.69x.',
             },
           ],
           selfAssessment: [
@@ -2085,6 +2498,22 @@ A company that returns the whole fund on its own is called a **fund returner**. 
               question: 'What is the difference between TVPI and DPI?',
               answerOutline:
                 'TVPI includes paper value of holdings as well as cash returned. DPI counts only cash actually returned to LPs.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A USD 200 million fund charges 2% a year for ten years and 20% carry on profit, and its LPs want 3x net. What total proceeds must the fund produce?',
+              options: ['USD 600 million', 'USD 700 million', 'USD 640 million', 'USD 750 million'],
+              answer: 1,
+              explanation:
+                'LPs want USD 600 million, which is USD 400 million of profit on their USD 200 million. If carry is 20% of profit, LPs keep 80%, so profit must be $400 / 0.8 = 500$ million and proceeds $200 + 500 = 700$ million (3.5 times the fund, or 4.375x on the USD 160 million invested after fees). USD 600 million forgets carry, and USD 750 million charges carry on the whole amount rather than on profit.',
+            },
+            {
+              question: 'A USD 400 million fund expects to own 8% of a company at exit. How large must that exit be for this one company to return the whole fund once?',
+              options: ['USD 32 million', 'USD 500 million', 'USD 5 billion', 'USD 3.2 billion'],
+              answer: 2,
+              explanation:
+                'The fund\'s share must equal the fund: $0.08 \\times \\text{exit} = 400$ million, so exit is $400 / 0.08 = 5$ billion. USD 32 million is 8% of the fund, not the exit needed. This is why a large fund can pass on a company that would be a fine outcome for its founders.',
             },
           ],
         },
@@ -2134,7 +2563,17 @@ YC's example: a USD 200,000 SAFE at a USD 4 million cap sells 5%, and USD 800,00
 
 A pre-money cap ignores other SAFEs, so each dilutes the others too. On the same cap number, the post-money SAFE gives investors more. Its advantage is that you know what you sold, and each new SAFE dilutes founders only.
 
-**Stacking.** Each extra SAFE takes ownership from you alone. USD 500,000 at USD 5 million, USD 1 million at USD 8 million and USD 1 million at USD 12 million sell 10%, 12.5% and 8.33%, or 30.83% before any priced round. Track this every time, in a spreadsheet. There is no vote or board moment to make you stop.
+\`\`\`interactive
+cap-table
+{"title": "Same cap, two meanings", "safes": [[500000, 5000000], [500000, 5000000]], "caption": "Two USD 500,000 SAFEs on a USD 5 million cap, with 10,000,000 founder and pool shares: each sells 10% at USD 0.40 a share, as in the table. Switch to pre-money caps and each drops to 8.33% at USD 0.50. Then enter 0.2 at a cap of 4 and 0.8 at a cap of 8 (post-money) to reproduce YC's Example 1: Company Capitalization of 11,764,705 shares, with 588,235 and 1,176,470 for the two investors."}
+\`\`\`
+
+**Stacking.** Each extra SAFE takes ownership from you alone. USD 500,000 at USD 5 million, USD 1 million at USD 8 million and USD 1 million at USD 12 million sell 10%, 12.5% and 8.33%, or 30.83% before any priced round. Track this every time, in a spreadsheet or in the interactive below. There is no vote or board moment to make you stop.
+
+\`\`\`interactive
+cap-table
+{"title": "Stacking SAFEs", "round": true, "pre": 20000000, "money": 5000000, "poolTarget": 10, "caption": "The three SAFEs from the paragraph sell 10%, 12.5% and 8.33%, or 30.83%, all of it from the founders. Add a fourth SAFE and watch the founders' share alone shrink. The priced round below (USD 5 million on USD 20 million pre-money with a 10% pool) then dilutes the SAFE holders and founders together. Drag the pre-money down to USD 8 million and the two higher-cap SAFEs switch to converting at the round price, because it is now below their SAFE price; at USD 6 million all three do."}
+\`\`\`
 
 **Discount.** A discount gives the investor shares at a percentage off the round price. At a USD 2.00 Series A with a 20% discount, the price is USD 1.60. A note with both a cap and a discount uses whichever gives the lower price. YC's standard forms offer cap-only, discount-only or MFN.
 
@@ -2144,7 +2583,7 @@ A pre-money cap ignores other SAFEs, so each dilutes the others too. On the same
 
 **In an acquisition,** a SAFE gets the greater of its money back or its as-converted value, under the form's terms, junior to debt and on par with other SAFEs. **Tax:** the form says the parties intend it to be treated as stock, but when the holding period starts for QSBS is unsettled.`,
           resources: [
-            { title: 'SAFE documents and User Guide', url: 'https://www.ycombinator.com/documents', type: 'documentation', cost: 'free', provider: 'Y Combinator', note: 'Read the Quick Start Guide and Appendix II worked examples in the User Guide. MP 2 reproduces them.', primary: true },
+            { title: 'SAFE documents and User Guide', url: 'https://www.ycombinator.com/documents', type: 'documentation', cost: 'free', provider: 'Y Combinator', note: 'Read the Quick Start Guide and Appendix II worked examples in the User Guide. The interactives in this lesson and the Module 6 project reproduce them.', primary: true },
             { title: 'Understanding convertible debt', url: 'https://www.cooleygo.com/collections/understanding-convertible-debt/', type: 'article', cost: 'free', provider: 'Cooley GO' },
             { title: 'Y Combinator Safe Financing Documents Generator', url: 'https://www.cooleygo.com/documents/y-combinator-safe-financing-document-generator/', type: 'tool', cost: 'free', provider: 'Cooley GO' },
           ],
@@ -2153,7 +2592,7 @@ A pre-money cap ignores other SAFEs, so each dilutes the others too. On the same
               slug: 'reproduce-yc-example',
               title: 'Reproduce a published example',
               prompt:
-                'Read Example 1 in Appendix II of the YC User Guide. With a pool of 10,000,000 existing shares, Investor A at USD 200,000 on a USD 4 million post-money cap, and Investor B at USD 800,000 on an USD 8 million cap, reproduce Company Capitalization of 11,764,705 and conversions of 588,235 and 1,176,470 shares by hand or in a spreadsheet. Explain why the two investors hold exactly 5% and 10% of that capitalization.',
+                'Read Example 1 in Appendix II of the YC User Guide. With a pool of 10,000,000 existing shares, Investor A at USD 200,000 on a USD 4 million post-money cap, and Investor B at USD 800,000 on an USD 8 million cap, reproduce Company Capitalization of 11,764,705 and conversions of 588,235 and 1,176,470 shares by hand or in a spreadsheet. Explain why the two investors hold exactly 5% and 10% of that capitalization. When you have your answer, check it by entering the two SAFEs in the first interactive in this lesson.',
               kind: 'problem',
               difficulty: 2,
             },
@@ -2161,9 +2600,10 @@ A pre-money cap ignores other SAFEs, so each dilutes the others too. On the same
               slug: 'safe-stack',
               title: 'Track a SAFE stack',
               prompt:
-                'Write a Python script that takes a list of post-money SAFEs (amount and cap), prints each one\'s ownership, the total sold and what founders keep before a priced round, and warns if total sold passes a limit you set. Test with the lesson\'s stack (expect 30.83%). Then add a USD 500,000 SAFE at a USD 20 million cap. How much does it cost founders?',
-              kind: 'coding',
+                'Make a SAFE tracker in a spreadsheet: one row per post-money SAFE with its amount and cap, a column for the ownership it sells (amount divided by cap), a total sold and what founders keep before a priced round, and a cell that shows a warning when the total sold passes a limit you choose, such as 25%. Check it with the lesson\'s stack (expect 30.83%). Then add a USD 500,000 SAFE at a USD 20 million cap. How much does it cost founders, in percentage points?',
+              kind: 'problem',
               difficulty: 1,
+              hint: 'The new SAFE sells 500,000 / 20,000,000 = 2.5%, so the total becomes 33.33% and founders keep 66.67% before the round.',
             },
             {
               slug: 'note-conversion',
@@ -2194,6 +2634,22 @@ A pre-money cap ignores other SAFEs, so each dilutes the others too. On the same
               question: 'What is liquidation overhang?',
               answerOutline:
                 'Converted notes receiving more preference than money invested, because shares bought cheaply carry the higher round-price preference. A shadow series solves it.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'You raise USD 750,000 on a post-money SAFE with a USD 6 million cap, then USD 1 million on a post-money SAFE with a USD 10 million cap. How much of the company have you sold before any priced round?',
+              options: ['10.9%', '17.5%', '11.25%', '22.5%'],
+              answer: 3,
+              explanation:
+                'Each post-money SAFE sells its amount over its own cap: $0.75/6 = 12.5\\%$ and $1/10 = 10\\%$, so 22.5% together, all of it from the founders. 10.9% divides the total money by the sum of the caps, which mixes two different prices. 17.5% puts all the money on the USD 10 million cap.',
+            },
+            {
+              question: 'A USD 400,000 convertible note accrues 5% simple interest for two years. It has a USD 8 million pre-money cap and a 20% discount. The Series A is priced at USD 1.20 a share, with 10,000,000 fully diluted shares before the round. How many shares does the note convert into?',
+              options: ['550,000', '500,000', '458,333', '366,667'],
+              answer: 0,
+              explanation:
+                'The balance is $400{,}000 \\times (1 + 0.05 \\times 2) = 440{,}000$. The cap price is $8{,}000{,}000 / 10{,}000{,}000 = 0.80$ and the discount price is $1.20 \\times 0.8 = 0.96$; the lower one wins, so $440{,}000 / 0.80 = 550{,}000$ shares. 500,000 forgets the interest, and 458,333 uses the discount price, which is higher here.',
             },
           ],
         },
@@ -2234,6 +2690,11 @@ A pre-money cap ignores other SAFEs, so each dilutes the others too. On the same
 
 So a headline of USD 8 million is really USD 6 million for the existing shares, because USD 2 million of the pre-money is reserved for people not yet hired. Do not argue with the principle. Argue the size, with a bottom-up hiring plan for the next 18 months showing how many shares you need.
 
+\`\`\`interactive
+cap-table
+{"title": "The option pool shuffle", "safes": [], "round": true, "pre": 8000000, "money": 2000000, "poolTarget": 20, "poolTiming": "pre", "caption": "The table's first row: 10,000,000 founder shares, USD 2 million on USD 8 million pre-money and a 20% pool in the pre-money. Founders keep 60%, the price is USD 0.60 and the existing shares are really priced at USD 6 million. Drag the pool to 10% for the second row (70%, USD 0.70). Then switch the pool increase to after closing: founders 64%, investor 16%, because now everyone shares the pool."}
+\`\`\`
+
 **Pro rata rights** let an investor buy their percentage of a later round to keep their stake. If an investor owns 10% and you raise USD 10 million, their pro rata is USD 1 million. The allocation comes out of the round, which can squeeze space for a new lead. It does not protect them from a pool increase. In YC's Example 1, Investor B owns 10% of Company Capitalization, buys its 10% pro rata and ends at 9.06%, because the pool increase dilutes its SAFE shares.
 
 **Dilution over several rounds.** **Dilution** is the fall in your percentage when new shares are issued. It is not automatically bad, since 20% of a bigger company can be worth more. Here is an illustration for two equal founders, with each step's new percentage applied to the whole company:
@@ -2247,21 +2708,27 @@ So a headline of USD 8 million is really USD 6 million for the existing shares, 
 | Series B | 15% + 3% | 40.04% | 20.02% |
 | Series C | 12% + 2% | 34.43% | 17.22% |
 
+\`\`\`interactive
+cap-table
+{"title": "Put it together: SAFEs, a Series A and a sale", "round": true, "pre": 20000000, "money": 5000000, "poolTarget": 10, "waterfall": true, "exit": 30000000, "caption": "The previous lesson's three SAFEs (30.83% sold) followed by USD 5 million on USD 20 million pre-money with a 10% pool in the pre-money. Founders go from 69.17% to about 48.4%. In the sale panel, slide the price down: below the total preferences of USD 7.5 million the founders get nothing. Above that their share of the sale climbs, and once every holder converts it settles at about 53.8%, a little above their 48.4% ownership, because the unissued pool receives nothing. This sale model is simplified; the waterfall lesson in Module 9 does it properly."}
+\`\`\`
+
 **Real data.** Carta's benchmarking, as cited on its site for Q2 2026, gave median post-money valuations of USD 23.9 million at seed and USD 76.3 million at Series A, with median rounds of USD 4.5 million and USD 14.7 million and median dilution of 19.4% and 18.7%. AI companies skew these figures, and they are from Carta customers only. To update them, look up Carta's latest State of Private Markets, the PitchBook-NVCA Venture Monitor, and law firm reports such as Cooley's quarterly venture financing report, and always note the date and the sample.`,
           resources: [
             { title: 'SAFE documents and User Guide', url: 'https://www.ycombinator.com/documents', type: 'documentation', cost: 'free', provider: 'Y Combinator', note: 'Appendix II shows a full priced round after SAFE conversion.', primary: true },
             { title: 'A guide to seed fundraising', url: 'https://www.ycombinator.com/library/4A-a-guide-to-seed-fundraising', type: 'article', cost: 'free', provider: 'Y Combinator' },
-            { title: 'Series A Funding: How to Raise Your First Priced Round', url: 'https://carta.com/learn/startups/fundraising/series-a/', type: 'article', cost: 'free', provider: 'Carta', note: 'Includes the benchmark figures cited above. Carta blocks scripts, so use a browser.' },
-            { title: 'Option pool shuffle', url: 'https://venturehacks.com/option-pool-shuffle', type: 'article', cost: 'free', provider: 'Venture Hacks', note: 'The original article. The site blocks scripts, so use a browser.' },
+            { title: 'Series A Funding: How to Raise Your First Priced Round', url: 'https://carta.com/learn/startups/fundraising/series-a/', type: 'article', cost: 'free', provider: 'Carta', note: 'Includes the benchmark figures cited above. Carta blocks automated downloads, so use a browser.' },
+            { title: 'Option pool shuffle', url: 'https://venturehacks.com/option-pool-shuffle', type: 'article', cost: 'free', provider: 'Venture Hacks', note: 'The original article. The site blocks automated downloads, so use a browser.' },
           ],
           exercises: [
             {
               slug: 'pool-shuffle-table',
               title: 'Reproduce the shuffle',
               prompt:
-                'Write a Python function taking founder shares, pre-money, new money and post-closing pool percentage, and returning price, new shares, pool shares and founder percentage, with share counts rounded down. Reproduce the lesson\'s first two rows: USD 0.60 and USD 0.70 for pools of 20% and 10%. Report effective pre-money in each case.',
-              kind: 'coding',
+                'By hand or in a spreadsheet, take 10,000,000 founder shares, USD 8 million pre-money, USD 2 million new money and a post-closing pool of 20%, then of 10%. For each, work out the post-money, the total post-closing shares, the price per share, the new investor shares and the pool shares, with share counts rounded down, and the founders\' percentage. Reproduce the lesson\'s first two rows (USD 0.60 and USD 0.70), and report the effective pre-money in each case. Check your answers in the interactive.',
+              kind: 'problem',
               difficulty: 2,
+              hint: 'Founders own whatever the investor and pool do not: 100% − 20% − 20% = 60%. So total shares = 10,000,000 / 0.60, and price = post-money / total shares. Effective pre-money = price × founder shares.',
             },
             {
               slug: 'hiring-plan-pool',
@@ -2301,8 +2768,45 @@ So a headline of USD 8 million is really USD 6 million for the existing shares, 
                 'No. It lets them buy their share of new stock. Pool increases can still dilute them, as with Investor B in YC\'s example, who ended at 9.06%.',
             },
           ],
+          quiz: [
+            {
+              question: 'Founders hold 8,000,000 shares. An investor puts in USD 3 million on a USD 12 million pre-money valuation and requires a 15% post-closing pool, created in the pre-money. What are the existing shares really priced at (the effective pre-money)?',
+              options: ['USD 12 million', 'USD 9.75 million', 'USD 10.2 million', 'USD 9 million'],
+              answer: 1,
+              explanation:
+                'Post-money is USD 15 million, so the investor owns 20% and the pool 15%, leaving founders 65%: $0.65 \\times 15 = 9.75$ million. USD 10.2 million takes 15% off the pre-money, but the pool is 15% of the *post*-money, all carved out of the founders. USD 12 million is the headline, which includes USD 2.25 million of shares for people not yet hired.',
+            },
+            {
+              question: 'Founders together own 60%. A Series A sells 20% to new investors and adds a pool of 5%, both measured on the company after the round. What do the founders own afterwards?',
+              options: ['35%', '48%', '45%', '40%'],
+              answer: 2,
+              explanation:
+                'New shares take 25% of the whole company, so everyone existing keeps 75% of what they had: $60\\% \\times 0.75 = 45\\%$. 35% subtracts 25 percentage points as if founders alone paid for the round. 48% forgets the pool.',
+            },
+          ],
         },
       ],
+      project: {
+        slug: 'cap-table-workbook',
+        title: 'A cap table workbook that matches the published examples',
+        description: `Founders sign SAFEs without knowing what they have sold, and accept option pools without seeing their true valuation. In this project you build a spreadsheet workbook that makes both visible, and you hold it to an outside standard: the worked examples in Appendix II of the Y Combinator post-money SAFE User Guide. No programming is needed, only formulas.
+
+**Tabs.** *Founders:* a founding cap table and a 48-month vesting schedule for each founder with a one-year cliff, rounding the cumulative vested figure down so no share is lost. *Deadlines:* the 83(b) last day for each founder's transfer date, moved past weekends and holidays, next to the date you would actually file. *Delaware:* both franchise tax methods side by side, the lower one and the USD 50 report fee. *SAFEs:* one row per SAFE with a choice of post-money or pre-money cap, the share sold, Company Capitalization and the SAFE price. *Round:* a priced round with pre-money valuation, new money and a post-closing pool target placed in the pre-money, showing every holder's shares and percentage before and after. *Raise:* round size from net burn times target months plus a buffer, and the percentage sold at two valuations.
+
+**Checks your workbook must pass.** Example 1 of the guide: 10,000,000 existing shares, USD 200,000 at a USD 4 million post-money cap and USD 800,000 at an USD 8 million cap give Company Capitalization of 11,764,705 shares and conversions of 588,235 and 1,176,470 (round Company Capitalization down first, then each SAFE's shares down). The lesson's three-SAFE stack sells 30.83%. The option pool shuffle gives USD 0.60 and USD 0.70 a share for 20% and 10% pools. That stack followed by USD 5 million on USD 20 million pre-money with a 10% pool gives a price of about USD 1.2104 and leaves the founders about 48.4%. The vesting, 83(b) and Delaware tabs reproduce the Module 5 lessons' numbers.
+
+**Hint for the round.** With the pool increase in the pre-money and no SAFE priced below its cap, post-closing shares equal (existing shares + SAFE shares + pool increase) times post-money over pre-money, and the pool increase is whatever makes the whole pool equal the target share of that total. Write those two facts as formulas, or use your spreadsheet's Goal Seek. Compare your results with the interactive in the priced rounds lesson. State on the first tab that this is education, not legal advice, and not a legal cap table.`,
+        deliverables: [
+          'A workbook with Founders, Deadlines, Delaware, SAFEs, Round and Raise tabs, with inputs kept separate from formulas',
+          'A Checks tab showing each published or lesson figure next to the workbook\'s own result, with any difference explained',
+          'A one-page note on what surprised you about the option pool and SAFE stacking',
+        ],
+        estimatedHours: 14,
+        stretchGoals: [
+          'Handle a round priced below a SAFE\'s price, so that the SAFE converts at the round price; turn on iterative calculation or use Goal Seek, and explain why the calculation is circular.',
+          'Add a second priced round with a pro rata allocation for one earlier investor, and show their percentage before and after.',
+        ],
+      },
     },
     {
       slug: 'running-a-fundraise',
@@ -2413,6 +2917,15 @@ A founder with 40% needs an exit above USD 50 million to beat 100% of USD 20 mil
                 'Being default alive, so you do not need the money. You can walk away, which improves your terms.',
             },
           ],
+          quiz: [
+            {
+              question: 'After raising, you expect to own 30% at exit. Ignoring preferences, taxes, timing and the odds, above what exit value do you do better than owning 100% of a USD 15 million bootstrapped sale?',
+              options: ['USD 50 million', 'USD 45 million', 'USD 15 million', 'USD 4.5 million'],
+              answer: 0,
+              explanation:
+                'You need $0.30 \\times \\text{exit} > 15$ million, so the exit must exceed $15 / 0.30 = 50$ million. USD 45 million multiplies by 3 instead of dividing by 0.3. And remember what the comparison leaves out: the funded outcome is not guaranteed, preferences come first, and a USD 15 million bootstrapped exit is itself rare.',
+            },
+          ],
         },
         {
           slug: 'investors-and-the-pitch',
@@ -2518,6 +3031,15 @@ Both are extreme, and small exaggerations do not usually lead to prison. But the
                 'ARR means recurring revenue. One-off services do not recur, so the claim overstates the business and is a material misstatement.',
             },
           ],
+          quiz: [
+            {
+              question: 'This month you billed USD 30,000 of monthly subscriptions and USD 12,000 of one-off setup fees, and a prospect signed a non-binding letter of intent for USD 5,000 a month. What MRR can you honestly put in the deck?',
+              options: ['USD 47,000', 'USD 42,000', 'USD 35,000', 'USD 30,000'],
+              answer: 3,
+              explanation:
+                'MRR is recurring revenue only: the USD 30,000 of subscriptions. Setup fees do not recur, and a non-binding letter of intent is not revenue at all. You can mention the letter separately, described as what it is. Overstating MRR to an investor buying a security risks a material misstatement under Rule 10b-5.',
+            },
+          ],
         },
         {
           slug: 'reading-a-term-sheet',
@@ -2587,11 +3109,12 @@ where A is fully diluted shares before, B is shares the new money would have bou
           exercises: [
             {
               slug: 'payout-function',
-              title: 'Code the payout table',
+              title: 'Build the payout table',
               prompt:
-                'Write investor_payout(exit, invested, ownership, kind, cap=None) for non-participating, participating and capped preferences, with one investor and common. Reproduce the lesson\'s table. Plot investor payout against exit from USD 0 to USD 250 million for all three, and mark the conversion points at USD 40 million and USD 120 million.',
-              kind: 'coding',
+                'In a spreadsheet, put the investment (USD 10 million) and ownership (25%) in input cells, then make a column of exit values from USD 0 to USD 250 million in steps of USD 10 million. Add one formula column for each preference: non-participating, participating with no cap, and participating with a 3x cap. Check that your rows match the lesson\'s table. Chart investor payout against exit for all three, and mark the conversion points at USD 40 million and USD 120 million. Add a fourth column for what common receives under the participating preference.',
+              kind: 'problem',
               difficulty: 2,
+              hint: 'Non-participating: the larger of 10 and 25% of exit, but never more than the exit. Participating: the 10 back (or the whole exit, if smaller) plus 25% of whatever is left after it. Capped: the smaller of the participating payout and 30, but never less than 25% of exit, because the investor can still convert.',
             },
             {
               slug: 'anti-dilution-compare',
@@ -2628,6 +3151,22 @@ where A is fully diluted shares before, B is shares the new money would have bou
               question: 'Name three control terms that can matter more than price.',
               answerOutline:
                 'Board composition, protective provisions, and drag-along. Also redemption rights and information rights.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'An investor put in USD 8 million for 20%, with a 1x **non-participating** preference and no other share classes. The company sells for USD 30 million. What does the investor receive?',
+              options: ['USD 8 million', 'USD 6 million', 'USD 12.4 million', 'USD 14 million'],
+              answer: 0,
+              explanation:
+                'Non-participating means the larger of the money back (USD 8 million) and 20% on conversion (USD 6 million), so USD 8 million. It would convert only above USD 40 million. USD 12.4 million is the *participating* payout: USD 8 million plus 20% of the remaining USD 22 million.',
+            },
+            {
+              question: 'An investor holds preferred at a USD 2.00 conversion price with broad-based weighted average anti-dilution. There are 12,000,000 fully diluted shares, and the company issues 1,500,000 new shares at USD 1.00. What is the new conversion price?',
+              options: ['USD 1.00', 'USD 1.78', 'USD 1.89', 'USD 1.50'],
+              answer: 2,
+              explanation:
+                'B is the shares the new money would have bought at the old price: $1{,}500{,}000 / 2 = 750{,}000$. So $CP_2 = 2.00 \\times \\frac{12{,}000{,}000 + 750{,}000}{12{,}000{,}000 + 1{,}500{,}000} \\approx 1.89$. USD 1.00 is a full ratchet, and USD 1.78 leaves B out of the numerator.',
             },
           ],
         },
@@ -2688,7 +3227,7 @@ Other exemptions exist, with limits per the SEC: Rule 504 for up to USD 10 milli
 
 A good lawyer will do this as routine. Ask at the start, not after you have tweeted about your round.`,
           resources: [
-            { title: 'Exempt offerings', url: 'https://www.sec.gov/resources-small-businesses/exempt-offerings', type: 'documentation', cost: 'free', provider: 'US Securities and Exchange Commission', note: 'The SEC\'s own comparison. It blocks scripts, so open it in a browser.', primary: true },
+            { title: 'Exempt offerings', url: 'https://www.sec.gov/resources-small-businesses/exempt-offerings', type: 'documentation', cost: 'free', provider: 'US Securities and Exchange Commission', note: 'The SEC\'s own comparison. It blocks automated downloads, so open it in a browser.', primary: true },
             { title: '17 CFR 230.506', url: 'https://www.law.cornell.edu/cfr/text/17/230.506', type: 'documentation', cost: 'free', provider: 'Cornell Legal Information Institute', note: 'Read paragraphs (b), (c) and (d).' },
             { title: 'Latham & Watkins no-action letter (12 March 2025)', url: 'https://www.sec.gov/rules-regulations/no-action-interpretive-exemptive-letters/division-corporation-finance-no-action/latham-watkins-503c-031225', type: 'documentation', cost: 'free', provider: 'SEC Division of Corporation Finance', note: 'Staff view on verification through high minimum investments.' },
             { title: 'NVCA Model Legal Documents', url: 'https://nvca.org/model-legal-documents/', type: 'documentation', cost: 'free', provider: 'National Venture Capital Association' },
@@ -2738,6 +3277,27 @@ A good lawyer will do this as routine. Ask at the start, not after you have twee
               question: 'Why start a raise with at least six months of cash?',
               answerOutline:
                 'Fundraising takes months and can fail, and a founder near zero has no negotiating power.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A Regulation D seed round makes its first sale on Wednesday 3 March 2027. By when is Form D due on EDGAR, under the 15-day rule in the lesson?',
+              options: ['3 April 2027', '18 March 2027', '15 March 2027', '2 April 2027'],
+              answer: 1,
+              explanation:
+                'Form D is due within 15 days of the *first* sale: 3 March plus 15 days is Thursday 18 March 2027, and there is no SEC fee. Thirty days is the 83(b) rule, a different deadline that is easy to mix up. The clock runs from the first sale, not from the close of the round, and state notice filings may also apply.',
+            },
+            {
+              question: 'You want to announce your raise publicly on LinkedIn and will accept only accredited investors, whose status you will take reasonable steps to verify. Which exemption fits?',
+              options: [
+                'Rule 506(b)',
+                'Regulation Crowdfunding, without using a portal',
+                'None is needed, because a SAFE is not a security',
+                'Rule 506(c)',
+              ],
+              answer: 3,
+              explanation:
+                'Rule 506(c) allows general solicitation if every buyer is accredited and you take reasonable steps to verify it. A public post is general solicitation, which 506(b) does not allow. Regulation Crowdfunding requires a registered portal, and SAFEs are generally securities.',
             },
           ],
         },
@@ -2843,6 +3403,20 @@ Reporting bad news early is what makes investors useful when things go wrong, an
                 'Early warnings keep trust and give investors time to help. Surprises at the point of crisis do the opposite.',
             },
           ],
+          quiz: [
+            {
+              question: 'In Trados, the court found the board\'s process unfair and applied entire fairness. Why did the defendants still win?',
+              options: [
+                'The business judgment rule protected the directors after all',
+                'The preferred investors gave up their preference before the sale',
+                'The common stock had no economic value before the sale, so the price was fair to it',
+                'The common stockholders had approved the management incentive plan',
+              ],
+              answer: 2,
+              explanation:
+                'Entire fairness asks about fair dealing *and* fair price. The court found the dealing flawed, but held that the common stock had no economic value going in, so receiving nothing was a fair price. The business judgment rule did not apply, because a conflicted board loses its protection. The lesson is that process still matters: a court can find against you.',
+            },
+          ],
         },
         {
           slug: 'hiring-and-employment',
@@ -2893,7 +3467,7 @@ Reporting bad news early is what makes investors useful when things go wrong, an
 **Pay yourself lawfully.** Founders who are employees are on payroll too. Do not just draw money from a corporate account. Ask your accountant how to structure this.`,
           resources: [
             { title: 'Independent contractor (self-employed) or employee?', url: 'https://www.irs.gov/businesses/small-businesses-self-employed/independent-contractor-self-employed-or-employee', type: 'documentation', cost: 'free', provider: 'US Internal Revenue Service', primary: true },
-            { title: 'WARN Act compliance assistance', url: 'https://www.dol.gov/agencies/eta/layoffs/warn', type: 'documentation', cost: 'free', provider: 'US Department of Labor', note: 'DOL blocks scripts, so open it in a browser.' },
+            { title: 'WARN Act compliance assistance', url: 'https://www.dol.gov/agencies/eta/layoffs/warn', type: 'documentation', cost: 'free', provider: 'US Department of Labor', note: 'DOL blocks automated downloads, so open it in a browser.' },
             { title: 'The 18 Mistakes That Kill Startups', url: 'https://paulgraham.com/startupmistakes.html', type: 'article', cost: 'free', provider: 'Paul Graham', note: 'See the sections on hiring and on spending too much.' },
             { title: 'The Holloway Guide to Equity Compensation', url: 'https://www.holloway.com/g/equity-compensation', type: 'textbook', cost: 'freemium', provider: 'Holloway' },
           ],
@@ -2938,6 +3512,15 @@ Reporting bad news early is what makes investors useful when things go wrong, an
               question: 'Which WARN Act threshold is standard, and what does it require?',
               answerOutline:
                 'Generally employers with 100 or more employees must give 60 days\' notice of plant closings and mass layoffs. Some states are stricter.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A company has USD 1.5 million in cash and burns USD 100,000 a month net. It hires an engineer at USD 120,000 a year, and payroll taxes and benefits add 25% on top of salary. What is the runway after the hire?',
+              options: ['About 13.3 months', 'About 13.6 months', '15 months', '12 months'],
+              answer: 0,
+              explanation:
+                'The hire costs $120{,}000 / 12 \\times 1.25 = 12{,}500$ a month, so net burn becomes 112,500 and runway $1{,}500{,}000 / 112{,}500 \\approx 13.3$ months, down from 15. Counting salary alone (USD 10,000 a month) gives 13.6 and understates the cost, which is the mistake the lesson warns about.',
             },
           ],
         },
@@ -2995,9 +3578,10 @@ Common is usually valued below the latest preferred price, because it lacks the 
               slug: 'exercise-cost',
               title: 'Compute the cost of leaving',
               prompt:
-                'Write a Python function taking vested options, strike, current 409A value, option type and an assumed tax rate, returning exercise cost, taxable spread and total cash. Test with the lesson (USD 8,000, USD 22,000, USD 15,700 for an NSO). Show how the total changes after a Series B raises the 409A value to USD 4.00. Advise an employee with USD 10,000 in savings.',
-              kind: 'coding',
+                'Make a small spreadsheet calculator with input cells for vested options, strike, current 409A value and an assumed tax rate, and formula cells for exercise cost, taxable spread, tax on the spread and total cash needed to exercise an NSO. Check it against the lesson (USD 8,000, USD 22,000 and USD 15,700). Show how the total changes after a Series B raises the 409A value to USD 4.00. Then write a short note to an employee with USD 10,000 in savings, saying what the numbers mean and what to ask a tax adviser; note that an ISO would be taxed differently.',
+              kind: 'problem',
               difficulty: 1,
+              hint: 'At a USD 4.00 409A value the spread is 20,000 × 3.60 = USD 72,000, so the total cash is 8,000 + 35% of 72,000 = USD 33,200.',
             },
             {
               slug: 'iso-limit',
@@ -3036,6 +3620,27 @@ Common is usually valued below the latest preferred price, because it lacks the 
               question: 'What is a secondary sale, and how does it differ from a primary one?',
               answerOutline:
                 'Existing holders sell shares to new buyers, so cash goes to the sellers. In a primary sale, new shares are issued and cash goes to the company.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'An employee leaves with 10,000 vested **NSOs** at a USD 0.80 strike. The 409A value is USD 3.00, and her tax rate on the spread is an illustrative 30%. How much cash does she need to exercise and pay the tax?',
+              options: ['USD 8,000', 'USD 14,600', 'USD 30,000', 'USD 6,600'],
+              answer: 1,
+              explanation:
+                'Exercise costs $10{,}000 \\times 0.80 = 8{,}000$. The spread is $10{,}000 \\times (3.00 - 0.80) = 22{,}000$ of ordinary income, so tax is $0.30 \\times 22{,}000 = 6{,}600$, for USD 14,600 in total, for shares she cannot sell. USD 8,000 forgets the tax, which is the usual surprise.',
+            },
+            {
+              question: 'On 1 March a board grants options using a 409A appraisal dated 1 November, but the company closed a Series A on 15 January. Can it rely on that appraisal?',
+              options: [
+                'Yes, because it is less than 12 months old',
+                'Yes, as long as the strike price is above par value',
+                'No, because a 409A appraisal lasts only six months',
+                'No, because the Series A is material new information, so a new valuation is needed',
+              ],
+              answer: 3,
+              explanation:
+                'Twelve months is the outer limit, not a guarantee: an appraisal stops being usable once material new information appears, and a financing is the classic example. That is why companies get a new 409A after every priced round. Par value has nothing to do with fair market value.',
             },
           ],
         },
@@ -3108,11 +3713,12 @@ Note that the three-year result is worth less than half off, because the taxable
           exercises: [
             {
               slug: 'qsbs-calculator',
-              title: 'Write a QSBS estimator',
+              title: 'Build a QSBS estimate',
               prompt:
-                'Write a Python function taking issue date, sale date, gain and basis, returning the exclusion percentage, the cap (greater of the dollar limit or 10x basis) and a federal tax estimate using a 28% rate and 3.8% tax on the non-excluded part. Handle stock issued on either side of 4 July 2025. Reproduce the lesson\'s table for an issue date after that, then show the effect of a USD 40 million gain with USD 100,000 of basis. Label its output as an estimate and not tax advice.',
-              kind: 'coding',
+                'In a spreadsheet, with input cells for issue date, years held, gain and basis, work out the exclusion percentage from the lesson\'s table (with separate rules for stock issued on or before 4 July 2025 and after it), the per-issuer cap (the greater of the dollar limit or 10x basis) and a federal tax estimate using 28% plus 3.8% on the non-excluded part, as the lesson does. Reproduce the lesson\'s worked table for stock issued after 4 July 2025. Then take a USD 40 million gain with USD 100,000 of basis, held five years: find the cap, how much gain is excluded and how much is not, and estimate tax on the rest at the lesson\'s 23.8%. Label everything as a simplified estimate, not tax advice.',
+              kind: 'problem',
               difficulty: 3,
+              hint: 'For the USD 40 million case the cap is the greater of USD 15 million and 10 × 100,000 = USD 1 million, so USD 15 million is excluded and USD 25 million is not: about USD 5.95 million of federal tax at 23.8%.',
             },
             {
               slug: 'compliance-calendar',
@@ -3149,6 +3755,27 @@ Note that the three-year result is worth less than half off, because the taxable
             {
               question: 'Does California follow section 1202?',
               answerOutline: 'No. The Franchise Tax Board says that California does not conform, so the gain is taxable there.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Qualifying stock issued in August 2025 is sold after exactly four years for a USD 2 million gain, within the cap. Using the lesson\'s simplified rates (28% plus 3.8% on the non-excluded part), what is the federal tax?',
+              options: ['USD 0', 'USD 119,000', 'USD 159,000', 'USD 476,000'],
+              answer: 2,
+              explanation:
+                'Stock issued after 4 July 2025 gets 75% exclusion at four years, so USD 500,000 is taxable at $28\\% + 3.8\\% = 31.8\\%$: USD 159,000. Zero needs five years. USD 119,000 uses 23.8%, but the lesson notes the non-excluded section 1202 gain is taxed at up to 28%. This is a simplified federal estimate, not advice.',
+            },
+            {
+              question: 'Assume every other section 1202 condition is met. Which of these is **not** qualified small business stock?',
+              options: [
+                'Shares bought from a departing co-founder',
+                'Founder stock in a software C corporation, issued in 2026',
+                'Stock issued in 2026 when the company had USD 60 million of gross assets',
+                'Shares received on exercising a stock option',
+              ],
+              answer: 0,
+              explanation:
+                'QSBS must be acquired at original issue from the company, so shares bought from another stockholder do not qualify. The USD 60 million company is within the USD 75 million gross assets limit that applies to stock issued after 4 July 2025 (it would have failed the old USD 50 million test). Option shares can qualify, with the clock starting at exercise.',
             },
           ],
         },
@@ -3208,10 +3835,10 @@ Note that the three-year result is worth less than half off, because the taxable
 
 **Who decides?** Founders, boards and investors can want different things, as Module 6 explained. Read your drag-along and protective provisions before an offer arrives, because they decide who can say yes.`,
           resources: [
-            { title: 'Going Public', url: 'https://www.sec.gov/resources-small-businesses/going-public', type: 'documentation', cost: 'free', provider: 'US Securities and Exchange Commission', note: 'The SEC blocks scripts, so use a browser.', primary: true },
+            { title: 'Going Public', url: 'https://www.sec.gov/resources-small-businesses/going-public', type: 'documentation', cost: 'free', provider: 'US Securities and Exchange Commission', note: 'The SEC blocks automated downloads, so use a browser.', primary: true },
             { title: 'Revised Jurisdictional Thresholds for Section 7A of the Clayton Act', url: 'https://www.federalregister.gov/documents/2026/01/16/2026-00877/revised-jurisdictional-thresholds-for-section-7a-of-the-clayton-act', type: 'documentation', cost: 'free', provider: 'Federal Register', note: 'The FTC notice for 2026. A new one appears each January, so check the current year.' },
             { title: '26 USC 280G', url: 'https://www.law.cornell.edu/uscode/text/26/280G', type: 'documentation', cost: 'free', provider: 'Cornell Legal Information Institute' },
-            { title: 'How AI is shaping the startup exit market in 2026', url: 'https://carta.com/data/startup-exit-environment-h2-2026/', type: 'article', cost: 'free', provider: 'Carta', note: 'Current exit data from Carta. It blocks scripts, so use a browser.' },
+            { title: 'How AI is shaping the startup exit market in 2026', url: 'https://carta.com/data/startup-exit-environment-h2-2026/', type: 'article', cost: 'free', provider: 'Carta', note: 'Current exit data from Carta. It blocks automated downloads, so use a browser.' },
           ],
           exercises: [
             {
@@ -3254,6 +3881,27 @@ Note that the three-year result is worth less than half off, because the taxable
               question: 'How can a private company avoid section 280G penalties?',
               answerOutline:
                 'Holders of more than 75% of the voting power approve the payments after adequate disclosure.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Your company is sold for a headline USD 50 million in cash. It repays USD 3 million of debt and pays USD 1.5 million of fees, and 10% of the headline price is held in escrow. How much cash do stockholders receive at closing?',
+              options: ['USD 45.5 million', 'USD 40.5 million', 'USD 50 million', 'USD 40.95 million'],
+              answer: 1,
+              explanation:
+                '$50 - 3 - 1.5 = 45.5$ million, less the USD 5 million escrow, leaves USD 40.5 million now. The escrow may come later, or not at all. USD 45.5 million forgets the escrow, and USD 40.95 million takes 10% of the net figure rather than of the headline price the question gives.',
+            },
+            {
+              question: 'An executive\'s base amount under section 280G is USD 300,000. On the sale she receives a change-of-control bonus of USD 800,000. Using the lesson\'s three-times test, is it a parachute payment?',
+              options: [
+                'Yes, because it is more than her base amount',
+                'Yes, because any payment tied to a sale is a parachute payment',
+                'Only if the company is publicly traded',
+                'No, because it is below three times her base amount, which is USD 900,000',
+              ],
+              answer: 3,
+              explanation:
+                'Payments become parachute payments when they reach three times the base amount: $3 \\times 300{,}000 = 900{,}000$, and USD 800,000 is below that. Exceeding the base amount once is not the test. Private companies are covered too, which is why they use the 75% stockholder approval route. Take advice on the real calculation.',
             },
           ],
         },
@@ -3310,17 +3958,19 @@ Read the rows. At USD 8 million the founders receive nothing, though they own 48
           exercises: [
             {
               slug: 'waterfall-solver',
-              title: 'Write a waterfall solver',
+              title: 'Work the waterfall by hand',
               prompt:
-                'Write a Python function using fractions.Fraction that takes classes of common, options with strikes and non-participating preferred with seniority, and an exit value. Use the common-price-per-share method to return each class\'s payout and x. Reproduce the lesson\'s table. Assert that payouts sum exactly to the exit value in every case.',
-              kind: 'coding',
+                'Using the common-price-per-share method, reproduce every row of the lesson\'s table by hand, with a calculator. For each exit, guess which classes take their preference and which convert, write the equation that says total payouts equal the exit, solve it for x, and then check that the guess was consistent (each converting class gets more than its preference, each class taking its preference would get less by converting, and options with a strike above x get nothing). Show that the payouts add up exactly to the exit in every row. Then do a USD 20 million exit, which is not in the table.',
+              kind: 'problem',
               difficulty: 3,
+              hint: 'At USD 30 million, Series A takes USD 10 million and everyone else is common. In millions of dollars and millions of shares, the other USD 20 million is 6x + 1x + 2x + 1 × (x − 0.50), so 10x − 0.5 = 20 and x = 2.05. At USD 20 million the same structure gives x = 1.05, so Seed (at USD 1.00 a share of preference) just converts.',
             },
             {
               slug: 'sweep-chart',
               title: 'Chart founder proceeds',
               prompt:
-                'Using your solver, plot founder proceeds and founder share of proceeds for exits from USD 1 million to USD 150 million. Mark each breakpoint and name what happens there. Add a line for what 48% of the exit would have paid. Explain the shape of the gap.',
+                'Find the exit values at which the lesson\'s example changes behaviour: where Series A\'s preference is full, where Seed\'s is full, where the options come into the money, where Seed converts and where Series A converts. Between each pair, write x as a simple formula of the exit, by hand. Then, in a spreadsheet, make a column of exits from USD 1 million to USD 150 million and a column of founder proceeds using the right formula for each range, and chart founder proceeds and founder share of proceeds. Mark each breakpoint and name what happens there. Add a line for what 48% of the exit would have paid. Explain the shape of the gap.',
+              hint: 'The breakpoints are at exits of USD 10 million, 12 million, 15.5 million, 19.5 million and 49.5 million. Above the last one, x = (exit + 0.5 million) / 12.5 million.',
               kind: 'data-analysis',
               difficulty: 2,
             },
@@ -3348,6 +3998,22 @@ Read the rows. At USD 8 million the founders receive nothing, though they own 48
               question: 'What is a breakpoint?',
               answerOutline:
                 'A common price per share at which a class changes behaviour, such as an option coming into the money or a series converting.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Take the lesson\'s example (founders 6,000,000 shares, employees 1,000,000, options 1,000,000 at USD 0.50, Seed 2,000,000 shares with a USD 2 million preference, Series A 2,500,000 shares with a senior USD 10 million preference). What do the founders receive in a USD 20 million sale?',
+              options: ['USD 9.60 million', 'USD 6.86 million', 'USD 6.30 million', 'USD 0'],
+              answer: 2,
+              explanation:
+                'Series A takes USD 10 million (converting would need x above USD 4.00). If Seed converts, the remaining USD 10 million is shared by 9,000,000 common shares plus the options: $9x + (x - 0.50) = 10$, so $x = 1.05$. That is above Seed\'s USD 1.00 a share, so converting is right, and founders get $6 \\times 1.05 = 6.30$ million. USD 9.60 million is 48% of the price, which ignores the preference. USD 6.86 million leaves Seed taking its preference and forgets the options.',
+            },
+            {
+              question: 'A company has one investor holding 3,000,000 preferred shares with a USD 6 million 1x non-participating preference, and 7,000,000 common shares. It sells for USD 15 million. What does each common share receive?',
+              options: ['USD 1.29', 'USD 1.50', 'USD 0.90'],
+              answer: 0,
+              explanation:
+                'Converting would give the investor $30\\% \\times 15 = 4.5$ million, less than its USD 6 million preference, so it takes the preference. The remaining USD 9 million goes to the 7,000,000 common shares: about USD 1.29 each. USD 1.50 divides by all 10,000,000 shares as if the investor had converted; USD 0.90 divides what is left by all 10,000,000.',
             },
           ],
         },
@@ -3396,16 +4062,17 @@ Each needs board and often stockholder approval, and raises conflicts, because i
           resources: [
             { title: 'Q2 2026 Venture Financing Report', url: 'https://www.cooley.com/news/insight/2026/2026-08-17-q2-2026-venture-financing-report', type: 'dataset', cost: 'free', provider: 'Cooley', primary: true },
             { title: 'Default Alive or Default Dead?', url: 'https://paulgraham.com/aord.html', type: 'article', cost: 'free', provider: 'Paul Graham' },
-            { title: 'State of Private Markets: Q1 2026', url: 'https://carta.com/data/state-of-private-markets-q1-2026/', type: 'dataset', cost: 'free', provider: 'Carta', note: 'Carta blocks scripts, so use a browser.' },
+            { title: 'State of Private Markets: Q1 2026', url: 'https://carta.com/data/state-of-private-markets-q1-2026/', type: 'dataset', cost: 'free', provider: 'Carta', note: 'Carta blocks automated downloads, so use a browser.' },
           ],
           exercises: [
             {
               slug: 'down-round-table',
               title: 'Model a down round',
               prompt:
-                'Reproduce the lesson\'s example in Python, then repeat it with a full ratchet and with no anti-dilution. Report founder percentage in each case. Add a pool top-up to 10% post-closing, and compute the effect. Then explain how the investor\'s protection is paid for by people with no protection.',
-              kind: 'coding',
+                'Reproduce the lesson\'s example by hand or in a spreadsheet (new conversion price USD 4.40, 272,727 extra shares, founders at 39.15%), then repeat it with a full ratchet and with no anti-dilution. Report founder percentage in each case. Then add a new option pool equal to 10% of the post-closing fully diluted shares, created after the round and ignored for anti-dilution, and compute the founders\' percentage again in all three cases. Explain how the investor\'s protection is paid for by people with no protection.',
+              kind: 'problem',
               difficulty: 2,
+              hint: 'Under a full ratchet the old investor\'s USD 10 million converts at USD 2.00 into 5,000,000 shares, so founders hold 5,000,000 of 15,500,000, about 32.3%. A pool of 10% after closing multiplies every existing percentage by 0.9.',
             },
             {
               slug: 'options-memo',
@@ -3439,6 +4106,27 @@ Each needs board and often stockholder approval, and raises conflicts, because i
               question: 'What is the difference between a bridge that helps and one that hurts?',
               answerOutline:
                 'A useful bridge reaches a specific, near and credible milestone. A harmful one just delays a decision and adds debt or preference.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A company has 20,000,000 fully diluted shares. An earlier investor paid USD 12 million for 4,000,000 preferred shares (conversion price USD 3.00) with broad-based weighted average anti-dilution. The company now issues 5,000,000 shares at USD 1.50. Into how many shares does the earlier investor now convert?',
+              options: ['4,000,000', '4,444,444', '8,000,000', '5,333,333'],
+              answer: 1,
+              explanation:
+                'B is $7{,}500{,}000 / 3.00 = 2{,}500{,}000$, so $CP_2 = 3.00 \\times \\frac{20{,}000{,}000 + 2{,}500{,}000}{20{,}000{,}000 + 5{,}000{,}000} = 2.70$, and $12{,}000{,}000 / 2.70 \\approx 4{,}444{,}444$ shares. 8,000,000 is a full ratchet to USD 1.50, and 5,333,333 uses a simple average of the two prices. The extra 444,444 shares come out of the unprotected holders.',
+            },
+            {
+              question: 'Which bridge round is most defensible?',
+              options: [
+                'A bridge to "keep going while we work out the plan"',
+                'A bridge that buys two months in return for a 3x preference',
+                'A bridge to fund a pivot into a new market with a mostly new team',
+                'A bridge to the close of a signed acquisition expected in six weeks',
+              ],
+              answer: 3,
+              explanation:
+                'A useful bridge reaches a specific, near and credible milestone, and a signed deal closing soon is exactly that. The others buy time without a destination, load the company with harsh preference, or fund what is really a new startup on the old company\'s last cash.',
             },
           ],
         },
@@ -3544,21 +4232,47 @@ Ending a company is a normal outcome. BLS data shows most new establishments are
                 'Creditors, including wages and taxes, come first, then preferred stockholders under the charter, then common.',
             },
           ],
+          quiz: [
+            {
+              question: 'A company winding down has USD 500,000. Wind-down costs are USD 100,000, unpaid wages and payroll taxes USD 150,000, and other creditors are owed USD 300,000. Its preferred stockholders invested USD 4 million. What do stockholders receive?',
+              options: [
+                'USD 250,000 to the preferred, nothing to common',
+                'USD 250,000 shared by all stockholders',
+                'Nothing: the last USD 250,000 goes to the other creditors, who are still USD 50,000 short',
+                'USD 50,000 to the preferred',
+              ],
+              answer: 2,
+              explanation:
+                'After costs and wages, $500 - 100 - 150 = 250$ thousand is left, and creditors come before any stockholder, so it is shared among creditors owed USD 300,000. Nothing reaches the preferred, let alone common. Paying stockholders first would expose them, and possibly the directors, to claims under DGCL section 282.',
+            },
+          ],
         },
       ],
     },
   ],
   capstone: {
     slug: 'startup-company-model',
-    title: 'An open-source model of a fictional company',
-    description:
-      'Build a clearly labelled fictional company\'s financial model, fundraising scenarios, term sheet comparison and exit waterfall, with an investor package. The final project in the coursework gives the full specification.',
+    title: 'A spreadsheet model and investor package for a fictional company',
+    description: `Pull the whole course together for one clearly labelled **fictional** company. Everything is done in a spreadsheet and a short document: no programming, no real customers and no real money.
+
+1. **The idea and the evidence (Modules 1 to 3).** One page on the problem, who has it, why now and the riskiest assumption, with made-up interview tallies, a cohort retention table with blank cells for cohorts that are too young, and a survey score with its Wilson interval.
+2. **The engine (Module 4).** A 36-month driver-based model on its own sheet, with inputs kept apart from formulas and each input labelled measured or assumed: price, new customers, churn, gross margin, team and other costs. It reports CAC, LTV, payback, burn, runway and whether the company is default alive, plus a sensitivity table for four inputs.
+3. **The company (Module 5).** The entity and state you chose and why, a founders' cap table with vesting schedules, their 83(b) dates, and the Delaware franchise tax under both methods.
+4. **The money (Modules 6 and 7).** A round size worked back from a milestone, SAFEs converted in a priced round with an option pool, the cap table before and after, and a comparison of two term sheets with founder proceeds at three exit values.
+5. **The company as it grows (Module 8).** An option grant for one early employee with the cost to exercise, and a note on whether the founders' stock could be QSBS.
+6. **The endings (Module 9).** A liquidation waterfall at five exit values, showing founder proceeds against ownership times price, and a one-page wind-down plan in case the money runs out.
+
+Finish with a ten-slide investor package whose every number comes from the workbook. Add a Checks sheet in which totals reconcile (cap table shares sum to the fully diluted total, waterfall payouts sum to the exit, monthly cash flows sum to the change in cash). State on the first page that the company is fictional and that this is education, not legal, tax or investment advice.`,
     deliverables: [
-      'A runnable model with tests',
-      'An investor package labelled as fictional',
-      'A README that states it is education and not advice',
+      'A workbook with model, cap table, term sheet and waterfall sheets, and a Checks sheet in which every total reconciles',
+      'A ten-slide investor package labelled as fictional, with each number traceable to the workbook',
+      'A one-page cover note stating that this is education and not legal, tax or investment advice, and listing the main assumptions',
     ],
-    estimatedHours: 45,
+    estimatedHours: 40,
+    stretchGoals: [
+      'Ask someone who knows the material to act as a sceptical investor, and record the three questions you could not answer well.',
+      'Add a down-round scenario with broad-based weighted average anti-dilution, and show what it does to the founders and the employee\'s options.',
+    ],
   },
   masteryChecklist: [
     'I can state base rates for new businesses and venture outcomes with sources, and say what each does not show.',

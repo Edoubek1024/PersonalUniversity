@@ -320,7 +320,10 @@ This course gives no legal advice, and all laws must be stated as of a date.
 
 ### startup-founding-and-funding
 How to start a company, fund it and run it as a private company, with US law and practice as the
-default and an honest account of the odds. Education, not legal, tax or investment advice.
+default and an honest account of the odds. Education, not legal, tax or investment advice. No
+programming is needed: calculations are done by hand or in a spreadsheet. There are no machine
+problems; module projects and a capstone apply the material, and every lesson ends with a short
+multiple-choice quiz.
 1. Startups and founders: what makes a startup different from a small business, base rates and risk, founder motives, choosing co-founders, when not to start one
 2. Finding a problem worth solving: where good ideas come from, customer interviews, market sizing, competition, validation
 3. Building to product-market fit: the minimum viable product, iteration, pricing, retention and activation, recognising product-market fit
@@ -660,8 +663,8 @@ All 71 subjects are written. Every lesson is fully populated: none is marked `ou
 
 Run `npm run validate` for the per-subject table (modules, lessons, hours).
 
-The CS and data science subjects, `probability-statistics` and the startup course have coursework: 62 machine problems and 31 final
-projects, about 2,460 hours on top of the subject hours. Mathematics subjects use module projects
+The CS and data science subjects and `probability-statistics` have coursework: 60 machine problems and 30 final
+projects, about 2,380 hours on top of the subject hours. Mathematics subjects use module projects
 and a capstone instead. Specs were checked by script, by reasoning
 or on sample runs. Almost none has been built end to end, so treat numeric targets and timings as
 estimates.

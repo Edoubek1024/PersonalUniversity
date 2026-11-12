@@ -171,6 +171,56 @@ If you have taken Microeconomic Principles, skim this part. If not, work through
                 'In the long run prices and wages are flexible, so output is set by labour, capital and technology and money affects only prices. In the short run prices and wages are sticky, so changes in spending change output and employment.',
             },
           ],
+          quiz: [
+            {
+              question: 'Demand is $Q_d = 90 - 3P$ and supply is $Q_s = -10 + 2P$. What are the equilibrium price and quantity?',
+              options: [
+                '$P^* = 20$, $Q^* = 30$',
+                '$P^* = 16$, $Q^* = 42$',
+                '$P^* = 20$, $Q^* = 50$',
+                '$P^* = 100$, $Q^* = -210$',
+              ],
+              answer: 0,
+              explanation:
+                'Set $Q_d = Q_s$: $90 - 3P = -10 + 2P$, so $5P = 100$, $P^* = 20$ and $Q^* = 90 - 60 = 30$ (check: $-10 + 40 = 30$). $P^* = 16$ comes from dropping the minus sign on the supply intercept, and $Q^* = 50$ from plugging the right price into the supply curve with $+10$.',
+            },
+            {
+              question: 'A frost destroys part of the orange crop. The price of oranges rises and buyers purchase fewer oranges. Which description is right?',
+              options: [
+                'Demand shifts left, because buyers now buy fewer oranges',
+                'Supply shifts left, and buyers move along an unchanged demand curve to a smaller quantity demanded',
+                'Both curves shift left by the same amount',
+                'Supply shifts left, and then demand shifts left in response to the higher price',
+              ],
+              answer: 1,
+              explanation:
+                'The frost changes something other than the price of oranges on the sellers\' side, so supply shifts. Buyers react to the higher price by buying less, which is a movement along the demand curve. Saying "demand fell" confuses a lower quantity demanded with a shift of the demand curve.',
+            },
+            {
+              question: 'In a recession, every household decides at the same time to save a larger share of its income. What does the lesson say can happen in the short run?',
+              options: [
+                'Every household ends up richer, because each one is saving more',
+                'Output rises at once, because the extra saving pays for new capital',
+                'Spending falls, firms sell less and incomes can fall, so households need not end up richer',
+                'Nothing changes in total, because saving is just a transfer between households',
+              ],
+              answer: 2,
+              explanation:
+                'What is true for one family (saving more makes it richer) can be false for all families together: if everyone spends less, firms sell less and incomes fall. That is the fallacy of composition. Saving paying for new capital is the long-run story, not what happens in a short-run slump.',
+            },
+            {
+              question: 'In this course\'s **long-run** model, the central bank permanently doubles the quantity of money. What does the model predict?',
+              options: [
+                'Real output roughly doubles, because people have more to spend',
+                'Output and prices both rise, by about half each',
+                'Nothing changes, because money is exogenous',
+                'Prices rise, while output stays set by labour, capital and technology',
+              ],
+              answer: 3,
+              explanation:
+                'In the long run, prices and wages are flexible, so output depends on labour, capital and technology and money affects only prices. Extra spending raising output is the short-run story, where prices are sticky. Money being exogenous means the model takes it as given, not that changing it has no effect.',
+            },
+          ],
         },
         {
           slug: 'gdp-three-ways',
@@ -264,6 +314,51 @@ A common pitfall: GDP measures production, not sales or wealth. A house built in
               question: 'Is buying a newly issued corporate bond investment in the GDP sense?',
               answerOutline:
                 'No. It is a financial transaction that moves funds. Investment in GDP is spending on new capital goods, structures, housing and inventories. The firm\'s later purchase of machines with the funds is investment.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'An economy has consumption USD 500 billion, investment USD 150 billion (including a USD 10 billion rise in inventories), government purchases USD 180 billion, transfer payments USD 90 billion, exports USD 100 billion and imports USD 130 billion. What is GDP?',
+              options: ['USD 790 billion', 'USD 800 billion', 'USD 890 billion', 'USD 930 billion'],
+              answer: 1,
+              explanation:
+                '$Y = C + I + G + NX = 500 + 150 + 180 + (100 - 130) = 800$. The inventory rise is already inside investment, so do not subtract it (that gives 790). Transfers are not purchases of output (adding them gives 890), and 930 forgets to subtract imports.',
+            },
+            {
+              question: 'A cotton farm sells cotton to a mill for USD 200. The mill sells cloth to a tailor for USD 500, and the tailor sells shirts to households for USD 1,200. What is the tailor\'s value added, and how much do the three stages add to GDP?',
+              options: [
+                'Tailor 1,200; total 1,900',
+                'Tailor 500; total 1,200',
+                'Tailor 700; total 1,900',
+                'Tailor 700; total 1,200',
+              ],
+              answer: 3,
+              explanation:
+                'Value added is sales minus purchased inputs: the tailor adds $1{,}200 - 500 = 700$. The stages add $200 + 300 + 700 = 1{,}200$, the price of the final good. Adding all three sales (1,900) counts the cotton and the cloth twice.',
+            },
+            {
+              question: 'Which of these adds to this year\'s US GDP?',
+              options: [
+                'An investor buys newly issued shares in a US company',
+                'The government pays unemployment benefits',
+                'A family buys a house built this year in Ohio',
+                'You buy a five-year-old car from your neighbour',
+              ],
+              answer: 2,
+              explanation:
+                'A newly built house is new production and counts as residential investment. Buying shares is a financial transaction, not investment in the GDP sense; benefits are transfers with nothing produced in exchange; and a used car was counted in the year it was made.',
+            },
+            {
+              question: 'A Japanese-owned car plant in Kentucky produces USD 2 billion of cars this year. Where are they counted?',
+              options: [
+                'In US GDP, but not in US GNP',
+                'In US GNP, but not in US GDP',
+                'In Japan\'s GDP, because the owner is Japanese',
+                'In neither, because the profits leave the country',
+              ],
+              answer: 0,
+              explanation:
+                'GDP is about location: the cars are produced within the United States, so they are in US GDP. GNP counts what a country\'s residents produce anywhere, so this output belongs to Japan\'s GNP, not to US GNP. Where the profits go does not change where production happened.',
             },
           ],
         },
@@ -367,6 +462,41 @@ The deflator in Q3 2026 was 134.1 (2017 = 100), equal to nominal GDP of 33,010 d
                 'Regular seasonal swings (holiday shopping, harvests) are removed, and the quarter\'s output is scaled to a yearly amount (times four), so quarters can be compared with each other and with annual figures.',
             },
           ],
+          quiz: [
+            {
+              question: 'Year 1 is the base year: 200 apples at USD 2 and 50 books at USD 20. In year 2: 220 apples at USD 2.50 and 50 books at USD 22. What is real GDP growth from year 1 to year 2?',
+              options: ['2.9%', '14.6%', '15.0%', '17.9%'],
+              answer: 0,
+              explanation:
+                'Nominal GDP is $400 + 1{,}000 = 1{,}400$ in year 1. Real GDP in year 2 at year-1 prices is $440 + 1{,}000 = 1{,}440$, so real growth is $1{,}440/1{,}400 - 1 = 2.9\\%$. 17.9% is nominal growth ($1{,}650/1{,}400 - 1$), which mixes in the price rise; 14.6% is the rise in the deflator.',
+            },
+            {
+              question: 'Nominal GDP is 12,600 and real GDP at base-year prices is 12,000. What is the GDP deflator?',
+              options: ['5.0', '95.2', '105.0', '600'],
+              answer: 2,
+              explanation:
+                '$\\text{deflator} = \\dfrac{\\text{nominal}}{\\text{real}} \\times 100 = \\dfrac{12{,}600}{12{,}000} \\times 100 = 105.0$, so prices are 5% above the base year. 95.2 divides real by nominal, the wrong way round; 5.0 is the percentage rise, not the index.',
+            },
+            {
+              question: 'Real GDP rises 1.5% from one quarter to the next. What annualised growth rate does BEA report?',
+              options: ['0.4%', '1.5%', '6.0%', '6.1%'],
+              answer: 3,
+              explanation:
+                'Annualising compounds the quarterly change over four quarters: $(1.015)^4 - 1 = 6.1\\%$. Multiplying by four (6.0%) ignores compounding, 1.5% is the quarterly change itself, and 0.4% divides by four instead of compounding.',
+            },
+            {
+              question: 'Over a year, nominal GDP grows 4% and the GDP deflator rises 6%. What happened to real GDP?',
+              options: [
+                'It rose about 10%',
+                'It fell about 1.9%',
+                'It rose about 2%',
+                'It cannot be known without the base year',
+              ],
+              answer: 1,
+              explanation:
+                '$(1 + \\text{nominal growth}) = (1 + \\text{real growth})(1 + \\text{inflation})$, so real growth is $1.04/1.06 - 1 = -1.9\\%$: prices rose faster than the value of output, so quantities fell. Adding the two rates (10%) or subtracting them the wrong way round (+2%) are sign mistakes.',
+            },
+          ],
         },
         {
           slug: 'what-gdp-misses',
@@ -451,6 +581,44 @@ The deflator in Q3 2026 was 134.1 (2017 = 100), equal to nominal GDP of 33,010 d
             {
               question: 'How can GDP per person rise while the typical household\'s income stagnates?',
               answerOutline: 'GDP per person is a mean. If gains go mostly to high earners, the mean rises while the median barely moves.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A country\'s GDP is 120 trillion units of its currency and its population is 1.5 billion. The market exchange rate is 40 per US dollar and the PPP conversion factor is 16 per international dollar. What is GDP per person at PPP?',
+              options: [
+                '2,000 international dollars',
+                '5,000 international dollars',
+                '80,000 international dollars',
+                '1,280,000 international dollars',
+              ],
+              answer: 1,
+              explanation:
+                'GDP per person is $(120 \\times 10^{12}) / (1.5 \\times 10^{9}) = 80{,}000$ local units, and $80{,}000 / 16 = 5{,}000$ at PPP. Dividing by the market rate gives 2,000 dollars, which understates living standards because non-traded goods are cheap there; 1,280,000 multiplies instead of dividing.',
+            },
+            {
+              question: 'Countries A and B have the same GDP per person. In A, most childcare is done by parents at home; in B, families pay day-care centres. Which statement is right?',
+              options: [
+                'Living standards must be equal, because GDP per person is equal',
+                'B\'s GDP is overstated, because day care is an intermediate good',
+                'A produces more than its GDP shows, because home childcare is not counted',
+                'A\'s GDP is overstated, because home childcare is counted at market prices',
+              ],
+              answer: 2,
+              explanation:
+                'Non-market production is left out, while the same work bought in a market is counted. So A does extra work that its GDP misses, and countries where more work is done at home look poorer than they are. Equal GDP per person does not mean equal output or well-being.',
+            },
+            {
+              question: 'Five households earn 30, 40, 50, 60 and 70 thousand dollars. Next year only the top household\'s income changes, rising to 120 thousand. What happens to the mean and the median?',
+              options: [
+                'Mean 60 thousand, median 60 thousand',
+                'Mean 50 thousand, median 50 thousand',
+                'Mean 50 thousand, median 60 thousand',
+                'Mean 60 thousand, median 50 thousand',
+              ],
+              answer: 3,
+              explanation:
+                'The total rises by 50 thousand, so the mean rises from 50 to $300/5 = 60$ thousand, while the middle household still earns 50 thousand. This is how GDP per person, a mean, can rise while the typical household stagnates. The mean cannot stay at 50 thousand: the total income rose, even though only one household gained.',
             },
           ],
         },
@@ -557,6 +725,41 @@ using annual averages of CPI-U (38.84 in 1970, 321.96 in 2025). A 1970 salary of
                 'Coverage (PCE includes spending made on households\' behalf, such as employer health insurance); weights (PCE weights update each period, CPI uses a fixed basket updated yearly); source (BEA versus BLS). PCE usually runs lower.',
             },
           ],
+          quiz: [
+            {
+              question: 'A household\'s monthly basket is 8 meals and 4 cinema tickets. In the base year a meal costs USD 12 and a ticket USD 6; in year 2 a meal costs USD 13.50 and a ticket USD 7.50. What is the price index for year 2 (base year = 100)?',
+              options: ['87.0', '115.0', '118.75', '138.0'],
+              answer: 1,
+              explanation:
+                'The basket costs $8 \\times 12 + 4 \\times 6 = 120$ in the base year and $8 \\times 13.50 + 4 \\times 7.50 = 138$ in year 2, so the index is $138/120 \\times 100 = 115.0$. 118.75 is the simple average of the two price rises (12.5% and 25%), which ignores that meals take most of the spending; 87.0 divides the wrong way round.',
+            },
+            {
+              question: 'The CPI rises from 320 to 336 over a year. What is the inflation rate?',
+              options: ['1.05%', '4.8%', '5.0%', '16%'],
+              answer: 2,
+              explanation:
+                'Inflation is $(336/320 - 1) \\times 100 = 5.0\\%$. 16 is the change in index points, which depends on the level of the index and is not a percentage; 4.8% divides the change by the new level instead of the old one.',
+            },
+            {
+              question: 'A car cost USD 3,000 in 1970. Using the lesson\'s annual average CPI-U (38.8 in 1970, 322.0 in 2025), what is that in 2025 dollars?',
+              options: ['About USD 360', 'About USD 3,280', 'About USD 21,900', 'About USD 24,900'],
+              answer: 3,
+              explanation:
+                'Scale by the ratio of indexes: $3{,}000 \\times 322.0/38.8 \\approx 24{,}900$. USD 21,900 is only the increase over the original 3,000, USD 360 puts the ratio upside down, and USD 3,280 adds the 283-point difference in the index as if it were dollars.',
+            },
+            {
+              question: 'Which statement about price indexes is right?',
+              options: [
+                'Core inflation leaves out food and energy because households spend little on them',
+                'The Federal Reserve\'s 2% goal is defined in terms of the CPI-U',
+                'The PCE price index updates its weights every period, so it allows for substitution and usually runs a little below the CPI',
+                'Core CPI matters more to households than headline CPI',
+              ],
+              answer: 2,
+              explanation:
+                'PCE weights update each period, letting consumers substitute between goods, and the index usually runs a little below the CPI; the Fed\'s 2% goal is defined in PCE terms. Core leaves out food and energy because their prices are volatile and often reverse, which makes core a better guide to where inflation is heading, not because those goods matter less.',
+            },
+          ],
         },
         {
           slug: 'cpi-biases-and-indexing',
@@ -650,6 +853,56 @@ The **ex ante** real rate uses expected inflation, the **ex post** rate uses wha
                 'If wages, benefits and contracts rise automatically with past inflation, costs keep rising even after the original cause has gone, which feeds further price rises.',
             },
           ],
+          quiz: [
+            {
+              question: 'In the base year tea and coffee each cost USD 2 and a household buys 10 of each. Next year tea costs USD 3 and coffee USD 2, and it buys 6 teas and 15 coffees. What inflation does the base-year basket show, and what does the current basket show?',
+              options: [
+                'Base-year basket 14.3%, current basket 25%',
+                'Base-year basket 25%, current basket 14.3%',
+                'Base-year basket 25%, current basket 19.5%',
+                'Base-year basket 50%, current basket 14.3%',
+              ],
+              answer: 1,
+              explanation:
+                'The old basket costs 40, then $30 + 20 = 50$: up 25%. The new basket costs $12 + 30 = 42$ at old prices and $18 + 30 = 48$ at new prices: up 14.3%. The fixed basket is the higher one because it ignores the switch from tea to coffee (substitution bias). 19.5% is the geometric average of the two, and 50% is the rise in the price of tea alone.',
+            },
+            {
+              question: 'You borrow at a fixed 7% expecting 3% inflation. Inflation turns out to be 5%. Using $r \\approx i - \\pi$, what were the ex ante and ex post real rates, and who gained?',
+              options: [
+                'Ex ante 4%, ex post 2%; the borrower gained',
+                'Ex ante 2%, ex post 4%; the lender gained',
+                'Ex ante 4%, ex post 2%; the lender gained',
+                'Ex ante 10%, ex post 12%; the lender gained',
+              ],
+              answer: 0,
+              explanation:
+                'Ex ante uses expected inflation: $7 - 3 = 4\\%$. Ex post uses actual inflation: $7 - 5 = 2\\%$. The real cost of the loan was lower than agreed, so unexpected inflation transferred purchasing power from the lender to the borrower. Adding inflation to the nominal rate (10%, 12%) gets the Fisher equation backwards.',
+            },
+            {
+              question: 'This year\'s laptop costs the same as last year\'s but is twice as fast. If the CPI records no change in the laptop\'s price, which bias is at work, and in which direction?',
+              options: [
+                'Substitution bias; the CPI overstates inflation',
+                'Quality change; the CPI understates inflation',
+                'Outlet bias; the CPI overstates inflation',
+                'Quality change; the CPI overstates inflation',
+              ],
+              answer: 3,
+              explanation:
+                'The buyer gets more for the same money, so the true quality-adjusted price fell. Recording no change misses that fall, so measured inflation is too high. Substitution bias is about switching between goods when relative prices change, and outlet bias about switching to cheaper stores.',
+            },
+            {
+              question: 'A country indexes all wage contracts to the previous year\'s inflation. An oil shock pushes inflation to 8% for one year, then oil prices stop rising. What does the lesson warn can happen next year?',
+              options: [
+                'Inflation falls to zero at once, because the oil shock is over',
+                'Real wages fall by 8%, because indexing only protects benefits',
+                'Indexing makes the oil shock disappear from measured inflation',
+                'Wages rise about 8% automatically, so firms\' costs keep rising and inflation persists after the shock has gone',
+              ],
+              answer: 3,
+              explanation:
+                'Indexing protects workers against inflation, but when wages rise automatically with past inflation, costs keep rising even after the original cause has gone, which feeds further price rises. That is why economy-wide indexing can make inflation harder to stop.',
+            },
+          ],
         },
         {
           slug: 'costs-of-inflation',
@@ -737,6 +990,51 @@ The **ex ante** real rate uses expected inflation, the **ex post** rate uses wha
               question: 'Give two reasons central banks prefer about 2% inflation to zero.',
               answerOutline:
                 'Measured inflation overstates true inflation; positive inflation gives room to cut nominal rates in recessions; it lets real wages adjust without nominal cuts. Any two.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A bond pays 8% nominal interest, inflation is 5% and interest is taxed at 20%. What is the after-tax real return?',
+              options: ['1.4%', '2.4%', '3.0%', '6.4%'],
+              answer: 0,
+              explanation:
+                'After tax you keep $8 \\times (1 - 0.20) = 6.4\\%$ nominal, and subtracting inflation leaves $6.4 - 5 = 1.4\\%$ real. 2.4% taxes only the real part of the return ($3 \\times 0.8$), but the tax falls on the whole nominal return, which is how inflation raises the effective tax on saving. 6.4% forgets to subtract inflation.',
+            },
+            {
+              question: 'Inflation was expected to be 2% but turns out to be 6%. Who gains?',
+              options: [
+                'A retiree living on a fixed private pension',
+                'A bank holding fixed-rate loans',
+                'A worker whose contract fixed pay rises at 2% a year',
+                'A household with a 30-year fixed-rate mortgage',
+              ],
+              answer: 3,
+              explanation:
+                'Unexpected inflation transfers wealth from those who receive fixed nominal payments to those who make them. The mortgage borrower repays in dollars worth less than expected, so gains. The pensioner, the bank and the worker all receive fixed nominal amounts, so they lose.',
+            },
+            {
+              question: 'Which of these is a cost of inflation even when it is **fully expected**?',
+              options: [
+                'Firms and restaurants spend time and money changing prices more often',
+                'Wealth is transferred from lenders to borrowers',
+                'Everyone\'s real income falls because prices rise faster than incomes',
+                'People cannot plan because the value of fixed-dollar contracts is uncertain',
+              ],
+              answer: 0,
+              explanation:
+                'Menu costs (and shoe-leather costs, relative-price confusion and tax distortions) remain when everyone expects the inflation. Transfers between lenders and borrowers and uncertainty come from inflation that is not expected. The claim that prices outrun incomes is the common belief the lesson rejects: prices paid are also incomes received.',
+            },
+            {
+              question: 'Prices are expected to fall 2% a year and the nominal interest rate is already 0%, so it cannot fall much further. What is the real interest rate, and why does it matter?',
+              options: [
+                '−2%; deflation makes borrowing cheap and helps a slump',
+                '0%; the real rate equals the nominal rate when prices are falling',
+                '2%; deflation can leave the real rate too high when the economy needs it lower',
+                '4%; deflation doubles the real rate',
+              ],
+              answer: 2,
+              explanation:
+                '$r \\approx i - \\pi = 0 - (-2) = 2\\%$. Because nominal rates cannot fall much below zero, deflation can hold the real rate up just when spending needs a lower one, and falling prices also raise the real value of debts. −2% is the sign error of subtracting a negative as if it were positive.',
             },
           ],
         },
@@ -828,6 +1126,56 @@ In October 2026, 163.6 million people were employed and 7.1 million unemployed, 
               question: 'What does U-6 include that U-3 does not?',
               answerOutline:
                 'Marginally attached workers (including discouraged workers) and people working part time for economic reasons who want full-time work.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'An economy has an adult population of 200 million, 120 million employed and 6 million unemployed. What are the unemployment rate and the participation rate?',
+              options: [
+                'Unemployment 3.0%, participation 60.0%',
+                'Unemployment 4.8%, participation 60.0%',
+                'Unemployment 5.0%, participation 63.0%',
+                'Unemployment 4.8%, participation 63.0%',
+              ],
+              answer: 3,
+              explanation:
+                'The labour force is $120 + 6 = 126$ million, so $u = 6/126 = 4.8\\%$ and participation is $126/200 = 63.0\\%$. 5.0% divides by employment instead of the labour force, and 60.0% is the employment-population ratio, which leaves out the unemployed.',
+            },
+            {
+              question: 'Under BLS definitions, which person counts as **unemployed**?',
+              options: [
+                'A student who works 5 paid hours a week and wants more',
+                'Someone with no job who applied for two jobs last week',
+                'A laid-off worker who wants a job but stopped looking three months ago',
+                'A retiree who would take a job if one were offered',
+              ],
+              answer: 1,
+              explanation:
+                'Unemployed means no job, available, and actively looked in the past four weeks. The student did paid work, so is employed. The worker who stopped looking is a discouraged worker, counted as not in the labour force, as is the retiree who is not searching.',
+            },
+            {
+              question: 'One million unemployed people give up looking for work, and nothing else changes. What happens to the unemployment rate and the employment-population ratio?',
+              options: [
+                'The unemployment rate falls and the employment-population ratio is unchanged',
+                'The unemployment rate is unchanged and the employment-population ratio falls',
+                'Both fall',
+                'The unemployment rate rises, because these people are still without jobs',
+              ],
+              answer: 0,
+              explanation:
+                'They leave both the unemployed count and the labour force, so $U/(E + U)$ falls even though no one found a job. Employment and the adult population are unchanged, so the employment-population ratio does not move, which is one reason economists watch it alongside the headline rate.',
+            },
+            {
+              question: 'A worker has a 10-hour-a-week job but wants full-time work and cannot find it. How do the BLS measures treat her?',
+              options: [
+                'Unemployed in U-3, because she wants more hours',
+                'Not in the labour force, because she works part time',
+                'Employed in U-3, but included in U-6 as involuntary part-time',
+                'Employed in U-3, and excluded from every broader measure',
+              ],
+              answer: 2,
+              explanation:
+                'Any paid work in the reference week makes her employed, so the headline U-3 rate does not see her shortfall. U-6 adds people working part time for economic reasons, along with marginally attached workers, which is why it runs well above U-3.',
             },
           ],
         },
@@ -922,6 +1270,51 @@ where $Y^*$ is **potential output**, what the economy produces at the natural ra
             {
               question: 'Okun\'s law says what about a recession in which unemployment rises 3 points above the natural rate?',
               answerOutline: 'Output would be roughly 6% below potential (coefficient 2), with a wide range of uncertainty.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Which case is **structural** unemployment?',
+              options: [
+                'Print-shop workers lose their jobs to digital publishing in a town with no similar work',
+                'A teacher moves to a new city and spends two months finding a school',
+                'Retail workers are laid off as spending falls in a recession',
+                'A new graduate takes three months to find the right first job',
+              ],
+              answer: 0,
+              explanation:
+                'Structural unemployment is a lasting mismatch between workers\' skills or locations and the jobs on offer. The teacher and the graduate are frictional, the normal time it takes to match; the retail layoffs come from too little spending, which is cyclical.',
+            },
+            {
+              question: 'Unemployment is 6.2% and the natural rate is 4.4%. Using Okun\'s law with a coefficient of 2, what is the output gap?',
+              options: ['−12.4%', '−3.6%', '−1.8%', '+3.6%'],
+              answer: 1,
+              explanation:
+                'Cyclical unemployment is $6.2 - 4.4 = 1.8$ points, so the gap is $-2 \\times 1.8 = -3.6\\%$: output about 3.6% below potential. −1.8% forgets the coefficient, +3.6% drops the minus sign (higher unemployment means output *below* potential), and −12.4% multiplies the whole unemployment rate instead of the gap from the natural rate.',
+            },
+            {
+              question: 'Unemployment is 3.9% and the natural rate is estimated at 4.4%. Which reading is right?',
+              options: [
+                'Cyclical unemployment is 0.5 points, so there is slack in the labour market',
+                'Cyclical unemployment cannot be negative, so it is zero',
+                'The natural rate must really be 3.9%, because that is where unemployment is',
+                'Cyclical unemployment is −0.5 points, a tight labour market',
+              ],
+              answer: 3,
+              explanation:
+                'Cyclical unemployment is $u - u^* = 3.9 - 4.4 = -0.5$ points, and it can be negative in a boom. The natural rate is where the economy tends when output is at potential, not wherever unemployment happens to be today, though the lesson warns that estimates of it are uncertain.',
+            },
+            {
+              question: 'Which change would most likely **raise** the natural rate of unemployment?',
+              options: [
+                'A recession that cuts total spending',
+                'A faster online service for matching workers to vacancies',
+                'Unemployment insurance that is paid for much longer',
+                'A fall in cyclical unemployment',
+              ],
+              answer: 2,
+              explanation:
+                'The natural rate is frictional plus structural unemployment, so it rises with anything that lengthens job search or keeps wages above market-clearing, such as longer benefit duration. A recession raises cyclical unemployment, not the natural rate, and better job matching lowers it.',
             },
           ],
         },
@@ -1046,6 +1439,46 @@ growth-compound
                 'Catch-up growth slows as capital per worker rises and the gap to the technology frontier narrows (diminishing returns, convergence). Demographics and institutions also change.',
             },
           ],
+          quiz: [
+            {
+              question: 'Real GDP per person rises from 10,000 to 40,000 over 35 years. What is the average annual growth rate?',
+              options: ['About 4.0%', 'About 2.0%', 'About 8.6%', 'About 11.4%'],
+              answer: 0,
+              explanation:
+                '$g = (40{,}000/10{,}000)^{1/35} - 1 = 4^{1/35} - 1 \\approx 4.0\\%$. Check with the rule of 70: at 4% income doubles in about 17.5 years, so it doubles twice (quadruples) in 35. 8.6% spreads the 300% rise evenly over 35 years, which ignores compounding, and 2.0% is the rate for a single doubling in 35 years.',
+            },
+            {
+              question: 'An economy grows 2.5% a year. Using the rule of 70, roughly how long does it take income per person to **quadruple**?',
+              options: ['28 years', '40 years', '56 years', '120 years'],
+              answer: 2,
+              explanation:
+                'Doubling takes about $70/2.5 = 28$ years, and quadrupling is two doublings, so about 56 years (exactly $\\ln 4/\\ln 1.025 \\approx 56.1$). 28 years is only one doubling. 40 and 120 years assume income grows by 2.5% of the *starting* level each year, which ignores compounding.',
+            },
+            {
+              question: 'Country A has income per person of 10,000 growing at 5% a year; country B has 40,000 growing at 1%. If both rates continued, roughly when would A catch B?',
+              options: [
+                'After about 14 years',
+                'After about 28 years',
+                'After about 36 years',
+                'After about 75 years',
+              ],
+              answer: 2,
+              explanation:
+                'Solve $10{,}000 \\times 1.05^t = 40{,}000 \\times 1.01^t$: $t = \\ln 4 / \\ln(1.05/1.01) \\approx 36$ years. 28 years ($\\ln 4/\\ln 1.05$) is when A reaches B\'s *current* level, forgetting that B keeps growing; 14 years is one doubling of A. As the lesson says, this is a thought experiment, not a forecast, since catch-up growth usually slows.',
+            },
+            {
+              question: 'On a **log-scale** chart, a country\'s GDP per person is a straight line from 1960 to 1990 and then a steeper straight line after 1990. What does that show?',
+              options: [
+                'Income rose by the same dollar amount each year before 1990 and by a larger amount after',
+                'The growth rate was constant within each period and higher after 1990',
+                'Growth was speeding up every year in both periods',
+                'Income was higher after 1990, but growth rates cannot be read from a log chart',
+              ],
+              answer: 1,
+              explanation:
+                'On a log scale equal vertical distances are equal ratios, so a straight line means a constant growth rate and its slope is that rate. A steeper line is faster growth. Equal dollar increases would be a straight line on an ordinary scale, not a log one.',
+            },
+          ],
         },
         {
           slug: 'productivity-and-its-sources',
@@ -1144,6 +1577,46 @@ If output per worker grows 2% a year and capital per worker 3%, with $\\alpha = 
               question: 'Why is TFP called a residual?',
               answerOutline:
                 'It is computed as output growth minus the contributions of measured inputs. Anything not captured by measured capital and labour, including measurement error, ends up in it.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Output per worker is $y = 4k^{1/3}$. Capital per worker rises from 8 to 64. By how much does output per worker rise?',
+              options: ['+26%', '+100%', '+233%', '+700%'],
+              answer: 1,
+              explanation:
+                '$y$ goes from $4 \\times 8^{1/3} = 8$ to $4 \\times 64^{1/3} = 16$, so it doubles (+100%) while capital per worker rises eightfold (+700%). That gap is diminishing returns to capital. +700% assumes output rises in proportion to capital, and +233% multiplies the capital rise by 1/3 instead of raising the ratio to the power 1/3.',
+            },
+            {
+              question: 'Output per worker grows 2.5% a year and capital per worker 1.5% a year, with $\\alpha = 1/3$. Using $g_y \\approx g_A + \\alpha g_k$, how much growth does TFP contribute?',
+              options: ['3.0 points', '2.0 points', '1.5 points', '1.0 point'],
+              answer: 1,
+              explanation:
+                'Capital deepening contributes $\\alpha g_k = 1.5/3 = 0.5$ points, so TFP is the residual $2.5 - 0.5 = 2.0$ points. 1.0 subtracts the whole growth of capital, forgetting that it is weighted by $\\alpha$; 1.5 weights capital by $1 - \\alpha$ instead.',
+            },
+            {
+              question: 'A factory reorganises its assembly line, and the same workers with the same machines produce 10% more. In the production function $Y = A\\,F(K, H, L, N)$, which term has risen?',
+              options: [
+                '$A$, technology in the broad sense, which includes methods and organisation',
+                '$K$, physical capital',
+                '$H$, human capital',
+                '$N$, natural resources',
+              ],
+              answer: 0,
+              explanation:
+                'No inputs changed: there are no new machines, skills or resources, yet output rose. That is a rise in $A$, which in the lesson covers methods, management and organisation as well as engineering advances. Calling it capital confuses better use of the same machines with more machines.',
+            },
+            {
+              question: 'In a growth accounting exercise, statisticians fail to measure the quality improvements in new software, so the growth of capital per worker is understated. What happens to measured TFP growth?',
+              options: [
+                'It is understated, because capital and TFP always move together',
+                'It is unaffected, because TFP is measured directly from patents',
+                'It is overstated, because TFP is the residual and absorbs what the measured inputs miss',
+                'Output growth is understated instead, while TFP is unaffected',
+              ],
+              answer: 2,
+              explanation:
+                'TFP growth is computed as output growth minus the contributions of measured inputs. If the capital contribution is too small, the residual is too large. That is why Abramovitz called it "a measure of our ignorance": measurement error ends up in it.',
             },
           ],
         },
@@ -1245,6 +1718,56 @@ growth-compound
                 'Countries grow faster the further they are below their own steady state, which depends on saving, education, technology and institutions. Poor countries with low steady states need not catch up.',
             },
           ],
+          quiz: [
+            {
+              question: 'In the Solow model with $y = A k^{\\alpha}$, let $s = 0.2$, $\\delta = 0.05$, $A = 1$ and $\\alpha = 0.5$. What are the steady-state capital, output and consumption per worker?',
+              options: [
+                '$k^* = 4$, $y^* = 2$, $c^* = 1.6$',
+                '$k^* = 16$, $y^* = 4$, $c^* = 0.8$',
+                '$k^* = 16$, $y^* = 16$, $c^* = 12.8$',
+                '$k^* = 16$, $y^* = 4$, $c^* = 3.2$',
+              ],
+              answer: 3,
+              explanation:
+                '$k^* = (sA/\\delta)^{1/(1-\\alpha)} = (0.2/0.05)^2 = 16$, $y^* = \\sqrt{16} = 4$ and $c^* = (1 - s)y^* = 0.8 \\times 4 = 3.2$. $k^* = 4$ forgets the exponent $1/(1-\\alpha) = 2$, and $c^* = 0.8$ is saving per worker, $s\\,y^*$, not consumption.',
+            },
+            {
+              question: 'A country permanently raises its saving rate. What does the Solow model predict for the growth rate of income per person?',
+              options: [
+                'It rises for a while during the transition, then returns to the rate set by technology, with income permanently at a higher level',
+                'It rises permanently, because more saving means more capital every year',
+                'Neither the level nor the growth rate of income changes',
+                'It falls permanently, because consumption falls',
+              ],
+              answer: 0,
+              explanation:
+                'Higher saving raises the steady state, so capital and income grow faster during the transition, but diminishing returns bring growth back down once the new steady state is reached. Saving has a level effect, not a long-run growth effect; only sustained growth in $A$ raises long-run growth.',
+            },
+            {
+              question: 'In the Solow model with $\\alpha = 1/3$, a country saves 45% of its income. Would a lower saving rate raise its steady-state consumption?',
+              options: [
+                'No: in the long run, more saving always means more consumption',
+                'Yes: steady-state output rises when saving falls',
+                'Yes: it saves more than the golden rule rate of 1/3, so saving less raises steady-state consumption even though output falls',
+                'No: the golden rule saving rate is 50% in every economy',
+              ],
+              answer: 2,
+              explanation:
+                'Steady-state consumption peaks at the golden rule saving rate, which in this model equals $\\alpha = 1/3$. Above it, the extra output from more capital is not enough to cover the extra saving needed to maintain it. Steady-state output does fall when saving falls, so the gain is in consumption, not output.',
+            },
+            {
+              question: 'Many poor countries grew slowly for decades while some others caught up fast. What does this evidence say about convergence?',
+              options: [
+                'It supports unconditional convergence, because some poor countries caught up',
+                'It contradicts unconditional convergence but fits conditional convergence, if the slow growers have low steady states of their own',
+                'It shows diminishing returns to capital do not exist',
+                'It contradicts conditional convergence, because poor countries should all grow fast',
+              ],
+              answer: 1,
+              explanation:
+                'Unconditional convergence predicts that all poor countries catch up, which the data reject. Conditional convergence says countries grow faster the further they are below *their own* steady state, which depends on saving, education, technology and institutions, so a poor country with a low steady state need not grow fast.',
+            },
+          ],
         },
         {
           slug: 'institutions-and-ideas',
@@ -1328,6 +1851,44 @@ growth-compound
               question: 'Why can ideas sustain growth when capital cannot?',
               answerOutline:
                 'Ideas are non-rival, so they do not run into diminishing returns in the same way. One idea can raise the productivity of every worker who uses it, and new ideas build on old ones.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Which of these is a **fundamental** cause of growth rather than a proximate one?',
+              options: [
+                'A rise in the investment rate',
+                'More years of schooling for the average worker',
+                'New machines installed in factories',
+                'Courts that enforce contracts even against the government',
+              ],
+              answer: 3,
+              explanation:
+                'Capital, human capital and technology are proximate causes: they say *how* a country got richer. Courts that bind the state are an institution, a reason people expect to keep the returns from investing in those inputs in the first place, which makes it a fundamental cause.',
+            },
+            {
+              question: 'A firm invents a new method for sorting parcels. Once written down, every warehouse in the world could use it at the same time. Which statement is right?',
+              options: [
+                'The method is non-rival; patents raise the reward for inventing it but slow its spread',
+                'The method is rival, so markets will produce enough such ideas without help',
+                'The method is rival, because only one firm can hold the patent',
+                'The method is non-rival, so protecting it has no benefit at all',
+              ],
+              answer: 0,
+              explanation:
+                'One warehouse\'s use does not stop another\'s, so the idea is non-rival. That creates the lesson\'s policy dilemma: too little protection weakens the incentive to invent, too much slows diffusion. A patent makes an idea excludable for a time; it does not make it rival.',
+            },
+            {
+              question: 'Why is the comparison of North and South Korea useful evidence about institutions?',
+              options: [
+                'It shows that growth requires markets with no state guidance at all',
+                'It supports the geography hypothesis, since the South has better farmland and ports',
+                'The two shared language, culture and geography until 1945, so the later income gap is hard to attribute to anything but their different institutions',
+                'It shows culture is the main cause of growth',
+              ],
+              answer: 2,
+              explanation:
+                'A natural experiment holds other causes roughly fixed. With shared geography, culture and history, the main difference was central planning in the North and markets in the South. The lesson notes the South\'s markets came with heavy state guidance, so the evidence is not about markets with no state role.',
             },
           ],
         },
@@ -1453,6 +2014,56 @@ supply-demand
                 'Foreign saving can flow in (open economy); in a slump with rates near zero there is spare saving; or households may save more expecting future taxes.',
             },
           ],
+          quiz: [
+            {
+              question: 'A closed economy has $Y = 3{,}000$, $C = 2{,}000$, $G = 600$ and $T = 500$. What are national, private and public saving?',
+              options: [
+                'National 400; private 300, public +100',
+                'National 400; private 1,000, public −600',
+                'National 1,000; private 1,000, public 0',
+                'National 400; private 500, public −100',
+              ],
+              answer: 3,
+              explanation:
+                '$S = Y - C - G = 400$. Private saving is $Y - T - C = 500$ and public saving $T - G = -100$, a deficit, and they sum to 400, which also equals investment. Writing public saving as $G - T$ flips its sign; private saving of 1,000 forgets that households pay taxes.',
+            },
+            {
+              question: 'Saving is $S = 150 + 50r$ and investment $I = 750 - 50r$ (billions, $r$ in percent). The government\'s deficit rises by 100, cutting national saving by 100 at every rate. What happens?',
+              options: [
+                '$r$ rises to 7% and investment falls by 50',
+                '$r$ rises to 7% and investment falls by 100',
+                '$r$ rises to 8% and investment falls by 100',
+                '$r$ falls to 5% and investment rises by 50',
+              ],
+              answer: 0,
+              explanation:
+                'Before: $150 + 50r = 750 - 50r$ gives $r = 6\\%$ and $I = 450$. After: $50 + 50r = 750 - 50r$ gives $r = 7\\%$ and $I = 400$. Investment falls by 50, half the deficit; the other half is met by extra private saving drawn out by the higher rate, so crowding out is not one for one.',
+            },
+            {
+              question: 'An investment tax credit and a larger budget deficit both raise the real interest rate in the loanable funds market. What happens to investment in each case?',
+              options: [
+                'Both lower investment, because the interest rate rises',
+                'Both raise investment, because more funds change hands',
+                'The tax credit raises investment; the deficit lowers it',
+                'The tax credit lowers investment; the deficit raises it',
+              ],
+              answer: 2,
+              explanation:
+                'The tax credit shifts investment demand right, so the rate rises *and* investment rises (by less than the shift). The deficit shifts saving supply left, so the rate rises and private investment falls along the demand curve. A higher rate on its own says nothing until you know which curve moved.',
+            },
+            {
+              question: 'In the loanable funds model, when is the crowding out of private investment by a deficit closest to complete?',
+              options: [
+                'When saving responds strongly to the interest rate',
+                'When saving barely responds to the interest rate',
+                'When interest rates are stuck near zero in a slump',
+                'When foreign saving can flow in freely',
+              ],
+              answer: 1,
+              explanation:
+                'If the saving supply curve is steep, a higher rate draws out little extra private saving, so nearly all the deficit comes out of investment. Strongly responsive saving does the opposite, and the lesson lists rates stuck near zero and inflows of foreign saving as reasons crowding out may be small.',
+            },
+          ],
         },
         {
           slug: 'present-value-and-bonds',
@@ -1548,6 +2159,46 @@ At $i = 5\\%$, $P = 1{,}000$ exactly. If market rates rise to 6%, $P = 47.17 + 9
                 'Investors expect short rates to stay the same or rise and require a term premium for holding longer bonds. It is the normal shape.',
             },
           ],
+          quiz: [
+            {
+              question: 'What is the present value of USD 2,000 received in 5 years if the interest rate is 6%?',
+              options: ['USD 1,400.00', 'USD 1,494.52', 'USD 1,538.46', 'USD 2,676.45'],
+              answer: 1,
+              explanation:
+                '$PV = 2{,}000/1.06^5 = 2{,}000/1.3382 = 1{,}494.52$. USD 1,538.46 divides by $1 + 5 \\times 0.06$, which ignores compounding; USD 2,676.45 is the future value of 2,000, the opposite operation; USD 1,400 simply subtracts 30%.',
+            },
+            {
+              question: 'A 2-year bond has face value USD 1,000 and a 4% annual coupon. Market yields rise to 6%. What is its price?',
+              options: ['USD 1,038.83', 'USD 1,000.00', 'USD 963.33', 'USD 925.60'],
+              answer: 2,
+              explanation:
+                '$P = 40/1.06 + 1{,}040/1.06^2 = 37.74 + 925.60 = 963.33$. It sells below face value because new bonds pay 6% and this one only 4%. USD 925.60 forgets the first coupon, and USD 1,038.83 is the price at a 2% yield, as if a higher rate raised the price.',
+            },
+            {
+              question: 'A perpetuity pays USD 50 a year forever. The interest rate rises from 4% to 5%. What happens to its price?',
+              options: [
+                'It is unchanged, because the payments are fixed',
+                'It rises from 1,000 to 1,250',
+                'It falls 1%, from 1,250 to 1,237.50',
+                'It falls from 1,250 to 1,000',
+              ],
+              answer: 3,
+              explanation:
+                'A perpetuity is worth $C/i$: $50/0.04 = 1{,}250$ before and $50/0.05 = 1{,}000$ after, a 20% fall. A one-point rise in the rate is a 25% rise in $i$, which is why the price moves so much. Fixed payments are exactly why the price must fall: they are now discounted more heavily.',
+            },
+            {
+              question: 'A 2-year Treasury note and a 30-year Treasury bond both have 3% coupons and trade at face value. Market yields then rise from 3% to 4% at every maturity. Which statement is right?',
+              options: [
+                'Both fall in price, the 30-year bond by much more',
+                'Both fall by the same percentage, because yields rose by the same amount',
+                'The 2-year note falls more, because it is repaid sooner',
+                'Both rise in price, because they now yield more',
+              ],
+              answer: 0,
+              explanation:
+                'Prices and yields move in opposite directions, and the longer the bond, the more of its payments lie far in the future, where the higher discount rate compounds. That is why holders of long bonds bought in 2020–21, such as Silicon Valley Bank, suffered large losses when yields rose.',
+            },
+          ],
         },
         {
           slug: 'the-financial-system',
@@ -1636,6 +2287,51 @@ Small changes in expected growth or the required return move this a lot: at 7% t
               question: 'Give one piece of evidence for and one against the efficient markets hypothesis.',
               answerOutline:
                 'For: most active fund managers underperform index funds after fees over long periods. Against: episodes such as the late-1990s technology bubble and predictable long-horizon returns.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A share is expected to pay a USD 3 dividend next year, growing 2% a year forever, and investors require a 7% return. What is it worth by the dividend discount formula?',
+              options: ['USD 60', 'USD 42.86', 'USD 33.33', 'USD 150'],
+              answer: 0,
+              explanation:
+                '$P = D_1/(i - g) = 3/(0.07 - 0.02) = 60$. USD 42.86 ignores growth ($3/0.07$), USD 33.33 adds growth to the required return instead of subtracting it, and USD 150 divides by the growth rate alone.',
+            },
+            {
+              question: 'An investor sells her only stock, an airline, and buys an index fund holding 500 firms. What risk has she removed?',
+              options: [
+                'All risk, because 500 firms cannot all do badly at once',
+                'Market risk, but not the risk of bad luck at a single firm',
+                'The airline\'s own bad luck, but not a recession that hits all firms',
+                'None, because the risks of 500 stocks add up',
+              ],
+              answer: 2,
+              explanation:
+                'Diversification averages away idiosyncratic risk, one firm\'s bad luck, but market risk hits all firms at once in a recession and cannot be diversified away. That is why even a broad index fund falls in a downturn.',
+            },
+            {
+              question: 'A bank funds 30-year mortgages with deposits that customers can withdraw at any time. What is this activity called, and what risk does it create?',
+              options: [
+                'Diversification; the risk of a recession',
+                'Maturity transformation; the risk of a run if many depositors withdraw at once',
+                'Direct finance; the risk that the borrowers sell the houses',
+                'Equity finance; the risk that dividends are cut',
+              ],
+              answer: 1,
+              explanation:
+                'Lending long while borrowing short is maturity transformation. It works while only a few depositors withdraw at once; if many do, the bank cannot turn long loans into cash fast enough. Leverage makes this worse, as in the runs of 2007–09. Lending through a bank is indirect finance, not direct.',
+            },
+            {
+              question: 'Which piece of evidence does the lesson give **in favour of** the efficient markets hypothesis?',
+              options: [
+                'The rise and fall of technology stocks in 1999–2000',
+                'US house prices before 2006',
+                'Predictable patterns in long-run stock returns',
+                'Most professional fund managers fail to beat low-cost index funds over long periods',
+              ],
+              answer: 3,
+              explanation:
+                'If prices already reflect public information, managers cannot consistently beat the market after costs, and most do not. The other three are the critics\' evidence: bubbles and predictable long-run returns suggest prices can stray from fundamentals, the side Robert Shiller argued.',
             },
           ],
         },
@@ -1752,6 +2448,39 @@ In September 2026 M1 was USD 20.1 trillion and M2 USD 23.4 trillion (FRED: M1SL,
               answerOutline: 'Store of value and unit of account, because its price is highly volatile; few goods are priced in it.',
             },
           ],
+          quiz: [
+            {
+              question: 'In a country with high inflation, a family keeps its savings in US dollar notes because the local currency loses value every week. Which function of money is the dollar serving for them?',
+              options: [
+                'Medium of exchange',
+                'Unit of account',
+                'Store of value',
+                'None, because it is a foreign currency',
+              ],
+              answer: 2,
+              explanation:
+                'They hold the dollars to carry purchasing power into the future, which is the store-of-value function, and the local currency is failing at it. They are not spending the dollars (medium of exchange) or using them to state prices (unit of account). Any asset generally accepted can serve as money, whoever issues it.',
+            },
+            {
+              question: 'An economy has (in trillions) currency held by the public 2.0, checking deposits 4.5, savings deposits 10.0, small time deposits 1.0, retail money market funds 1.5, large time deposits 2.5 and bank reserves 3.0. Under the post-2020 definitions, what are M1 and M2?',
+              options: ['M1 6.5, M2 19.0', 'M1 16.5, M2 19.0', 'M1 16.5, M2 21.5', 'M1 19.5, M2 22.0'],
+              answer: 1,
+              explanation:
+                'Since May 2020 savings deposits count in M1: $2.0 + 4.5 + 10.0 = 16.5$. M2 adds small time deposits and retail money funds: $16.5 + 1.0 + 1.5 = 19.0$. M1 of 6.5 is the old definition without savings deposits; large time deposits are not in M2, and reserves are held by banks at the Fed, not by the public.',
+            },
+            {
+              question: 'M1 was about USD 4 trillion in 2019 and USD 20.1 trillion in September 2026. A student concludes that the money people use for spending grew about fivefold. What is the main problem with that comparison?',
+              options: [
+                'Nothing: M1 measures spending exactly',
+                'M1 leaves out currency, so it understates the growth',
+                'M2 was redefined at the same time, so neither series can be compared',
+                'From May 2020 savings deposits were counted in M1, adding about USD 11.2 trillion at once, so the series has a break',
+              ],
+              answer: 3,
+              explanation:
+                'After the Fed removed the six-transfer limit on savings deposits, it moved them into M1, a definitional change rather than new money. M2 was unchanged by the reclassification, so M2 is the series to compare across 2020. Always read the notes before comparing across a break.',
+            },
+          ],
         },
         {
           slug: 'the-federal-reserve',
@@ -1846,6 +2575,44 @@ When the Fed buys a bond from a bank, it pays by crediting the bank's reserve ac
                 'For: it avoids pressure to stimulate before elections at the cost of later inflation, making low inflation credible. Against: it gives unelected officials large power over distribution and outcomes, with limited accountability.',
             },
           ],
+          quiz: [
+            {
+              question: 'The Fed buys USD 20 billion of Treasury bonds from commercial banks. What happens to the Fed\'s balance sheet?',
+              options: [
+                'Assets rise by 20 (Treasuries) and liabilities rise by 20 (bank reserves)',
+                'Assets rise by 20 (Treasuries) and currency in circulation rises by 20',
+                'Assets are unchanged, because the Fed swaps one asset for another',
+                'Assets rise by 20 and bank reserves fall by 20',
+              ],
+              answer: 0,
+              explanation:
+                'The Fed pays by crediting the banks\' reserve accounts, so it creates reserves: Treasuries on the asset side and reserves on the liability side both rise by 20. Currency rises only if the public withdraws cash. It is the banks, not the Fed, that swap one asset (bonds) for another (reserves).',
+            },
+            {
+              question: 'Which statement about the Federal Reserve is right?',
+              options: [
+                'Its mandate is a 2% CPI inflation target and nothing else',
+                'Its dual mandate is maximum employment and stable prices, and it interprets stable prices as 2% inflation in the PCE index',
+                'The FOMC is made up of the twelve regional bank presidents',
+                'Governors serve four-year terms, the same as the chair',
+              ],
+              answer: 1,
+              explanation:
+                'Congress set the dual mandate in 1977, and the Fed reads stable prices as 2% PCE inflation. The FOMC is the seven governors, the New York Fed president and four of the other eleven presidents in rotation. Governors serve 14-year terms; only the chair\'s term is four years.',
+            },
+            {
+              question: 'Depositors suddenly start withdrawing from a bank that is sound but holds mostly long-term loans. What does the lender-of-last-resort principle suggest the central bank should do?',
+              options: [
+                'Raise interest rates so that depositors are paid more to stay',
+                'Close the bank at once, because it cannot pay all depositors today',
+                'Lend to the bank against good collateral so the run does not force it to fail and spread to other banks',
+                'Buy the bank\'s shares so the government owns it',
+              ],
+              answer: 2,
+              explanation:
+                'Because banks borrow short and lend long, even a sound bank can fail in a panic. Bagehot argued in 1873 that the central bank should lend against good collateral to stop the run spreading, which the Fed did in 2008, March 2020 and March 2023. Not being able to pay everyone today is the normal position of any bank, not proof that it is insolvent.',
+            },
+          ],
         },
         {
           slug: 'banks-and-money-creation',
@@ -1935,6 +2702,46 @@ money-creation
               question: 'In the US today, what constrains bank lending if not reserves?',
               answerOutline:
                 'Capital requirements, the demand for loans from creditworthy borrowers, and profitability relative to the interest rate the Fed pays on reserves (which the Fed uses to steer rates).',
+            },
+          ],
+          quiz: [
+            {
+              question: 'In the textbook model the reserve requirement is 25%, banks hold no extra reserves and the public holds no extra cash. A new deposit of USD 2,000 of reserves arrives. What are total deposits in the limit?',
+              options: ['USD 500', 'USD 2,667', 'USD 6,000', 'USD 8,000'],
+              answer: 3,
+              explanation:
+                'Total deposits are $2{,}000/rr = 2{,}000/0.25 = 8{,}000$, a multiplier of 4. USD 6,000 is total *loans* (deposits minus the 2,000 of reserves), USD 2,667 divides by $1 - rr$ instead of $rr$, and USD 500 is the first bank\'s required reserves.',
+            },
+            {
+              question: 'The reserve ratio is 10%, banks hold no extra reserves, and the public keeps 10% of every loan as cash. Using the lesson\'s formula, what is the money multiplier?',
+              options: ['5.0', '5.26', '9.0', '10'],
+              answer: 1,
+              explanation:
+                '$1/[1 - (1 - rr - e)(1 - c)] = 1/[1 - 0.9 \\times 0.9] = 1/0.19 \\approx 5.26$. 10 ignores the cash leakage. 5.0 adds the two leakages, $1/(0.1 + 0.1)$, but the cash share applies to what is left after reserves, so the per-round ratio is $0.9 \\times 0.9 = 0.81$, not 0.8.',
+            },
+            {
+              question: 'According to the lesson, what most directly limits how much a US bank lends in 2026?',
+              options: [
+                'Capital requirements, the supply of creditworthy borrowers, and whether loans pay more than the interest the Fed pays on reserves',
+                'The 10% reserve requirement',
+                'The quantity of reserves the Fed supplies, through the multiplier $1/rr$',
+                'The amount of currency the public holds',
+              ],
+              answer: 0,
+              explanation:
+                'The reserve requirement was cut to 0% on 26 March 2020, and reserves are ample (about USD 3.0 trillion in September 2026), so banks are not short of them. The 10% ratio is the textbook simplification, which assumes scarce reserves; in the ample-reserves system, capital, borrowers and profitability bind instead.',
+            },
+            {
+              question: 'A firm has USD 400,000 in a single account at one US bank. Rumours spread that the bank is in trouble. Which statement is right?',
+              options: [
+                'All USD 400,000 is insured, so the firm has no reason to withdraw',
+                'USD 250,000 is insured, so the firm has no reason to withdraw anything',
+                'Nothing is insured, because insurance covers only individuals',
+                'USD 250,000 is insured, but the other USD 150,000 gives the firm a reason to withdraw before others do',
+              ],
+              answer: 3,
+              explanation:
+                'Deposit insurance covers up to USD 250,000 per depositor per bank, which removes the incentive to run only for the insured part. The uninsured USD 150,000 is at risk if the bank fails, so withdrawing first is rational, and that fear can be self-fulfilling. Silicon Valley Bank\'s 2023 run was driven by uninsured deposits.',
             },
           ],
         },
@@ -2031,6 +2838,46 @@ If money grows 7% a year, velocity is constant and real output grows 2%, inflati
               answerOutline: 'In the long run nominal interest rates rise roughly one-for-one with expected inflation, so the real rate is unaffected by money growth.',
             },
           ],
+          quiz: [
+            {
+              question: 'Money grows 6% a year, velocity falls 1% a year and real output grows 2% a year. Using the growth-rate form of the equation of exchange, what is inflation?',
+              options: ['3%', '4%', '5%', '9%'],
+              answer: 0,
+              explanation:
+                '$\\%\\Delta P = \\%\\Delta M + \\%\\Delta V - \\%\\Delta Y = 6 - 1 - 2 = 3\\%$. 4% ignores the fall in velocity, 5% ignores output growth, and 9% adds every term regardless of sign.',
+            },
+            {
+              question: 'In one year the money stock rises 20% while velocity falls 20%. Using $MV = PY$ exactly, what happens to nominal GDP?',
+              options: ['It rises 40%', 'It is unchanged', 'It falls 4%', 'It rises 20%'],
+              answer: 2,
+              explanation:
+                '$PY$ is multiplied by $1.20 \\times 0.80 = 0.96$, a 4% fall. The rule of adding growth rates is an approximation that works for small changes, which is why "unchanged" is tempting. This is the 2020 point in the lesson: when velocity collapses, fast money growth can overstate spending.',
+            },
+            {
+              question: 'Money growth rises permanently from 3% to 8% a year, with velocity and real output growth unchanged. In the long run, what do the quantity theory and the Fisher effect predict?',
+              options: [
+                'Inflation rises 5 points, nominal interest rates are unchanged and the real rate falls 5 points',
+                'Inflation rises 5 points, nominal interest rates rise about 5 points and the real rate is unchanged',
+                'Inflation and nominal and real interest rates all rise 5 points',
+                'Real output grows 5 points faster, and inflation is unchanged',
+              ],
+              answer: 1,
+              explanation:
+                'With stable velocity and output set by real factors, extra money growth shows up one-for-one in inflation. The Fisher effect says nominal rates rise one-for-one too, so $r = i - \\pi$ is unchanged: money is neutral in the long run. Faster real growth from money is a short-run story at most.',
+            },
+            {
+              question: 'Which statement matches the lesson\'s account of the evidence on money and inflation?',
+              options: [
+                'The link is tight from month to month in low-inflation economies',
+                'There is no link, even in hyperinflations',
+                'Economists agree that M2 growth alone caused the 2021–22 US inflation',
+                'The link is strong across countries and over decades, but loose over shorter periods in low-inflation economies because velocity moves',
+              ],
+              answer: 3,
+              explanation:
+                'Every hyperinflation followed explosive money growth, and the cross-country, long-run link is strong. Over short periods velocity moves, as it did in 2020, so the link is loose. On 2021–22, some economists see the M2 surge as a main cause while others stress the fall in velocity, supply shocks and fiscal transfers; the lesson presents it as a debate.',
+            },
+          ],
         },
       ],
     },
@@ -2124,6 +2971,39 @@ If money grows 7% a year, velocity is constant and real output grows 2%, inflati
               question: 'Name two leading indicators and say why each might lead.',
               answerOutline:
                 'Building permits (construction follows permits), initial unemployment claims (layoffs show up quickly), new orders, the yield curve (markets expect rate cuts). Any two with a reason.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A country\'s first GDP estimates show two small consecutive quarterly declines in real GDP, while payroll employment and real income keep rising. How would the NBER\'s approach treat this?',
+              options: [
+                'Not necessarily as a recession: it looks for a significant decline spread across the economy and lasting more than a few months, across many measures',
+                'As a recession, because two negative quarters is the definition',
+                'As a recession only once unemployment passes 10%',
+                'As a recession, but only after GDP is revised',
+              ],
+              answer: 0,
+              explanation:
+                'The NBER\'s committee defines a recession as a significant, broad and lasting decline and looks at income, employment, spending and production, not GDP alone. Two negative quarters is a popular rule of thumb, not the US definition, and early GDP estimates are often revised, as the 2022 figures were.',
+            },
+            {
+              question: 'Real GDP is 21,000 in the peak quarter and falls to 19,950 two quarters later, the trough. What is the peak-to-trough decline?',
+              options: ['−2.5%', '−5.0%', '−5.3%', '−10.0%'],
+              answer: 1,
+              explanation:
+                '$(19{,}950 - 21{,}000)/21{,}000 = -1{,}050/21{,}000 = -5.0\\%$. Dividing by the trough value instead of the peak gives −5.3%; −2.5% is the average per quarter, and −10.0% annualises that average, which is a different measure from the total decline.',
+            },
+            {
+              question: 'In a typical recession, which of these falls by the largest percentage?',
+              options: [
+                'Spending on services',
+                'Initial claims for unemployment insurance',
+                'Inflation, which turns down before output does',
+                'Business investment and purchases of durable goods',
+              ],
+              answer: 3,
+              explanation:
+                'Investment and durables are strongly procyclical because they can be postponed when the outlook is uncertain, so they swing most. Unemployment claims are countercyclical: they rise in a recession. Inflation tends to lag the cycle rather than lead it, and services are usually the most stable component (2020 was the exception).',
             },
           ],
         },
@@ -2230,6 +3110,51 @@ keynesian-cross
               answerOutline: 'When prices are sticky and there is spare capacity (high unemployment, idle plant), so output responds to demand without much effect on prices or interest rates.',
             },
           ],
+          quiz: [
+            {
+              question: 'Consumption is $C = 100 + 0.8(Y - T)$ with $T = 200$, and $I = 250$, $G = 300$, $NX = 50$. What is equilibrium output?',
+              options: ['675', '2,500', '2,700', '3,500'],
+              answer: 2,
+              explanation:
+                '$AE = 100 + 0.8(Y - 200) + 250 + 300 + 50 = 540 + 0.8Y$. Setting $Y = AE$ gives $Y^* = 540/(1 - 0.8) = 2{,}700$. 3,500 ignores the taxes, and 2,500 subtracts the whole tax of 200 from spending, when households cut consumption by only $0.8 \\times 200 = 160$.',
+            },
+            {
+              question: 'Planned expenditure is $AE = 600 + 0.6Y$, and firms are producing $Y = 1{,}700$. What happens?',
+              options: [
+                'Planned spending is 1,620; unsold goods pile up as 80 of unplanned inventory investment, so firms cut output',
+                'Planned spending is 1,620; inventories fall by 80, so firms raise output',
+                'Planned spending is 1,500; inventories rise by 200, so firms cut output',
+                'Planned spending equals output, so nothing changes',
+              ],
+              answer: 0,
+              explanation:
+                '$AE = 600 + 0.6 \\times 1{,}700 = 1{,}620$, which is 80 less than output, so inventories pile up and firms cut production towards $Y^* = 600/0.4 = 1{,}500$. 1,500 is the equilibrium, not planned spending at $Y = 1{,}700$; inventories fall only when output is *below* equilibrium.',
+            },
+            {
+              question: 'With no taxes, MPC = 0.8 and planned investment fixed at 300, households become more cautious and autonomous consumption falls by 50. What happens to equilibrium output and to total saving?',
+              options: [
+                'Output falls by 250; total saving is unchanged',
+                'Output falls by 50; total saving rises by 50',
+                'Output falls by 250; total saving rises by 50',
+                'Output is unchanged; total saving rises by 50',
+              ],
+              answer: 0,
+              explanation:
+                'Output falls by $50/(1 - 0.8) = 250$. At the new equilibrium saving still equals planned investment, 300, so saving does not rise even though everyone tried to save more: the paradox of thrift. The model assumes spare capacity; in the long run more saving funds more investment.',
+            },
+            {
+              question: 'Which statement about the Keynesian cross is right?',
+              options: [
+                'Planned investment equals saving at every level of output',
+                'It is most reliable near full employment, where output adjusts to demand',
+                'Actual investment always equals saving, but planned investment equals saving only at equilibrium',
+                'Equilibrium is where the AE line is steepest',
+              ],
+              answer: 2,
+              explanation:
+                'Actual investment includes unplanned inventory changes, so it always equals saving; planned investment equals saving only where $Y = AE$, on the 45-degree line. The model assumes fixed prices and spare capacity, so it is a good guide in a deep slump and a poor one near full employment.',
+            },
+          ],
         },
         {
           slug: 'the-multiplier',
@@ -2325,6 +3250,41 @@ Raising $G$ and $T$ together by 100 changes output by $400 - 300 = 100$: the **b
               question: 'Give three reasons real-world multipliers are smaller than 1/(1 − MPC).',
               answerOutline:
                 'Crowding out through higher interest rates, rising prices, imports, households saving temporary windfalls, and monetary policy offsetting the stimulus. Any three.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'With MPC = 0.8 and lump-sum taxes, the government cuts taxes by 50. By how much does equilibrium output change?',
+              options: ['+40', '+200', '+250', '−200'],
+              answer: 1,
+              explanation:
+                'The tax multiplier is $-\\text{MPC}/(1 - \\text{MPC}) = -0.8/0.2 = -4$, and a cut means $\\Delta T = -50$, so $\\Delta Y = -4 \\times (-50) = +200$. +250 uses the spending multiplier, but a tax cut is only partly spent in the first round ($0.8 \\times 50 = 40$, which is the other wrong option).',
+            },
+            {
+              question: 'With MPC = 0.75 and lump-sum taxes, the government raises both purchases and taxes by 60. What happens to output?',
+              options: ['+60', 'No change, because the two cancel', '+240', '−60'],
+              answer: 0,
+              explanation:
+                'The purchases add $60 \\times 4 = 240$ and the tax subtracts $60 \\times 3 = 180$, so output rises by 60: the balanced-budget multiplier is 1. They do not cancel, because all of the extra purchases are spent in the first round while households pay part of the tax out of saving.',
+            },
+            {
+              question: 'Households spend MPC = 0.9 of disposable income and there is a proportional income tax of $t = 0.3$. What is the spending multiplier?',
+              options: ['1.37', '2.50', '2.70', '10'],
+              answer: 2,
+              explanation:
+                'The slope of AE is $\\text{MPC}(1 - t) = 0.9 \\times 0.7 = 0.63$, so the multiplier is $1/(1 - 0.63) = 2.70$. 10 ignores the tax, 2.50 adds $t$ to $1 - \\text{MPC}$ instead of multiplying, and 1.37 uses $t$ where $1 - t$ belongs.',
+            },
+            {
+              question: 'Which of these would make the real-world multiplier on government purchases **smaller** than the textbook $1/(1 - \\text{MPC})$?',
+              options: [
+                'Households spending every dollar of a windfall',
+                'The central bank raising interest rates to offset the stimulus',
+                'Prices staying fixed with a lot of spare capacity',
+                'The central bank holding interest rates at zero',
+              ],
+              answer: 1,
+              explanation:
+                'Higher interest rates crowd out investment, so how monetary policy responds matters a great deal. Prices fixed with spare capacity are the textbook assumptions themselves, and some studies find larger multipliers when rates are held at zero (a disputed finding). Ramey\'s 2019 survey puts most US estimates between about 0.6 and 1.',
             },
           ],
         },
@@ -2434,6 +3394,56 @@ The next lesson asks what happens after the shock, as expectations catch up.`,
               answerOutline: 'SRAS shifts up (left): at each output level, firms and workers set higher prices and wages.',
             },
           ],
+          quiz: [
+            {
+              question: 'In the lesson\'s model, AD is $P = 200 + a - Y$ and SRAS is $P = W + 0.5(Y - 100)$, with $Y^* = 100$. Demand rises to $a = 9$ with $W = 100$. What is the short-run equilibrium?',
+              options: [
+                '$Y = 106$, $P = 103$: an output gap of +6%',
+                '$Y = 109$, $P = 100$',
+                '$Y = 103$, $P = 106$',
+                '$Y = 100$, $P = 109$',
+              ],
+              answer: 0,
+              explanation:
+                '$209 - Y = 100 + 0.5(Y - 100) = 50 + 0.5Y$, so $1.5Y = 159$, $Y = 106$ and $P = 209 - 106 = 103$. Output and prices both rise. $Y = 109$ shifts AD with no change in prices, as in the Keynesian cross, and $(100, 109)$ is where the economy ends up in the long run, not in the short run.',
+            },
+            {
+              question: 'Why does the aggregate demand curve slope down?',
+              options: [
+                'When prices fall, people switch away from other goods towards the cheaper ones',
+                'Firms produce more when the price level falls',
+                'A lower price level raises real wealth, lowers interest rates and makes domestic goods cheaper relative to foreign ones',
+                'A lower price level raises potential output',
+              ],
+              answer: 2,
+              explanation:
+                'These are the wealth, interest-rate and exchange-rate effects. The single-market reason, substitution towards other goods, does not apply to the whole economy, because there is no "other good" for all output taken together. How much firms produce is the supply side of the model.',
+            },
+            {
+              question: 'A stock-market crash cuts household wealth. How does the AD-AS model show this?',
+              options: [
+                'As a leftward shift of AD, so output and the price level both fall in the short run',
+                'As a movement along AD, because the wealth effect is what makes AD slope down',
+                'As an upward shift of SRAS',
+                'As a leftward shift of LRAS',
+              ],
+              answer: 0,
+              explanation:
+                'The wealth effect along the AD curve comes from a change in the *price level* changing real wealth. A crash cuts wealth at every price level, so households spend less at each $P$ and AD shifts left. Nothing about costs or productive capacity has changed, so SRAS and LRAS stay put.',
+            },
+            {
+              question: 'A new technology raises productivity across industries. What happens in the AD-AS model?',
+              options: [
+                'AD shifts right, so output and the price level rise',
+                'Only SRAS shifts, because potential output is fixed',
+                'LRAS shifts left',
+                'LRAS and SRAS shift right, so output rises and the price level falls',
+              ],
+              answer: 3,
+              explanation:
+                'Better technology raises what the economy can produce, so potential output and LRAS shift right, and lower costs shift SRAS right too. With AD unchanged, output rises and prices fall. Potential output is set by labour, capital, resources and technology, so it moves when they change.',
+            },
+          ],
         },
         {
           slug: 'shocks-and-adjustment',
@@ -2524,6 +3534,56 @@ ad-as
             {
               question: 'What does it mean to accommodate a supply shock?',
               answerOutline: 'To shift AD right so output stays at potential, accepting a permanently higher price level.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'In the lesson\'s model (AD $P = 200 + a - Y$, SRAS $P = W + 0.5(Y - 100)$), demand falls to $a = -12$, giving $Y = 92$, $P = 96$ with $W = 100$. If expected prices adjust with $\\lambda = 0.5$, what are next period\'s $W$ and $Y$?',
+              options: [
+                '$W = 96$, $Y = 94.7$',
+                '$W = 102$, $Y = 90.7$',
+                '$W = 98$, $Y = 100$',
+                '$W = 98$, $Y = 93.3$',
+              ],
+              answer: 3,
+              explanation:
+                '$W\' = 100 + 0.5(96 - 100) = 98$. Then $188 - Y = 98 + 0.5(Y - 100)$ gives $1.5Y = 140$, $Y = 93.3$ (and $P = 94.7$). $W = 102$ gets the sign wrong: prices came in *below* expectations, so expected prices fall. $W = 96$ is full adjustment ($\\lambda = 1$), and output returns to 100 only gradually, not in one step.',
+            },
+            {
+              question: 'In the same model with $a = 0$, a cost shock raises $W$ to 108. What is the short-run equilibrium?',
+              options: [
+                '$Y = 94.7$, $P = 105.3$',
+                '$Y = 105.3$, $P = 94.7$',
+                '$Y = 100$, $P = 108$',
+                '$Y = 92$, $P = 108$',
+              ],
+              answer: 0,
+              explanation:
+                '$200 - Y = 108 + 0.5(Y - 100) = 58 + 0.5Y$, so $1.5Y = 142$, $Y = 94.7$ and $P = 105.3$. Output falls and prices rise together: stagflation. $(100, 108)$ is where the economy would be if demand were raised to accommodate the shock, not the short-run result with AD unchanged.',
+            },
+            {
+              question: 'After that shock ($W = 108$), policy shifts AD right just enough to return output to 100 at once. What is the price level, and what has policy done?',
+              options: [
+                '$P = 100$; it has reversed the shock',
+                '$P = 105.3$; prices stay at the short-run level',
+                '$P = 108$; the shock has been accommodated and become a permanently higher price level',
+                '$P = 116$; prices rise by twice the shock',
+              ],
+              answer: 2,
+              explanation:
+                'With $Y = 100$ on SRAS, $P = W = 108$, and AD needs $a = 8$ to pass through that point. Output is restored at once, but the cost rise is locked into prices. Waiting instead lets unemployment push costs back down to $(100, 100)$ over time, and fighting the inflation deepens the recession: that is the dilemma.',
+            },
+            {
+              question: 'In one episode output and inflation both fell, and core PCE inflation then ran below the Fed\'s 2% goal for most of the following decade. Which episode and type of shock fits the lesson\'s account?',
+              options: [
+                '1973–75, an adverse supply shock',
+                '2008–09, mainly an adverse demand shock',
+                '2008–09, mainly an adverse supply shock',
+                '2020, a pure demand shock',
+              ],
+              answer: 1,
+              explanation:
+                'A demand shock moves output and prices in the same direction, and the 2008–09 crisis cut wealth, credit and investment. The 1973–75 oil shock raised inflation while unemployment rose, the stagflation signature of a supply shock. The lesson describes 2020 as hitting both curves.',
             },
           ],
         },
@@ -2634,6 +3694,56 @@ Policy decisions, the statement and the votes are published at 2 p.m. Eastern ti
               answerOutline: 'Selling securities drained reserves; with scarce reserves and a downward-sloping demand curve, banks bid more for the remaining reserves, raising the rate.',
             },
           ],
+          quiz: [
+            {
+              question: 'IORB is 3.90%. A bank is offered an overnight fed funds loan at 3.70%. What does arbitrage lead it to do?',
+              options: [
+                'Lend its own reserves to other banks at 3.70%',
+                'Borrow from the standing repo facility at 4.00% instead',
+                'Nothing, because IORB is the ceiling of the range',
+                'Borrow at 3.70% and leave the funds at the Fed earning 3.90%, which bids the market rate up',
+              ],
+              answer: 3,
+              explanation:
+                'Borrowing below IORB and parking the money at the Fed earns a riskless 0.20 points, and that extra borrowing pushes the market rate up towards IORB. Lending reserves at 3.70% would mean accepting less than the Fed pays. IORB is a soft floor; the standing repo rate is the ceiling.',
+            },
+            {
+              question: 'In the lesson the target range is 3.75–4.00%, with ON RRP at 3.75%, IORB at 3.90% and the standing repo rate at 4.00%. The FOMC raises the range by 0.25 points and keeps the same spacing. What are the new rates?',
+              options: [
+                'ON RRP 4.00%, IORB 4.15%, standing repo 4.25%',
+                'ON RRP 3.75%, IORB 3.90%, standing repo 4.25%',
+                'ON RRP 4.25%, IORB 4.15%, standing repo 4.00%',
+                'ON RRP 4.00%, IORB 4.25%, standing repo 4.15%',
+              ],
+              answer: 0,
+              explanation:
+                'To raise rates the FOMC raises all the administered rates together: the ON RRP rate sits at the bottom of the new range (4.00%), IORB 0.15 above it (4.15%) and the standing repo rate at the top (4.25%). Moving only the ceiling would leave the floor where it was, and the market rate with it.',
+            },
+            {
+              question: 'Before 2008, when reserves were scarce and paid no interest, how did the Fed **raise** the federal funds rate?',
+              options: [
+                'By buying Treasury securities, which added reserves',
+                'By selling Treasury securities, which drained reserves so banks bid more for those that remained',
+                'By raising the interest rate it paid on reserves',
+                'By cutting the reserve requirement to zero',
+              ],
+              answer: 1,
+              explanation:
+                'With scarce reserves the demand for them slopes down, so draining reserves through open market sales raised their price, the funds rate. Buying securities did the opposite. Interest on reserves was authorised only in October 2008, and the requirement was cut to 0% in March 2020.',
+            },
+            {
+              question: 'Today, with about USD 3 trillion of reserves, the Fed buys USD 5 billion of Treasury bills. What happens to the federal funds rate?',
+              options: [
+                'It falls sharply, as banks lend out the new reserves',
+                'It rises, because the purchase drains reserves',
+                'It stays essentially where it was, because with ample reserves the rate is set by the administered rates',
+                'It falls by an amount set by the money multiplier',
+              ],
+              answer: 2,
+              explanation:
+                'With reserves abundant, banks\' demand for them is flat at the rate the Fed pays, so a small change in quantity does not move the price; IORB and ON RRP hold the rate. Open market purchases now manage the quantity of reserves and the balance sheet, not the daily level of rates. A purchase adds reserves; it does not drain them.',
+            },
+          ],
         },
         {
           slug: 'transmission-mechanism',
@@ -2724,6 +3834,56 @@ How much of the disinflation the rate rises caused is disputed. Some economists 
                 'Today\'s decision affects the economy one to two years later, when conditions may differ, so policy must rely on forecasts, and acting on current data risks responding too late or too much.',
             },
           ],
+          quiz: [
+            {
+              question: 'Suppose the 2-year yield equals the average of the expected 1-year rates this year and next, with no term premium. Today\'s 1-year rate is 3% and markets expect 5% next year. What is the 2-year yield, and what happens if the Fed then credibly signals it will hold the rate at 3% next year?',
+              options: [
+                '3%, and it stays at 3%, because only today\'s rate matters',
+                '4%, and it falls to 3%',
+                '8%, and it falls to 6%',
+                '5%, and it falls to 3%',
+              ],
+              answer: 1,
+              explanation:
+                '$(3 + 5)/2 = 4\\%$. After the signal the expected path is 3% and 3%, so the yield falls to 3% without any change in today\'s rate. That is why the expected *path* of policy, and forward guidance about it, matters more than today\'s rate. 8% adds the rates instead of averaging them.',
+            },
+            {
+              question: 'The Fed raises its policy rate, foreign funds flow in and the dollar appreciates. Which channel is this, and which part of GDP does it act on first?',
+              options: [
+                'The exchange-rate channel; net exports fall',
+                'The exchange-rate channel; net exports rise',
+                'The credit channel; consumption rises',
+                'The wealth channel; investment rises',
+              ],
+              answer: 0,
+              explanation:
+                'A stronger dollar makes US goods dearer abroad and foreign goods cheaper at home, so net exports fall and AD shifts left. Saying net exports rise gets the sign wrong; the credit and wealth channels work through bank lending and asset prices, and a tightening lowers spending through them too.',
+            },
+            {
+              question: 'The Fed tightens, and people believe it will bring inflation back to target. How does the AD-AS model show the combined effect?',
+              options: [
+                'SRAS shifts up, because higher borrowing costs are a cost of production',
+                'LRAS shifts left, because investment falls',
+                'AD shifts left, and because expectations fall, SRAS shifts down as well',
+                'AD shifts right, because savers earn more interest',
+              ],
+              answer: 2,
+              explanation:
+                'Each of the four channels lowers spending, so AD shifts left. Credibility adds a fifth effect: lower expected inflation feeds into wage and price setting, shifting SRAS down. The lesson treats tightening as a demand-side policy, not as a shift of potential output.',
+            },
+            {
+              question: 'Inflation is at target today, but the forecast shows it rising well above target in about 18 months. Given "long and variable lags", what does the lesson imply?',
+              options: [
+                'Wait until inflation actually rises, because policy works within weeks',
+                'Do nothing, because monetary policy cannot affect inflation',
+                'Cut rates now, because inflation is at target today',
+                'Act on the forecast now, since the peak effect on output comes after one to two years and on inflation later still',
+              ],
+              answer: 3,
+              explanation:
+                'Because policy takes effect slowly and by uncertain amounts, central banks must act on forecasts; responding only once inflation appears risks acting too late. The uncertainty of the lags is also why the effect of the 2022–23 rate rises on inflation is still disputed.',
+            },
+          ],
         },
         {
           slug: 'zero-lower-bound-and-qe',
@@ -2807,6 +3967,56 @@ How much of the disinflation the rate rises caused is disputed. Some economists 
               question: 'What is the Fed\'s deferred asset?',
               answerOutline:
                 'An accounting entry for operating losses since late 2022, when interest paid on reserves and reverse repos exceeded income from its securities. The Fed sends no profits to the Treasury until future earnings repay it.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'In a deep recession the central bank thinks a real interest rate of −2% is needed, and expected inflation is 0.5%. Using $r = i - \\pi^e$, what nominal rate is needed?',
+              options: [
+                '−1.5%, which is attainable',
+                '+2.5%',
+                '−2.0%, the same as the real rate',
+                '−2.5%, which is below the effective lower bound',
+              ],
+              answer: 3,
+              explanation:
+                '$i = r + \\pi^e = -2 + 0.5 = -2.5\\%$. Because people can hold cash paying zero, the policy rate cannot go far below zero, so this rate is out of reach. The real rate could reach −2% at a zero nominal rate only if expected inflation rose to 2%. −1.5% subtracts expected inflation instead of adding it.',
+            },
+            {
+              question: 'How is quantitative easing meant to lower long-term interest rates?',
+              options: [
+                'By selling long-term bonds, which raises their prices',
+                'By raising the interest rate paid on reserves',
+                'By printing currency that is handed directly to households',
+                'By buying long-term bonds, which cuts their supply to private investors, raises their prices and lowers yields, and by signalling that short rates will stay low',
+              ],
+              answer: 3,
+              explanation:
+                'These are the portfolio balance and signalling effects. Bond prices and yields move in opposite directions, so buying (not selling) bonds lowers yields. The Fed pays with newly created reserves, which sit in banks\' accounts at the Fed; it does not hand cash to households.',
+            },
+            {
+              question: 'Which of these is an example of **forward guidance**?',
+              options: [
+                'A statement that rates will stay exceptionally low at least through a stated date',
+                'Buying agency mortgage-backed securities',
+                'Letting bonds mature without replacing them',
+                'Charging banks a negative rate on their reserves',
+              ],
+              answer: 0,
+              explanation:
+                'Forward guidance is a promise about the future path of rates, such as the FOMC\'s 2011 statement about "at least through mid-2013"; it works only if believed. Buying securities is QE, letting them mature is quantitative tightening, and a negative rate is a different tool, used by the ECB and the Bank of Japan but not by the Fed.',
+            },
+            {
+              question: 'Since late 2022 the Fed has paid more in interest on reserves and reverse repos than it earns on its bonds. What does it do about the shortfall?',
+              options: [
+                'The Treasury pays the Fed the difference each week',
+                'It records a deferred asset and sends no profits to the Treasury until future earnings repay it',
+                'It must sell its bonds at once to cover the losses',
+                'It stops paying interest on reserves',
+              ],
+              answer: 1,
+              explanation:
+                'The shortfall is booked as a deferred asset, and remittances to the Treasury stop until it is repaid. Critics cite these losses as one cost of QE; supporters reply that without QE the recoveries after 2009 and 2020 would have been weaker.',
             },
           ],
         },
@@ -2912,6 +4122,51 @@ function-explorer
                 'Uncertainty about r* and the output gap, the choice of inflation measure, the effective lower bound, and risks or forecasts not captured by current data. Any two.',
             },
           ],
+          quiz: [
+            {
+              question: 'Using the Taylor rule $i = r^* + \\pi + 0.5(\\pi - 2) + 0.5(\\text{gap})$ with $r^* = 2$, what rate does it prescribe when inflation is 4% and output is 1% **below** potential?',
+              options: ['2.5%', '6.5%', '7.0%', '7.5%'],
+              answer: 1,
+              explanation:
+                '$i = 2 + 4 + 0.5(4 - 2) + 0.5(-1) = 2 + 4 + 1 - 0.5 = 6.5\\%$. 7.5% treats the negative gap as positive, 7.0% forgets to halve the two gap terms, and 2.5% leaves out the $\\pi$ term itself, which is what makes the rule respond more than one-for-one to inflation.',
+            },
+            {
+              question: 'Under the Taylor rule, inflation rises by 1 point and the output gap is unchanged. How much does the prescribed federal funds rate rise, and what happens to the real rate?',
+              options: [
+                'It rises 1 point, so the real rate is unchanged',
+                'It rises 0.5 points, so the real rate falls',
+                'It rises 1.5 points, so the real rate rises 1.5 points',
+                'It rises 1.5 points, so the real rate rises 0.5 points',
+              ],
+              answer: 3,
+              explanation:
+                'The rule\'s slope on inflation is $1 + 0.5 = 1.5$, so $i$ rises 1.5 points and $r = i - \\pi$ rises by $1.5 - 1 = 0.5$. That is the point of the rule: a one-for-one response would leave the real rate unchanged and would not restrain demand.',
+            },
+            {
+              question: 'Which describes the Fed\'s **August 2020** framework statement?',
+              options: [
+                'It set an explicit 2% PCE inflation goal for the first time',
+                'It dropped the make-up language and the word "shortfalls"',
+                'It raised the inflation target to 3%',
+                'After periods of low inflation it would aim for inflation moderately above 2% for some time, and it would respond to shortfalls of employment from its maximum',
+              ],
+              answer: 3,
+              explanation:
+                'That was flexible average inflation targeting, adopted after a decade of low inflation near zero rates. The first explicit 2% goal came in January 2012, and the August 2025 revision dropped the make-up language and "shortfalls" while keeping the 2% goal. No change of target to 3% was made.',
+            },
+            {
+              question: 'With the lesson\'s data (core PCE inflation 3.1%, output 1.7% above potential), the Taylor rule gives 6.5% with $r^* = 2$ and 5.3% with $r^* = 0.8$, while the actual range was 3.75–4.00%. What does the lesson conclude from the gap?',
+              options: [
+                'Rules are benchmarks, not instructions: $r^*$ and the output gap are uncertain, the inflation measure matters, and the Fed weighs forecasts and risks no formula captures',
+                'The Fed is legally required to follow the rule, so it is breaking the law',
+                'The rule is wrong, because $r^*$ cannot be below 2',
+                'The rule applies only when output is below potential',
+              ],
+              answer: 0,
+              explanation:
+                'Changing $r^*$ alone moves the prescription by 1.2 points, and the gap estimate is just as uncertain, so the lesson treats rules as benchmarks. The Fed\'s Monetary Policy Report shows several rules\' prescriptions alongside the actual rate; nothing obliges it to follow one.',
+            },
+          ],
         },
       ],
     },
@@ -3006,6 +4261,51 @@ function-explorer
               answerOutline: 'Only income above the bracket threshold is taxed at the higher rate, so after-tax income still rises with every extra dollar earned under a bracket schedule.',
             },
           ],
+          quiz: [
+            {
+              question: 'Under the lesson\'s schedule (10% on income up to 20,000, 20% from 20,000 to 80,000, 30% above 80,000), what tax does someone earning 120,000 pay, and what are the average and marginal rates?',
+              options: [
+                'Tax 36,000; average 30%, marginal 30%',
+                'Tax 26,000; average 30%, marginal 21.7%',
+                'Tax 26,000; average 21.7%, marginal 30%',
+                'Tax 24,000; average 20%, marginal 30%',
+              ],
+              answer: 2,
+              explanation:
+                '$0.10 \\times 20{,}000 + 0.20 \\times 60{,}000 + 0.30 \\times 40{,}000 = 2{,}000 + 12{,}000 + 12{,}000 = 26{,}000$, an average rate of $26{,}000/120{,}000 = 21.7\\%$. The marginal rate, on the next dollar, is 30%. 36,000 taxes all income at the top rate, which is the misunderstanding behind "a raise put me in a higher bracket".',
+            },
+            {
+              question: 'A government starts the year with USD 30 trillion of debt held by the public, runs a USD 2 trillion deficit, and nominal GDP that year is USD 32 trillion. What are the debt and the debt ratio at the end of the year?',
+              options: [
+                'Debt USD 32 trillion; 100% of GDP',
+                'Debt USD 2 trillion; 6.25% of GDP',
+                'Debt USD 28 trillion; 87.5% of GDP',
+                'Debt USD 32 trillion; 6.25% of GDP',
+              ],
+              answer: 0,
+              explanation:
+                'The deficit is a flow that adds to the stock of debt: $30 + 2 = 32$ trillion, which is $32/32 = 100\\%$ of GDP. 6.25% is the deficit as a share of GDP, not the debt; subtracting the deficit gets the direction wrong.',
+            },
+            {
+              question: 'The deficit is USD 1.8 trillion, of which net interest is USD 0.5 trillion. What is the primary deficit?',
+              options: ['USD 0.5 trillion', 'USD 1.3 trillion', 'USD 1.8 trillion', 'USD 2.3 trillion'],
+              answer: 1,
+              explanation:
+                'The primary deficit excludes interest: $1.8 - 0.5 = 1.3$ trillion. It shows whether current programmes are paid for. Adding the interest (2.3) counts it twice, since it is already inside the total deficit.',
+            },
+            {
+              question: 'The Treasury issues bonds to the Social Security trust fund. Which measure of federal debt includes them?',
+              options: [
+                'Debt held by the public, but not gross debt',
+                'Both measures',
+                'Neither, because no money changes hands',
+                'Gross debt, but not debt held by the public',
+              ],
+              answer: 3,
+              explanation:
+                'Gross debt also counts what the Treasury owes to federal trust funds. Debt held by the public counts only what is owed to investors, foreign governments and the Fed, which is why economists prefer it: it is what the government has borrowed from the rest of the economy.',
+            },
+          ],
         },
         {
           slug: 'fiscal-policy-and-stabilisers',
@@ -3095,6 +4395,51 @@ Another channel is **expectations**: a tax cut that households expect to be temp
             {
               question: 'What is the difference between the cyclical and the structural deficit?',
               answerOutline: 'The cyclical deficit is caused by the business cycle and disappears at potential output; the structural deficit would remain at full employment.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'In the Keynesian cross with MPC = 0.8 and a 25% proportional income tax, investment falls by 100. How much does output fall, and how much would it fall with no income tax?',
+              options: ['500 in both cases', '222, against 500', '375, against 500', '250, against 500'],
+              answer: 3,
+              explanation:
+                'With the tax the slope of AE is $0.8 \\times (1 - 0.25) = 0.6$, so the multiplier is $1/0.4 = 2.5$ and output falls by 250. With no tax it is $1/0.2 = 5$, a fall of 500. The tax is an automatic stabiliser: it absorbs part of each round. 222 subtracts the tax rate from the MPC instead of multiplying by $1 - t$.',
+            },
+            {
+              question: 'A highway programme is signed into law, but most of the money is spent only two years later. Which lag of discretionary fiscal policy is this?',
+              options: [
+                'The recognition lag',
+                'The legislative lag',
+                'The implementation lag',
+                'The lag in dating the recession',
+              ],
+              answer: 2,
+              explanation:
+                'The implementation lag is the time from passing a law to the money reaching the economy, long for building projects and short for cheques and tax changes. The recognition lag is seeing the recession (it is dated months after it begins), and the legislative lag is getting the law through Congress.',
+            },
+            {
+              question: 'During a recession the deficit is 8% of GDP. CBO estimates it would be 5% of GDP if output were at potential. How large are the cyclical and structural deficits?',
+              options: [
+                'Cyclical 3%, structural 5%',
+                'Cyclical 5%, structural 3%',
+                'Cyclical 8%, structural 0%',
+                'Cyclical 3%, structural 8%',
+              ],
+              answer: 0,
+              explanation:
+                'The structural deficit is what would remain at full employment, 5% of GDP; the cyclical part, $8 - 5 = 3$ points, is caused by the stabilisers and disappears as output returns to potential. A structural deficit this large signals a long-run imbalance that recovery will not fix.',
+            },
+            {
+              question: 'Two tax cuts are the same size. One is announced as a one-off rebate; the other is permanent. Which does the lesson suggest raises consumer spending more?',
+              options: [
+                'The rebate, because it arrives all at once',
+                'Neither, because the multiplier depends only on the MPC',
+                'Both the same, because the dollar amount is the same',
+                'The permanent cut, because households spend less of a change they expect to be temporary or to be followed by higher taxes',
+              ],
+              answer: 3,
+              explanation:
+                'Expectations matter: a cut that households see as temporary, or as a loan against future taxes, raises their long-run income little, so more of it is saved. That is also one reason real-world multipliers are smaller than $1/(1 - \\text{MPC})$.',
             },
           ],
         },
@@ -3189,6 +4534,51 @@ debt-dynamics
               question: 'What does Ricardian equivalence predict about a debt-financed tax cut, and does the evidence support it?',
               answerOutline:
                 'Households save the whole tax cut to pay expected future taxes, so spending and interest rates are unchanged. Evidence suggests only partial offset; many households spend part of tax cuts.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'The debt ratio is 80% of GDP, the average interest rate on the debt is 5%, nominal growth is 3% and the primary deficit is 1% of GDP. Using $d\' = \\frac{1+r}{1+g}d + p$, what is the ratio next year?',
+              options: ['79.5%', '81.0%', '82.6%', '85.0%'],
+              answer: 2,
+              explanation:
+                '$d\' = (1.05/1.03) \\times 80 + 1 = 81.55 + 1 = 82.6\\%$. Because $r > g$, interest makes the debt grow faster than GDP even before the primary deficit. 79.5% swaps $r$ and $g$, 81.0% ignores the $r - g$ effect, and 85.0% ignores growth in GDP altogether.',
+            },
+            {
+              question: 'Debt is 120% of GDP, $r = 5\\%$ and $g = 3\\%$. What primary balance keeps the debt ratio constant?',
+              options: [
+                'A primary deficit of about 2.3% of GDP',
+                'A balanced primary budget',
+                'A primary surplus of about 2.3% of GDP',
+                'A primary surplus of 6% of GDP, enough to pay all the interest',
+              ],
+              answer: 2,
+              explanation:
+                '$p^* = d(g - r)/(1 + g) = 120 \\times (-0.02)/1.03 = -2.3$: a primary *surplus* of about 2.3% of GDP, because when $r > g$ interest outruns growth. Growth still does part of the work, so the government need not pay all the interest (6% of GDP) out of a surplus; a balanced primary budget would let the ratio rise.',
+            },
+            {
+              question: 'Debt is 100% of GDP, $r = 2\\%$, $g = 5\\%$ and the government runs a primary deficit of 2% of GDP. What happens to the debt ratio next year?',
+              options: [
+                'It falls to about 97.1%',
+                'It falls to about 99.1%',
+                'It rises to 102%, because of the deficit',
+                'It rises to about 105%',
+              ],
+              answer: 1,
+              explanation:
+                '$d\' = (1.02/1.05) \\times 100 + 2 = 97.1 + 2 = 99.1\\%$. With $r < g$, growth erodes the ratio faster than the primary deficit adds to it, which is the case Blanchard made in 2019 for the low cost of debt. 97.1% forgets to add the primary deficit, 102% ignores both $r$ and $g$, and about 105% swaps them.',
+            },
+            {
+              question: 'The government cuts taxes by USD 100 billion and borrows to cover it. What does Ricardian equivalence predict, and what does the lesson say the evidence shows?',
+              options: [
+                'Households save the whole cut to pay expected future taxes, so demand and interest rates are unchanged; the evidence suggests households offset only part of a deficit',
+                'Households spend the whole cut; the evidence confirms it',
+                'Households save the whole cut; the evidence confirms full offset',
+                'Interest rates fall, because the extra saving exceeds the deficit',
+              ],
+              answer: 0,
+              explanation:
+                'Barro\'s argument is that rational households see a debt-financed tax cut as a postponed tax and save all of it. The evidence suggests only partial offset: many households spend part of a tax cut. That is why deficits still affect demand and, through crowding out, investment.',
             },
           ],
         },
@@ -3307,6 +4697,46 @@ function-explorer
                 'Anchored inflation expectations, a lower natural rate than estimated, globalisation and competition, measurement problems. Any two.',
             },
           ],
+          quiz: [
+            {
+              question: 'With $\\pi = \\pi^e - \\beta(u - u^*) + v$, let $\\pi^e = 3$, $\\beta = 0.4$, $u^* = 4.5$, $u = 3.5$ and $v = 0$. What is inflation?',
+              options: ['2.6%', '3.0%', '3.4%', '4.0%'],
+              answer: 2,
+              explanation:
+                '$\\pi = 3 - 0.4(3.5 - 4.5) = 3 + 0.4 = 3.4\\%$. Unemployment below the natural rate pushes inflation above expectations. 2.6% gets the sign of the gap wrong, 3.0% ignores the gap, and 4.0% uses a coefficient of 1 instead of 0.4.',
+            },
+            {
+              question: 'With $\\pi = \\pi^e - 0.5(u - 4)$, expectations formed from last year\'s inflation and inflation starting at 2%, policy holds unemployment at 3% for three years. What is inflation in year 3?',
+              options: ['2.5%', '3.0%', '3.5%', '5.0%'],
+              answer: 2,
+              explanation:
+                'Each year inflation is 0.5 points above last year\'s: 2.5%, then 3.0%, then 3.5%. Holding unemployment below the natural rate makes inflation *accelerate*, which is why $u^*$ is also called the NAIRU. 2.5% assumes a stable trade-off, as in the 1960s menu view.',
+            },
+            {
+              question: 'Unemployment is at the natural rate and expected inflation is 2%. An oil price jump raises $v$ by 2 points. What happens in the Phillips curve model?',
+              options: [
+                'Inflation stays at 2%, because unemployment is at the natural rate',
+                'Inflation rises to 4% as the economy moves along the curve to lower unemployment',
+                'Inflation falls to 0%',
+                'Inflation rises to 4%: the short-run curve shifts up, with unemployment unchanged',
+              ],
+              answer: 3,
+              explanation:
+                '$\\pi = 2 - \\beta \\times 0 + 2 = 4\\%$. A supply shock shifts the whole short-run curve up; it is not a movement along it, since unemployment has not changed. This is the Phillips-curve version of an upward shift of SRAS.',
+            },
+            {
+              question: 'In the 2010s US unemployment fell to 3.5% while core inflation stayed below 2%. What explanation does the lesson say is often given for the flat Phillips curve?',
+              options: [
+                'The natural rate of unemployment fell to zero',
+                'Inflation expectations were well anchored around the Fed\'s target',
+                '$\\beta$ was very large',
+                'Large adverse supply shocks pushed inflation up',
+              ],
+              answer: 1,
+              explanation:
+                'With expectations anchored near 2%, a tight labour market raised inflation little, so the curve looked flat. A large $\\beta$ would mean a *steep* curve, and adverse supply shocks would have raised inflation, not held it down. The 2021–22 surge reopened the question of whether the curve is steep when labour markets are very tight.',
+            },
+          ],
         },
         {
           slug: 'two-great-inflations',
@@ -3392,6 +4822,51 @@ What caused the surge? *Demand*: large fiscal transfers in 2020–21, high house
               question: 'Why did inflation fall faster after 2022 than after 1980?',
               answerOutline:
                 'Long-run expectations stayed anchored near 2%, supply shocks reversed, and the Fed acted to show it would bring inflation down. Unemployment barely rose.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A central bank holds its policy rate at 6% while inflation is running at 10%. What is the real policy rate, and how does the lesson describe this kind of setting in the 1970s?',
+              options: [
+                '+4%: tight policy of the kind Volcker ran',
+                '−4%: low or negative real rates of the kind the Fed kept under Burns',
+                '16%: very tight policy',
+                '+6%: the real rate equals the nominal rate',
+              ],
+              answer: 1,
+              explanation:
+                '$r \\approx i - \\pi = 6 - 10 = -4\\%$. A negative real rate encourages borrowing and spending, which is loose policy; the lesson says the Fed under Arthur Burns kept real rates low or negative. +4% subtracts the wrong way round, and adding the two (16%) misuses the Fisher equation.',
+            },
+            {
+              question: 'How does the lesson say most economists explain the Great Inflation of 1965–1982?',
+              options: [
+                'Oil price shocks alone',
+                'Large fiscal transfers and near-zero interest rates',
+                'Wage and price controls, which held inflation down permanently',
+                'A combination: loose monetary policy, oil and food supply shocks, expectations built into wages and prices, and the loss of the Bretton Woods anchor',
+              ],
+              answer: 3,
+              explanation:
+                'The lesson lists four explanations and says most economists combine them. Fiscal transfers and near-zero rates belong to the 2021–23 story. The 1971–74 controls suppressed inflation only briefly and then released it.',
+            },
+            {
+              question: 'A disinflation cuts inflation from 10% to 4%. To do it, unemployment is held 3 points above the natural rate for 3 years. What is the sacrifice ratio, in point-years of excess unemployment per point of inflation removed?',
+              options: ['0.5', '1.5', '2.0', '9'],
+              answer: 1,
+              explanation:
+                'Excess unemployment totals $3 \\times 3 = 9$ point-years, and inflation falls $10 - 4 = 6$ points, so the ratio is $9/6 = 1.5$. 9 is the total cost before dividing; 0.5 uses only one year of excess unemployment; 2.0 divides the fall in inflation by the years.',
+            },
+            {
+              question: 'What did Bernanke and Blanchard (2023) find about the 2021–23 US inflation, as the lesson reports it?',
+              options: [
+                'Most of the initial rise came from price shocks to energy, food and goods in short supply, with the tight labour market a smaller but more persistent part',
+                'The tight labour market caused most of the rise, with supply shocks a minor part',
+                'M2 growth alone explains it',
+                'Long-run expectations became unanchored, as in the 1970s',
+              ],
+              answer: 0,
+              explanation:
+                'They attribute most of the initial surge to price shocks, with labour-market tightness contributing less but lasting longer; others give fiscal policy or the Fed\'s delay more weight. Unlike the 1970s, long-run expectations stayed close to 2%, which most economists think is why inflation fell faster.',
             },
           ],
         },
@@ -3490,6 +4965,56 @@ A country that saves less than it invests must import the difference: a trade de
                 'Unless it raises national saving or lowers investment, S − I and so NX are unchanged; the dollar tends to appreciate and exports fall, offsetting lower imports.',
             },
           ],
+          quiz: [
+            {
+              question: 'An open economy has $Y = 2{,}000$, $C = 1{,}300$, $G = 450$, $T = 400$ and $I = 350$. What are national saving and net exports?',
+              options: [
+                '$S = 300$, $NX = -50$',
+                '$S = 250$, $NX = +100$',
+                '$S = 700$, $NX = +350$',
+                '$S = 250$, $NX = -100$',
+              ],
+              answer: 3,
+              explanation:
+                'Private saving is $2{,}000 - 400 - 1{,}300 = 300$ and public saving $400 - 450 = -50$, so $S = 250$ and $NX = S - I = 250 - 350 = -100$: the economy saves less than it invests and imports the difference. 300 is private saving alone, $+100$ computes $I - S$, and 700 forgets to subtract government purchases.',
+            },
+            {
+              question: 'Ignoring the small capital account and errors, the US runs a current account deficit of USD 250 billion in a quarter. What must the financial account show?',
+              options: [
+                'A net financial inflow of USD 250 billion, as foreigners buy US assets or lend to US residents',
+                'A net financial outflow of USD 250 billion',
+                'Nothing in particular, because the two accounts are independent',
+                'A net financial inflow of USD 125 billion',
+              ],
+              answer: 0,
+              explanation:
+                'Every transaction has two sides: dollars paid for imports beyond exports end up with foreigners, who use them to buy US assets or lend to US residents, so current account + net financial inflow = 0. A country with a current account deficit is selling assets to, or borrowing from, the rest of the world.',
+            },
+            {
+              question: 'In a recession the budget deficit rises by 200 while investment falls by 200, and private saving is unchanged. What does $S - I = NX$ say happens to net exports?',
+              options: [
+                'They fall by 200, as the twin-deficits argument predicts',
+                'They are unchanged',
+                'They rise by 200',
+                'They fall by 400',
+              ],
+              answer: 1,
+              explanation:
+                'National saving falls by 200 (public saving falls) and investment falls by 200, so $S - I$, and with it $NX$, is unchanged. The twin-deficits link holds only when investment does not fall as much as saving, which is why the lesson calls it loose.',
+            },
+            {
+              question: 'A country imposes a tariff that cuts imports, but national saving and investment do not change. What does the saving-investment identity imply for the trade balance?',
+              options: [
+                'The trade deficit shrinks by the full fall in imports',
+                'The trade deficit widens by the amount of the tariff revenue',
+                'National saving must rise automatically to match',
+                'It changes little for long, because $S - I$ is unchanged; the currency tends to appreciate and exports fall',
+              ],
+              answer: 3,
+              explanation:
+                '$NX = S - I$, so a policy that leaves saving and investment alone cannot change the trade balance for long. Lower imports raise the value of the dollar, which cuts exports. That is why many economists call tariffs a poor tool for cutting trade deficits, though supporters argue for them on other grounds.',
+            },
+          ],
         },
         {
           slug: 'exchange-rates-and-ppp',
@@ -3582,6 +5107,51 @@ PPP fails in the short run: many goods and most services are not traded, transpo
             {
               question: 'Give two reasons PPP fails in the short run.',
               answerOutline: 'Non-traded goods and services, transport costs and trade barriers, sticky prices, and capital flows dominating currency markets. Any two.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'The euro is quoted at USD 1.20 in January and USD 1.25 in October. What happened to the dollar against the euro, measured in euros per dollar?',
+              options: [
+                'It appreciated by about 4.2%',
+                'It depreciated by about 4.2%',
+                'It depreciated by 4.0%',
+                'It appreciated by 4.0%',
+              ],
+              answer: 2,
+              explanation:
+                'A dollar bought $1/1.20 = 0.833$ euros in January and $1/1.25 = 0.800$ in October, a fall of 4.0%, so the dollar depreciated. 4.2% is the euro\'s rise in dollars ($1.25/1.20 - 1$); reading the quote without converting units also leads to "appreciated".',
+            },
+            {
+              question: 'The yen-dollar rate rises from 100 to 110 yen per dollar. Over the same period US prices rise 6% and Japanese prices 2%. By how much did the dollar appreciate in **real** terms?',
+              options: ['5.8%', '10.0%', '14.3%', '18.0%'],
+              answer: 2,
+              explanation:
+                '$\\varepsilon = e \\times P/P^*$ rises by $1.10 \\times 1.06/1.02 - 1 = 14.3\\%$. US goods became dearer relative to Japanese goods both because each dollar buys more yen and because US prices rose faster. 10.0% is the nominal appreciation only, and 5.8% puts the price ratio upside down.',
+            },
+            {
+              question: 'A Big Mac costs USD 6.00 in the US and 450 crowns in another country, where the market rate is 90 crowns per dollar. What are the implied PPP rate and the crown\'s valuation?',
+              options: [
+                'PPP rate 75 crowns per dollar; the crown is about 17% undervalued',
+                'PPP rate 75 crowns per dollar; the crown is 20% overvalued',
+                'PPP rate 75 crowns per dollar; the crown is 20% undervalued',
+                'PPP rate 0.013 crowns per dollar; the crown is fairly valued',
+              ],
+              answer: 0,
+              explanation:
+                'Implied PPP is $450/6.00 = 75$ crowns per dollar. The actual rate gives more crowns per dollar (90), so the crown is cheap: $75/90 - 1 = -16.7\\%$, about 17% undervalued. 20% computes $90/75 - 1$, the dollar\'s overvaluation measured against the crown, and 0.013 divides the US price by the local one.',
+            },
+            {
+              question: 'US inflation rises well above inflation abroad. What happens in the market for dollars?',
+              options: [
+                'Foreigners demand more dollars because US prices are higher, so the dollar appreciates',
+                'Nothing, because exchange rates depend only on interest rates',
+                'Foreigners demand fewer dollars for US goods and Americans supply more dollars for imports, so the dollar depreciates',
+                'The dollar appreciates, because the real exchange rate rises',
+              ],
+              answer: 2,
+              explanation:
+                'Dearer US goods reduce foreigners\' demand for dollars, and cheaper imports raise Americans\' supply of dollars, so the dollar depreciates. Over decades this is the pattern PPP predicts: higher-inflation countries see their currencies depreciate. Higher US prices do raise the real exchange rate at an unchanged nominal rate, but that makes US goods dearer, which is exactly what cuts the demand for dollars.',
             },
           ],
         },
