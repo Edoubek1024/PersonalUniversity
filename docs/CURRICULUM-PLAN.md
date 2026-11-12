@@ -1,6 +1,6 @@
 # Curriculum plan
 
-Eight categories, 25 core tracks, 46 additional recommended subjects. Each subject file in
+Nine categories, 25 core tracks, 48 additional recommended subjects. Each subject file in
 `src/data/subjects/` is the source of truth for its own content; this document fixes the
 subject IDs, categories, prerequisite graph and the module outline each subject must cover.
 Subject IDs below are final and are referenced by `src/data/paths.ts` and by
@@ -134,6 +134,19 @@ module projects and a capstone built on real data, and have no machine problems.
 | `physics-electricity-magnetism` | University Physics: Electricity and Magnetism (PHYS 212) | intermediate | 100 | physics-mechanics, calculus-2 | additional |
 | `physics-thermal` | University Physics: Thermal Physics (PHYS 213) | intermediate | 50 | physics-mechanics | additional |
 | `physics-quantum` | University Physics: Quantum Physics (PHYS 214) | intermediate | 50 | physics-electricity-magnetism | additional |
+
+## Chemistry (`chemistry`)
+
+These follow the University of Illinois Urbana-Champaign first-semester general chemistry
+lecture (CHEM 102) and lab (CHEM 103). Topics come from the public catalog descriptions, the
+department's CHEM 102 topic sheet and the CHEM 103 lab schedule; the content is original and not
+affiliated with Illinois. Every lesson ends with a multiple-choice quiz. The lab is taken
+alongside the lecture and replaces the bench with simulated experiments and written lab reports.
+
+| ID | Title | Follows | Diff | Hrs | Prerequisites | Core |
+|---|---|---|---|---|---|---|
+| `general-chemistry-1` | General Chemistry I | CHEM 102 | beginner | 88 | — | additional |
+| `general-chemistry-lab-1` | General Chemistry Lab I | CHEM 103 | beginner | 86 | — (take alongside `general-chemistry-1`) | additional |
 
 ## Astronomy (`astronomy`)
 
@@ -620,6 +633,33 @@ Capstone: compute and plot geodesics around a black hole and reproduce a classic
 1. `scientific-python-and-numerics` 2. `numerical-calculus-and-linear-algebra` 3. `ode-integrators` 4. `monte-carlo-methods` 5. `pdes-and-field-simulation` 6. `spectral-methods-and-data` 7. `n-body-and-molecular-dynamics` 8. `reproducibility-and-performance`
 Capstone: a complete simulation project with validation against analytic results.
 
+### general-chemistry-1 (CHEM 102)
+Atomic structure, bonding, states of matter, stoichiometry and chemical equilibrium. No calculus.
+1. Measurement, atoms and the mole: significant figures, dimensional analysis, isotopes and atomic mass, the mole
+2. Light and the quantum atom: photons, the hydrogen spectrum and Bohr model, quantum numbers and orbitals
+3. Electron configurations and periodic trends: configurations, effective nuclear charge and size, ionisation energy and electron affinity
+4. Chemical bonding: ionic bonding and lattice energy, covalent bonds and electronegativity, Lewis structures, formal charge and resonance
+5. Molecular shape and intermolecular forces: VSEPR, polarity, hybridisation and sigma/pi bonds, intermolecular forces, phase diagrams
+6. Stoichiometry and reactions in solution: formulas and composition, balancing, limiting reagents and yield, molarity, precipitation, acid-base and redox, titration
+7. Gases: gas laws, the ideal gas law, partial pressures, kinetic-molecular theory and real gases
+8. Thermochemistry: enthalpy, calorimetry, Hess's law and formation enthalpies, bond energies
+9. Chemical equilibrium: K, Q and ICE tables, Ksp, Le Chatelier's principle
+Capstone: the chemistry of a fuel.
+
+### general-chemistry-lab-1 (CHEM 103)
+Simulated experiments with realistic, seeded noise, read at real instrument precision, each
+written up with a report template and rubric. Says plainly what simulation cannot teach.
+1. Lab practice: safety, glassware and balances, significant figures and uncertainty, the notebook, the report format, graphs and linear fits
+2. Equipment and the balance
+3. Dilutions and Beer's law (food dyes)
+4. Titration: standardising NaOH, molar mass of an unknown acid
+5. Empirical formula of magnesium oxide
+6. Gas collection over water: the gas constant and an unknown metal
+7. Calorimetry: calorimeter constant, enthalpy of solution, heat of fusion
+8. Hess's law: the enthalpy of formation of MgO
+9. Le Chatelier's principle
+Capstone: a full formal report, or an experiment designed with the simulators.
+
 ### intro-astronomy
 1. `the-night-sky` 2. `light-and-telescopes` 3. `the-solar-system` 4. `the-sun-and-stars` 5. `stellar-lives-and-deaths` 6. `galaxies-and-the-universe` 7. `life-in-the-universe-and-how-astronomers-work`
 Capstone: an observing log plus a quantitative analysis (e.g. measuring the Moon's distance, the Sun's rotation, or a star cluster's age).
@@ -646,7 +686,7 @@ Capstone: analyse a real X-ray or gravitational-wave dataset and interpret it ph
 
 ## Completion status
 
-All 71 subjects are written. Every lesson is fully populated: none is marked `outline`.
+All 73 subjects are written. Every lesson is fully populated: none is marked `outline`.
 `npm run validate` reports no errors and no warnings.
 
 | Category | Subjects | Lessons |
@@ -657,9 +697,10 @@ All 71 subjects are written. Every lesson is fully populated: none is marked `ou
 | Statistics | 2 | 56 |
 | Economics | 2 | 72 |
 | Physics | 12 | 300 |
+| Chemistry | 2 | 69 |
 | Astronomy | 6 | 158 |
 | Miscellaneous | 1 | 35 |
-| **Total** | **71** | **1,838** |
+| **Total** | **73** | **1,907** |
 
 Run `npm run validate` for the per-subject table (modules, lessons, hours).
 

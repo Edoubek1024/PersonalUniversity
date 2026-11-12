@@ -26,7 +26,7 @@ export function Dashboard() {
           <p className="text-xs font-semibold uppercase tracking-widest text-ink-3">Your personal university</p>
           <h1 className="mt-1 text-3xl font-semibold tracking-tight">Dashboard</h1>
           <p className="mt-2 max-w-xl text-sm text-ink-2">
-            {subjects.length} subjects, {totalLessonCount.toLocaleString()} lessons and about {totalHours.toLocaleString()} hours of study across computer science, data science, mathematics, statistics, economics, physics, astronomy and more.
+            {subjects.length} subjects, {totalLessonCount.toLocaleString()} lessons and about {totalHours.toLocaleString()} hours of study across computer science, data science, mathematics, statistics, economics, physics, chemistry, astronomy and more.
           </p>
         </div>
         <div className="card flex items-center gap-4 px-5 py-4">

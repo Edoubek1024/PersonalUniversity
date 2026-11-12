@@ -44,6 +44,13 @@ export const categories: Category[] = [
     accent: 'sky',
   },
   {
+    id: 'chemistry',
+    title: 'Chemistry',
+    description:
+      'Atoms, bonds and reactions: how matter is built and how it changes. Count particles, balance reactions, and explain properties from structure.',
+    accent: 'fuchsia',
+  },
+  {
     id: 'astronomy',
     title: 'Astronomy',
     description:

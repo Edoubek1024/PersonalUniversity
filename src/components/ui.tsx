@@ -54,6 +54,13 @@ export const accentClasses: Record<string, { text: string; bg: string; ring: str
     bar: 'bg-orange-500',
     dot: 'bg-orange-500',
   },
+  fuchsia: {
+    text: 'text-fuchsia-600 dark:text-fuchsia-300',
+    bg: 'bg-fuchsia-500/10',
+    ring: 'ring-fuchsia-500/30',
+    bar: 'bg-fuchsia-500',
+    dot: 'bg-fuchsia-500',
+  },
   amber: {
     text: 'text-amber-600 dark:text-amber-300',
     bg: 'bg-amber-500/10',
@@ -112,7 +119,7 @@ export function ProgressBar({ pct, accent = 'indigo', label }: { pct: number; ac
 export function ProgressRing({ pct, size = 56, stroke = 5, accent = 'indigo', children }: { pct: number; size?: number; stroke?: number; accent?: string; children?: ReactNode }) {
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
-  const colors: Record<string, string> = { indigo: 'stroke-indigo-500', teal: 'stroke-teal-500', sky: 'stroke-sky-500', violet: 'stroke-violet-500', rose: 'stroke-rose-500', lime: 'stroke-lime-500', orange: 'stroke-orange-500', amber: 'stroke-amber-500', emerald: 'stroke-emerald-500' };
+  const colors: Record<string, string> = { indigo: 'stroke-indigo-500', teal: 'stroke-teal-500', sky: 'stroke-sky-500', violet: 'stroke-violet-500', rose: 'stroke-rose-500', lime: 'stroke-lime-500', orange: 'stroke-orange-500', fuchsia: 'stroke-fuchsia-500', amber: 'stroke-amber-500', emerald: 'stroke-emerald-500' };
   return (
     <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }} role="img" aria-label={`${pct}% complete`}>
       <svg width={size} height={size} className="-rotate-90">
