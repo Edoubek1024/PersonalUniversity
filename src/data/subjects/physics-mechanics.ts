@@ -40,7 +40,7 @@ const hyperphysics = (note: string): ResourceInput => ({
 
 export default defineSubject({
   id: 'physics-mechanics',
-  title: 'University Physics: Mechanics (PHYS 211)',
+  title: 'University Physics: Mechanics',
   category: 'physics',
   tagline:
     'Calculus-based introductory mechanics: forces, energy, momentum, rotation, gravity, fluids and waves, with a repeatable method for solving problems.',

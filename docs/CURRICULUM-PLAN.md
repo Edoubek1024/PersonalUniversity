@@ -132,10 +132,10 @@ module projects and a capstone built on real data, and have no machine problems.
 | `quantum-mechanics` | Quantum Mechanics | advanced | 110 | waves-optics, math-methods | yes |
 | `relativity` | Special and General Relativity | expert | 100 | electromagnetism, classical-mechanics | yes |
 | `computational-physics` | Computational Physics | advanced | 80 | programming-fundamentals, classical-mechanics, math-methods | yes |
-| `physics-mechanics` | University Physics: Mechanics (PHYS 211) | beginner | 100 | calculus-1 | additional |
-| `physics-electricity-magnetism` | University Physics: Electricity and Magnetism (PHYS 212) | intermediate | 100 | physics-mechanics, calculus-2 | additional |
-| `physics-thermal` | University Physics: Thermal Physics (PHYS 213) | intermediate | 50 | physics-mechanics | additional |
-| `physics-quantum` | University Physics: Quantum Physics (PHYS 214) | intermediate | 50 | physics-electricity-magnetism | additional |
+| `physics-mechanics` | University Physics: Mechanics | beginner | 100 | calculus-1 | additional |
+| `physics-electricity-magnetism` | University Physics: Electricity and Magnetism | intermediate | 100 | physics-mechanics, calculus-2 | additional |
+| `physics-thermal` | University Physics: Thermal Physics | intermediate | 50 | physics-mechanics | additional |
+| `physics-quantum` | University Physics: Quantum Physics | intermediate | 50 | physics-electricity-magnetism | additional |
 
 ## Chemistry (`chemistry`)
 

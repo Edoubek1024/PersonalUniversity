@@ -49,7 +49,7 @@ const falstadQm = (note: string): ResourceInput => ({
 
 export default defineSubject({
   id: 'physics-quantum',
-  title: 'University Physics: Quantum Physics (PHYS 214)',
+  title: 'University Physics: Quantum Physics',
   category: 'physics',
   tagline:
     'Calculus-based introductory quantum physics: interference, photons, matter waves, the Schrodinger equation, atoms and modern devices.',

@@ -117,7 +117,8 @@ the Subjects page lists mapped subjects first, in code order. Codes are searchab
 
 - Map a subject only when it covers essentially the same course. A combined code
   ("MATH 482/484") means one subject covers both. Leave a subject out rather than guess.
-- When a new subject follows a course, add its code in the same change.
+- When a new subject follows a course, add its code in the same change. Keep codes out of subject
+  titles: the mode adds them, and the same subject can carry different codes at different universities.
 - To add a university, add its id to `UniversityId` and an entry to
   `universities`; the Settings picker lists it automatically. The validator rejects codes for
   unknown subject IDs.

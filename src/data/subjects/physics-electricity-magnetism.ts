@@ -59,7 +59,7 @@ const falstad = (note: string): ResourceInput => ({
 
 export default defineSubject({
   id: 'physics-electricity-magnetism',
-  title: 'University Physics: Electricity and Magnetism (PHYS 212)',
+  title: 'University Physics: Electricity and Magnetism',
   category: 'physics',
   tagline:
     'Calculus-based introductory electricity and magnetism: fields, circuits, induction, electromagnetic waves and optics.',

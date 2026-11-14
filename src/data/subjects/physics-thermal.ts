@@ -40,7 +40,7 @@ const hyperphysics = (note: string): ResourceInput => ({
 
 export default defineSubject({
   id: 'physics-thermal',
-  title: 'University Physics: Thermal Physics (PHYS 213)',
+  title: 'University Physics: Thermal Physics',
   category: 'physics',
   tagline:
     'Temperature, gases, entropy, engines and free energy, explained by counting the ways that atoms can share energy.',
