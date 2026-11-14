@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, FileText, Hammer, Route, Search as SearchIcon } from 'lucide-react';
 import { search } from '@/lib/search';
+import { subjectById } from '@/data/subjects';
+import { useCourseCodes } from '@/store/settings';
 
 const icons = { subject: BookOpen, lesson: FileText, project: Hammer, path: Route };
 
@@ -11,6 +13,7 @@ export function SearchDialog({ open, onClose }: { open: boolean; onClose: () => 
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const hits = useMemo(() => search(q), [q]);
+  const cc = useCourseCodes();
 
   useEffect(() => {
     if (open) {
@@ -84,7 +87,7 @@ export function SearchDialog({ open, onClose }: { open: boolean; onClose: () => 
               >
                 <Icon size={15} className="shrink-0 text-ink-3" aria-hidden />
                 <div className="min-w-0">
-                  <div className="truncate text-sm font-medium">{h.title}</div>
+                  <div className="truncate text-sm font-medium">{h.kind === 'subject' && subjectById.get(h.id) ? cc.label(subjectById.get(h.id)!) : h.title}</div>
                   <div className="truncate text-xs text-ink-3">{h.subtitle}</div>
                 </div>
                 <span className="ml-auto chip">{h.kind}</span>

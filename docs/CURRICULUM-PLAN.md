@@ -1,6 +1,6 @@
 # Curriculum plan
 
-Nine categories, 25 core tracks, 48 additional recommended subjects. Each subject file in
+Nine categories, 25 core tracks, 50 additional recommended subjects. Each subject file in
 `src/data/subjects/` is the source of truth for its own content; this document fixes the
 subject IDs, categories, prerequisite graph and the module outline each subject must cover.
 Subject IDs below are final and are referenced by `src/data/paths.ts` and by
@@ -33,6 +33,8 @@ Legend: **Diff** = difficulty, **Hrs** = estimated hours, **Core** = one of the 
 | `typescript-web` | TypeScript for the Web | intermediate | 30 | programming-fundamentals | additional |
 | `go-programming` | Go for Backend Services | intermediate | 32 | programming-fundamentals | additional |
 | `bash-scripting` | Bash and the Command Line | beginner | 28 | programming-fundamentals | additional |
+| `text-information-systems` | Text Information Systems (follows UIUC CS 410) | intermediate | 84 | data-structures-algorithms, probability-statistics | additional |
+| `data-mining` | Introduction to Data Mining (follows UIUC CS 412) | advanced | 86 | data-structures-algorithms, probability-statistics | additional |
 
 Every CS subject also has two machine problems and a final project in `src/data/coursework/`.
 In the UI the final project replaces the subject's capstone; the `capstone` data stays in the
@@ -221,6 +223,16 @@ Capstone: train, evaluate and deploy a model on a real task, with an ablation st
 ### probability-statistics
 1. `probability-foundations` 2. `random-variables-and-distributions` 3. `limit-theorems-and-sampling` 4. `estimation-and-confidence` 5. `hypothesis-testing-and-regression` 6. `bayesian-inference-and-mcmc` 7. `statistics-in-practice` (data cleaning, visualisation, uncertainty propagation)
 Capstone: a statistical analysis of a real scientific dataset with a reproducible notebook.
+
+### text-information-systems (CS 410)
+Follows UIUC CS 410 (Zhai and Massung, *Text Data Management and Analysis*); not affiliated with Illinois.
+1. Text representation 2. Retrieval models (vector space, TF-IDF, BM25, query likelihood and smoothing) 3. Search engine implementation and evaluation (inverted index, compression, MAP, nDCG, significance) 4. Feedback, web search and recommendation (Rocchio, PageRank and HITS, learning to rank, collaborative filtering) 5. Word association and topic models (PLSA with EM, LDA) 6. Text clustering and categorisation 7. Opinion mining and text-based prediction 8. Neural retrieval beyond the classic syllabus (embeddings, dense retrieval, RAG)
+Coursework: MP minisearch (BM25 and evaluation on Cranfield), MP topicmine (PLSA and feedback), final project covidsearch (a search engine over TREC-COVID).
+
+### data-mining (CS 412)
+Follows UIUC CS 412 (Han, Pei and Tong, *Data Mining: Concepts and Techniques*); not affiliated with Illinois. Links to `machine-learning` where they overlap.
+1. Introduction and getting to know data 2. Data preprocessing 3. Data warehousing and OLAP 4. Frequent pattern mining (Apriori, FP-growth, closed and maximal, interestingness) 5. Advanced pattern mining (multilevel, constrained, sequential) 6. Classification basics (decision trees, Bayes, rules, evaluation) 7. Advanced classification (ensembles, imbalance, k-NN and more) 8. Cluster analysis (partitioning, hierarchical, density- and grid-based, evaluation) 9. Outlier detection
+Coursework: MP retailcube (Online Retail cleaning, PCA and a data cube in DuckDB), MP patternminer (Apriori, FP-growth, PrefixSpan, a decision tree), final project readmit-mining (UCI Diabetes 130-US hospitals).
 
 ### systems-programming
 1. `c-fundamentals` 2. `pointers-and-memory` 3. `the-toolchain` (compiler, linker, make, debuggers) 4. `unix-system-calls` (files, processes, signals) 5. `performance-and-undefined-behaviour` 6. `rust-fundamentals` 7. `ownership-and-safe-concurrency`
@@ -686,12 +698,12 @@ Capstone: analyse a real X-ray or gravitational-wave dataset and interpret it ph
 
 ## Completion status
 
-All 73 subjects are written. Every lesson is fully populated: none is marked `outline`.
+All 75 subjects are written. Every lesson is fully populated: none is marked `outline`.
 `npm run validate` reports no errors and no warnings.
 
 | Category | Subjects | Lessons |
 |---|---|---|
-| Computer Science | 21 | 524 |
+| Computer Science | 23 | 595 |
 | Data Science | 8 | 225 |
 | Mathematics | 19 | 468 |
 | Statistics | 2 | 56 |
@@ -700,12 +712,12 @@ All 73 subjects are written. Every lesson is fully populated: none is marked `ou
 | Chemistry | 2 | 69 |
 | Astronomy | 6 | 158 |
 | Miscellaneous | 1 | 35 |
-| **Total** | **73** | **1,907** |
+| **Total** | **75** | **1,978** |
 
 Run `npm run validate` for the per-subject table (modules, lessons, hours).
 
-The CS and data science subjects and `probability-statistics` have coursework: 60 machine problems and 30 final
-projects, about 2,380 hours on top of the subject hours. Mathematics subjects use module projects
+The CS and data science subjects and `probability-statistics` have coursework: 64 machine problems and 32 final
+projects, about 2,560 hours on top of the subject hours. Mathematics subjects use module projects
 and a capstone instead. Specs were checked by script, by reasoning
 or on sample runs. Almost none has been built end to end, so treat numeric targets and timings as
 estimates.

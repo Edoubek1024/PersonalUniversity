@@ -75,6 +75,8 @@ export const learningPaths: LearningPath[] = [
       'data-structures-algorithms',
       'databases',
       'machine-learning',
+      'data-mining',
+      'text-information-systems',
       'deep-learning',
     ],
     outcome:

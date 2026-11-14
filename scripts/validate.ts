@@ -15,6 +15,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 import { attachCoursework } from '../src/data/define';
 import type { CourseworkInput, CourseworkItem, Subject } from '../src/data/types';
 import { findBlocks, stripBlocks } from '../src/widgets/parse';
+import { universities } from '../src/data/universities';
 
 const SUBJECT_DIR = resolve(__dirname, '../src/data/subjects');
 const COURSEWORK_DIR = resolve(__dirname, '../src/data/coursework');
@@ -97,6 +98,8 @@ const KNOWN_SUBJECT_IDS = [
   'macroeconomic-principles',
   'general-chemistry-1',
   'general-chemistry-lab-1',
+  'text-information-systems',
+  'data-mining',
 ];
 
 type Level = 'ERROR' | 'WARN';
@@ -112,6 +115,12 @@ const err = (subject: string, where: string, message: string) =>
   findings.push({ level: 'ERROR', subject, where, message });
 const warn = (subject: string, where: string, message: string) =>
   findings.push({ level: 'WARN', subject, where, message });
+
+for (const u of universities) {
+  for (const id of Object.keys(u.codes)) {
+    if (!KNOWN_SUBJECT_IDS.includes(id)) err(id, `universities.${u.id}`, `course code "${u.codes[id]}" maps an unknown subject id`);
+  }
+}
 
 async function loadSubjects(): Promise<{ subjects: Subject[]; files: Map<string, string> }> {
   const files = readdirSync(SUBJECT_DIR).filter((f) => f.endsWith('.ts') && f !== 'index.ts');

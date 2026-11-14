@@ -5,9 +5,11 @@ import { relativeTime } from '@/lib/format';
 import { SubjectCard } from '@/components/SubjectCard';
 import { LessonRow } from '@/components/LessonRow';
 import { Empty, SectionTitle } from '@/components/ui';
+import { useCourseCodes } from '@/store/settings';
 
 export function BookmarksPage() {
   const { bookmarks } = useProgress();
+  const cc = useCourseCodes();
   const entries = Object.entries(bookmarks).sort((a, b) => b[1].localeCompare(a[1]));
   const subjects = entries.map(([id]) => subjectById.get(id)).filter(Boolean);
   const lessons = entries.map(([id, at]) => ({ lesson: lessonById.get(id), at })).filter((x) => x.lesson);
@@ -34,7 +36,7 @@ export function BookmarksPage() {
           <SectionTitle id="bm-lessons">Lessons</SectionTitle>
           <ol className="card p-2">
             {lessons.map(({ lesson, at }) => (
-              <LessonRow key={lesson!.id} lesson={lesson!} subtitle={`${subjectById.get(lesson!.subjectId)?.title} · saved ${relativeTime(at)}`} />
+              <LessonRow key={lesson!.id} lesson={lesson!} subtitle={`${cc.label(subjectById.get(lesson!.subjectId)!)} · saved ${relativeTime(at)}`} />
             ))}
           </ol>
         </section>

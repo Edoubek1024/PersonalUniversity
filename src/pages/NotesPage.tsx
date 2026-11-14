@@ -4,9 +4,11 @@ import { lessonById, subjectById } from '@/data/subjects';
 import { useProgress } from '@/store/progress';
 import { Markdown } from '@/lib/markdown';
 import { Empty } from '@/components/ui';
+import { useCourseCodes } from '@/store/settings';
 
 export function NotesPage() {
   const { notes } = useProgress();
+  const cc = useCourseCodes();
   const [q, setQ] = useState('');
   const entries = useMemo(() => {
     const ql = q.trim().toLowerCase();
@@ -38,7 +40,7 @@ export function NotesPage() {
                 <Link to={`/subjects/${e.id}`} className="text-sm font-semibold hover:text-accent">
                   {e.lesson?.title ?? e.id}
                 </Link>
-                <span className="text-xs text-ink-3">{e.lesson ? subjectById.get(e.lesson.subjectId)?.title : 'lesson removed'}</span>
+                <span className="text-xs text-ink-3">{e.lesson && subjectById.get(e.lesson.subjectId) ? cc.label(subjectById.get(e.lesson.subjectId)!) : 'lesson removed'}</span>
               </div>
               <Markdown className="text-sm">{e.text}</Markdown>
             </li>

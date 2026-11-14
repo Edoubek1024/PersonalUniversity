@@ -22,6 +22,7 @@ import { accentFor } from '@/components/ui';
 import { CourseworkRow } from '@/components/CourseworkRow';
 import { ResourceItem } from '@/components/ResourceItem';
 import { machineProblemsAfter } from '@/lib/coursework';
+import { useCourseCodes } from '@/store/settings';
 import { NotFound } from './NotFound';
 
 const kindLabel: Record<Exercise['kind'], string> = {
@@ -40,6 +41,7 @@ export function LessonPage() {
   const lesson = lessonById.get(lessonId);
   const subject = subjectById.get(subjectId);
   const { completedLessons, toggleLesson, checks, toggleCheck, notes, setNote, bookmarks, toggleBookmark, visit, selfChecks, setSelfCheck, quizAnswers, setQuizAnswer } = useProgress();
+  const cc = useCourseCodes();
   const [noteDraft, setNoteDraft] = useState(notes[lessonId] ?? '');
 
   useEffect(() => {
@@ -77,7 +79,7 @@ export function LessonPage() {
           </Link>
           <span>/</span>
           <Link to={`/subjects/${subject.id}`} className={`hover:text-ink ${accent.text}`}>
-            {subject.title}
+            {cc.label(subject)}
           </Link>
           <span>/</span>
           <span>{mod.title}</span>
@@ -295,6 +297,7 @@ export function LessonPage() {
 function LessonLink({ id, title }: { id: string; title?: string }) {
   const subjectId = id.split('/')[0];
   const s = subjectById.get(subjectId);
+  const cc = useCourseCodes();
   if (!title) {
     return (
       <span className="inline-flex items-center gap-2 text-sm text-ink-3">
@@ -305,7 +308,7 @@ function LessonLink({ id, title }: { id: string; title?: string }) {
   return (
     <Link to={`/subjects/${id}`} className="inline-flex items-center gap-2 text-sm text-accent hover:underline">
       <Link2 size={14} aria-hidden /> {title}
-      {s && <span className="text-xs text-ink-3">· {s.title}</span>}
+      {s && <span className="text-xs text-ink-3">· {cc.label(s)}</span>}
     </Link>
   );
 }

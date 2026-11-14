@@ -7,9 +7,11 @@ import { recentlyCompleted, recommend } from '@/lib/recommend';
 import { relativeTime } from '@/lib/format';
 import { SubjectCard } from '@/components/SubjectCard';
 import { ProgressRing, SectionTitle, accentFor } from '@/components/ui';
+import { useCourseCodes } from '@/store/settings';
 
 export function Dashboard() {
   const { completedLessons, lastVisited } = useProgress();
+  const cc = useCourseCodes();
   const doneCount = Object.keys(completedLessons).filter((id) => subjects.some((s) => s.lessons.some((l) => l.id === id))).length;
   const overallPct = totalLessonCount ? Math.round((doneCount / totalLessonCount) * 100) : 0;
   const active = subjects.filter((s) => subjectStatus(s, completedLessons) === 'active');
@@ -84,7 +86,7 @@ export function Dashboard() {
                       <div className="min-w-0 flex-1">
                         <div className="truncate text-sm font-medium">{r.lesson.title}</div>
                         <div className="truncate text-xs text-ink-3">
-                          {r.subject.title} · {r.reason}
+                          {cc.label(r.subject)} · {r.reason}
                         </div>
                       </div>
                       <ArrowRight size={16} className="shrink-0 text-ink-3" aria-hidden />
@@ -108,7 +110,7 @@ export function Dashboard() {
                     <CheckCircle2 size={16} className="shrink-0 text-emerald-500" aria-hidden />
                     <div className="min-w-0 flex-1">
                       <div className="truncate text-sm">{r.lesson.title}</div>
-                      <div className="truncate text-xs text-ink-3">{r.subject.title}</div>
+                      <div className="truncate text-xs text-ink-3">{cc.label(r.subject)}</div>
                     </div>
                     <span className="shrink-0 text-xs text-ink-3">{relativeTime(r.at)}</span>
                   </Link>

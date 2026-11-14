@@ -109,6 +109,19 @@ quiz: [
 - Questions and explanations are Markdown with maths, options are inline Markdown. As
   everywhere, a bare `$` starts maths, so write amounts as `USD 20` or `20 dollars`.
 
+## University course codes
+
+`src/data/universities.ts` maps subject IDs to a university's course codes (UIUC today). With
+"Show course codes" on in Settings, a mapped subject is labelled "MATH 241 (Calculus III)" and
+the Subjects page lists mapped subjects first, in code order. Codes are searchable either way.
+
+- Map a subject only when it covers essentially the same course. A combined code
+  ("MATH 482/484") means one subject covers both. Leave a subject out rather than guess.
+- When a new subject follows a course, add its code in the same change.
+- To add a university (UIC is expected next), add its id to `UniversityId` and an entry to
+  `universities`; the Settings picker lists it automatically. The validator rejects codes for
+  unknown subject IDs.
+
 ## Interactive widgets
 
 A lesson explanation, exercise prompt or hint can embed an interactive widget with a fenced

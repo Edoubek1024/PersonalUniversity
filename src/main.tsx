@@ -6,15 +6,18 @@ import './index.css';
 import App from './App';
 import { ProgressProvider } from './store/progress';
 import { ThemeProvider } from './store/theme';
+import { SettingsProvider } from './store/settings';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider>
+      <SettingsProvider>
       <ProgressProvider>
         <HashRouter>
           <App />
         </HashRouter>
       </ProgressProvider>
+      </SettingsProvider>
     </ThemeProvider>
   </StrictMode>,
 );

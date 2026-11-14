@@ -7,6 +7,9 @@ import { subjectStatus, useProgress, type SubjectStatus } from '@/store/progress
 import { difficultyRank } from '@/lib/format';
 import { SubjectCard } from '@/components/SubjectCard';
 import { PrerequisiteMap } from '@/components/PrerequisiteMap';
+import { useCourseCodes, useSettings } from '@/store/settings';
+import { compareCodes } from '@/data/universities';
+import type { Subject } from '@/data/types';
 
 const difficulties: Difficulty[] = ['beginner', 'intermediate', 'advanced', 'expert'];
 const statuses: { id: SubjectStatus | 'all'; label: string }[] = [
@@ -19,6 +22,8 @@ const statuses: { id: SubjectStatus | 'all'; label: string }[] = [
 export function SubjectsPage() {
   const [params, setParams] = useSearchParams();
   const { completedLessons } = useProgress();
+  const cc = useCourseCodes();
+  const { setCourseCodes } = useSettings();
   const q = params.get('q') ?? '';
   const category = (params.get('category') ?? 'all') as CategoryId | 'all';
   const difficulty = (params.get('difficulty') ?? 'all') as Difficulty | 'all';
@@ -39,7 +44,7 @@ export function SubjectsPage() {
       if (category !== 'all' && s.category !== category) return false;
       if (difficulty !== 'all' && s.difficulty !== difficulty) return false;
       if (status !== 'all' && subjectStatus(s, completedLessons) !== status) return false;
-      if (ql && ![s.title, s.tagline, s.tags.join(' ')].join(' ').toLowerCase().includes(ql)) return false;
+      if (ql && ![s.title, s.tagline, s.tags.join(' '), cc.code(s.id) ?? ''].join(' ').toLowerCase().includes(ql)) return false;
       return true;
     });
     if (sort === 'difficulty') list = [...list].sort((a, b) => difficultyRank[a.difficulty] - difficultyRank[b.difficulty]);
@@ -47,7 +52,20 @@ export function SubjectsPage() {
     else if (sort === 'title') list = [...list].sort((a, b) => a.title.localeCompare(b.title));
     else list = [...list].sort((a, b) => a.prerequisites.length - b.prerequisites.length || a.title.localeCompare(b.title));
     return list;
-  }, [q, category, difficulty, status, sort, completedLessons]);
+  }, [q, category, difficulty, status, sort, completedLessons, cc]);
+
+  // In course-code mode, subjects with a code come first (in code order unless another sort is
+  // chosen), then the subjects with no counterpart at the chosen university.
+  const groups = useMemo((): { title: string | null; subjects: Subject[] }[] => {
+    if (!cc.enabled) return [{ title: null, subjects: filtered }];
+    const coded = filtered.filter((s) => cc.code(s.id));
+    const rest = filtered.filter((s) => !cc.code(s.id));
+    if (sort === 'order') coded.sort((a, b) => compareCodes(cc.code(a.id)!, cc.code(b.id)!));
+    return [
+      { title: `${cc.university.short} courses`, subjects: coded },
+      { title: `Not matched to a ${cc.university.short} course`, subjects: rest },
+    ].filter((g) => g.subjects.length > 0);
+  }, [filtered, cc, sort]);
 
   return (
     <div className="space-y-6 animate-rise">
@@ -106,10 +124,15 @@ export function SubjectsPage() {
         </label>
       </form>
 
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-ink-3" aria-live="polite">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="whitespace-nowrap text-sm text-ink-3" aria-live="polite">
           {filtered.length} subject{filtered.length === 1 ? '' : 's'}
         </p>
+        <div className="flex items-center gap-3">
+        <label className="inline-flex cursor-pointer items-center gap-1.5 whitespace-nowrap text-xs text-ink-2" title={`Label subjects by their ${cc.university.short} course codes`}>
+          <input type="checkbox" checked={cc.enabled} onChange={(e) => setCourseCodes(e.target.checked)} className="h-3.5 w-3.5 cursor-pointer accent-indigo-500" />
+          {cc.university.short} codes
+        </label>
         <div role="tablist" aria-label="View" className="flex rounded-lg border border-line p-0.5">
           {[
             ['cards', 'Cards'],
@@ -121,11 +144,12 @@ export function SubjectsPage() {
               aria-selected={view === id}
               type="button"
               onClick={() => set('view', id)}
-              className={`rounded-md px-3 py-1 text-xs font-medium ${view === id ? 'bg-surface-2 text-ink' : 'text-ink-3 hover:text-ink'}`}
+              className={`whitespace-nowrap rounded-md px-3 py-1 text-xs font-medium ${view === id ? 'bg-surface-2 text-ink' : 'text-ink-3 hover:text-ink'}`}
             >
               {label}
             </button>
           ))}
+        </div>
         </div>
       </div>
 
@@ -134,9 +158,20 @@ export function SubjectsPage() {
       ) : filtered.length === 0 ? (
         <p className="card p-8 text-center text-sm text-ink-2">No subjects match these filters.</p>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((s) => (
-            <SubjectCard key={s.id} subject={s} />
+        <div className="space-y-8">
+          {groups.map((g) => (
+            <section key={g.title ?? 'all'} aria-label={g.title ?? undefined}>
+              {g.title && (
+                <h2 className="mb-3 flex items-baseline gap-2 text-sm font-semibold uppercase tracking-widest text-ink-3">
+                  {g.title} <span className="font-normal tabular-nums normal-case tracking-normal">· {g.subjects.length}</span>
+                </h2>
+              )}
+              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                {g.subjects.map((s) => (
+                  <SubjectCard key={s.id} subject={s} />
+                ))}
+              </div>
+            </section>
           ))}
         </div>
       )}

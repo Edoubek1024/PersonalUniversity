@@ -15,12 +15,14 @@ import {
 import { Inline, Markdown } from '@/lib/markdown';
 import { CategoryBadge, Checkbox, ProgressBar, SectionTitle } from '@/components/ui';
 import { ResourceItem } from '@/components/ResourceItem';
+import { useCourseCodes } from '@/store/settings';
 import { NotFound } from './NotFound';
 
 export function CourseworkPage() {
   const { subjectId = '', slug = '' } = useParams();
   const subject = subjectById.get(subjectId);
   const { checks, toggleCheck, completedLessons } = useProgress();
+  const cc = useCourseCodes();
   const item = subject && findCoursework(subject, slug);
   if (!subject || !subject.coursework || !item) return <NotFound />;
 
@@ -46,7 +48,7 @@ export function CourseworkPage() {
           </Link>{' '}
           /{' '}
           <Link to={`/subjects/${subject.id}`} className="text-accent hover:underline">
-            {subject.title}
+            {cc.label(subject)}
           </Link>{' '}
           / <span>{courseworkLabel(item)}</span>
         </nav>

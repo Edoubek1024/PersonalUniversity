@@ -1,6 +1,7 @@
 import { subjects } from '@/data/subjects';
 import { learningPaths } from '@/data/paths';
 import { courseworkHref, courseworkLabel } from '@/lib/coursework';
+import { universities } from '@/data/universities';
 
 export type SearchHit =
   | { kind: 'subject'; id: string; title: string; subtitle: string; href: string; score: number }
@@ -21,7 +22,8 @@ function build(): Entry[] {
   for (const s of subjects) {
     entries.push({
       hit: { kind: 'subject', id: s.id, title: s.title, subtitle: s.tagline, href: `/subjects/${s.id}` },
-      haystack: [s.title, s.tagline, s.tags.join(' '), s.description].join(' ').toLowerCase(),
+      // Course codes from every university are searchable whether or not code mode is on.
+      haystack: [s.title, s.tagline, s.tags.join(' '), s.description, ...universities.map((u) => u.codes[s.id] ?? '')].join(' ').toLowerCase(),
       titleLower: s.title.toLowerCase(),
     });
     for (const item of s.coursework?.items ?? []) {

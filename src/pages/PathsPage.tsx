@@ -6,6 +6,7 @@ import { categoryById } from '@/data/categories';
 import { subjectCompletion, useProgress } from '@/store/progress';
 import { nextLessonIn } from '@/lib/recommend';
 import { ProgressBar, ProgressRing, CategoryBadge, DifficultyBadge, accentFor } from '@/components/ui';
+import { useCourseCodes } from '@/store/settings';
 import { NotFound } from './NotFound';
 
 function pathStats(subjectIds: string[], completed: Record<string, string>) {
@@ -57,6 +58,7 @@ export function PathsPage() {
 
 export function PathPage() {
   const { pathId = '' } = useParams();
+  const cc = useCourseCodes();
   const path = learningPaths.find((p) => p.id === pathId);
   const { completedLessons } = useProgress();
   if (!path) return <NotFound />;
@@ -126,9 +128,9 @@ export function PathPage() {
                     {c.done}/{c.total} · {s.estimatedHours} h
                   </span>
                 </div>
-                <div className="text-base font-semibold">{s.title}</div>
+                <div className="text-base font-semibold">{cc.label(s)}</div>
                 <p className="text-sm text-ink-2">{s.tagline}</p>
-                <ProgressBar pct={c.pct} accent={categoryById[s.category].accent} label={`${s.title} progress`} />
+                <ProgressBar pct={c.pct} accent={categoryById[s.category].accent} label={`${cc.label(s)} progress`} />
               </Link>
             </li>
           );

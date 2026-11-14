@@ -5,6 +5,7 @@ import { subjectById } from '@/data/subjects';
 import { subjectCompletion, useProgress } from '@/store/progress';
 import { CategoryBadge, ProgressBar, accentFor } from './ui';
 import { categoryById } from '@/data/categories';
+import { useCourseCodes } from '@/store/settings';
 
 /**
  * Groups subjects into prerequisite "levels": level 0 has no prerequisites,
@@ -13,6 +14,7 @@ import { categoryById } from '@/data/categories';
  */
 export function PrerequisiteMap({ subjects }: { subjects: Subject[] }) {
   const { completedLessons } = useProgress();
+  const cc = useCourseCodes();
   const ids = new Set(subjects.map((s) => s.id));
   const level = new Map<string, number>();
   const depth = (s: Subject, seen = new Set<string>()): number => {
@@ -46,7 +48,7 @@ export function PrerequisiteMap({ subjects }: { subjects: Subject[] }) {
                       <CategoryBadge category={s.category} />
                       <span className="text-xs tabular-nums text-ink-3">{c.pct}%</span>
                     </div>
-                    <div className="text-sm font-semibold">{s.title}</div>
+                    <div className="text-sm font-semibold">{cc.label(s)}</div>
                     {s.prerequisites.length > 0 && (
                       <ul className="flex flex-wrap gap-1" aria-label="Prerequisites">
                         {s.prerequisites.map((p) => {
@@ -54,13 +56,13 @@ export function PrerequisiteMap({ subjects }: { subjects: Subject[] }) {
                           const met = ps ? subjectCompletion(ps, completedLessons).pct >= 60 : false;
                           return (
                             <li key={p} className={`chip ${met ? 'text-emerald-600 dark:text-emerald-300' : ''} ${ids.has(p) ? '' : 'opacity-60'}`}>
-                              {ps?.title ?? p}
+                              {ps ? cc.label(ps) : p}
                             </li>
                           );
                         })}
                       </ul>
                     )}
-                    <ProgressBar pct={c.pct} accent={categoryById[s.category].accent} label={`${s.title} progress`} />
+                    <ProgressBar pct={c.pct} accent={categoryById[s.category].accent} label={`${cc.label(s)} progress`} />
                   </Link>
                 );
               })}

@@ -47,7 +47,7 @@ export function recommend(
     .sort((a, b) => b.last - a.last);
   for (const { s } of active) {
     const l = nextLessonIn(s, completed);
-    if (l) out.push({ lesson: l, subject: s, reason: `Continue ${s.title}` });
+    if (l) out.push({ lesson: l, subject: s, reason: 'Continue where you left off' });
     if (out.length >= limit) return out;
   }
   const startable = subjects

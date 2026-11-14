@@ -5,10 +5,12 @@ import { categoryById } from '@/data/categories';
 import { subjectById } from '@/data/subjects';
 import { subjectCompletion, useProgress } from '@/store/progress';
 import { prerequisiteReadiness } from '@/lib/recommend';
+import { useCourseCodes } from '@/store/settings';
 import { CategoryBadge, DifficultyBadge, ProgressBar, accentFor } from './ui';
 
 export function SubjectCard({ subject, compact = false }: { subject: Subject; compact?: boolean }) {
   const { completedLessons } = useProgress();
+  const cc = useCourseCodes();
   const c = subjectCompletion(subject, completedLessons);
   const accent = categoryById[subject.category].accent;
   const a = accentFor(subject.category);
@@ -31,7 +33,7 @@ export function SubjectCard({ subject, compact = false }: { subject: Subject; co
         </div>
       </div>
       <div className="flex-1">
-        <h3 className="text-[15px] font-semibold leading-snug tracking-tight group-hover:text-accent">{subject.title}</h3>
+        <h3 className="text-[15px] font-semibold leading-snug tracking-tight group-hover:text-accent">{cc.label(subject)}</h3>
         {!compact && <p className="mt-1 line-clamp-2 text-sm text-ink-2">{subject.tagline}</p>}
       </div>
       <div className="flex items-center gap-3 text-xs text-ink-3">
@@ -50,7 +52,7 @@ export function SubjectCard({ subject, compact = false }: { subject: Subject; co
           {c.done}/{c.total}
         </span>
       </div>
-      <ProgressBar pct={c.pct} accent={accent} label={`${subject.title} progress`} />
+      <ProgressBar pct={c.pct} accent={accent} label={`${cc.label(subject)} progress`} />
     </Link>
   );
 }

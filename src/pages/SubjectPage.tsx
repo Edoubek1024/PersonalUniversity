@@ -11,12 +11,14 @@ import { courseworkHours, courseworkProgress, machineProblemsAfter } from '@/lib
 import { CourseworkRow } from '@/components/CourseworkRow';
 import { LessonRow } from '@/components/LessonRow';
 import { CategoryBadge, Checkbox, DifficultyBadge, ProgressBar, ProgressRing, SectionTitle, accentFor } from '@/components/ui';
+import { useCourseCodes } from '@/store/settings';
 import { NotFound } from './NotFound';
 
 export function SubjectPage() {
   const { subjectId = '' } = useParams();
   const subject = subjectById.get(subjectId);
   const { completedLessons, checks, toggleCheck, bookmarks, toggleBookmark, resetSubject } = useProgress();
+  const cc = useCourseCodes();
   if (!subject) return <NotFound />;
 
   const c = subjectCompletion(subject, completedLessons);
@@ -50,7 +52,7 @@ export function SubjectPage() {
               <DifficultyBadge difficulty={subject.difficulty} />
               {!subject.core && <span className="chip">Additional subject</span>}
             </div>
-            <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">{subject.title}</h1>
+            <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">{cc.label(subject)}</h1>
             <p className="mt-2 text-base text-ink-2">{subject.tagline}</p>
             <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-ink-2">
               <span className="inline-flex items-center gap-1.5">
@@ -233,7 +235,7 @@ export function SubjectPage() {
                         <Link to={`/subjects/${p}`} className="flex items-center justify-between gap-2 rounded-md px-2 py-1 text-sm hover:bg-surface-2">
                           <span className="inline-flex items-center gap-1.5">
                             {pc && pc.pct < 60 && <Lock size={12} className="text-amber-500" aria-label="Not yet met" />}
-                            {ps.title}
+                            {cc.label(ps)}
                           </span>
                           <span className="text-xs tabular-nums text-ink-3">{pc?.pct}%</span>
                         </Link>

@@ -3,10 +3,14 @@ import { Download, Moon, RotateCcw, Sun, Upload } from 'lucide-react';
 import { subjects, totalLessonCount } from '@/data/subjects';
 import { useProgress } from '@/store/progress';
 import { useTheme } from '@/store/theme';
+import { useSettings } from '@/store/settings';
+import { universities, universityById, type UniversityId } from '@/data/universities';
 
 export function SettingsPage() {
   const p = useProgress();
   const { theme, toggle } = useTheme();
+  const { courseCodes, setCourseCodes, university, setUniversity } = useSettings();
+  const mapped = subjects.filter((s) => universityById[university].codes[s.id]).length;
   const fileRef = useRef<HTMLInputElement>(null);
   const [mode, setMode] = useState<'merge' | 'replace'>('merge');
   const [msg, setMsg] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null);
@@ -52,6 +56,32 @@ export function SettingsPage() {
           {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           Switch to {theme === 'dark' ? 'light' : 'dark'} mode
         </button>
+      </section>
+
+      <section className="card p-5" aria-labelledby="codes">
+        <h2 id="codes" className="text-base font-semibold">
+          Course codes
+        </h2>
+        <p className="mt-1 text-sm text-ink-2">
+          Label subjects that are essentially a university course by that course&apos;s code, for example &ldquo;MATH 241 (Calculus III)&rdquo;, and list them before the rest on the Subjects page.
+        </p>
+        <label className="mt-3 flex items-center gap-2 text-sm">
+          <input type="checkbox" checked={courseCodes} onChange={(e) => setCourseCodes(e.target.checked)} className="h-4 w-4 cursor-pointer accent-indigo-500" />
+          Show course codes
+        </label>
+        <label className="mt-3 block text-sm">
+          <span className="text-xs font-semibold uppercase tracking-widest text-ink-3">University</span>
+          <select className="input mt-1 max-w-sm" value={university} onChange={(e) => setUniversity(e.target.value as UniversityId)}>
+            {universities.map((u) => (
+              <option key={u.id} value={u.id}>
+                {u.name} ({u.short})
+              </option>
+            ))}
+          </select>
+        </label>
+        <p className="mt-2 text-xs text-ink-3">
+          {mapped} of {subjects.length} subjects match a {universityById[university].short} course. Codes follow the university&apos;s catalog; the content here is original and not affiliated with the university.
+        </p>
       </section>
 
       <section className="card p-5" aria-labelledby="data">
