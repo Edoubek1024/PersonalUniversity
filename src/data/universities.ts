@@ -8,7 +8,7 @@
  * combined code ("MATH 482/484") means the subject covers both courses.
  */
 
-export type UniversityId = 'uiuc';
+export type UniversityId = 'uiuc' | 'uic';
 
 export interface University {
   id: UniversityId;
@@ -95,7 +95,17 @@ const uiuc: University = {
   },
 };
 
-export const universities: University[] = [uiuc];
+const uic: University = {
+  id: 'uic',
+  name: 'University of Illinois Chicago',
+  short: 'UIC',
+  codes: {
+    // Biological Sciences
+    genetics: 'BIOS 220',
+  },
+};
+
+export const universities: University[] = [uiuc, uic];
 
 export const universityById: Record<UniversityId, University> = Object.fromEntries(
   universities.map((u) => [u.id, u]),

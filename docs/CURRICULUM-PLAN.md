@@ -150,6 +150,19 @@ alongside the lecture and replaces the bench with simulated experiments and writ
 | `general-chemistry-1` | General Chemistry I | CHEM 102 | beginner | 88 | — | additional |
 | `general-chemistry-lab-1` | General Chemistry Lab I | CHEM 103 | beginner | 86 | — (take alongside `general-chemistry-1`) | additional |
 
+## Biology (`biology`)
+
+This follows the University of Illinois Chicago genetics course (BIOS 220). The official catalog
+entry could not be opened, so the topics and their order come from UIC class-schedule listings
+and the course's open LibreTexts text by a UIC instructor (molecular genetics first, then
+inheritance); cell division moves to just before Mendel and population and quantitative genetics
+close the course. The content is original and not affiliated with UIC. Every lesson ends with a
+multiple-choice quiz.
+
+| ID | Title | Follows | Diff | Hrs | Prerequisites | Core |
+|---|---|---|---|---|---|---|
+| `genetics` | Genetics | BIOS 220 (UIC) | intermediate | 95 | — (BIOS 110/120 background reviewed in module 1) | additional |
+
 ## Astronomy (`astronomy`)
 
 | ID | Title | Diff | Hrs | Prerequisites | Core |
@@ -672,6 +685,20 @@ written up with a report template and rubric. Says plainly what simulation canno
 9. Le Chatelier's principle
 Capstone: a full formal report, or an experiment designed with the simulators.
 
+### genetics (BIOS 220, UIC)
+Genes and chromosomes, gene expression and regulation, inheritance and mapping, genetic
+technology, and genetics of populations. Reasoned from crosses, experiments and real data.
+1. DNA, genes and chromosomes: the genetic material, DNA structure, chromosomes and genomes, replication
+2. Gene expression and mutation: transcription, RNA processing, the genetic code, translation, point mutations, mutagens and repair
+3. Gene regulation: the lac operon, positive control and the trp operon, eukaryotic regulation, epigenetics
+4. Cell division and chromosome mutations: cell cycle and cancer, meiosis and the chromosome theory, aneuploidy and polyploidy, rearrangements
+5. Mendelian inheritance: segregation, independent assortment and probability, the chi-square test, pedigree analysis
+6. Extensions of Mendel: dominance, multiple alleles and lethals, epistasis, sex linkage, penetrance and expressivity, organelle inheritance and maternal effect
+7. Linkage and mapping: recombination frequency, three-point crosses, bacterial gene mapping, complementation and fine structure
+8. Genetic technology and genomics: recombinant DNA and PCR, sequencing, genome editing, human variation, LOD scores and GWAS
+9. Population and quantitative genetics: Hardy-Weinberg, selection, drift, mutation and migration, heritability
+Capstone: a genetic dossier on one inherited condition.
+
 ### intro-astronomy
 1. `the-night-sky` 2. `light-and-telescopes` 3. `the-solar-system` 4. `the-sun-and-stars` 5. `stellar-lives-and-deaths` 6. `galaxies-and-the-universe` 7. `life-in-the-universe-and-how-astronomers-work`
 Capstone: an observing log plus a quantitative analysis (e.g. measuring the Moon's distance, the Sun's rotation, or a star cluster's age).
@@ -698,7 +725,7 @@ Capstone: analyse a real X-ray or gravitational-wave dataset and interpret it ph
 
 ## Completion status
 
-All 75 subjects are written. Every lesson is fully populated: none is marked `outline`.
+All 76 subjects are written. Every lesson is fully populated: none is marked `outline`.
 `npm run validate` reports no errors and no warnings.
 
 | Category | Subjects | Lessons |
@@ -710,9 +737,10 @@ All 75 subjects are written. Every lesson is fully populated: none is marked `ou
 | Economics | 2 | 72 |
 | Physics | 12 | 300 |
 | Chemistry | 2 | 69 |
+| Biology | 1 | 38 |
 | Astronomy | 6 | 158 |
 | Miscellaneous | 1 | 35 |
-| **Total** | **75** | **1,978** |
+| **Total** | **76** | **2,016** |
 
 Run `npm run validate` for the per-subject table (modules, lessons, hours).
 

@@ -61,6 +61,13 @@ export const accentClasses: Record<string, { text: string; bg: string; ring: str
     bar: 'bg-fuchsia-500',
     dot: 'bg-fuchsia-500',
   },
+  emerald: {
+    text: 'text-emerald-600 dark:text-emerald-300',
+    bg: 'bg-emerald-500/10',
+    ring: 'ring-emerald-500/30',
+    bar: 'bg-emerald-500',
+    dot: 'bg-emerald-500',
+  },
   amber: {
     text: 'text-amber-600 dark:text-amber-300',
     bg: 'bg-amber-500/10',

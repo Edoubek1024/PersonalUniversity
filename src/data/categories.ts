@@ -51,6 +51,13 @@ export const categories: Category[] = [
     accent: 'fuchsia',
   },
   {
+    id: 'biology',
+    title: 'Biology',
+    description:
+      'How living things work and pass on what they are: genes and chromosomes, inheritance, gene expression and genomes, reasoned from experiments and real data.',
+    accent: 'emerald',
+  },
+  {
     id: 'astronomy',
     title: 'Astronomy',
     description:

@@ -13,7 +13,7 @@ import { defineSubject } from '../define';
 export default defineSubject({
   id: 'operating-systems',
   title: 'Operating Systems',
-  category: 'cs',                       // 'cs' | 'data-science' | 'math' | 'statistics' | 'economics' | 'physics' | 'chemistry' | 'astronomy' | 'misc'
+  category: 'cs',                       // 'cs' | 'data-science' | 'math' | 'statistics' | 'economics' | 'physics' | 'chemistry' | 'biology' | 'astronomy' | 'misc'
   tagline: 'One sentence shown on the subject card.',
   description: `Markdown, 2-4 paragraphs.`,
   difficulty: 'advanced',               // beginner | intermediate | advanced | expert
@@ -111,14 +111,14 @@ quiz: [
 
 ## University course codes
 
-`src/data/universities.ts` maps subject IDs to a university's course codes (UIUC today). With
+`src/data/universities.ts` maps subject IDs to a university's course codes (UIUC and UIC). With
 "Show course codes" on in Settings, a mapped subject is labelled "MATH 241 (Calculus III)" and
 the Subjects page lists mapped subjects first, in code order. Codes are searchable either way.
 
 - Map a subject only when it covers essentially the same course. A combined code
   ("MATH 482/484") means one subject covers both. Leave a subject out rather than guess.
 - When a new subject follows a course, add its code in the same change.
-- To add a university (UIC is expected next), add its id to `UniversityId` and an entry to
+- To add a university, add its id to `UniversityId` and an entry to
   `universities`; the Settings picker lists it automatically. The validator rejects codes for
   unknown subject IDs.
 
@@ -166,7 +166,7 @@ default-exports `defineCoursework({...})`. It is discovered automatically. The t
 `src/data/coursework/systems-programming.ts` is the reference for length, tone and specificity.
 Match it.
 
-Coursework is optional for `statistics`, `economics`, `chemistry` and `misc` subjects, and validated the same way when present. A final
+Coursework is optional for `statistics`, `economics`, `chemistry`, `biology` and `misc` subjects, and validated the same way when present. A final
 project replaces the subject's `capstone` in the UI. Do not edit the capstone in the
 subject file.
 
