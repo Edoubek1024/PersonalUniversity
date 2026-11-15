@@ -163,15 +163,18 @@ export default defineSubject({
 
 This curriculum uses MIT OpenCourseWare 8.20 and 8.033 for special relativity, MIT 8.962 (Scott Hughes's graduate course) for general relativity, and two free texts throughout: Sean Carroll's Lecture Notes on General Relativity and David Tong's Cambridge notes. Taylor and Wheeler's *Spacetime Physics* and *Exploring Black Holes*, both free from the authors, supply the physical intuition. Modules 1-2 build special relativity to the point of covariant electrodynamics. Module 3 develops the tensor calculus of curved manifolds. Module 4 derives the field equations; module 5 solves them for a star and a black hole; module 6 treats gravitational waves and cosmology; module 7 confronts everything with experiment.
 
-You will derive, not just read. Each module asks you to compute Christoffel symbols and curvature (by hand and with SymPy), integrate geodesics numerically, reproduce Mercury's perihelion advance and the deflection of starlight, and analyse real LIGO strain data. The capstone combines a black-hole geodesic integrator with the reproduction of a classic test.`,
+You will derive, not just read. Each module asks you to compute Christoffel symbols and curvature (by hand and with SymPy), integrate geodesics numerically, reproduce Mercury's perihelion advance and the deflection of starlight, and analyse real LIGO strain data. The capstone combines a black-hole geodesic integrator with the reproduction of a classic test.
+
+**UIUC PHYS 225 (Relativity & Math Applications).** Modules 1, 2, 8 and 9 cover everything in that sophomore course, and they need only first-year electricity and magnetism (physics-electricity-magnetism) and multivariable calculus (calculus-3); the other prerequisites matter only for the general-relativity modules 3-7. Take them in the order 1, 8, 2, 9. Module 1 now includes velocity addition and the three effects worked from the Lorentz transformation; module 8 (vectors, matrices and index notation, composing boosts, Taylor approximations, symmetry groups, generators and the Lorentz group) belongs straight after it; module 2 adds relativistic force, natural units and the Doppler effect (its covariant-electrodynamics and stress-energy lessons go beyond PHYS 225 and can wait); and module 9 covers curvilinear vector calculus, the integral theorems, Maxwell's equations in both forms, magnetism as a relativistic effect and Fourier methods for the wave equation, ending with Einstein's 1905 paper. These lessons follow the PHYS 225 topic list and Morin's *Special Relativity for the Enthusiastic Beginner*; they are original material and not affiliated with the University of Illinois.`,
   difficulty: 'expert',
-  estimatedHours: 100,
+  estimatedHours: 136,
   prerequisites: ['electromagnetism', 'classical-mechanics'],
   recommendedBackground: [
     'Lagrangian mechanics and the action principle (classical-mechanics module 5)',
     'Maxwell\'s equations in differential form (electromagnetism modules 5-6)',
     'Multivariable and vector calculus, linear algebra, ODEs (math-methods)',
     'Python with NumPy, SciPy and SymPy',
+    'For the PHYS 225 modules (1, 2, 8 and 9) only: first-year electricity and magnetism (physics-electricity-magnetism) and multivariable calculus (calculus-3)',
   ],
   tags: ['special relativity', 'general relativity', 'tensors', 'black holes', 'gravitational waves', 'cosmology', 'geodesics'],
   core: true,
@@ -383,6 +386,11 @@ The key invariant is the **spacetime interval** between two events,
 $$\\Delta s^2 = -c^2\\Delta t^2 + \\Delta x^2 + \\Delta y^2 + \\Delta z^2 ,$$
 which takes the same value in every inertial frame, just as distance is unchanged by rotations. (Sign conventions vary; this "mostly plus" one matches Carroll and MIT 8.962.) Its sign classifies separations. **Timelike** ($\\Delta s^2 < 0$): one event can influence the other, there is a frame where they happen at the same place, and $\\sqrt{-\\Delta s^2}/c$ is the proper time between them; all observers agree on their time order. **Spacelike** ($\\Delta s^2 > 0$): no signal can connect them, there is a frame where they are simultaneous, and different observers can disagree on their order, which is harmless because neither can cause the other. **Null** ($\\Delta s^2 = 0$): connected by a light ray. The set of null directions from an event is its **light cone**, the causal structure of spacetime.
 
+\`\`\`interactive
+rel-spacetime-diagram
+{"preset": "events", "beta": 0.5, "events": [[3, 1], [1, 3.5]], "title": "Events in two frames", "caption": "Drag events A and B and move $\\\\beta$. The primed coordinates change but $\\\\Delta s^2$ does not. For this spacelike pair, find a $\\\\beta$ that reverses the time order; then drag B inside the dashed light cone of A and try again (you cannot)."}
+\`\`\`
+
 Composing two boosts gives the velocity addition law $u = (u' + v)/(1 + u'v/c^2)$, which never exceeds $c$. It looks awkward because velocity is not the natural parameter. Define the **rapidity** $\\phi$ by $\\beta = \\tanh\\phi$, so $\\gamma = \\cosh\\phi$ and $\\gamma\\beta = \\sinh\\phi$; the boost becomes
 $$\\begin{pmatrix}ct'\\\\x'\\end{pmatrix} = \\begin{pmatrix}\\cosh\\phi & -\\sinh\\phi\\\\-\\sinh\\phi & \\cosh\\phi\\end{pmatrix}\\begin{pmatrix}ct\\\\x\\end{pmatrix},$$
 a hyperbolic rotation, and collinear rapidities simply add. A rocket with constant proper acceleration $a$ has rapidity $a\\tau/c$, which is the cleanest route to the relativistic rocket problems.
@@ -439,6 +447,135 @@ Read Taylor and Wheeler chapters 3 and L (the Lorentz transformation appendix), 
           ],
         },
         {
+          slug: 'velocity-addition-and-the-three-effects',
+          title: 'Using the Lorentz transformation: velocity addition and the three effects',
+          summary:
+            'Galilean versus Lorentz transformations, the relativistic addition of parallel and transverse velocities, and time dilation, length contraction and "rear clock ahead" recovered from the transformation with rigorous definitions of what is measured.',
+          estimatedMinutes: 100,
+          objectives: [
+            'Contrast the Galilean and Lorentz transformations and say which Galilean statements fail and why',
+            'Derive the relativistic transformation of parallel and transverse velocity components and apply it to numerical problems',
+            'Recover time dilation, length contraction and the rear-clock-ahead effect from the Lorentz transformation by choosing the right pair of events',
+            'State precisely what a length or a time interval measured in a given frame means, and use the definitions to check a two-frame problem for consistency',
+          ],
+          concepts: [
+            'Galilean transformation and velocity subtraction',
+            'Velocity addition $u = (u\' + v)/(1 + u\'v/c^2)$',
+            'Transformation of transverse velocity',
+            'Rear clock ahead by $Lv/c^2$',
+            'Length: positions of both ends at one time in your frame',
+            'Proper time: interval between events at one place',
+            'Fizeau experiment and the Fresnel drag coefficient',
+          ],
+          explanation: `The previous lesson derived the Lorentz transformation; this one uses it as a calculating machine, the way Morin's book and PHYS 225-style problem sets do. Compare it with the **Galilean transformation** $x' = x - vt$, $t' = t$: there all clocks agree, lengths are absolute and velocities simply subtract, $u' = u - v$. Each of those statements fails in relativity, and each failure can be read off from
+$$ct' = \\gamma(ct - \\beta x),\\qquad x' = \\gamma(x - \\beta ct).$$
+
+**Velocity addition.** A particle moves with $u_x = dx/dt$, $u_y = dy/dt$ in S. Take differentials, $dx' = \\gamma(dx - v\\,dt)$, $dt' = \\gamma(dt - v\\,dx/c^2)$, $dy' = dy$, and divide:
+$$u'_x = \\frac{u_x - v}{1 - u_xv/c^2},\\qquad u'_y = \\frac{u_y}{\\gamma(1 - u_xv/c^2)}.$$
+Invert by swapping primes and $v \\to -v$. A ship at $0.6c$ fires a probe forward at $0.8c$; in the ground frame the probe moves at $1.4c/1.48 = 0.946c$, and light at $c$ in one frame is at $c$ in all. Transverse velocities change too, because the clocks that time them differ: a ball thrown sideways at $0.5c$ in that ship moves sideways at $0.4c$ on the ground, $0.721c$ overall, not the Galilean $0.781c$.
+
+\`\`\`interactive
+rel-boost-composition
+{"mode": "collinear", "modes": ["collinear"], "beta1": 0.6, "beta2": 0.8, "title": "Adding velocities by composing boosts", "caption": "The ship is S′ at $\\\\beta_1 = 0.6$ and the probe S″ at $\\\\beta_2 = 0.8$ relative to it. Push both sliders towards 0.95: the Galilean sum (dashed) leaves the light cone, the relativistic composite never does."}
+\`\`\`
+
+**The three effects, by choosing events.** Each effect is the transformation applied to a well-chosen pair of events, and each needs a precise definition of what is measured. *Time dilation*: two ticks of a clock at rest in S′ ($\\Delta x' = 0$) give $\\Delta t = \\gamma\\Delta t'$; proper time is the time between events at one place. *Length contraction*: length is the distance between the ends recorded at the same time in the measuring frame; with $\\Delta t = 0$, $\\Delta x' = \\gamma\\Delta x$, so $L = L_0/\\gamma$. *Rear clock ahead*: clocks at the ends of a rod of proper length $L$, synchronised in its rest frame, are seen at one instant of S with the rear clock ahead by $Lv/c^2$ (from $\\Delta t' = -\\gamma v\\Delta x/c^2$ with $\\Delta x = L/\\gamma$). For a 300 m ship at $0.6c$ that is 0.60 μs. Most "paradoxes" hide a forgotten rear-clock-ahead term.
+
+Read OpenStax sections 5.5-5.6 and Tong's treatment of the addition of velocities, or Morin's kinematics chapters if you have the book. The exercises make both frames tell the same story.`,
+          resources: [
+            { ...R.openstax3, note: 'Sections 5.5 (The Lorentz Transformation) and 5.6 (Relativistic Velocity Transformation), with worked examples.', primary: true },
+            { ...R.tongDR, note: 'Chapter 7: the sections on Lorentz transformations, proper time and the addition of velocities.' },
+            {
+              title: 'Morin — Special Relativity: For the Enthusiastic Beginner',
+              url: 'https://davidmorin.physics.fas.harvard.edu/books/special-relativity',
+              type: 'textbook',
+              cost: 'paid',
+              provider: 'David Morin (Harvard University)',
+              note: 'The text of UIUC PHYS 225. Its kinematics chapters are the model for this lesson; the book page offers chapter 1 and the appendices as free PDFs. Free alternatives: OpenStax and Tong above.',
+            },
+            { ...R.mit820, note: 'Lecture notes and problem sets on velocity addition and the three effects.' },
+          ],
+          exercises: [
+            {
+              slug: 'velocity-transformation-derivation',
+              title: 'Derive and test the velocity transformation',
+              prompt:
+                'From the differentials of the Lorentz transformation derive $u\'_x$, $u\'_y$ and $u\'_z$ for a boost along $x$, and their inverses. Check three limits: $v \\ll c$ (Galilean subtraction), $u_x = c$ (light stays at $c$), and $u_x = 0$, $u_y = c$ (the transformed speed is still $c$). Then prove that $1 - u\'^2/c^2 = (1 - u^2/c^2)(1 - v^2/c^2)/(1 - u_xv/c^2)^2$ and conclude that a speed below $c$ stays below $c$ in every frame. Evaluate the ground-frame velocity of a ball thrown at $0.5c$ at 45° forward of sideways inside a ship moving at $0.6c$.',
+              kind: 'derivation',
+              difficulty: 2,
+            },
+            {
+              slug: 'fizeau-drag',
+              title: 'Fizeau\'s moving water and a Taylor expansion',
+              prompt:
+                'Light travels at $c/n$ in water at rest. Water flows at speed $w$ along the beam. Use velocity addition to find the speed of light in the lab, then expand to first order in $w/c$ and show it is $c/n + w(1 - 1/n^2)$, Fresnel\'s "drag coefficient" of 1851. For $n = 1.333$ and Fizeau\'s $w = 7.06$ m/s, compute the change in the speed of light (about 3.09 m/s) and compare with the Galilean prediction (7.06 m/s). Explain why this experiment, done 54 years before 1905, is a test of relativistic velocity addition.',
+              kind: 'problem',
+              difficulty: 2,
+            },
+            {
+              slug: 'ship-passes-station',
+              title: 'One passage, two consistent stories',
+              prompt:
+                'A ship of proper length 300 m moves at $0.6c$ past an observer O on a space station. Clocks at the ship\'s front and rear are synchronised in the ship frame and the front clock reads 0 as it passes O. (a) In the station frame, how long does the ship take to pass O (1.33 μs)? (b) In the ship frame, how long does O take to travel from front to rear (1.67 μs), and how much does O\'s own clock advance meanwhile? (c) In the station frame, by how much does the rear clock lead the front (0.60 μs), and how far do the ship clocks advance during the passage? (d) Show that both frames agree the rear clock reads 1.67 μs when it passes O. Name the effect each frame uses at each step.',
+              kind: 'problem',
+              difficulty: 3,
+              hint: 'Station frame: the rear clock starts 0.60 μs ahead and runs slow by γ = 1.25 for 1.33 μs.',
+            },
+          ],
+          selfAssessment: [
+            {
+              question: 'Why does a transverse velocity change under a boost along x even though y′ = y?',
+              answerOutline:
+                'Because the time coordinate changes: dt′ = γ(dt − v dx/c²), so u′_y = dy/dt′ = u_y/[γ(1 − u_x v/c²)].',
+            },
+            {
+              question: 'Define the length of a moving rod precisely, and say which pair of events gives L = L₀/γ.',
+              answerOutline:
+                'The distance between the two ends recorded at the same time in your frame; take the two ends at equal t in S, so Δt = 0 and Δx′ = γΔx with Δx′ = L₀.',
+            },
+            {
+              question: 'In the ground frame, which clock on a moving train reads more, the front or the rear, and by how much?',
+              answerOutline: 'The rear clock is ahead by Lv/c², with L the proper length of the train; equivalently the front clock lags.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A ship moving at $0.7c$ relative to a planet fires a probe forward at $0.7c$ relative to the ship. How fast does the probe move relative to the planet?',
+              options: ['$1.4c$', '$0.70c$', '$0.94c$', '$0.49c$'],
+              answer: 2,
+              explanation:
+                '$(0.7 + 0.7)/(1 + 0.7 \\times 0.7) = 1.4/1.49 = 0.94c$. The Galilean sum $1.4c$ drops the denominator, which comes from the two frames\' different time coordinates; composing speeds below $c$ never reaches $c$.',
+            },
+            {
+              question: 'A rocket of proper length 600 m moves at $0.8c$. Clocks at its nose and tail are synchronised in the rocket frame. At one instant of the ground frame, what do ground observers find?',
+              options: ['The tail clock is ahead by 1.6 μs', 'The nose clock is ahead by 1.6 μs', 'The tail clock is ahead by 2.7 μs', 'The clocks agree, because synchronisation is the same in every frame'],
+              answer: 0,
+              explanation:
+                'The lead is $Lv/c^2$ with $L$ the proper length: $600 \\times 0.8/(3.00\\times10^8) = 1.6$ μs, and the rear (tail) clock is ahead. The 2.7 μs answer uses $\\gamma v\\Delta x/c^2$ with the proper length, where $\\Delta x$ should be the ground-frame separation $L/\\gamma$.',
+            },
+            {
+              question: 'You want the length, in your frame, of a rod moving past you. What must you do?',
+              options: [
+                'Measure it with a ruler that moves along with the rod',
+                'Record the positions of the two ends at the same time in the rod\'s rest frame',
+                'Photograph it: the photo shows the contracted length directly',
+                'Record the positions of the two ends at the same time in your own frame',
+              ],
+              answer: 3,
+              explanation:
+                'Length in a frame is defined by simultaneous positions in that frame, which gives $L_0/\\gamma$. A co-moving ruler measures the proper length $L_0$, and a photograph records light that left the two ends at different times, so what you *see* is distorted by light-travel delays and is not the contracted length.',
+            },
+            {
+              question: 'In a ship moving at $0.6c$ along $x$, a ball is thrown along $y\'$ at $0.5c$ (ship frame). What is its $y$-velocity in the ground frame?',
+              options: ['$0.5c$', '$0.4c$', '$0.625c$', '$0.78c$'],
+              answer: 1,
+              explanation:
+                'With $u\'_x = 0$, $u_y = u\'_y/\\gamma = 0.5c/1.25 = 0.4c$. Keeping $0.5c$ forgets that ground clocks time the motion against dilated ship time; $0.78c$ is the Galilean speed $\\sqrt{0.6^2 + 0.5^2}\\,c$.',
+            },
+          ],
+          relatedLessons: ['physics-mechanics/kinematics/relative-motion'],
+        },
+        {
           slug: 'spacetime-diagrams-and-paradoxes',
           title: 'Spacetime diagrams, the twin paradox and other puzzles',
           summary:
@@ -464,7 +601,17 @@ Read Taylor and Wheeler chapters 3 and L (the Lorentz transformation appendix), 
 
 The proper time along a worldline is $\\tau = \\int\\sqrt{1 - v^2/c^2}\\,dt$, the "length" of the worldline in the Minkowski metric. Because of the minus sign, a **straight** (inertial) worldline between two events has the *maximum* proper time, the opposite of Euclidean geometry, where the straight line is shortest. That is the resolution of the **twin paradox**: the travelling twin's worldline is bent at the turnaround, so it is shorter in proper time, and the twins are not symmetric because only one changes inertial frames. Draw the lines of simultaneity before and after the turnaround: the travelling twin's notion of "now" at home jumps forward at the turnaround, which accounts for all the missing time. This principle, extremal proper time, becomes the geodesic equation of general relativity.
 
+\`\`\`interactive
+rel-spacetime-diagram
+{"preset": "twin", "beta": 0.8, "L": 4, "title": "The twin paradox", "caption": "The star is 4 light-years away and the traveller moves at $0.8c$: 10 years pass on Earth, 6 for the traveller. The dashed lines are the traveller's lines of simultaneity just before and just after the turnaround; the thick segment of Earth's worldline is the jump in the traveller's 'now'. Change $\\\\beta$ and check that the jump always supplies the missing years."}
+\`\`\`
+
 Two more puzzles train the same muscle. **Barn and pole**: a 20 m pole moving at $\\gamma = 2$ fits in a 10 m barn in the barn frame, but in the pole frame the barn is 5 m. Both are correct; the "doors closed simultaneously" events are simultaneous only in the barn frame. **Bell's spaceships**: two ships accelerating identically in the launch frame keep a constant separation in that frame, so in their own instantaneous frames they drift apart and a string between them breaks. Rigid bodies cannot exist in relativity.
+
+\`\`\`interactive
+rel-spacetime-diagram
+{"preset": "barn", "beta": 0.8661, "pole": 20, "barn": 10, "hyperbolae": false, "simultaneity": false, "title": "The pole and the barn", "caption": "At $\\\\gamma = 2$ the 20 m pole is 10 m long in the barn frame, so the front door can shut (E1) as the back door opens (E2). In the pole frame E2 comes first: the barn is only 5 m long and is never closed around the pole. Lower $\\\\beta$ until E1 and E2 are timelike separated; then every frame agrees on their order."}
+\`\`\`
 
 The **Doppler effect** combines time dilation with the changing light-travel time: a source receding at $\\beta$ is observed at frequency $\\nu = \\nu_0\\sqrt{(1 - \\beta)/(1 + \\beta)}$; at right angles there is still a purely relativistic redshift by $1/\\gamma$ (the transverse Doppler effect, measured by Ives and Stilwell in 1938 and now to parts per billion with storage-ring ions).
 
@@ -692,6 +839,153 @@ Read Taylor and Wheeler chapters 7-8, Feynman I-16 and Tong 7.4. The exercises a
           ],
         },
         {
+          slug: 'relativistic-force-and-hyperbolic-motion',
+          title: 'Relativistic force in one and two dimensions',
+          summary:
+            'Force as the rate of change of relativistic momentum: constant force solved by separation of variables (hyperbolic motion), forces parallel and perpendicular to the velocity, the four-force, and why "longitudinal" and "transverse" mass mislead.',
+          estimatedMinutes: 100,
+          objectives: [
+            'Write the relativistic second law as $\\mathbf F = d\\mathbf p/dt$ and as a four-force, and relate the power to $dE/dt$',
+            'Solve the one-dimensional constant-force problem by separation of variables and obtain $v(t)$, $x(t)$ and $\\tau(t)$ for hyperbolic motion',
+            'Split a force into components parallel and perpendicular to the velocity and compute the resulting acceleration',
+            'Explain why "longitudinal" and "transverse" mass mislead, and use $p = qBr$ for circular motion in a magnetic field',
+          ],
+          concepts: [
+            'Relativistic second law $\\mathbf F = d\\mathbf p/dt$',
+            'Four-force $F^\\mu = dp^\\mu/d\\tau$',
+            'Power $dE/dt = \\mathbf F\\cdot\\mathbf v$',
+            'Separation of variables for a first-order ODE',
+            'Hyperbolic motion under constant force',
+            '$F_\\parallel = \\gamma^3ma_\\parallel$ and $F_\\perp = \\gamma ma_\\perp$',
+            'Longitudinal and transverse mass (and why to avoid them)',
+            'Circular motion in a magnetic field, $p = qBr$',
+          ],
+          explanation: `Newton's second law survives in relativity as $\\mathbf F = d\\mathbf p/dt$ with $\\mathbf p = \\gamma m\\mathbf v$; what fails is $\\mathbf F = m\\mathbf a$. The covariant form is the **four-force** $F^\\mu = dp^\\mu/d\\tau = \\gamma(\\mathbf F\\cdot\\mathbf v/c,\\ \\mathbf F)$, whose time component says that the power is $dE/dt = \\mathbf F\\cdot\\mathbf v$.
+
+**One dimension.** With $p = \\gamma mv$, $dp/dt = \\gamma^3m\\,dv/dt$, so a constant force gives the first-order ODE
+$$\\frac{dv}{dt} = \\frac{F}{m}\\left(1 - \\frac{v^2}{c^2}\\right)^{3/2}.$$
+**Separate the variables**: put everything containing $v$ on one side, $\\int_0^v dv'/(1 - v'^2/c^2)^{3/2} = \\int_0^t (F/m)\\,dt'$. The left side is $\\gamma v$ (differentiate to check), so with $a = F/m$
+$$v(t) = \\frac{at}{\\sqrt{1 + (at/c)^2}},\\qquad x(t) = \\frac{c^2}{a}\\left(\\sqrt{1 + (at/c)^2} - 1\\right).$$
+The speed creeps towards $c$, and the worldline $(x + c^2/a)^2 - c^2t^2 = c^4/a^2$ is a hyperbola: **hyperbolic motion**, the constant-proper-acceleration rocket of module 1. A proton in a 10 MV/m field has $c/a = 0.31$ μs and reaches $0.99c$ after 2.2 μs and 571 m; Newton would put it at $c$ after 0.31 μs.
+
+\`\`\`interactive
+function-explorer
+{"f": ["0.3195*E*x/sqrt(1+(0.3195*E*x)^2)", "0.3195*E*x"], "sliders": {"E": [10, 1, 50, 1]}, "view": [0, 3, 0, 1.6], "title": "A proton in a uniform electric field", "caption": "The field is E megavolts per metre; the horizontal axis is time in microseconds and the vertical axis is v/c. The first curve is the relativistic solution, the second Newton's v = at. Raise E: the time scale c/a shrinks, but only Newton's line ever crosses v/c = 1."}
+\`\`\`
+
+**Two dimensions.** Differentiating $\\gamma m\\mathbf v$ gives $\\mathbf F = \\gamma m\\mathbf a + \\gamma^3m(\\mathbf v\\cdot\\mathbf a)\\mathbf v/c^2$. Split the force along and across the velocity: $F_\\parallel = \\gamma^3ma_\\parallel$, $F_\\perp = \\gamma ma_\\perp$. The acceleration is generally *not* parallel to the force: at $\\gamma = 2$ a force at 45° to $\\mathbf v$ gives an acceleration at 76°.
+
+\`\`\`interactive
+function-explorer
+{"f": ["atan(g^2*tan(x))", "x"], "sliders": {"g": [2, 1, 5, 0.05]}, "view": [0, 1.57, 0, 1.6], "title": "Force direction versus acceleration direction", "caption": "Horizontal axis: angle of the force from the velocity, in radians; vertical axis: angle of the acceleration. g is gamma. At g = 1 the acceleration follows the force (the diagonal line); at g = 2 a force at 0.785 rad (45 degrees) gives an acceleration at 1.33 rad (76 degrees)."}
+\`\`\`
+
+Old books call $\\gamma^3m$ and $\\gamma m$ the "longitudinal" and "transverse mass". Avoid both, and "relativistic mass" too: there is one mass $m$, and the direction dependence lives in $\\mathbf p = \\gamma m\\mathbf v$. The perpendicular case matters most. A magnetic force is always perpendicular, so $\\gamma$ stays constant and circular motion gives $p = qBr$, the formula that sizes every synchrotron: the LHC's 8.33 T dipoles bend 7 TeV protons on a 2.8 km radius.
+
+Read Tong's section on relativistic dynamics (or Morin's chapter on force), and review separation of variables in the math-methods lesson on first-order ODEs.`,
+          resources: [
+            { ...R.tongDR, note: 'Chapter 7: relativistic dynamics, four-momentum and four-force, motion under a constant force.', primary: true },
+            {
+              title: 'Morin — Special Relativity: For the Enthusiastic Beginner',
+              url: 'https://davidmorin.physics.fas.harvard.edu/books/special-relativity',
+              type: 'textbook',
+              cost: 'paid',
+              provider: 'David Morin (Harvard University)',
+              note: 'The PHYS 225 text; its dynamics and force material treats F = dp/dt in one and two dimensions with many worked problems. Free alternative: Tong above.',
+            },
+            {
+              title: 'MIT 18.03SC Differential Equations (Fall 2011)',
+              url: 'https://ocw.mit.edu/courses/18-03sc-differential-equations-fall-2011/',
+              type: 'course',
+              cost: 'free',
+              provider: 'MIT OpenCourseWare',
+              note: 'Unit I: first-order equations, including separable equations, with recitation videos and problem sets.',
+            },
+          ],
+          exercises: [
+            {
+              slug: 'hyperbolic-motion-by-separation',
+              title: 'Hyperbolic motion by separation of variables',
+              prompt:
+                'Separate variables in $dv/dt = a(1 - v^2/c^2)^{3/2}$ to find $v(t)$; integrate again for $x(t)$; and use $d\\tau = dt/\\gamma$ to find $\\tau(t) = (c/a)\\sinh^{-1}(at/c)$. Check the Newtonian limit $at \\ll c$ by a Taylor expansion. For a rocket with $a = 9.8$ m/s² for one year of launch-frame time, compute the final speed ($0.718c$), the proper time on board (0.876 yr) and the distance covered (0.423 light-years). Then solve the same ODE numerically (any method) and compare with the formula.',
+              kind: 'derivation',
+              difficulty: 2,
+            },
+            {
+              slug: 'force-at-an-angle',
+              title: 'Force and acceleration in different directions',
+              prompt:
+                'Derive $\\mathbf F = \\gamma m\\mathbf a + \\gamma^3m(\\mathbf v\\cdot\\mathbf a)\\mathbf v/c^2$ and hence $F_\\parallel = \\gamma^3ma_\\parallel$, $F_\\perp = \\gamma ma_\\perp$. An electron moves along $x$ with $\\gamma = 2$ and feels a force of $10^{-15}$ N at 45° to its velocity. Compute both acceleration components and the angle of $\\mathbf a$ to $\\mathbf v$ (76.0°). Show that the four-force satisfies $F^\\mu U_\\mu = 0$ and that this is equivalent to $dE/dt = \\mathbf F\\cdot\\mathbf v$ for a particle of constant mass.',
+              kind: 'problem',
+              difficulty: 2,
+            },
+            {
+              slug: 'synchrotron-momentum',
+              title: 'Sizing a synchrotron',
+              prompt:
+                'Show that a charge in a uniform magnetic field moves in a circle with $p = qBr$ and angular frequency $\\omega = qB/(\\gamma m)$, and that in practical units $p\\,[\\mathrm{GeV}/c] = 0.2998\\,B\\,[\\mathrm T]\\,r\\,[\\mathrm m]$. For the LHC (dipole field 8.33 T, bending radius 2804 m) compute the proton momentum (7.0 TeV/$c$), $\\gamma$, and the revolution frequency for the 26.659 km ring (11.245 kHz). Explain why a cyclotron with a fixed radio frequency cannot accelerate protons past a few tens of MeV.',
+              kind: 'problem',
+              difficulty: 2,
+            },
+          ],
+          selfAssessment: [
+            {
+              question: 'Why does F = dp/dt survive in relativity while F = ma fails?',
+              answerOutline:
+                'p = γmv is the momentum that is conserved; differentiating it gives γma plus a term along v, so a is neither F/m nor (in general) parallel to F.',
+            },
+            {
+              question: 'How do you separate variables in dv/dt = (F/m)(1 − v²/c²)^{3/2}, and what do you get?',
+              answerOutline: '∫ dv/(1 − v²/c²)^{3/2} = ∫ (F/m) dt; the left side is γv, so γv = Ft/m and v = at/√(1 + (at/c)²).',
+            },
+            {
+              question: 'Why does a charge in a uniform magnetic field keep a constant speed, and what fixes its radius?',
+              answerOutline: 'The force qv × B is perpendicular to v and does no work, so E and γ are constant; F_⊥ = γmv²/r gives r = p/(qB).',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A particle starts from rest under a constant force. At time $t$, Newton\'s law would give it speed $at = 0.75c$. What is its actual speed?',
+              options: ['$0.75c$', '$0.48c$', '$0.80c$', '$0.60c$'],
+              answer: 3,
+              explanation:
+                '$v = at/\\sqrt{1 + (at/c)^2} = 0.75c/\\sqrt{1.5625} = 0.60c$. The force fixes the momentum, $\\gamma v = at$, not the velocity; $0.48c$ divides by $1 + (at/c)^2$ instead of its square root.',
+            },
+            {
+              question: 'A particle with $\\gamma = 2$ feels a force of fixed magnitude, first parallel to its velocity, then perpendicular to it. What is $a_\\perp/a_\\parallel$?',
+              options: ['4', '2', '8', '1'],
+              answer: 0,
+              explanation:
+                '$a_\\parallel = F/(\\gamma^3m)$ and $a_\\perp = F/(\\gamma m)$, so the ratio is $\\gamma^2 = 4$. 2 and 8 mix up the powers of $\\gamma$; 1 assumes a single direction-independent inertia, as in $\\mathbf F = m\\mathbf a$.',
+            },
+            {
+              question: 'An electron circles in a uniform magnetic field at constant speed $v$ and radius $r$. Which equation holds?',
+              options: [
+                '$qvB = \\gamma^3mv^2/r$',
+                '$qvB = mv^2/r$, because only the rest mass matters',
+                '$qvB = \\gamma mv^2/r$',
+                '$qvB = \\gamma mv^2/r$, with $\\gamma$ slowly growing as the field does work',
+              ],
+              answer: 2,
+              explanation:
+                'The magnetic force is perpendicular to $\\mathbf v$, so it does no work, $\\gamma$ is constant and $F_\\perp = \\gamma ma_\\perp = \\gamma mv^2/r$, i.e. $p = qBr$. $\\gamma^3m$ is the response to a force *along* $\\mathbf v$: the "longitudinal mass" mix-up.',
+            },
+            {
+              question: 'Separating variables in $dv/dt = (F/m)(1 - v^2/c^2)^{3/2}$ gives which equation?',
+              options: [
+                '$\\int (1 - v^2/c^2)^{3/2}\\,dv = \\int (F/m)\\,dt$',
+                '$\\int dv/(1 - v^2/c^2)^{3/2} = \\int (F/m)\\,dt$',
+                '$\\int dv = \\int (F/m)(1 - v^2/c^2)^{3/2}\\,dt$',
+                '$\\ln(1 - v^2/c^2) = Ft/m$',
+              ],
+              answer: 1,
+              explanation:
+                'Divide both sides by $(1 - v^2/c^2)^{3/2}$ and multiply by $dt$, so each side holds one variable. The third option leaves $v$ inside the $t$-integral, which cannot be done until $v(t)$ is known; the first puts the factor on the wrong side.',
+            },
+          ],
+          relatedLessons: ['math-methods/ordinary-differential-equations/first-order-odes'],
+        },
+        {
           slug: 'collisions-decays-and-particle-kinematics',
           title: 'Collisions, decays and particle-physics kinematics',
           summary:
@@ -778,6 +1072,253 @@ Read Taylor and Wheeler chapter 8 and the collision exercises, 8.033 problem set
               question: 'What is invariant-mass reconstruction and why is it frame independent?',
               answerOutline:
                 'Computing M² = (ΣE)² − |Σp c|² for a set of final particles; it is the squared norm of a four-vector, so every frame gives the same value, which peaks at the parent mass.',
+            },
+          ],
+        },
+        {
+          slug: 'natural-units-and-kinematics-practice',
+          title: 'Natural units and fluent kinematics',
+          summary:
+            'Electronvolts, masses in MeV/$c^2$ and momenta in MeV/$c$; natural units with $c = \\hbar = 1$ and the conversions $\\hbar c = 197.3$ MeV fm and $\\hbar = 6.582\\times10^{-22}$ MeV s; and invariant-based kinematics practice in those units.',
+          estimatedMinutes: 80,
+          objectives: [
+            'Express energies, masses and momenta in eV, MeV/$c^2$ and MeV/$c$ and convert them to and from SI',
+            'Work in natural units with $c = \\hbar = 1$ and restore the factors of $\\hbar$ and $c$ by dimensional analysis',
+            'Convert lengths and times to inverse energies with $\\hbar c = 197.3$ MeV fm and $\\hbar = 6.582\\times10^{-22}$ MeV s',
+            'Solve decay and collision problems with invariant dot products of four-momenta in natural units',
+          ],
+          concepts: [
+            'The electronvolt and its multiples',
+            'Mass in MeV/$c^2$, momentum in MeV/$c$',
+            'Natural units $c = \\hbar = 1$',
+            '$\\hbar c = 197.3$ MeV fm',
+            'Restoring $\\hbar$ and $c$ by dimensions',
+            '$\\gamma = E/m$, $\\beta = p/E$, $\\gamma\\beta = p/m$',
+            'Invariant $s$ and dot products of four-momenta',
+            'Decay length $\\gamma\\beta c\\tau$',
+          ],
+          explanation: `Particle physicists rarely use SI. Energies are in electronvolts ($1$ eV $= 1.602\\times10^{-19}$ J, the energy an electron gains across 1 V) and its multiples MeV, GeV and TeV. Then $E^2 = (pc)^2 + (mc^2)^2$ suggests quoting $mc^2$ and $pc$ in the same unit: an electron has $m = 0.511$ MeV/$c^2$, a proton 938.3 MeV/$c^2$, and a particle with momentum 300 MeV/$c$ has $pc = 300$ MeV. Keep the $/c$ and $/c^2$ while you learn, because they tell you how to get back to SI: 300 MeV/$c$ is $4.81\\times10^{-11}$ J divided by $3.00\\times10^8$ m/s, or $1.60\\times10^{-19}$ kg m/s.
+
+**Natural units** go further and set $c = 1$, and in quantum physics also $\\hbar = 1$. Speeds become pure numbers, and energy, momentum and mass share one unit: $E^2 = p^2 + m^2$, $\\gamma = E/m$, $\\beta = p/E$, $\\gamma\\beta = p/m$. With $\\hbar = 1$, lengths and times are inverse energies, and two numbers convert back:
+$$\\hbar c = 197.3\\ \\text{MeV fm},\\qquad \\hbar = 6.582\\times10^{-22}\\ \\text{MeV s}.$$
+So 1 fm corresponds to 197 MeV, $1\\ \\text{GeV}^{-1}$ is 0.197 fm or $6.58\\times10^{-25}$ s, and the electron's Compton wavelength $2\\pi/m_e$ is $2\\pi(197.3/0.511)$ fm $= 2.43$ pm. Restoring units is dimensional analysis: insert the unique combination of $\\hbar$ and $c$ that gives the SI dimension you need.
+
+**Kinematics** is where the payoff shows. With this course's metric, $-p_1\\cdot p_2 = E_1E_2 - \\mathbf p_1\\cdot\\mathbf p_2$ (particle physicists, who use the opposite signature, drop the minus sign), and $s = (E_1 + E_2)^2 - |\\mathbf p_1 + \\mathbf p_2|^2$ is the squared total energy in the centre-of-momentum frame. For $\\pi^+ \\to \\mu^+\\nu$ at rest, squaring $p_\\nu = p_\\pi - p_\\mu$ gives $p = (m_\\pi^2 - m_\\mu^2)/2m_\\pi = 29.8$ MeV, a muon kinetic energy of 4.1 MeV, $\\gamma\\beta = p/m_\\mu = 0.282$ and a mean decay length $\\gamma\\beta c\\tau = 186$ m. Two 6.8 TeV LHC beams give $\\sqrt s = 13.6$ TeV; a fixed proton target would need a beam of about $10^8$ GeV to match.
+
+Take masses and lifetimes from the Particle Data Group and constants from NIST. The exercises drill conversions until they are automatic.`,
+          resources: [
+            {
+              title: 'Particle Data Group — Review of Particle Physics',
+              url: 'https://pdg.lbl.gov/',
+              type: 'documentation',
+              cost: 'free',
+              provider: 'Particle Data Group (LBNL)',
+              note: 'The tables of physical constants and the particle listings: the source for every mass, width and lifetime in the exercises.',
+              primary: true,
+            },
+            {
+              title: 'NIST — Fundamental Physical Constants (CODATA)',
+              url: 'https://physics.nist.gov/cuu/Constants/index.html',
+              type: 'documentation',
+              cost: 'free',
+              provider: 'NIST',
+              note: 'Exact values of c, e and h, and ħc in MeV fm; use the energy-equivalents converter.',
+            },
+            { ...R.openstax3, note: 'Section 5.9 (Relativistic Energy): worked examples in MeV and MeV/c².' },
+          ],
+          exercises: [
+            {
+              slug: 'unit-conversion-drill',
+              title: 'Conversion drill',
+              prompt:
+                'Convert, showing the factor of $c$, $\\hbar$ or $\\hbar c$ you use each time: (a) the proton mass $1.6726\\times10^{-27}$ kg to MeV/$c^2$ (938.3); (b) 1 MeV/$c$ to kg m/s ($5.34\\times10^{-22}$); (c) $1\\ \\text{GeV}^{-1}$ to femtometres and to seconds; (d) the electron Compton wavelength $h/(m_ec)$ in picometres (2.43); (e) a proton radius of 0.84 fm to an energy scale in MeV (235); (f) the charged-pion lifetime 26.03 ns to $c\\tau$ in metres (7.80).',
+              kind: 'problem',
+              difficulty: 1,
+            },
+            {
+              slug: 'natural-unit-kinematics',
+              title: 'Kinematics in natural units',
+              prompt:
+                'Working with $c = 1$ throughout and PDG masses: (a) for $\\pi^+ \\to \\mu^+\\nu$ at rest, find the muon momentum, kinetic energy, $\\gamma\\beta$ and mean decay length ($c\\tau_\\mu = 658.6$ m); (b) for $\\Lambda \\to p\\pi^-$ at rest ($m_\\Lambda = 1115.68$ MeV), find the common momentum (100.6 MeV) and each particle\'s speed; (c) find the beam energy a fixed proton target would need to match $\\sqrt s = 13.6$ TeV; (d) the $Z$ boson has width $\\Gamma = 2.495$ GeV: find its lifetime $\\hbar/\\Gamma$ in seconds ($2.64\\times10^{-25}$) and how far a $Z$ with $\\gamma\\beta = 1$ travels before decaying.',
+              kind: 'problem',
+              difficulty: 2,
+            },
+            {
+              slug: 'restore-hbar-and-c',
+              title: 'Restore the factors of ħ and c',
+              prompt:
+                'Each formula is written in natural units. Restore $\\hbar$ and $c$ so that it holds in SI, and evaluate: (a) $E = m$; (b) the reduced Compton wavelength $\\bar\\lambda = 1/m$ for the electron; (c) the Bohr radius $a_0 = 1/(\\alpha m_e)$ with $\\alpha = 1/137.036$ (0.0529 nm); (d) the range of the Yukawa force $1/m_\\pi$ with $m_\\pi = 139.6$ MeV (1.41 fm); (e) the lifetime $\\tau = 1/\\Gamma$. State the rule you used to decide where each factor goes.',
+              kind: 'derivation',
+              difficulty: 2,
+            },
+          ],
+          selfAssessment: [
+            {
+              question: 'Why is it natural to quote masses in MeV/c² and momenta in MeV/c?',
+              answerOutline: 'Because E² = (pc)² + (mc²)²: with mc² and pc in MeV, every term is an energy in MeV and the formula needs no constants.',
+            },
+            {
+              question: 'How do you turn a quantity in GeV⁻¹ into a length or a time?',
+              answerOutline: 'Multiply by ħc = 0.1973 GeV fm for a length, or by ħ = 6.582 × 10⁻²⁵ GeV s for a time.',
+            },
+            {
+              question: 'With c = 1, how do you get γ, β and γβ from E, p and m?',
+              answerOutline: 'γ = E/m, β = p/E and γβ = p/m.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A particle of mass 140 MeV/$c^2$ has momentum 140 MeV/$c$. What is its speed?',
+              options: ['$c$', '$0.50c$', '$0.71c$', '$0.87c$'],
+              answer: 2,
+              explanation:
+                '$E = \\sqrt{140^2 + 140^2} = 198$ MeV and $\\beta = pc/E = 0.71$. Answering $c$ treats the particle as massless ($E = pc$); $0.50c$ is $p/(p + m)$, which is not a formula for anything.',
+            },
+            {
+              question: 'Roughly what energy scale corresponds to a distance of 0.5 fm?',
+              options: ['395 MeV', '98.7 MeV', '197 MeV', '0.5 MeV'],
+              answer: 0,
+              explanation: '$E \\approx \\hbar c/d = 197.3\\ \\text{MeV fm}/0.5\\ \\text{fm} = 395$ MeV. Shorter distances need higher energies; 98.7 MeV multiplies by the distance instead of dividing.',
+            },
+            {
+              question: 'A muon has momentum 300 MeV/$c$. What is its momentum in SI units?',
+              options: ['$4.81\\times10^{-11}$ kg m/s', '$5.35\\times10^{-28}$ kg m/s', '300 kg m/s', '$1.60\\times10^{-19}$ kg m/s'],
+              answer: 3,
+              explanation:
+                '300 MeV is $300\\times10^6 \\times 1.602\\times10^{-19}$ J $= 4.81\\times10^{-11}$ J; dividing by $c$ gives $1.60\\times10^{-19}$ kg m/s. The first option forgets to divide by $c$; the second divides by $c^2$, which turns an energy into a mass.',
+            },
+            {
+              question: 'Two 50 MeV photons travel at 90° to each other. What is the invariant mass of the pair?',
+              options: ['100 MeV/$c^2$', '70.7 MeV/$c^2$', '0', '50 MeV/$c^2$'],
+              answer: 1,
+              explanation:
+                '$M^2 = (E_1 + E_2)^2 - |\\mathbf p_1 + \\mathbf p_2|^2 = 2E_1E_2(1 - \\cos\\theta) = 5000$ MeV$^2$, so $M = 70.7$ MeV/$c^2$. 100 MeV/$c^2$ is the back-to-back case ($\\theta = 180°$) and 0 the parallel case.',
+            },
+          ],
+        },
+        {
+          slug: 'the-relativistic-doppler-effect',
+          title: 'The relativistic Doppler effect from the four-wavevector',
+          summary:
+            'The phase of a wave is invariant, so $k^\\mu = (\\omega/c, \\mathbf k)$ is a null four-vector; boosting it gives the Doppler effect at any angle, the transverse shift and aberration, applied to GPS, radar, stellar spectra and storage-ring tests of time dilation.',
+          estimatedMinutes: 90,
+          objectives: [
+            'Show that the phase of a plane wave is invariant and deduce that $k^\\mu = (\\omega/c, \\mathbf k)$ is a null four-vector',
+            'Derive the general Doppler formula by Lorentz-transforming $k^\\mu$, with its longitudinal and transverse limits',
+            'Distinguish the transverse shift measured at 90° in the observer frame from that at 90° in the source frame, using aberration',
+            'Apply the formulas to GPS, radar, stellar spectra and storage-ring tests of time dilation',
+          ],
+          concepts: [
+            'Invariance of the phase $k_\\mu x^\\mu$',
+            'Four-wavevector $k^\\mu = (\\omega/c, \\mathbf k)$',
+            'Null four-vectors and light',
+            'Doppler factor $1/[\\gamma(1 - \\beta\\cos\\theta)]$',
+            'Transverse Doppler effect',
+            'Aberration and the headlight effect',
+            'Two-way (radar) Doppler shift',
+            'Ives-Stilwell-type tests of time dilation',
+          ],
+          explanation: `Module 1 obtained the Doppler formula from time dilation and light-travel time; four-vectors give it in one line. A plane wave $e^{i(\\mathbf k\\cdot\\mathbf x - \\omega t)}$ has a phase every observer agrees on, since it counts wave crests passing an event, and $\\mathbf k\\cdot\\mathbf x - \\omega t = k_\\mu x^\\mu$ with $k^\\mu = (\\omega/c, \\mathbf k)$. Because $x^\\mu$ is a four-vector and the phase is a scalar, **$k^\\mu$ is a four-vector**, and for light $k_\\mu k^\\mu = -\\omega^2/c^2 + |\\mathbf k|^2 = 0$: it is null.
+
+Boost along $x$ into the rest frame of a source moving at $v$: $\\omega_0 = \\gamma(\\omega - vk_x) = \\gamma\\omega(1 - \\beta\\cos\\theta)$, where $\\theta$ is the angle between the source's velocity and the light's direction (from source to you), measured in your frame. So
+$$\\nu = \\frac{\\nu_0}{\\gamma(1 - \\beta\\cos\\theta)}.$$
+Head-on ($\\theta = 0$) gives $\\sqrt{(1+\\beta)/(1-\\beta)}$ and receding gives the inverse. At $\\theta = 90°$ in *your* frame there is still a redshift by $1/\\gamma$: the **transverse Doppler effect**, pure time dilation. Beware the classic trap: light emitted at 90° in the *source* frame arrives blueshifted by $\\gamma$, because **aberration**, $\\cos\\theta = (\\cos\\theta' + \\beta)/(1 + \\beta\\cos\\theta')$, tips it forward. Both statements are right; they describe different rays.
+
+\`\`\`interactive
+rel-doppler
+{"beta": 0.3, "theta": 0, "lambda": 656.3, "caption": "Start head-on at $\\\\beta = 0.3$: the red H-alpha line arrives at 482 nm, in the blue. Click 'transverse' with the angle measured in your frame (redshift by $1/\\\\gamma$), then switch the angle to the source frame (blueshift by $\\\\gamma$) and read off the other frame's angle: the two 'transverse' rays are different rays."}
+\`\`\`
+
+**Real measurements.** *GPS*: satellites move at 3.9 km/s with line-of-sight speeds up to about 0.9 km/s, so the 1575.42 MHz L1 signal arrives shifted by up to about ±5 kHz, a window receivers must search to lock on. *Radar*: a reflector returns $f(1+\\beta)/(1-\\beta) \\approx f(1 + 2\\beta)$, so a car at 30 m/s shifts a 24.15 GHz police radar by 4.8 kHz. *Astronomy*: the Hα line (656.28 nm) of a star receding at 300 km/s moves to 656.94 nm. *Time dilation*: Botermann et al. (2014) drove lithium ions at $0.338c$ with lasers parallel and antiparallel to the beam; relativity predicts $\\nu_p\\nu_a = \\nu_0^2$ exactly, and they confirmed it to 2.3 parts per billion.
+
+Read Tong's treatment of the Doppler effect, OpenStax section 5.7 and Ashby's review of relativity in GPS.`,
+          resources: [
+            { ...R.tongDR, note: 'Chapter 7: four-vectors, the four-wavevector of light and the Doppler effect.', primary: true },
+            { ...R.openstax3, note: 'Section 5.7 (Doppler Effect for Light) with worked examples.' },
+            {
+              title: 'Ashby — Relativity in the Global Positioning System (Living Reviews in Relativity, 2003)',
+              url: 'https://link.springer.com/article/10.12942/lrr-2003-1',
+              type: 'article',
+              cost: 'free',
+              provider: 'Living Reviews in Relativity (Springer)',
+              note: 'Open access. The sections on the Sagnac effect and Doppler and clock corrections give the real engineering numbers.',
+            },
+            {
+              title: 'Botermann et al. — Test of Time Dilation Using Stored Li+ Ions as Clocks at Relativistic Speed (arXiv 1409.7951)',
+              url: 'https://arxiv.org/abs/1409.7951',
+              type: 'article',
+              cost: 'free',
+              provider: 'arXiv',
+              note: 'A modern Ives-Stilwell experiment at β = 0.338: read the abstract and the description of the parallel and antiparallel lasers.',
+            },
+          ],
+          exercises: [
+            {
+              slug: 'doppler-from-the-wavevector',
+              title: 'Doppler and aberration from one Lorentz transformation',
+              prompt:
+                'Show that the phase $\\mathbf k\\cdot\\mathbf x - \\omega t$ is invariant and hence that $k^\\mu$ is a four-vector. Lorentz-transform $k^\\mu$ for light emitted at angle $\\theta\'$ in the source frame and obtain both the Doppler factor $\\gamma(1 + \\beta\\cos\\theta\')$ and the aberration formula $\\cos\\theta = (\\cos\\theta\' + \\beta)/(1 + \\beta\\cos\\theta\')$. Show that substituting the aberration formula turns $\\gamma(1 + \\beta\\cos\\theta\')$ into $1/[\\gamma(1 - \\beta\\cos\\theta)]$, and evaluate both "transverse" cases at $\\beta = 0.6$ (0.8 and 1.25).',
+              kind: 'derivation',
+              difficulty: 2,
+            },
+            {
+              slug: 'doppler-in-practice',
+              title: 'Doppler shifts in the real world',
+              prompt:
+                '(a) A GPS satellite has a line-of-sight velocity of 0.9 km/s towards you: compute the first-order shift of the 1575.42 MHz L1 carrier (4.73 kHz) and the size of the second-order (time-dilation) term for the satellite\'s full 3.87 km/s speed (about 0.13 Hz). (b) Compute the two-way shift of a 24.15 GHz radar from a car approaching at 30 m/s. (c) A star\'s Hα line (656.28 nm rest) is observed at 656.94 nm: find its radial velocity, exactly and to first order. (d) Lithium ions with rest transition wavelength 548.5 nm move at $\\beta = 0.338$; find the lab wavelengths of the parallel and antiparallel lasers that are resonant (about 386 nm and 780 nm) and verify $\\nu_p\\nu_a = \\nu_0^2$.',
+              kind: 'problem',
+              difficulty: 2,
+            },
+            {
+              slug: 'headlight-effect',
+              title: 'The headlight effect',
+              prompt:
+                'A source emits isotropically in its rest frame and moves at $\\beta$. Using aberration, show that the half of its photons emitted into the forward hemisphere ($\\theta\' < 90°$) are found in the lab inside a cone with $\\cos\\theta = \\beta$. Evaluate the half-angle for $\\beta = 0.6$ (53.1°) and $\\beta = 0.9$ (25.8°), and show that for $\\gamma \\gg 1$ it is about $1/\\gamma$. Explain why synchrotron light from a GeV electron ring comes out as a narrow, intense beam and why its spectrum is shifted to X-rays.',
+              kind: 'problem',
+              difficulty: 2,
+            },
+          ],
+          selfAssessment: [
+            {
+              question: 'Why is k^μ = (ω/c, k) a four-vector, and why is it null for light?',
+              answerOutline: 'Its contraction with x^μ is the phase, which all observers agree on, so it transforms as a four-vector; ω = c|k| makes k_μk^μ = 0.',
+            },
+            {
+              question: 'Light from a source moving at β arrives perpendicular to the source velocity in your frame. Is it red- or blueshifted, and by how much?',
+              answerOutline: 'Redshifted by 1/γ (θ = 90° in the observer frame). Light emitted at 90° in the source frame would instead be blueshifted by γ.',
+            },
+            {
+              question: 'Why does a radar gun measure twice the one-way Doppler shift?',
+              answerOutline: 'The moving reflector receives a shifted frequency and re-emits it as a moving source, so the factor applies twice: (1+β)/(1−β) ≈ 1 + 2β.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A source approaching you at $0.6c$ emits light of wavelength 500 nm in its rest frame. What wavelength do you measure?',
+              options: ['200 nm', '250 nm', '625 nm', '1000 nm'],
+              answer: 1,
+              explanation:
+                '$\\lambda = \\lambda_0\\sqrt{(1 - \\beta)/(1 + \\beta)} = 500 \\times 0.5 = 250$ nm. 200 nm is the classical moving-source result $\\lambda_0(1 - \\beta)$, which leaves out time dilation; 625 nm is the transverse redshift $\\gamma\\lambda_0$ and 1000 nm the receding case.',
+            },
+            {
+              question: 'Light from a star moving at speed $\\beta$ reaches you along a line perpendicular to the star\'s velocity, as measured in your frame. What frequency do you observe?',
+              options: ['$\\nu_0$, since there is no line-of-sight motion', '$\\gamma\\nu_0$', '$\\nu_0(1 - \\beta^2)$', '$\\nu_0/\\gamma$'],
+              answer: 3,
+              explanation:
+                'With $\\theta = 90°$ in the observer frame, $\\nu = \\nu_0/[\\gamma(1 - 0)] = \\nu_0/\\gamma$: the source\'s clock runs slow. $\\gamma\\nu_0$ belongs to light emitted at 90° in the source frame, a different ray; no shift at all is the classical expectation.',
+            },
+            {
+              question: 'An X-band police radar at 10.525 GHz is aimed at a car approaching at 25 m/s. What frequency shift does it measure?',
+              options: ['877 Hz', '3.5 kHz', '1.76 kHz', '0 Hz, because radar only measures distance'],
+              answer: 2,
+              explanation: 'Two-way shift $\\Delta f \\approx 2\\beta f = 2 \\times (25/3.00\\times10^8) \\times 10.525\\times10^9 = 1.76$ kHz. 877 Hz is the one-way shift, which forgets that the car re-emits as a moving source.',
+            },
+            {
+              question: 'Which statement about the four-wavevector $k^\\mu = (\\omega/c, \\mathbf k)$ of light in vacuum is true?',
+              options: ['$k_\\mu k^\\mu = 0$ in every frame', '$\\omega$ is the same in every frame', 'It is timelike, like a four-velocity', 'Its spatial length $|\\mathbf k|$ is the same in every frame'],
+              answer: 0,
+              explanation:
+                '$k_\\mu k^\\mu = -\\omega^2/c^2 + |\\mathbf k|^2 = 0$ is an invariant. $\\omega$ and $|\\mathbf k|$ separately change under boosts (that is the Doppler effect), and a null vector is not timelike.',
             },
           ],
         },
@@ -2673,6 +3214,1391 @@ Plot all tests on a "gravitational parameter space" diagram (potential versus cu
         stretchGoals: ['Reproduce one test numerically from published data (e.g. the Hulse-Taylor periastron-time parabola or the Cassini γ estimate from published Doppler residuals)'],
       },
     },
+    {
+      slug: 'matrices-symmetry-and-groups',
+      title: 'Matrices, Symmetry and the Lorentz Group',
+      description:
+        'The mathematics PHYS 225 builds around special relativity: vectors, matrices and index notation, composing boosts by matrix multiplication, Taylor approximations, symmetry groups and their generators, and the Lorentz group with rapidity and the Wigner rotation. Best taken straight after module 1.',
+      lessons: [
+        {
+          slug: 'vectors-matrices-and-index-notation',
+          title: 'Vectors, matrices and index notation',
+          summary:
+            'Components, matrices acting on vectors, the Einstein summation convention and the Kronecker delta, why transformations between frames are linear, and active versus passive rotations in the plane.',
+          estimatedMinutes: 90,
+          objectives: [
+            'Multiply a matrix and a vector, and two matrices, in index notation with the summation convention',
+            'Distinguish free and dummy indices and use the Kronecker delta',
+            'Explain why transformations between inertial frames are linear',
+            'Write active and passive rotations in two dimensions and convert between them',
+          ],
+          concepts: [
+            'Components relative to a basis',
+            'Matrix acting on a vector $(M\\mathbf v)_i = M_{ij}v_j$',
+            'Einstein summation convention',
+            'Free and dummy indices',
+            'Kronecker delta $\\delta_{ij}$',
+            'Linearity: superposition and straight lines to straight lines',
+            'Active rotation $R(\\theta)\\mathbf v$',
+            'Passive rotation: components in rotated axes, $R(\\theta)^T\\mathbf v$',
+          ],
+          explanation: `Special relativity is linear algebra in disguise, so PHYS 225 stops to make the tools precise. A vector is an arrow; its **components** $(v_1, v_2)$ are numbers that depend on the axes you choose. A linear map is a **matrix** $M$, and acting on a vector it gives a new vector with components
+$$(M\\mathbf v)_i = \\sum_j M_{ij}v_j \\equiv M_{ij}v_j .$$
+The last form uses the **Einstein summation convention**: an index repeated in a term is summed, so the $\\Sigma$ is dropped. A repeated (dummy) index can be renamed freely; an unrepeated (free) index must appear in every term on both sides. The Kronecker delta $\\delta_{ij}$ (1 if $i = j$, else 0) is the identity matrix, $\\delta_{ij}v_j = v_i$; the dot product is $\\mathbf a\\cdot\\mathbf b = a_ib_i$; in 3D $\\delta_{ii} = 3$. Learn to read $C_{ik} = A_{ij}B_{jk}$ as matrix multiplication and $(A^T)_{ij} = A_{ji}$ as the transpose.
+
+**Why linear?** Transformations between inertial frames must map straight worldlines to straight worldlines (free particles stay free), and because space and time are homogeneous the rule cannot depend on where you are. Up to a constant shift, that forces a matrix. The Lorentz boost $ct' = \\gamma(ct - \\beta x)$, $x' = \\gamma(x - \\beta ct)$ is a $2\\times2$ matrix acting on $(ct, x)$.
+
+**Active versus passive.** A rotation by $\\theta$ can mean two things. *Actively* you rotate the vector and keep the axes, $\\mathbf v \\to R(\\theta)\\mathbf v$, with
+$$R(\\theta) = \\begin{pmatrix}\\cos\\theta & -\\sin\\theta\\\\ \\sin\\theta & \\cos\\theta\\end{pmatrix}.$$
+*Passively* you keep the vector and rotate the axes by $\\theta$; the new components are $R(-\\theta)\\mathbf v = R(\\theta)^T\\mathbf v$. For $\\mathbf v = (3, 4)$ and $\\theta = 30°$ the active rotation gives $(0.60, 4.96)$ and the passive one $(4.60, 1.96)$; both have length 5. A Lorentz transformation between frames is passive (the same event, new coordinates). Mixing the conventions flips the sign of $\\theta$, or of $\\beta$, which is the commonest sign error in the subject.
+
+\`\`\`interactive
+matrix-transform
+{"A": [[0.866, -0.5], [0.5, 0.866]], "x": [3, 4], "mode": "transform", "modes": ["transform"], "presets": ["rotation", "reflection", "shear", "scaling"], "name": "R", "vec": "v", "title": "A rotation acting on a vector", "caption": "R is the active rotation by 30 degrees and v = (3, 4). The columns of R are the images of the basis vectors. Drag v and check that Rv keeps its length; then try the shear and scaling presets, which are linear but not rotations."}
+\`\`\`
+
+Read Feynman's chapter on vectors (which rotates the axes, a passive view), Shankar's chapter on matrices if you have it, and the math-methods lesson on vectors and matrices.`,
+          resources: [
+            feynman1(11, 'Vectors'),
+            {
+              title: 'Shankar — Basic Training in Mathematics: A Fitness Program for Science Students',
+              url: 'https://link.springer.com/book/10.1007/978-1-4899-6798-5',
+              type: 'textbook',
+              cost: 'paid',
+              provider: 'Springer',
+              note: 'The optional PHYS 225 maths text: the chapter on matrices and determinants. Free alternatives: Feynman and MIT 18.02SC.',
+            },
+            {
+              title: 'MIT 18.02SC Multivariable Calculus (Fall 2010)',
+              url: 'https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/',
+              type: 'course',
+              cost: 'free',
+              provider: 'MIT OpenCourseWare',
+              note: 'Unit 1 (vectors and matrices): sessions on matrices, matrix multiplication and inverses, with problem sets and solutions.',
+              primary: true,
+            },
+          ],
+          exercises: [
+            {
+              slug: 'index-notation-practice',
+              title: 'Index notation practice',
+              prompt:
+                'In three dimensions with the summation convention: (a) evaluate $\\delta_{ii}$ and $\\delta_{ij}\\delta_{ij}$; (b) show $\\delta_{ij}A_{jk} = A_{ik}$; (c) write $(AB)^T = B^TA^T$ in index form and prove it; (d) show that $a_ib_i$ is unchanged when both vectors are rotated, provided $R_{ij}R_{ik} = \\delta_{jk}$; (e) in $T_{ij}v_j + w_i = u_i$ name the free and dummy indices, and explain what is wrong with $a_i = M_{ij}b_i$.',
+              kind: 'problem',
+              difficulty: 1,
+            },
+            {
+              slug: 'active-and-passive-rotations',
+              title: 'Active and passive rotations',
+              prompt:
+                'For $\\mathbf v = (3, 4)$: (a) rotate the vector actively by 90° and by 30°; (b) find its components in axes rotated by 30° counterclockwise; (c) show both results have length 5; (d) show that rotating the vector and the axes by the same angle leaves the components unchanged, and write this as a matrix identity. (e) Decide whether $ct\' = \\gamma(ct - \\beta x)$, $x\' = \\gamma(x - \\beta ct)$ is an active or a passive transformation, and write the matrix that would "actively boost" an event instead.',
+              kind: 'problem',
+              difficulty: 1,
+            },
+            {
+              slug: 'why-linear',
+              title: 'Why transformations between frames are linear',
+              prompt:
+                'Show that the map $x\' = x - vt - \\tfrac12 at^2$, $t\' = t$ sends a free particle $x = x_0 + ut$ to an accelerating one, so it cannot relate two inertial frames. Then show that any map $x\' = f(x, t)$, $t\' = g(x, t)$ that sends every uniform motion to a uniform motion and treats every point and instant alike (homogeneity) must be linear up to a constant shift. Write a paragraph explaining which physical assumptions you used and where.',
+              kind: 'writing',
+              difficulty: 2,
+            },
+          ],
+          selfAssessment: [
+            {
+              question: 'What is the difference between a free index and a dummy index?',
+              answerOutline: 'A dummy index is repeated in a term, summed over and can be renamed; a free index appears once in every term and must match on both sides of an equation.',
+            },
+            {
+              question: 'How do the matrices of an active and a passive rotation by θ differ?',
+              answerOutline: 'Active: v → R(θ)v rotates the vector. Passive: the components in axes rotated by θ are R(−θ)v = R(θ)ᵀv.',
+            },
+            {
+              question: 'Why must the transformation between two inertial frames be linear?',
+              answerOutline: 'Free (straight-line) motion must map to free motion, and homogeneity means the rule cannot depend on position or time; only linear maps plus constants qualify.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'The vector $\\mathbf v = (2, 0)$ stays put while the axes are rotated by 90° counterclockwise (a passive rotation). What are its new components?',
+              options: ['$(0, 2)$', '$(0, -2)$', '$(-2, 0)$', '$(2, 0)$'],
+              answer: 1,
+              explanation:
+                'The new $x\'$ axis points along the old $y$ and the new $y\'$ along the old $-x$, so a vector along the old $x$ has components $(0, -2) = R(-90°)\\mathbf v$. $(0, 2)$ is the active rotation of the vector by 90°.',
+            },
+            {
+              question: 'In $M_{ij}v_j + w_i$ (summation convention), which statement is true?',
+              options: ['Both $i$ and $j$ are summed', '$j$ is free and $i$ is summed', 'The expression is invalid because $w_i$ has no $j$', '$i$ is free and $j$ is summed'],
+              answer: 3,
+              explanation:
+                '$j$ is repeated in the first term, so it is summed (a dummy index); $i$ appears once in each term, so it is free and the expression is the $i$-th component of a vector. Terms need the same free indices, not the same dummy ones.',
+            },
+            {
+              question: 'In three dimensions, what is $\\delta_{ij}\\delta_{ij}$?',
+              options: ['3', '9', '1', '0'],
+              answer: 0,
+              explanation: 'Summing over $j$ first gives $\\delta_{ij}\\delta_{ij} = \\delta_{ii} = 1 + 1 + 1 = 3$. Nine counts all pairs $(i, j)$, but only the three diagonal ones are non-zero.',
+            },
+            {
+              question: 'Which map of the plane is linear?',
+              options: ["$x' = x + 1,\\ y' = y$", "$x' = x^2,\\ y' = y$", "$x' = 2x + y,\\ y' = x - y$", "$x' = xy,\\ y' = y$"],
+              answer: 2,
+              explanation:
+                'A linear map sends sums to sums and multiples to multiples, so it is a matrix: $\\begin{pmatrix}2 & 1\\\\ 1 & -1\\end{pmatrix}$ here. The first is a translation (it moves the origin), and the other two are nonlinear.',
+            },
+          ],
+          relatedLessons: ['math-methods/linear-algebra/vectors-matrices-and-linear-systems'],
+          prerequisiteLessons: ['relativity/special-relativity-foundations/lorentz-transformation-and-the-interval'],
+        },
+        {
+          slug: 'composing-boosts-and-taylor-approximations',
+          title: 'Composing boosts: matrix multiplication and Taylor approximations',
+          summary:
+            'Matrix multiplication as composition, velocity addition derived by multiplying Lorentz matrices, and Taylor series for analytic and numerical small-quantity approximations such as $\\gamma \\approx 1 + \\beta^2/2$.',
+          estimatedMinutes: 90,
+          objectives: [
+            'Multiply matrices of compatible sizes and explain why the product composes the maps',
+            'Derive the velocity-addition formula and the composite $\\gamma$ by multiplying two boost matrices',
+            'Expand $\\gamma$, $\\sqrt{1 + x}$ and $(1 + x)^n$ in Taylor series and judge the error of a truncation',
+            'Use series to compute quantities that floating-point arithmetic gets wrong, such as $\\gamma - 1$ for tiny $\\beta$',
+          ],
+          concepts: [
+            'Matrix product $(AB)_{ik} = A_{ij}B_{jk}$ and size rules',
+            'Non-commutativity in general',
+            'Boost matrix $\\Lambda(\\beta)$ and its inverse $\\Lambda(-\\beta)$',
+            'Velocity addition from $\\Lambda(\\beta_2)\\Lambda(\\beta_1)$',
+            'Taylor series and the binomial expansion',
+            '$\\gamma = 1 + \\beta^2/2 + 3\\beta^4/8 + \\cdots$',
+            'Truncation error',
+            'Floating-point cancellation',
+          ],
+          explanation: `**Matrix multiplication** composes linear maps: applying $B$ and then $A$ is the single map $AB$, with $(AB)_{ik} = A_{ij}B_{jk}$. The inner sizes must agree (an $m\\times n$ times an $n\\times p$ matrix is $m\\times p$), and in general $AB \\ne BA$. Write the boost acting on $(ct, x)$ as
+$$\\Lambda(\\beta) = \\gamma\\begin{pmatrix}1 & -\\beta\\\\ -\\beta & 1\\end{pmatrix}.$$
+Going from S to S′ (speed $\\beta_1$) and then from S′ to S″ (speed $\\beta_2$ relative to S′) is $\\Lambda(\\beta_2)\\Lambda(\\beta_1)$. Multiply it out:
+$$\\Lambda(\\beta_2)\\Lambda(\\beta_1) = \\gamma_1\\gamma_2(1 + \\beta_1\\beta_2)\\begin{pmatrix}1 & -\\beta\\\\ -\\beta & 1\\end{pmatrix},\\qquad \\beta = \\frac{\\beta_1 + \\beta_2}{1 + \\beta_1\\beta_2}.$$
+The product is itself a boost, and its prefactor is automatically $\\gamma(\\beta)$: **velocity addition is matrix multiplication**. Collinear boosts commute; boosts in different directions do not (lesson 4).
+
+**Taylor series** turn exact formulas into usable approximations. Around $x = 0$, $f(x) \\approx f(0) + f'(0)x + \\tfrac12f''(0)x^2$, which gives the workhorses $(1 + x)^n \\approx 1 + nx$, $\\sqrt{1 + x} \\approx 1 + x/2 - x^2/8$ and
+$$\\gamma = (1 - \\beta^2)^{-1/2} = 1 + \\tfrac12\\beta^2 + \\tfrac38\\beta^4 + \\cdots .$$
+They matter numerically as well as analytically. A GPS satellite at 3.87 km/s has $\\beta = 1.29\\times10^{-5}$, so its clock loses $\\beta^2/2 = 8.3\\times10^{-11}$ of each second, 7.2 μs per day. For a car at 30 m/s, $\\gamma - 1 = 5.0\\times10^{-15}$; for $\\beta = 10^{-9}$ a computer in double precision returns $\\gamma - 1 = 0$, because $1 - \\beta^2$ rounds to 1, while the series gives $5\\times10^{-19}$. The series also tells you when Newton is good enough: $1 + \\beta^2/2$ is 1% off only at $\\beta \\approx 0.40$, and relativity corrects the Galilean sum of two 300 m/s velocities by $6\\times10^{-10}$ m/s.
+
+\`\`\`interactive
+taylor-series
+{"f": "1/sqrt(1-x^2)", "a": 0, "n": 2, "nMax": 12, "view": [-1, 1, 0, 4], "sing": [1, -1], "errView": [-12, 1], "title": "Taylor polynomials of the Lorentz factor", "caption": "Here x stands for beta and f is gamma. Only even powers appear. Raise n and watch the polynomials hug gamma near beta = 0 but fail near beta = 1, where gamma blows up; the error plot shows how small the error of 1 + beta^2/2 is at everyday speeds."}
+\`\`\`
+
+Read Shankar's chapters on series and on matrices if you have the book, Tong's treatment of Lorentz transformations as matrices, and the math-methods lesson on Taylor series.`,
+          resources: [
+            { ...R.tongDR, note: 'Chapter 7: Lorentz transformations as matrices, composition of boosts and the addition of velocities.', primary: true },
+            {
+              title: 'Shankar — Basic Training in Mathematics: A Fitness Program for Science Students',
+              url: 'https://link.springer.com/book/10.1007/978-1-4899-6798-5',
+              type: 'textbook',
+              cost: 'paid',
+              provider: 'Springer',
+              note: 'The chapters on infinite series (Taylor expansions) and on matrices. Free alternative: Tong above and MIT 18.02SC.',
+            },
+            {
+              title: 'MIT 18.02SC Multivariable Calculus (Fall 2010)',
+              url: 'https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/',
+              type: 'course',
+              cost: 'free',
+              provider: 'MIT OpenCourseWare',
+              note: 'Unit 1 sessions on matrix multiplication, with worked problems.',
+            },
+          ],
+          exercises: [
+            {
+              slug: 'multiply-boost-matrices',
+              title: 'Velocity addition by matrix multiplication',
+              prompt:
+                'Multiply $\\Lambda(\\beta_2)\\Lambda(\\beta_1)$ by hand and show it equals $\\Lambda(\\beta)$ with $\\beta = (\\beta_1 + \\beta_2)/(1 + \\beta_1\\beta_2)$ and $\\gamma = \\gamma_1\\gamma_2(1 + \\beta_1\\beta_2)$. Check with $\\beta_1 = 0.6$, $\\beta_2 = 0.8$ ($\\beta = 0.9459$, $\\gamma = 3.083$). Show that $\\det\\Lambda = 1$, that $\\Lambda(\\beta)^{-1} = \\Lambda(-\\beta)$, and that the two orders of multiplication agree. Write the $4\\times4$ boost along $x$ acting on $(ct, x, y, z)$ and say what sizes the products $\\Lambda x$ and $x^T\\eta x$ have.',
+              kind: 'derivation',
+              difficulty: 2,
+            },
+            {
+              slug: 'taylor-approximations',
+              title: 'Approximations and their errors',
+              prompt:
+                'Derive $\\gamma = 1 + \\beta^2/2 + 3\\beta^4/8 + \\dots$ from the binomial series. (a) Find the $\\beta$ at which $1 + \\beta^2/2$ is 1% below $\\gamma$ (about 0.40). (b) Compute the GPS clock loss per day for $v = 3.87$ km/s (7.2 μs). (c) In Python or a spreadsheet, evaluate $1/\\sqrt{1 - \\beta^2} - 1$ for $\\beta = 10^{-3}, 10^{-6}, 10^{-9}$ and compare with the series; explain the failure. (d) Expand $(\\gamma - 1)mc^2$ and find the fractional error of $\\tfrac12mv^2$ for a proton at $0.1c$ (0.75%).',
+              kind: 'problem',
+              difficulty: 2,
+            },
+            {
+              slug: 'matrix-products-practice',
+              title: 'Matrix products and non-commutativity',
+              prompt:
+                'Compute $AB$ and $BA$ for $A = \\begin{pmatrix}1 & 2 & 0\\\\ 0 & 1 & -1\\end{pmatrix}$ and $B = \\begin{pmatrix}1 & 0\\\\ 2 & 1\\\\ 0 & 3\\end{pmatrix}$ and note their sizes. Then take $R$ the rotation by 90° and $S$ the shear $\\begin{pmatrix}1 & 1\\\\ 0 & 1\\end{pmatrix}$, compute $RS$ and $SR$, and describe in words what each composite does to the unit square. Finally show that any two boosts along $x$ commute, and explain why that follows from the rapidity form of the next lessons.',
+              kind: 'problem',
+              difficulty: 1,
+            },
+          ],
+          selfAssessment: [
+            {
+              question: 'Why does the product of two collinear boost matrices give the velocity-addition formula?',
+              answerOutline: 'Composing transformations is multiplying matrices; the product has the boost form with β = (β₁ + β₂)/(1 + β₁β₂) and prefactor γ₁γ₂(1 + β₁β₂) = γ(β).',
+            },
+            {
+              question: 'Why can a computer return γ − 1 = 0 for a small β, and how do you fix it?',
+              answerOutline: 'When β² is below about 10⁻¹⁶, 1 − β² rounds to 1 in double precision; use the series γ − 1 ≈ β²/2 + 3β⁴/8.',
+            },
+            {
+              question: 'Give the first two non-trivial terms of the series for γ and for the kinetic energy (γ − 1)mc².',
+              answerOutline: 'γ ≈ 1 + β²/2 + 3β⁴/8; kinetic energy ≈ ½mv² + (3/8)mv⁴/c².',
+            },
+          ],
+          quiz: [
+            {
+              question: 'What is the top-left entry of $\\Lambda(\\beta_2)\\Lambda(\\beta_1)$ when $\\beta_1 = \\beta_2 = 0.5$?',
+              options: ['$5/3$', '$4/3$', '$2.31$', '$1.25$'],
+              answer: 0,
+              explanation:
+                'It is $\\gamma_1\\gamma_2(1 + \\beta_1\\beta_2) = (4/3)(1.25) = 5/3$, which is $\\gamma$ for the composite $\\beta = 0.8$. $4/3$ forgets the $(1 + \\beta_1\\beta_2)$ from the off-diagonal products; 2.31 adds $\\gamma_1 + \\gamma_2$.',
+            },
+            {
+              question: 'A car moves at 30 m/s. To good accuracy, what is $\\gamma - 1$?',
+              options: ['$1.0\\times10^{-7}$', '$1.0\\times10^{-14}$', '$5.0\\times10^{-15}$', '0, as a calculator shows'],
+              answer: 2,
+              explanation:
+                '$\\beta = 1.0\\times10^{-7}$ and $\\gamma - 1 \\approx \\beta^2/2 = 5.0\\times10^{-15}$. $10^{-14}$ forgets the factor $\\tfrac12$, $10^{-7}$ is $\\beta$ itself, and the calculator\'s 0 is round-off, not physics.',
+            },
+            {
+              question: 'For which pair of matrices is $AB = BA$ guaranteed?',
+              options: ['A boost along $x$ and a boost along $y$', 'Any two $2\\times2$ matrices', 'A rotation and a shear', 'Two boosts along the same axis'],
+              answer: 3,
+              explanation:
+                'Boosts along one axis multiply like $e^{\\phi_1K}e^{\\phi_2K} = e^{(\\phi_1+\\phi_2)K}$, so the order cannot matter. Boosts along different axes, and a rotation with a shear, generally do not commute.',
+            },
+            {
+              question: 'A GPS satellite clock moves at $\\beta = 1.29\\times10^{-5}$. By roughly how much does special-relativistic time dilation slow it per day (86 400 s)?',
+              options: ['1.1 s', '7.2 μs', '14 μs', '1.1 ms'],
+              answer: 1,
+              explanation:
+                'The fractional rate change is $\\gamma - 1 \\approx \\beta^2/2 = 8.3\\times10^{-11}$, and $8.3\\times10^{-11} \\times 86\\,400$ s $= 7.2$ μs. 14 μs drops the $\\tfrac12$; 1.1 s multiplies by $\\beta$ instead of $\\beta^2/2$.',
+            },
+          ],
+          relatedLessons: ['math-methods/single-variable-calculus/taylor-series', 'math-methods/linear-algebra/vectors-matrices-and-linear-systems'],
+        },
+        {
+          slug: 'symmetry-groups-and-generators',
+          title: 'Symmetry, groups and generators',
+          summary:
+            'Symmetries form groups: the group axioms, orthogonal matrices and rotation groups, abelian and non-abelian groups, and generators obtained by Taylor-expanding a group element about the identity.',
+          estimatedMinutes: 100,
+          objectives: [
+            'State the group axioms and decide whether a given set and product form a group',
+            'Show that $R^TR = 1$ is the condition for a matrix to preserve dot products, and describe O($n$) and SO($n$)',
+            'Show that rotations about a fixed axis form an abelian group while rotations about different axes do not commute',
+            'Obtain generators by Taylor-expanding a group element and recover finite elements by exponentiation',
+          ],
+          concepts: [
+            'Symmetry as an invariance',
+            'Group axioms: closure, associativity, identity, inverses',
+            'Orthogonal matrices $R^TR = 1$; O($n$) and SO($n$)',
+            'Abelian and non-abelian groups',
+            'Generator $G = dR/d\\theta$ at the identity',
+            'Exponential map $R(\\theta) = e^{\\theta G}$',
+            'Commutators $[J_x, J_y] = J_z$',
+          ],
+          explanation: `A **symmetry** is a transformation that leaves something unchanged: rotations leave lengths unchanged, boosts leave the interval unchanged, and both leave the laws of physics unchanged. Symmetries come with structure. Do one and then another and you have done a third; each can be undone; doing nothing is one of them. That is a **group**: a set $G$ with a product such that (1) it is closed, $ab \\in G$; (2) it is associative, $(ab)c = a(bc)$; (3) there is an identity $e$ with $ea = ae = a$; (4) every $a$ has an inverse $a^{-1}$. Examples: the integers under addition; $\\{1, i, -1, -i\\}$ under multiplication; the rotations of the plane; the boosts along one axis. The $2\\times2$ matrices with determinant 0 are not a group (no inverses), and neither are the integers under subtraction (not associative).
+
+**Orthogonal matrices.** A matrix preserves every dot product, $(R\\mathbf a)\\cdot(R\\mathbf b) = \\mathbf a\\cdot\\mathbf b$, exactly when $R^TR = 1$, i.e. $R_{ki}R_{kj} = \\delta_{ij}$: its columns are orthonormal and $\\det R = \\pm1$. These matrices form the orthogonal group O($n$), and those with $\\det R = +1$ the rotation group SO($n$). In the plane $R(\\alpha)R(\\beta) = R(\\alpha + \\beta) = R(\\beta)R(\\alpha)$, so SO(2), like the rotations about any one fixed axis in 3D, is **abelian**. Rotations about different axes are not: rotate $\\hat{\\mathbf y}$ by 90° about $x$ and then about $z$ and you get $\\hat{\\mathbf z}$; in the other order you get $-\\hat{\\mathbf x}$.
+
+**Generators.** Taylor-expand a rotation about $\\theta = 0$: $R(\\theta) \\approx 1 + \\theta G$ with
+$$G = \\frac{dR}{d\\theta}\\Big|_{\\theta = 0} = \\begin{pmatrix}0 & -1\\\\ 1 & 0\\end{pmatrix}.$$
+$G$ is the **generator**, an infinitesimal rotation. It is not itself a group element: it is antisymmetric, $G^T = -G$, which is exactly the condition for $1 + \\theta G$ to be orthogonal to first order. Building a finite rotation from many small ones gives $R(\\theta) = \\lim_{N\\to\\infty}(1 + \\theta G/N)^N = e^{\\theta G}$, and since $G^2 = -1$ the exponential series sums to $\\cos\\theta\\,1 + \\sin\\theta\\,G$, exactly $R(\\theta)$. In 3D there are three generators $J_x, J_y, J_z$, and non-commutation shows up in their **commutators**: $[J_x, J_y] = J_xJ_y - J_yJ_x = J_z$, so two small rotations done in opposite orders differ by a rotation of second order.
+
+Read Feynman's chapter on symmetry in physical laws for the physics and Woit's chapters on SO(2) and SO(3) for the mathematics.`,
+          resources: [
+            feynman1(52, 'Symmetry in Physical Laws'),
+            {
+              title: 'Woit — Quantum Theory, Groups and Representations: An Introduction (free PDF)',
+              url: 'https://www.math.columbia.edu/~woit/QM/qmbook.pdf',
+              type: 'textbook',
+              cost: 'free',
+              provider: 'Columbia University (Peter Woit)',
+              note: 'The early chapters on groups, U(1) and SO(2), and rotations in three dimensions (SO(3) and its Lie algebra). Skip the quantum mechanics on a first pass.',
+              primary: true,
+            },
+            {
+              title: 'MIT 18.06 Linear Algebra (Spring 2010, Strang)',
+              url: 'https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/',
+              type: 'course',
+              cost: 'free',
+              provider: 'MIT OpenCourseWare',
+              note: 'Lecture 17 (orthogonal matrices and Gram-Schmidt) for $Q^TQ = I$ and its geometric meaning.',
+            },
+          ],
+          exercises: [
+            {
+              slug: 'group-or-not',
+              title: 'Group or not?',
+              prompt:
+                'Decide which of the following are groups, checking each axiom: (a) $2\\times2$ rotation matrices under multiplication; (b) $2\\times2$ real matrices with determinant 2; (c) $\\{1, -1, i, -i\\}$ under multiplication; (d) boosts along $x$ under multiplication; (e) all boosts, in every direction, under multiplication (hint: the product of two non-collinear boosts); (f) the integers under subtraction; (g) the $2\\times2$ orthogonal matrices. For each group, say whether it is abelian.',
+              kind: 'problem',
+              difficulty: 1,
+            },
+            {
+              slug: 'generator-and-exponential',
+              title: 'From generator to finite rotation',
+              prompt:
+                'Show that $G = dR/d\\theta|_0$ satisfies $G^T = -G$ and $G^2 = -1$, and sum the series $e^{\\theta G} = \\sum_n (\\theta G)^n/n!$ to get $R(\\theta)$. Compute $(1 + \\theta G/N)^N$ for $\\theta = \\pi/2$ and $N = 10, 100, 1000$ (by hand for $N = 10$ using eigenvalues, or numerically) and show the error falls like $1/N$ (largest entry error about 0.13, 0.012, 0.0012). Then find the 3D generators $J_x, J_y, J_z$ by differentiating $R_x, R_y, R_z$ and verify $[J_x, J_y] = J_z$.',
+              kind: 'derivation',
+              difficulty: 2,
+            },
+            {
+              slug: 'non-commuting-rotations',
+              title: 'Rotations that do not commute',
+              prompt:
+                'Write $R_x(90°)$ and $R_z(90°)$ and compute both products and their action on $\\hat{\\mathbf x}$, $\\hat{\\mathbf y}$, $\\hat{\\mathbf z}$; check the result with a book. Then expand $R_x(\\varepsilon)R_z(\\varepsilon) - R_z(\\varepsilon)R_x(\\varepsilon)$ to second order in $\\varepsilon$ and show it equals $\\varepsilon^2[J_x, J_z]$, a small rotation about $y$. Explain why rotations about a single axis commute but the full rotation group does not.',
+              kind: 'problem',
+              difficulty: 2,
+            },
+          ],
+          selfAssessment: [
+            {
+              question: 'List the four group axioms and give a set that fails exactly one of them.',
+              answerOutline: 'Closure, associativity, identity, inverses. E.g. 2×2 matrices with determinant 0 fail inverses; integers under subtraction fail associativity.',
+            },
+            {
+              question: 'Why is the generator of rotations antisymmetric, and why is it not itself a rotation?',
+              answerOutline: '(1 + εG)ᵀ(1 + εG) = 1 + ε(Gᵀ + G) + O(ε²) must equal 1, so Gᵀ = −G. It is a tangent direction at the identity (an infinitesimal rotation), not an element; elements are e^{θG}.',
+            },
+            {
+              question: 'Which rotation groups are abelian, and how does non-commutation show up in the generators?',
+              answerOutline: 'SO(2) and rotations about one fixed axis are abelian; SO(3) is not, and its generators have non-zero commutators [J_x, J_y] = J_z.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Which of these sets is **not** a group under matrix multiplication?',
+              options: ['$2\\times2$ real matrices with determinant 1', 'Rotations about the $z$-axis', '$2\\times2$ real matrices with determinant 0', 'Boosts along the $x$-axis'],
+              answer: 2,
+              explanation:
+                'A matrix with determinant 0 has no inverse (and the identity, with determinant 1, is not even in the set). Determinant-1 matrices are closed because $\\det(AB) = \\det A\\det B$; rotations about one axis and boosts along one axis are closed with inverses $R(-\\theta)$ and $\\Lambda(-\\beta)$.',
+            },
+            {
+              question: 'To first order in a small angle $\\varepsilon$, what is the rotation matrix $R(\\varepsilon)$, with $G$ the generator?',
+              options: ['$\\varepsilon G$', '$1 - \\tfrac12\\varepsilon^2$', '$G$', '$1 + \\varepsilon G$'],
+              answer: 3,
+              explanation:
+                'Taylor-expanding about the identity gives $R(\\varepsilon) = 1 + \\varepsilon G + O(\\varepsilon^2)$. $\\varepsilon G$ alone is the small change, not the group element, and the generator $G$ is a direction in which to move away from the identity.',
+            },
+            {
+              question: 'Rotate $\\hat{\\mathbf y}$ actively by 90° about the $x$-axis, then by 90° about the $z$-axis (right-hand rule). Where does it end up?',
+              options: ['$\\hat{\\mathbf z}$', '$-\\hat{\\mathbf x}$', '$\\hat{\\mathbf y}$', '$\\hat{\\mathbf x}$'],
+              answer: 0,
+              explanation:
+                '$R_x(90°)$ takes $\\hat{\\mathbf y}$ to $\\hat{\\mathbf z}$, and a rotation about $z$ leaves $\\hat{\\mathbf z}$ alone. $-\\hat{\\mathbf x}$ is what the opposite order gives: the rotations do not commute.',
+            },
+            {
+              question: 'Which matrix is orthogonal?',
+              options: [
+                '$\\begin{pmatrix}2 & 0\\\\ 0 & 0.5\\end{pmatrix}$',
+                '$\\begin{pmatrix}0.6 & -0.8\\\\ 0.8 & 0.6\\end{pmatrix}$',
+                '$\\begin{pmatrix}1 & 1\\\\ 0 & 1\\end{pmatrix}$',
+                '$\\begin{pmatrix}0.6 & 0.8\\\\ 0.8 & 0.6\\end{pmatrix}$',
+              ],
+              answer: 1,
+              explanation:
+                'Its columns $(0.6, 0.8)$ and $(-0.8, 0.6)$ are unit vectors at right angles, so $R^TR = 1$: it is the rotation by 53.1°. The first has determinant 1 but stretches lengths; the last has unit columns that are not perpendicular ($0.6\\cdot0.8 + 0.8\\cdot0.6 = 0.96$).',
+            },
+          ],
+          relatedLessons: ['abstract-algebra/groups/group-axioms-and-examples'],
+        },
+        {
+          slug: 'the-lorentz-group-and-rapidity',
+          title: 'The Lorentz group: rapidity, generators and non-commuting boosts',
+          summary:
+            'Lorentz transformations as the group that preserves the interval, compared with the orthogonal group; boosts parameterised by rapidity and generated by $K$ with $K^2 = 1$; and the Wigner rotation that appears when boosts in different directions are composed.',
+          estimatedMinutes: 100,
+          objectives: [
+            'State the defining condition $\\Lambda^T\\eta\\Lambda = \\eta$ of the Lorentz group and compare it with $R^TR = 1$',
+            'Show that the Lorentz group preserves the interval and hence the timelike, spacelike and lightlike classification',
+            'Derive the boost generator, exponentiate it to get boosts in rapidity form, and show that collinear rapidities add',
+            'Compose non-collinear boosts and compute the Wigner rotation',
+          ],
+          concepts: [
+            'Lorentz group O(1,3): $\\Lambda^T\\eta\\Lambda = \\eta$',
+            'Orthogonal group O(3) as a subgroup',
+            'Invariance of the interval and of causal type',
+            'Boost generator $K$ with $K^2 = +1$',
+            'Rapidity $\\phi$: $\\Lambda = e^{\\phi K}$, $\\gamma = \\cosh\\phi$',
+            'Unidirectional boosts as an abelian subgroup',
+            'Wigner rotation and $[K_x, K_y] = -J_z$',
+            'Thomas precession',
+          ],
+          explanation: `Rotations are the matrices that preserve $x^2 + y^2 + z^2$; **Lorentz transformations** are the matrices that preserve the interval $-c^2t^2 + x^2 + y^2 + z^2$. With $\\eta = \\mathrm{diag}(-1, 1, 1, 1)$ the conditions read
+$$R^TR = 1\\quad(\\text{orthogonal group O(3)}),\\qquad \\Lambda^T\\eta\\Lambda = \\eta\\quad(\\text{Lorentz group O(1,3)}).$$
+Both are groups: if $\\Lambda_1$ and $\\Lambda_2$ preserve $\\eta$, so does $\\Lambda_1\\Lambda_2$. Rotations of $x, y, z$ alone are Lorentz transformations, so O(3) sits inside the Lorentz group, but a Euclidean rotation in the $t$-$x$ plane is not one: it preserves $c^2t^2 + x^2$ instead. Because the interval is preserved, so is its sign, which is why timelike, spacelike and lightlike are the same in every frame and the light cone is frame independent.
+
+**Rapidity.** Taylor-expand a boost about zero: $\\Lambda \\approx 1 + \\phi K$ with generator
+$$K = \\begin{pmatrix}0 & -1\\\\ -1 & 0\\end{pmatrix},\\qquad K^2 = +1 .$$
+The rotation generator squares to $-1$ and gives cosines and sines; $K$ squares to $+1$ and gives $e^{\\phi K} = \\cosh\\phi\\,1 + \\sinh\\phi\\,K$, the boost with $\\gamma = \\cosh\\phi$ and $\\gamma\\beta = \\sinh\\phi$. The parameter $\\phi = \\tanh^{-1}\\beta$ is the rapidity, and since $e^{\\phi_1K}e^{\\phi_2K} = e^{(\\phi_1 + \\phi_2)K}$, boosts along one axis form an abelian group in which rapidities add. Three successive boosts of $0.5c$ give $\\phi = 3 \\times 0.549 = 1.648$ and $\\beta = \\tanh 1.648 = 0.929$.
+
+**Boosts in different directions do not commute**, and their product is not even a pure boost. Boost by $0.6c$ along $x$, then by $0.6c$ along the new $y'$: the final frame moves at $0.768c$, and the other order gives the same speed in a direction 12.7° away. Each product is a boost followed by a rotation, the **Wigner rotation**, with $\\cos\\theta_W = (\\gamma_1 + \\gamma_2)/(1 + \\gamma_1\\gamma_2)$ for perpendicular boosts. In terms of generators, $[K_x, K_y] = -J_z$ in the conventions here: two boosts make a rotation. For an electron orbiting in an atom this accumulates into **Thomas precession**, which halves the naive spin-orbit splitting.
+
+\`\`\`interactive
+rel-boost-composition
+{"mode": "angle", "beta1": 0.6, "beta2": 0.6, "alpha": 90, "title": "Boosts that do not commute", "caption": "Two perpendicular boosts of $0.6c$: the two orders give the same final speed $0.768c$ in directions 12.7° apart, and splitting $L = R\\\\,B(w)$ finds the same Wigner angle. Set $\\\\alpha = 0$ and the rotation vanishes; switch to collinear boosts to see rapidities add on the hyperbola."}
+\`\`\`
+
+Read Tong's discussion of the Lorentz group and Woit's chapter on the Lorentz group.`,
+          resources: [
+            { ...R.tongDR, note: 'Chapter 7: the Lorentz group, rotations and boosts, and rapidity.', primary: true },
+            {
+              title: 'Woit — Quantum Theory, Groups and Representations: An Introduction (free PDF)',
+              url: 'https://www.math.columbia.edu/~woit/QM/qmbook.pdf',
+              type: 'textbook',
+              cost: 'free',
+              provider: 'Columbia University (Peter Woit)',
+              note: 'The chapter on the Lorentz group and its Lie algebra: boost and rotation generators and their commutators.',
+            },
+            {
+              title: 'Morin — Special Relativity: For the Enthusiastic Beginner',
+              url: 'https://davidmorin.physics.fas.harvard.edu/books/special-relativity',
+              type: 'textbook',
+              cost: 'paid',
+              provider: 'David Morin (Harvard University)',
+              note: 'The PHYS 225 text treats rapidity and its addition with worked problems. Free alternatives: Tong and Woit above.',
+            },
+          ],
+          exercises: [
+            {
+              slug: 'lorentz-group-conditions',
+              title: 'Lorentz group versus orthogonal group',
+              prompt:
+                'Verify $\\Lambda^T\\eta\\Lambda = \\eta$ for the $2\\times2$ boost on $(ct, x)$. Show that any matrix satisfying it has $\\det\\Lambda = \\pm1$ and $|\\Lambda^0{}_0| \\ge 1$, that the product of two such matrices satisfies it, and that a $4\\times4$ rotation about $z$ satisfies it. Then take the Euclidean rotation by 30° in the $(ct, x)$ plane, apply it to the event $(ct, x) = (1, 0)$ and show that the interval changes from $-1$ to $-0.5$. Explain in a sentence why the light cone is the same in every frame.',
+              kind: 'derivation',
+              difficulty: 2,
+            },
+            {
+              slug: 'rapidity-composition',
+              title: 'Rapidity adds',
+              prompt:
+                'Find the boost generator $K = d\\Lambda/d\\phi|_0$, show $K^2 = 1$, and sum $e^{\\phi K}$. Use rapidity to compute: (a) three successive boosts of $0.5c$ (0.929); (b) ten successive kicks of $0.1c$, each in the current rest frame (0.763); (c) the speed after a rocket with proper acceleration $g$ has accelerated for one year of proper time (rapidity $g\\tau/c = 1.03$). Compare (b) with the Galilean answer and with $c$.',
+              kind: 'problem',
+              difficulty: 2,
+            },
+            {
+              slug: 'wigner-rotation-by-hand',
+              title: 'The Wigner rotation by hand',
+              prompt:
+                'Work in $(ct, x, y)$ with $3\\times3$ matrices. Write the boost $B_x$ by $0.6c$ and the boost $B_y$ by $0.6c$. Compute $L = B_yB_x$ and $L\' = B_xB_y$, and the velocity of the final frame in each case from the first column of $L^{-1}$: $(0.6, 0.48)c$ and $(0.48, 0.6)c$. Show that both speeds are $0.768c$ and the directions differ by 12.68°. Write $L = R\\,B(\\mathbf w)$ with $B(\\mathbf w)$ the pure boost to the final velocity, find $R$, and check $\\cos\\theta_W = (\\gamma_1 + \\gamma_2)/(1 + \\gamma_1\\gamma_2)$. Finally compute $[K_x, K_y]$.',
+              kind: 'problem',
+              difficulty: 3,
+            },
+          ],
+          selfAssessment: [
+            {
+              question: 'What condition defines the Lorentz group, and how does it differ from the orthogonal group?',
+              answerOutline: 'ΛᵀηΛ = η, i.e. the interval is preserved; O(n) has RᵀR = 1, preserving Euclidean length. Spatial rotations satisfy both, so O(3) is a subgroup.',
+            },
+            {
+              question: 'Why do rapidities add for collinear boosts when velocities do not?',
+              answerOutline: 'Collinear boosts are e^{φK}, and e^{φ₁K}e^{φ₂K} = e^{(φ₁+φ₂)K}; β = tanh φ is a nonlinear function of the additive parameter.',
+            },
+            {
+              question: 'What is the Wigner rotation?',
+              answerOutline: 'The rotation left over when non-collinear boosts are composed: B₂B₁ = R(θ_W)B(w). The two orders give velocities of equal magnitude rotated by θ_W.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Three successive boosts along $x$ are applied, each of $0.5c$ relative to the previous frame. What is the final speed relative to the start?',
+              options: ['$1.5c$', '$0.80c$', '$0.93c$', '$0.99c$'],
+              answer: 2,
+              explanation:
+                'Each boost has rapidity $\\tanh^{-1}0.5 = 0.549$; three add to 1.648, and $\\tanh 1.648 = 0.93$. $0.80c$ is the result after two boosts, and $1.5c$ adds the velocities as Galileo would.',
+            },
+            {
+              question: 'A rocket\'s rapidity doubles from $\\phi$ to $2\\phi$. What happens to its speed?',
+              options: ['It doubles', 'It stays below $c$ only if $\\phi < 1$', 'It grows by the factor $\\cosh\\phi$', 'It grows, but by less than a factor of 2'],
+              answer: 3,
+              explanation:
+                '$\\tanh 2\\phi = 2\\tanh\\phi/(1 + \\tanh^2\\phi) < 2\\tanh\\phi$, and it is always below 1. Rapidity is additive and unbounded; speed is not. For small $\\phi$ the two are nearly equal, which is why doubling seems natural.',
+            },
+            {
+              question: 'Which matrix, acting on $(ct, x)$, preserves $-(ct)^2 + x^2$?',
+              options: [
+                '$\\begin{pmatrix}1.25 & -0.75\\\\ -0.75 & 1.25\\end{pmatrix}$',
+                '$\\begin{pmatrix}0.8 & -0.6\\\\ 0.6 & 0.8\\end{pmatrix}$',
+                '$\\begin{pmatrix}1.25 & -0.6\\\\ -0.6 & 1.25\\end{pmatrix}$',
+                '$\\begin{pmatrix}1 & -0.6\\\\ -0.6 & 1\\end{pmatrix}$',
+              ],
+              answer: 0,
+              explanation:
+                'It is the boost with $\\gamma = 1.25$, $\\gamma\\beta = 0.75$ ($\\beta = 0.6$), and $\\gamma^2 - (\\gamma\\beta)^2 = 1$. The second is a Euclidean rotation, which preserves $(ct)^2 + x^2$ instead; the third puts $\\beta$ where $\\gamma\\beta$ belongs, and the fourth omits $\\gamma$.',
+            },
+            {
+              question: 'Boost by $0.6c$ along $x$ and then by $0.6c$ along the new $y\'$, or do the same two boosts in the other order. How do the results compare?',
+              options: [
+                'They are identical, because boosts commute',
+                'They give different final speeds',
+                'The same final speed, but the two final frames are rotated relative to each other by about 12.7°',
+                'They differ by an extra boost along $z$',
+              ],
+              answer: 2,
+              explanation:
+                'Both orders reach $0.768c$, in directions 12.7° apart, and the products differ by the Wigner rotation. Only collinear boosts commute; the speed is the same because $\\gamma = \\gamma_1\\gamma_2$ for perpendicular boosts in either order.',
+            },
+          ],
+          prerequisiteLessons: ['relativity/matrices-symmetry-and-groups/composing-boosts-and-taylor-approximations'],
+        },
+      ],
+      project: {
+        slug: 'symmetry-and-boosts-casebook',
+        title: 'Symmetry and boosts: a worked casebook',
+        description: `Assemble a short, carefully checked report, by hand with optional SymPy or NumPy checks, that ties the module together. (1) Verify the group axioms for SO(2), for boosts along $x$ and for the Lorentz group in 1+1 dimensions, and show that boosts in all directions are not closed. (2) Derive the generators of SO(2), SO(3) and of boosts, exponentiate them to recover the finite matrices, and compute $[J_x, J_y]$ and $[K_x, K_y]$. (3) Compose boosts: a table of $\\beta$ against the number of $0.1c$ kicks, and a plot of the Wigner angle against $\\gamma$ for two equal perpendicular boosts compared with $\\cos\\theta_W = (\\gamma_1 + \\gamma_2)/(1 + \\gamma_1\\gamma_2)$. (4) Use Taylor series to find the speeds at which $\\gamma \\approx 1 + \\beta^2/2$ and the first-order velocity-addition formula are 1% wrong.`,
+        deliverables: [
+          'A 6-10 page report (handwritten scans or typeset) with every derivation and numerical check',
+          'The Wigner-angle plot and the rapidity table, with the code or spreadsheet that made them if you used one',
+        ],
+        estimatedHours: 6,
+        stretchGoals: ['Derive Thomas precession for circular motion from the Wigner rotation of successive infinitesimal boosts and recover the factor 1/2 in the spin-orbit energy'],
+      },
+    },
+    {
+      slug: 'fields-waves-and-fourier-methods',
+      title: 'Fields, Waves and Fourier Methods',
+      description:
+        'The mathematical methods half of PHYS 225 applied to electromagnetism: vector calculus in curvilinear coordinates, line and surface integrals and the integral theorems, Maxwell\'s equations in integral and differential form, magnetism as a relativistic effect, complex numbers and Fourier transforms, and the Lorentz-invariant wave equation, ending with Einstein\'s 1905 paper.',
+      lessons: [
+        {
+          slug: 'vector-calculus-in-curvilinear-coordinates',
+          title: 'Vector fields and differential operators in curvilinear coordinates',
+          summary:
+            'Gradient, divergence, curl and the Laplacian, in Cartesian, cylindrical and spherical coordinates with scale factors, applied to the Coulomb field and the field of a wire, and the rotational invariance of the Laplacian.',
+          estimatedMinutes: 100,
+          objectives: [
+            'Compute gradient, divergence, curl and Laplacian of fields in Cartesian, cylindrical and spherical coordinates',
+            'Explain the role of scale factors and position-dependent unit vectors, and avoid the naive-component error',
+            'Interpret divergence and curl physically for the Coulomb field and the field of a wire',
+            'Prove with index notation that the Laplacian is invariant under rotations',
+          ],
+          concepts: [
+            'Scalar and vector fields',
+            'Gradient, divergence, curl in index notation',
+            'Laplacian $\\nabla^2 = \\partial_i\\partial_i$',
+            'Cylindrical $(s, \\phi, z)$ and spherical $(r, \\theta, \\phi)$ coordinates',
+            'Scale factors and $d\\mathbf l$',
+            'Position-dependent unit vectors',
+            'Zero divergence of $\\hat{\\mathbf r}/r^2$ and zero curl of $\\hat{\\boldsymbol\\phi}/s$ away from the source',
+            'Rotational invariance of $\\nabla^2$',
+          ],
+          explanation: `Electromagnetism lives on **fields**: a scalar field $f(\\mathbf r)$ assigns a number to each point, a vector field $\\mathbf F(\\mathbf r)$ an arrow. The operator $\\nabla = (\\partial_x, \\partial_y, \\partial_z)$ makes three derivatives: the gradient $\\nabla f$ (direction and rate of steepest increase), the divergence $\\nabla\\cdot\\mathbf F$ (net outflow per unit volume) and the curl $\\nabla\\times\\mathbf F$ (circulation per unit area). In index notation $(\\nabla f)_i = \\partial_if$ and $\\nabla\\cdot\\mathbf F = \\partial_iF_i$, and the **Laplacian** is $\\nabla^2f = \\partial_i\\partial_if$.
+
+Symmetric problems are easier in matching coordinates: **cylindrical** $(s, \\phi, z)$ for wires, **spherical** $(r, \\theta, \\phi)$ for point charges. The catch is that the unit vectors $\\hat{\\mathbf s}, \\hat{\\boldsymbol\\phi}, \\hat{\\mathbf r}, \\hat{\\boldsymbol\\theta}$ change direction from point to point, so you cannot just differentiate components. Each coordinate has a **scale factor**, the distance moved per unit change: $(1, s, 1)$ in cylindrical and $(1, r, r\\sin\\theta)$ in spherical, so $d\\mathbf l = dr\\,\\hat{\\mathbf r} + r\\,d\\theta\\,\\hat{\\boldsymbol\\theta} + r\\sin\\theta\\,d\\phi\\,\\hat{\\boldsymbol\\phi}$. The operators follow; for example
+$$\\nabla\\cdot\\mathbf F = \\frac{1}{r^2}\\partial_r(r^2F_r) + \\frac{1}{r\\sin\\theta}\\partial_\\theta(\\sin\\theta\\,F_\\theta) + \\frac{1}{r\\sin\\theta}\\partial_\\phi F_\\phi,\\qquad (\\nabla\\times\\mathbf F)_z = \\frac1s\\left[\\partial_s(sF_\\phi) - \\partial_\\phi F_s\\right].$$
+The extra factors carry physics. The Coulomb field $\\hat{\\mathbf r}/r^2$ has zero divergence away from the origin because $r^2F_r$ is constant, and the field of a straight wire, $\\hat{\\boldsymbol\\phi}/s$, circulates yet has zero curl away from the wire because $sF_\\phi$ is constant. Differentiate the components naively and you get $-2/r^3$ and $-1/s^2$, both wrong.
+
+\`\`\`interactive
+vector-field
+{"fields": [["wire field φ/s", "-y/(x^2+y^2)", "x/(x^2+y^2)"], ["rigid rotation sφ", "-y", "x"], ["line charge s/s²", "x/(x^2+y^2)", "y/(x^2+y^2)"]], "modes": ["probe"], "probe": [1.2, 0.8], "singular": [[0, 0]], "view": [-3, 3, -3, 3], "title": "Curl and divergence of fields with symmetry", "caption": "Drag the probe. The wire field $\\\\hat{\\\\boldsymbol\\\\phi}/s$ circulates round the axis, but the paddle wheel does not spin anywhere off the axis: its curl is zero there. The rigid rotation $s\\\\hat{\\\\boldsymbol\\\\phi}$ has curl 2 everywhere; the line-charge field $\\\\hat{\\\\mathbf s}/s$ has zero divergence away from the line."}
+\`\`\`
+
+**The Laplacian is rotationally invariant.** Rotate the axes, $x'_i = R_{ij}x_j$ with $R$ orthogonal. By the chain rule $\\partial'_i = R_{ij}\\partial_j$, so $\\partial'_i\\partial'_i = R_{ij}R_{ik}\\partial_j\\partial_k = \\delta_{jk}\\partial_j\\partial_k = \\nabla^2$. That is why it appears in every isotropic law (heat flow, Poisson's equation, the wave equation), while an operator such as $\\partial_x^2 - \\partial_y^2$, which singles out axes, does not. The last lesson of this module repeats the argument with $\\eta$ in place of $\\delta$.
+
+Work through Tong's Vector Calculus notes on grad, div, curl and curvilinear coordinates, and check each formula against the math-methods lesson.`,
+          resources: [
+            {
+              title: 'David Tong — Lectures on Vector Calculus',
+              url: 'https://davidtong.org/teaching/vector-calculus/',
+              type: 'textbook',
+              cost: 'free',
+              provider: 'University of Cambridge',
+              note: 'The chapters on grad, div and curl and on orthogonal curvilinear coordinates.',
+              primary: true,
+            },
+            {
+              title: 'Feynman Lectures Vol. II, Ch. 2: Differential Calculus of Vector Fields',
+              url: 'https://www.feynmanlectures.caltech.edu/II_02.html',
+              type: 'textbook',
+              cost: 'free',
+              provider: 'Caltech',
+            },
+            {
+              title: 'Shankar — Basic Training in Mathematics: A Fitness Program for Science Students',
+              url: 'https://link.springer.com/book/10.1007/978-1-4899-6798-5',
+              type: 'textbook',
+              cost: 'paid',
+              provider: 'Springer',
+              note: 'The chapter on vector calculus, including curvilinear coordinates. Free alternatives: Tong and Feynman above.',
+            },
+          ],
+          exercises: [
+            {
+              slug: 'operators-in-curvilinear-coordinates',
+              title: 'Operators in cylindrical and spherical coordinates',
+              prompt:
+                'Compute, for $r > 0$ or $s > 0$: (a) $\\nabla\\cdot(\\hat{\\mathbf r}/r^2)$; (b) $\\nabla\\cdot(r^n\\hat{\\mathbf r})$, showing it is $(n + 2)r^{n-1}$; (c) $\\nabla\\times(\\hat{\\boldsymbol\\phi}/s)$ and $\\nabla\\times(s\\hat{\\boldsymbol\\phi})$; (d) $\\nabla\\cdot(s\\hat{\\mathbf s})$; (e) $\\nabla^2(1/r)$; (f) $\\nabla f$ for $f = r^2\\sin\\theta\\cos\\phi$, then check it by writing $f$ in Cartesian coordinates ($f = xr$) and differentiating there. For (a) and (c), also compute the naive answer that ignores the scale factors and explain what it gets wrong.',
+              kind: 'problem',
+              difficulty: 2,
+            },
+            {
+              slug: 'laplacian-rotation-invariance',
+              title: 'The Laplacian is rotationally invariant',
+              prompt:
+                'Prove $\\partial\'_i\\partial\'_i = \\partial_j\\partial_j$ for $x\'_i = R_{ij}x_j$ with $R^TR = 1$, stating where you use orthogonality. Rotate the axes by 45° and show that $\\partial_x^2 - \\partial_y^2$ becomes $\\pm2\\partial_{x\'}\\partial_{y\'}$, so it is not invariant. Check that $f = x^2 - y^2$ satisfies $\\nabla^2f = 0$ in both coordinate systems. Finally show that for a function of $r$ alone, $\\nabla^2f = r^{-2}(r^2f\')\'$, and explain why a rotationally invariant operator must turn a function of $r$ into a function of $r$.',
+              kind: 'derivation',
+              difficulty: 2,
+            },
+            {
+              slug: 'derive-cylindrical-divergence',
+              title: 'Derive the cylindrical divergence from flux',
+              prompt:
+                'Take a small wedge $s \\to s + ds$, $\\phi \\to \\phi + d\\phi$, $z \\to z + dz$. Compute the net outward flux of $\\mathbf F$ through its six faces to first order, divide by its volume $s\\,ds\\,d\\phi\\,dz$, and obtain $\\nabla\\cdot\\mathbf F = s^{-1}\\partial_s(sF_s) + s^{-1}\\partial_\\phi F_\\phi + \\partial_zF_z$. Apply it to the field inside a long uniformly charged cylinder, $\\mathbf E = \\rho s/(2\\epsilon_0)\\,\\hat{\\mathbf s}$, and show $\\nabla\\cdot\\mathbf E = \\rho/\\epsilon_0$.',
+              kind: 'derivation',
+              difficulty: 2,
+            },
+          ],
+          selfAssessment: [
+            {
+              question: 'Why can you not compute ∇·F in spherical coordinates by differentiating the components?',
+              answerOutline: 'The unit vectors change direction with position and a coordinate step du_i has length h_i du_i, so scale factors enter: e.g. (1/r²)∂_r(r²F_r).',
+            },
+            {
+              question: 'Why is the curl of φ̂/s zero away from the axis even though the field circulates?',
+              answerOutline: 'Curl measures local circulation: sF_φ is constant, so (1/s)∂_s(sF_φ) = 0. The circulation comes entirely from the axis (the current).',
+            },
+            {
+              question: 'What does it mean that ∇² is rotationally invariant, and how is it proved?',
+              answerOutline: 'It is the same operator in every rotated Cartesian frame: ∂′_i = R_ij∂_j and R_ijR_ik = δ_jk give ∂′_i∂′_i = ∂_j∂_j.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'In cylindrical coordinates, what is $\\nabla\\cdot(s\\,\\hat{\\mathbf s})$?',
+              options: ['2', '1', '3', '0'],
+              answer: 0,
+              explanation:
+                '$\\nabla\\cdot\\mathbf F = s^{-1}\\partial_s(sF_s) = s^{-1}\\partial_s(s^2) = 2$, which matches $\\nabla\\cdot(x, y, 0) = 2$ in Cartesian coordinates. 1 is the naive $\\partial_sF_s$; 3 is the divergence of the 3D position vector $r\\hat{\\mathbf r}$.',
+            },
+            {
+              question: 'For $\\mathbf F = \\hat{\\boldsymbol\\phi}/s$, a field circling the $z$-axis, what is $\\nabla\\times\\mathbf F$ where $s > 0$?',
+              options: ['$-\\hat{\\mathbf z}/s^2$', '$\\mathbf 0$', '$\\hat{\\mathbf z}/s$', '$2\\hat{\\mathbf z}$'],
+              answer: 1,
+              explanation:
+                '$(\\nabla\\times\\mathbf F)_z = s^{-1}\\partial_s(sF_\\phi) = s^{-1}\\partial_s(1) = 0$. $-\\hat{\\mathbf z}/s^2$ is $\\partial_sF_\\phi$, the Cartesian-style formula applied to curvilinear components; $2\\hat{\\mathbf z}$ is the curl of $s\\hat{\\boldsymbol\\phi}$.',
+            },
+            {
+              question: 'What is $\\nabla\\cdot\\hat{\\mathbf r}$ in spherical coordinates?',
+              options: ['0', '$1/r^2$', '3', '$2/r$'],
+              answer: 3,
+              explanation:
+                '$r^{-2}\\partial_r(r^2 \\cdot 1) = 2/r$: unit radial arrows spread apart, so there is net outflow even though their length is constant. 0 assumes a constant-length field has no divergence; 3 is $\\nabla\\cdot\\mathbf r$.',
+            },
+            {
+              question: 'Which operator gives the same result in every rotated Cartesian frame?',
+              options: ['$\\partial_x^2$', '$\\partial_x + \\partial_y + \\partial_z$', '$\\partial_x^2 + \\partial_y^2 + \\partial_z^2$', '$\\partial_x\\partial_y$'],
+              answer: 2,
+              explanation:
+                'The Laplacian $\\partial_i\\partial_i$ is invariant because $R_{ij}R_{ik} = \\delta_{jk}$. The others single out particular axes; $\\partial_x + \\partial_y + \\partial_z$ is a directional derivative along $(1, 1, 1)$, which rotates with the axes.',
+            },
+          ],
+          relatedLessons: ['math-methods/vector-calculus/curvilinear-coordinates', 'math-methods/vector-calculus/vector-fields-div-grad-curl'],
+        },
+        {
+          slug: 'line-surface-integrals-and-integral-theorems',
+          title: 'Line and surface integrals, Stokes\' theorem and the divergence theorem',
+          summary:
+            'Line and surface integrals in the coordinate system that fits the problem, the divergence theorem and Stokes\' theorem with worked checks, and what singular fields such as $\\hat{\\mathbf r}/r^2$ and $\\hat{\\boldsymbol\\phi}/s$ reveal about them.',
+          estimatedMinutes: 100,
+          objectives: [
+            'Evaluate line and surface integrals using $d\\mathbf l$ and $d\\mathbf a$ in cylindrical and spherical coordinates',
+            'State and check the divergence theorem and Stokes\' theorem on explicit fields',
+            'Sketch the proofs of both theorems by adding up small cells',
+            'Explain the flux of $\\hat{\\mathbf r}/r^2$ and the circulation of $\\hat{\\boldsymbol\\phi}/s$ in terms of singular sources',
+          ],
+          concepts: [
+            'Line integral $\\int_C\\mathbf F\\cdot d\\mathbf l$',
+            'Flux $\\int_S\\mathbf F\\cdot d\\mathbf a$ and outward normals',
+            '$d\\mathbf a$ on spheres and cylinders',
+            'Divergence theorem',
+            'Stokes\' theorem',
+            'Independence of the spanning surface',
+            'Point sources: $\\nabla\\cdot(\\hat{\\mathbf r}/r^2) = 4\\pi\\delta^3(\\mathbf r)$',
+          ],
+          explanation: `A **line integral** $\\int_C\\mathbf F\\cdot d\\mathbf l$ adds up the component of a field along a path: the work done by a force, or the EMF round a loop. Parametrise the path, $d\\mathbf l = \\mathbf r'(t)\\,dt$, or better, choose coordinates in which the path is simple. Round a circle of radius $R$ in the $xy$-plane, $d\\mathbf l = R\\,d\\phi\\,\\hat{\\boldsymbol\\phi}$, so for $\\mathbf F = s^2\\hat{\\boldsymbol\\phi}$ and $R = 2$ the integral is $\\int_0^{2\\pi}4\\cdot2\\,d\\phi = 16\\pi$. A **surface integral** $\\int_S\\mathbf F\\cdot d\\mathbf a$ is a flux. On a sphere $d\\mathbf a = r^2\\sin\\theta\\,d\\theta\\,d\\phi\\,\\hat{\\mathbf r}$; on the side of a cylinder $d\\mathbf a = s\\,d\\phi\\,dz\\,\\hat{\\mathbf s}$; closed surfaces take the outward normal.
+
+Two theorems trade a boundary integral for an interior one:
+$$\\oint_{\\partial V}\\mathbf F\\cdot d\\mathbf a = \\int_V\\nabla\\cdot\\mathbf F\\,dV,\\qquad \\oint_{\\partial S}\\mathbf F\\cdot d\\mathbf l = \\int_S(\\nabla\\times\\mathbf F)\\cdot d\\mathbf a .$$
+Both are proved the same way: chop the region into tiny cubes or squares, for which the theorem is just the definition of divergence or curl, and add them up; the contributions of interior faces and edges cancel. Check them: for $\\mathbf F = s^2\\hat{\\boldsymbol\\phi}$, $\\nabla\\times\\mathbf F = 3s\\,\\hat{\\mathbf z}$ and $\\int_0^2 3s\\cdot2\\pi s\\,ds = 16\\pi$; for $\\mathbf F = r^2\\hat{\\mathbf r}$ through a sphere of radius $R$, the flux $4\\pi R^4$ equals $\\int_0^R 4r\\cdot4\\pi r^2\\,dr$. Stokes' theorem holds for *any* surface spanning the loop, because the flux of a curl through a closed surface is zero.
+
+**Singular fields** show what the theorems really say. $\\hat{\\mathbf r}/r^2$ has zero divergence everywhere except the origin, yet its flux through any sphere round the origin is $4\\pi$: all the divergence sits at one point, $\\nabla\\cdot(\\hat{\\mathbf r}/r^2) = 4\\pi\\delta^3(\\mathbf r)$, which is Gauss's law for a point charge. Likewise $\\hat{\\boldsymbol\\phi}/s$ is curl-free off the axis but circulates $2\\pi$ round it: the magnetic field of a wire, whose source is the current on the axis.
+
+\`\`\`interactive
+vector-field
+{"fields": [["wire field φ/s", "-y/(x^2+y^2)", "x/(x^2+y^2)"], ["rigid rotation sφ", "-y", "x"]], "modes": ["green"], "curve": "circle", "centre": [0, 0], "r": 1.5, "singular": [[0, 0]], "view": [-3, 3, -3, 3], "title": "Stokes' theorem in the plane", "caption": "With the circle round the origin, the wire field circulates $2\\\\pi$ but its curl is zero wherever it is defined: the source sits on the axis. Drag the circle off the origin and the circulation drops to 0. For $s\\\\hat{\\\\boldsymbol\\\\phi}$ both sides agree for every circle: twice the enclosed area."}
+\`\`\`
+
+Read Tong's chapters on line and surface integrals and the integral theorems, Feynman II-3, and practise with the Calculus III lessons on Stokes' theorem and the divergence theorem.`,
+          resources: [
+            {
+              title: 'David Tong — Lectures on Vector Calculus',
+              url: 'https://davidtong.org/teaching/vector-calculus/',
+              type: 'textbook',
+              cost: 'free',
+              provider: 'University of Cambridge',
+              note: 'The chapters on curves and line integrals, surfaces and surface integrals, and the integral theorems.',
+              primary: true,
+            },
+            {
+              title: 'Feynman Lectures Vol. II, Ch. 3: Vector Integral Calculus',
+              url: 'https://www.feynmanlectures.caltech.edu/II_03.html',
+              type: 'textbook',
+              cost: 'free',
+              provider: 'Caltech',
+            },
+            {
+              title: 'OpenStax Calculus Volume 3, Section 6.6: Surface Integrals',
+              url: 'https://openstax.org/books/calculus-volume-3/pages/6-6-surface-integrals',
+              type: 'textbook',
+              cost: 'free',
+              provider: 'OpenStax',
+              note: 'Worked surface integrals; sections 6.7 and 6.8 that follow cover Stokes\' theorem and the divergence theorem.',
+            },
+          ],
+          exercises: [
+            {
+              slug: 'integrals-in-adapted-coordinates',
+              title: 'Both sides of each theorem',
+              prompt:
+                'Evaluate both sides of the relevant theorem: (a) $\\mathbf F = s^2\\hat{\\boldsymbol\\phi}$ round the circle $s = 2$ in the $xy$-plane ($16\\pi$); (b) $\\mathbf F = r^2\\hat{\\mathbf r}$ through the sphere $r = R$ ($4\\pi R^4$); (c) $\\mathbf F = z\\,\\hat{\\mathbf z}$ through the closed cylinder $s \\le a$, $0 \\le z \\le h$ ($\\pi a^2h$, computing top, bottom and side separately); (d) $\\mathbf F = (-y, x, 0)$ round the circle of radius $R$, using once the flat disc and once the upper hemisphere as the spanning surface ($2\\pi R^2$ both times).',
+              kind: 'problem',
+              difficulty: 2,
+            },
+            {
+              slug: 'singular-fields',
+              title: 'Point sources and line sources',
+              prompt:
+                'Show that the flux of $\\hat{\\mathbf r}/r^2$ through any closed surface is $4\\pi$ if the surface encloses the origin and 0 if it does not (apply the divergence theorem to the region between the surface and a small sphere). Conclude $\\nabla\\cdot(\\hat{\\mathbf r}/r^2) = 4\\pi\\delta^3(\\mathbf r)$ and relate it to Gauss\'s law for a point charge. Do the same for the circulation of $\\hat{\\boldsymbol\\phi}/s$ (2π or 0) and relate it to Ampère\'s law for a wire. Check the "off-centre circle" case numerically or with the interactive figure.',
+              kind: 'derivation',
+              difficulty: 2,
+            },
+            {
+              slug: 'prove-the-theorems',
+              title: 'Prove the theorems by adding up cells',
+              prompt:
+                'For a small rectangle $dx\\,dy$ show by Taylor expansion that the circulation of $\\mathbf F$ is $(\\partial_xF_y - \\partial_yF_x)\\,dx\\,dy$ to leading order, and for a small cube that the outward flux is $(\\nabla\\cdot\\mathbf F)\\,dx\\,dy\\,dz$. Explain why adding the cells of a large region leaves only the boundary terms. Then show that two surfaces spanning the same loop give the same flux of $\\nabla\\times\\mathbf F$, using $\\nabla\\cdot(\\nabla\\times\\mathbf F) = 0$.',
+              kind: 'derivation',
+              difficulty: 2,
+            },
+          ],
+          selfAssessment: [
+            {
+              question: 'State the divergence theorem and Stokes\' theorem in words.',
+              answerOutline: 'Net outward flux through a closed surface equals the total divergence inside; circulation round a loop equals the flux of the curl through any surface bounded by the loop.',
+            },
+            {
+              question: 'Why is the flux of r̂/r² through a sphere 4π even though its divergence vanishes on and near the sphere?',
+              answerOutline: 'The divergence is concentrated at the origin (4πδ³); the theorem counts the whole enclosed volume, including that point.',
+            },
+            {
+              question: 'Why may Stokes\' theorem use any surface bounded by the loop?',
+              answerOutline: 'Two such surfaces together form a closed surface, and the flux of a curl through a closed surface is ∫∇·(∇×F) dV = 0.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'What is the outward flux of the unit radial field $\\hat{\\mathbf r}$ through a sphere of radius 3?',
+              options: ['$4\\pi$', '$12\\pi$', '$36\\pi$', '$108\\pi$'],
+              answer: 2,
+              explanation:
+                'Flux $= 1 \\times 4\\pi r^2 = 36\\pi$; the divergence theorem agrees, $\\int (2/r)\\,4\\pi r^2\\,dr = 4\\pi r^2$. $4\\pi$ is the flux of $\\hat{\\mathbf r}/r^2$, and $12\\pi$ uses $4\\pi r$ instead of $4\\pi r^2$.',
+            },
+            {
+              question: 'What is the circulation of $\\hat{\\boldsymbol\\phi}/s = (-y, x)/(x^2 + y^2)$ round a circle of radius 1 centred at $(3, 0)$?',
+              options: ['0', '$2\\pi$', '$\\pi$', '$2\\pi/3$'],
+              answer: 0,
+              explanation:
+                'The circle does not enclose the axis, and the field is curl-free everywhere inside it, so Stokes\' theorem gives 0. $2\\pi$ is the answer only for loops that wind round the origin, where the source of the field sits.',
+            },
+            {
+              question: 'Along a path where only $\\phi$ changes (fixed $r$ and $\\theta$), what is $d\\mathbf l$ in spherical coordinates?',
+              options: ['$d\\phi\\,\\hat{\\boldsymbol\\phi}$', '$r\\,d\\phi\\,\\hat{\\boldsymbol\\phi}$', '$\\sin\\theta\\,d\\phi\\,\\hat{\\boldsymbol\\phi}$', '$r\\sin\\theta\\,d\\phi\\,\\hat{\\boldsymbol\\phi}$'],
+              answer: 3,
+              explanation:
+                'The path is a circle of latitude with radius $r\\sin\\theta$, so the scale factor is $r\\sin\\theta$. $r\\,d\\phi$ would be right only on the equator, and $d\\phi$ alone has no units of length.',
+            },
+            {
+              question: 'Stokes\' theorem equates the circulation of $\\mathbf F$ round a loop $C$ with what?',
+              options: [
+                'The flux of $\\mathbf F$ through a surface bounded by $C$',
+                'The flux of $\\nabla\\times\\mathbf F$ through any surface bounded by $C$',
+                'The flux of $\\nabla\\times\\mathbf F$ through the flat surface bounded by $C$ only',
+                'The volume integral of $\\nabla\\cdot\\mathbf F$ inside $C$',
+              ],
+              answer: 1,
+              explanation:
+                'It is the flux of the curl, and any spanning surface gives the same value because the flux of a curl through a closed surface vanishes. The flux of $\\mathbf F$ itself and the divergence belong to the divergence theorem.',
+            },
+          ],
+          relatedLessons: [
+            'math-methods/vector-calculus/line-and-surface-integrals',
+            'math-methods/vector-calculus/integral-theorems',
+            'calculus-3/surface-integrals-and-theorems/stokes-theorem',
+            'calculus-3/surface-integrals-and-theorems/divergence-theorem',
+          ],
+        },
+        {
+          slug: 'maxwells-equations-integral-and-differential',
+          title: 'Maxwell\'s equations: from integral to differential form',
+          summary:
+            'The four Maxwell equations as first-year integral laws, converted with the divergence and Stokes theorems into local differential laws, with charge conservation and the role of the displacement current.',
+          estimatedMinutes: 100,
+          objectives: [
+            'State Maxwell\'s equations in integral form and use them for symmetric charge and current distributions',
+            'Derive the differential form of each equation with the divergence theorem or Stokes\' theorem and the arbitrary-region argument',
+            'Show that the differential equations imply charge conservation and explain why the displacement current is needed',
+            'Verify candidate fields against the differential equations in cylindrical and spherical coordinates',
+          ],
+          concepts: [
+            'Gauss\'s law for $\\mathbf E$ and for $\\mathbf B$',
+            'Faraday\'s law',
+            'Ampère-Maxwell law and displacement current',
+            'Arbitrary-volume (arbitrary-surface) argument',
+            'Differential Maxwell equations',
+            'Continuity equation $\\partial_t\\rho + \\nabla\\cdot\\mathbf J = 0$',
+            'Fields of a wire inside and outside',
+          ],
+          explanation: `First-year electricity and magnetism states Maxwell's equations as integrals over surfaces and loops:
+$$\\oint_S\\mathbf E\\cdot d\\mathbf a = \\frac{Q_{\\rm enc}}{\\epsilon_0},\\quad \\oint_S\\mathbf B\\cdot d\\mathbf a = 0,\\quad \\oint_C\\mathbf E\\cdot d\\mathbf l = -\\frac{d}{dt}\\int_S\\mathbf B\\cdot d\\mathbf a,\\quad \\oint_C\\mathbf B\\cdot d\\mathbf l = \\mu_0I_{\\rm enc} + \\mu_0\\epsilon_0\\frac{d}{dt}\\int_S\\mathbf E\\cdot d\\mathbf a .$$
+The integral forms are ideal for symmetric problems: a Gaussian cylinder gives the field of a line charge, and an Amperian circle gives $B = \\mu_0I/(2\\pi s)$ for a wire (40 μT at 5 cm from 10 A). But they are statements about whole regions. To get laws that hold at each point, laws you can transform, differentiate and solve as PDEs, convert them with the last lesson's theorems.
+
+Write $Q_{\\rm enc} = \\int_V\\rho\\,dV$ and apply the divergence theorem to the left side: $\\int_V(\\nabla\\cdot\\mathbf E - \\rho/\\epsilon_0)\\,dV = 0$. This holds for *every* volume, however small and wherever it is, so the integrand itself must vanish: $\\nabla\\cdot\\mathbf E = \\rho/\\epsilon_0$. The same argument, with Stokes' theorem and $I_{\\rm enc} = \\int_S\\mathbf J\\cdot d\\mathbf a$, gives the full set (the time derivative moves inside because the surface is fixed):
+$$\\nabla\\cdot\\mathbf E = \\frac{\\rho}{\\epsilon_0},\\qquad \\nabla\\cdot\\mathbf B = 0,\\qquad \\nabla\\times\\mathbf E = -\\frac{\\partial\\mathbf B}{\\partial t},\\qquad \\nabla\\times\\mathbf B = \\mu_0\\mathbf J + \\mu_0\\epsilon_0\\frac{\\partial\\mathbf E}{\\partial t}.$$
+
+The differential forms reveal structure the integrals hide. Take the divergence of the last equation: $\\nabla\\cdot(\\nabla\\times\\mathbf B) = 0$ identically, so $\\partial\\rho/\\partial t + \\nabla\\cdot\\mathbf J = 0$. Charge conservation is built in, but only because of Maxwell's displacement-current term; without it the equations would forbid a capacitor from charging. Local checks become easy: inside a wire of radius $a$ with uniform current, $B = \\mu_0Is/(2\\pi a^2)$ and $s^{-1}\\partial_s(sB) = \\mu_0I/(\\pi a^2) = \\mu_0J$, while outside the curl vanishes although the field circulates. In empty space the two curl equations feed each other, which gives the wave equation of this module's last lesson, and module 2's covariant-electrodynamics lesson packs all four into two tensor equations.
+
+Read Feynman II-18, OpenStax University Physics Vol. 2 section 16.1, and Tong's electromagnetism notes.`,
+          resources: [
+            {
+              title: 'Feynman Lectures Vol. II, Ch. 18: The Maxwell Equations',
+              url: 'https://www.feynmanlectures.caltech.edu/II_18.html',
+              type: 'textbook',
+              cost: 'free',
+              provider: 'Caltech',
+              primary: true,
+            },
+            {
+              title: 'OpenStax University Physics Volume 2, Section 16.1: Maxwell\'s Equations and Electromagnetic Waves',
+              url: 'https://openstax.org/books/university-physics-volume-2/pages/16-1-maxwells-equations-and-electromagnetic-waves',
+              type: 'textbook',
+              cost: 'free',
+              provider: 'OpenStax',
+              note: 'The first-year integral forms and the displacement current, with worked examples.',
+            },
+            {
+              title: 'David Tong — Lectures on Electromagnetism',
+              url: 'https://davidtong.org/teaching/electromagnetism/',
+              type: 'textbook',
+              cost: 'free',
+              provider: 'University of Cambridge',
+              note: 'The opening chapter states Maxwell\'s equations in both forms; later chapters use the differential forms throughout.',
+            },
+          ],
+          exercises: [
+            {
+              slug: 'integral-to-differential',
+              title: 'All four equations, from integral to differential',
+              prompt:
+                'Derive each differential Maxwell equation from its integral form, naming the theorem used and stating precisely why the integrand must vanish. Then take the divergence of the Ampère-Maxwell law and of Faraday\'s law: show the first gives the continuity equation (using Gauss\'s law) and the second is consistent with $\\nabla\\cdot\\mathbf B = 0$. Finally, go backwards: integrate $\\nabla\\times\\mathbf E = -\\partial_t\\mathbf B$ over a surface to recover Faraday\'s law for a fixed loop.',
+              kind: 'derivation',
+              difficulty: 2,
+            },
+            {
+              slug: 'check-fields-locally',
+              title: 'Check fields against the differential equations',
+              prompt:
+                '(a) A sphere of radius 10 cm carries 1 nC spread uniformly through its volume. Use Gauss\'s law to find $\\mathbf E$ inside and outside, evaluate it at 5 cm and at the surface (449 and 899 N/C), and verify $\\nabla\\cdot\\mathbf E = \\rho/\\epsilon_0$ inside and 0 outside with the spherical divergence. (b) For a wire of radius $a$ with uniform current $I$, find $\\mathbf B$ inside and outside with Ampère\'s law and verify $\\nabla\\times\\mathbf B = \\mu_0\\mathbf J$ inside and 0 outside with the cylindrical curl. (c) Evaluate $B$ at 5 cm from a 10 A wire (40 μT) and compare with Earth\'s field.',
+              kind: 'problem',
+              difficulty: 2,
+            },
+            {
+              slug: 'displacement-current',
+              title: 'The field inside a charging capacitor',
+              prompt:
+                'A parallel-plate capacitor with circular plates of radius 5 cm is charged by a steady 2 A current. Using the integral Ampère-Maxwell law with a circle of radius 3 cm between the plates, find $B$ there ($4.8$ μT), and explain why a surface that bulges round a plate (crossed by the wire, not by any field change) gives the same answer. Then verify the same field from the differential form, $\\nabla\\times\\mathbf B = \\mu_0\\epsilon_0\\partial_t\\mathbf E$.',
+              kind: 'problem',
+              difficulty: 2,
+            },
+          ],
+          selfAssessment: [
+            {
+              question: 'What argument turns ∫_V(∇·E − ρ/ε₀) dV = 0 into ∇·E = ρ/ε₀?',
+              answerOutline: 'The integral vanishes for every volume V, however small and wherever placed; if the (continuous) integrand were non-zero somewhere, a small volume there would give a non-zero integral.',
+            },
+            {
+              question: 'Why does charge conservation follow from Maxwell\'s equations?',
+              answerOutline: 'The divergence of a curl vanishes, so ∇·(Ampère-Maxwell) gives μ₀(∇·J + ε₀∂_t∇·E) = 0, and Gauss gives ∂_tρ + ∇·J = 0.',
+            },
+            {
+              question: 'When are the integral forms more useful than the differential forms, and vice versa?',
+              answerOutline: 'Integral: highly symmetric sources where E or B is constant on a surface or loop. Differential: local behaviour, fields that vary in space, PDEs such as the wave equation, and checking solutions point by point.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Which theorem turns the integral form of Gauss\'s law into $\\nabla\\cdot\\mathbf E = \\rho/\\epsilon_0$?',
+              options: ['Stokes\' theorem', 'The divergence theorem', 'Green\'s theorem in the plane', 'The fundamental theorem for gradients'],
+              answer: 1,
+              explanation:
+                'Gauss\'s law is a flux through a closed surface, and the divergence theorem converts that flux into a volume integral of $\\nabla\\cdot\\mathbf E$. Stokes\' theorem handles the loop integrals of Faraday and Ampère-Maxwell.',
+            },
+            {
+              question: 'A long straight wire carries 5 A. What is the magnetic field 2 cm from it?',
+              options: ['5.0 μT', '314 μT', '25 μT', '50 μT'],
+              answer: 3,
+              explanation:
+                '$B = \\mu_0I/(2\\pi s) = (4\\pi\\times10^{-7})(5)/(2\\pi \\times 0.02) = 5.0\\times10^{-5}$ T $= 50$ μT. 314 μT forgets the $2\\pi$, and 25 μT uses $4\\pi$ in place of $2\\pi$.',
+            },
+            {
+              question: 'Inside a long straight wire of radius $a$ with uniform current density $\\mathbf J$, what is $\\nabla\\times\\mathbf B$?',
+              options: ['$\\mu_0\\mathbf J$, uniform across the wire', '$\\mathbf 0$, as outside the wire', '$\\mu_0I/(2\\pi s)\\,\\hat{\\mathbf z}$', '$\\mu_0\\mathbf J$ on the axis only'],
+              answer: 0,
+              explanation:
+                'Ampère\'s law holds at every point: $\\nabla\\times\\mathbf B = \\mu_0\\mathbf J$ wherever there is current, and here $\\mathbf J$ is uniform. Inside, $B = \\mu_0Is/(2\\pi a^2)$ and $s^{-1}\\partial_s(sB) = \\mu_0I/(\\pi a^2)$; the curl vanishes only outside.',
+            },
+            {
+              question: 'If you deleted the displacement-current term $\\mu_0\\epsilon_0\\,\\partial\\mathbf E/\\partial t$, which consequence would fail?',
+              options: ['Gauss\'s law for magnetism', 'Faraday\'s law', 'Charge conservation whenever a charge density changes in time', 'Coulomb\'s law for static charges'],
+              answer: 2,
+              explanation:
+                'Without it, $\\nabla\\cdot(\\nabla\\times\\mathbf B) = 0$ would force $\\nabla\\cdot\\mathbf J = 0$, contradicting $\\partial_t\\rho \\ne 0$ (a charging capacitor, for example). Statics and the other equations would be untouched.',
+            },
+          ],
+          relatedLessons: [
+            'physics-electricity-magnetism/electromagnetic-waves-and-optics/maxwells-equations-in-outline',
+            'electromagnetism/maxwells-equations-and-waves/displacement-current-and-maxwells-equations',
+          ],
+        },
+        {
+          slug: 'magnetism-from-electrostatics-and-relativity',
+          title: 'How a moving frame turns E into B',
+          summary:
+            'Purcell\'s argument at first-year level: a moving line charge, a current-carrying neutral wire and a passing point charge, using Gauss\'s law, length contraction, velocity addition and the transformation of transverse force.',
+          estimatedMinutes: 90,
+          objectives: [
+            'Compute the fields and force of a moving line charge in two frames and reconcile them with the transverse-force transformation',
+            'Show that a neutral current-carrying wire is charged in the rest frame of a moving test charge, and compute the charge density',
+            'Explain why tiny relativistic effects produce the full magnetic force in ordinary wires',
+            'Relate the elementary argument to the field-transformation laws of the covariant-electrodynamics lesson',
+          ],
+          concepts: [
+            'Invariance of charge',
+            'Length contraction of charge density, $\\lambda = \\gamma\\lambda_0$',
+            'Transverse force transformation $F_\\perp = F\'_\\perp/\\gamma$',
+            '$\\mu_0\\epsilon_0 = 1/c^2$',
+            'Net charge of a current-carrying wire in a moving frame, $\\lambda\' = \\gamma Iv/c^2$',
+            'Field of a passing charge: $E_\\perp = \\gamma E\'_\\perp$, $\\mathbf B = \\mathbf v\\times\\mathbf E/c^2$',
+          ],
+          explanation: `Module 2's covariant-electrodynamics lesson showed with tensors that $\\mathbf E$ and $\\mathbf B$ mix under boosts. Here is the same fact at first-year level, built only from Gauss's law, length contraction and the transformation of force, following Purcell's classic argument.
+
+**A moving line charge.** A line charge of density $\\lambda_0$ in its rest frame has field $E = \\lambda_0/(2\\pi\\epsilon_0s)$. In a frame where it moves at $v$ along its length, charge is unchanged but lengths contract, so $\\lambda = \\gamma\\lambda_0$. That frame sees a stronger electric field $\\gamma\\lambda_0/(2\\pi\\epsilon_0s)$ *and* a current $I = \\lambda v$ with magnetic field $B = \\mu_0\\gamma\\lambda_0v/(2\\pi s)$. A test charge $q$ riding alongside at the same $v$ feels
+$$F = q(E - vB) = \\frac{q\\gamma\\lambda_0}{2\\pi\\epsilon_0s}\\left(1 - \\frac{v^2}{c^2}\\right) = \\frac{1}{\\gamma}\\,\\frac{q\\lambda_0}{2\\pi\\epsilon_0s},$$
+using $\\mu_0\\epsilon_0 = 1/c^2$. In the rest frame the force is purely electric, $q\\lambda_0/(2\\pi\\epsilon_0s)$, and the two agree because a transverse force on a particle at rest in S′ is smaller by $\\gamma$ in a frame where it moves ($F_\\perp = dp_\\perp/dt$, and $dt$ is dilated). The magnetic force is exactly the correction the electric force needs for relativity to hold.
+
+**A neutral wire.** Now take a wire with ions at rest (density $\\lambda_+$) and electrons ($-\\lambda_+$) drifting at $u$. It is neutral, so a charge $q$ moving at $v$ parallel to it feels only the magnetic force $qv\\mu_0I/(2\\pi s)$. Jump into the charge's rest frame. The ions move at $-v$ and their density rises to $\\gamma_v\\lambda_+$; the electrons' speed changes by velocity addition, and their density becomes $-\\gamma_v\\lambda_+(1 - uv/c^2)$. The wire now carries $\\lambda' = \\gamma_vIv/c^2$, and the electric force on the stationary charge is $\\gamma_v$ times the lab's magnetic force, as the force transformation demands. The imbalance is tiny (for 1 A and $v = 0.1c$, $\\lambda' = 3.4\\times10^{-10}$ C/m against $\\lambda_+ = 1.4\\times10^4$ C/m in a 1 mm² copper wire), but it is the whole magnetic force.
+
+Read Feynman II-13, especially section 13-6, and the chapter on electromagnetism and relativity in Tong's notes.`,
+          resources: [
+            {
+              title: 'Feynman Lectures Vol. II, Ch. 13: Magnetostatics',
+              url: 'https://www.feynmanlectures.caltech.edu/II_13.html',
+              type: 'textbook',
+              cost: 'free',
+              provider: 'Caltech',
+              note: 'Section 13-6, "The relativity of magnetic and electric fields", is this lesson\'s argument with a moving charge beside a wire.',
+              primary: true,
+            },
+            {
+              title: 'David Tong — Lectures on Electromagnetism',
+              url: 'https://davidtong.org/teaching/electromagnetism/',
+              type: 'textbook',
+              cost: 'free',
+              provider: 'University of Cambridge',
+              note: 'The chapter on electromagnetism and relativity: the same physics, then the four-vector version.',
+            },
+            { ...R.mit8033, note: 'Lecture notes on the relativistic transformation of fields and forces.' },
+          ],
+          exercises: [
+            {
+              slug: 'moving-line-charge',
+              title: 'A charge riding beside a line charge',
+              prompt:
+                'A line charge with rest-frame density $\\lambda_0 = 1$ nC/m and a point charge $q = 1$ nC at distance 1 cm both move at $0.8c$ along the line. (a) In their rest frame, find the force on $q$ ($1.80\\times10^{-6}$ N). (b) In the lab, find $\\lambda$, $E$, $B$, the electric force (3.00 μN), the magnetic force (1.92 μN) and the net force (1.08 μN). (c) Show that the ratio of (b) to (a) is $1/\\gamma$ and derive that ratio independently from $F_\\perp = dp_\\perp/dt$ and time dilation.',
+              kind: 'problem',
+              difficulty: 2,
+            },
+            {
+              slug: 'neutral-wire-in-numbers',
+              title: 'A real wire, in numbers',
+              prompt:
+                'A copper wire of cross-section 1 mm² ($8.5\\times10^{28}$ free electrons per m³) carries 1 A. (a) Find $\\lambda_+$ and the drift speed ($1.36\\times10^4$ C/m, $7.3\\times10^{-5}$ m/s). (b) An electron moves parallel to the wire at $0.1c$, 1 cm away: find the magnetic force in the lab ($9.6\\times10^{-17}$ N). (c) In the electron\'s rest frame, derive the ion and electron densities exactly with length contraction and velocity addition, find $\\lambda\' = \\gamma Iv/c^2$, and compute the electric force. (d) Check the ratio of the two forces against the transverse-force transformation.',
+              kind: 'problem',
+              difficulty: 2,
+            },
+            {
+              slug: 'field-of-a-passing-charge',
+              title: 'The field of a passing proton',
+              prompt:
+                'Using Gauss\'s law with charged plates (or the field-transformation laws), show that the perpendicular electric field of a moving source is $E_\\perp = \\gamma E\'_\\perp$ while $E_\\parallel = E\'_\\parallel$, and that the moving charge also has $\\mathbf B = \\mathbf v\\times\\mathbf E/c^2$. A proton passes an atom at $\\beta = 0.9$ with impact parameter 1 nm: find the peak transverse field ($3.3\\times10^9$ V/m), the peak $B$ (9.9 T) and the duration of the pulse, roughly $b/(\\gamma v)$. Explain why fast charged particles ionise matter along their tracks.',
+              kind: 'problem',
+              difficulty: 3,
+            },
+          ],
+          selfAssessment: [
+            {
+              question: 'Why does a moving line charge produce both E and B in the lab, and why is the net force on a co-moving charge reduced?',
+              answerOutline: 'Its density is γλ₀ (contraction) and it is a current λv; the magnetic attraction cancels a fraction v²/c² of the electric repulsion, leaving F′/γ, consistent with the transverse force transformation.',
+            },
+            {
+              question: 'In the rest frame of a charge moving beside a neutral current-carrying wire, why is the wire charged?',
+              answerOutline: 'Ions and electrons have different speeds in that frame, so their densities contract by different factors; the net density is λ′ = γIv/c².',
+            },
+            {
+              question: 'How can an effect of order uv/c² ~ 10⁻¹⁴ produce an everyday magnetic force?',
+              answerOutline: 'It multiplies the enormous charge density of the ions and electrons (~10⁴ C/m), which normally cancels exactly; the tiny imbalance is all that is left.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A neutral wire carries 2 A. A charge moves parallel to it at $3.0\\times10^6$ m/s. In the charge\'s rest frame, what is the net charge per unit length of the wire?',
+              options: ['0, because a neutral wire is neutral in every frame', '$6.7\\times10^{-11}$ C/m', '$2.0\\times10^{-2}$ C/m', '$2.2\\times10^{-19}$ C/m'],
+              answer: 1,
+              explanation:
+                '$\\lambda\' = \\gamma Iv/c^2 \\approx 2 \\times 3.0\\times10^6/(9.0\\times10^{16}) = 6.7\\times10^{-11}$ C/m. Neutrality is frame dependent because ions and electrons move at different speeds, so they are contracted by different factors.',
+            },
+            {
+              question: 'In the lab, a charge moving parallel to a current-carrying neutral wire feels a magnetic force. What force acts on it in its own rest frame?',
+              options: [
+                'A magnetic force, the same as in the lab',
+                'None, because it is at rest',
+                'An electric force, because the current vanishes in that frame',
+                'An electric force from the net charge density created by the different length contraction of ions and electrons',
+              ],
+              answer: 3,
+              explanation:
+                'At rest, the charge feels no magnetic force, but the wire is charged in its frame ($\\lambda\' = \\gamma Iv/c^2$), so the force is electric. The current does not vanish in that frame (both species move); what changes is the balance of charge.',
+            },
+            {
+              question: 'A charge rides alongside a line charge, both moving with $\\gamma = 2$ in the lab. Compared with the purely electric force in their rest frame, how large is the lab-frame force?',
+              options: ['Half as large', 'Twice as large', 'The same', 'A quarter as large'],
+              answer: 0,
+              explanation:
+                'The lab force is $F\'/\\gamma$: the electric force grows by $\\gamma$ but the magnetic force cancels a fraction $\\beta^2$ of it, and $\\gamma(1 - \\beta^2) = 1/\\gamma$. Twice as large keeps only the enhanced electric force.',
+            },
+          ],
+          relatedLessons: [
+            'relativity/relativistic-mechanics-and-four-vectors/covariant-electrodynamics',
+            'electromagnetism/radiation-and-relativistic-electrodynamics/fields-of-moving-charges',
+          ],
+        },
+        {
+          slug: 'complex-numbers-and-fourier-transforms',
+          title: 'Complex numbers, Euler\'s formula and Fourier transforms',
+          summary:
+            'Complex arithmetic and Euler\'s formula, complex wave notation in which derivatives become multiplications, the Fourier transform, and solving a linear PDE (diffusion) by transforming it into ODEs, one per mode.',
+          estimatedMinutes: 110,
+          objectives: [
+            'Add, multiply and divide complex numbers in Cartesian and polar form and prove Euler\'s formula from Taylor series',
+            'Represent waves as real parts of complex exponentials and turn derivatives into multiplications',
+            'Compute and interpret Fourier transforms of Gaussians and boxes, including the width relation',
+            'Solve the diffusion equation by Fourier transformation',
+          ],
+          concepts: [
+            'Complex numbers, modulus and conjugate',
+            'Euler\'s formula $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$',
+            'Polar form; multiplication as rotation and scaling',
+            'Complex wave notation $\\mathrm{Re}[Ae^{i(kx - \\omega t)}]$',
+            '$\\partial_x \\to ik$, $\\partial_t \\to -i\\omega$',
+            'Fourier transform and its inverse',
+            'Width relation $\\Delta x\\,\\Delta k \\gtrsim 1$',
+            'Solving PDEs mode by mode',
+          ],
+          explanation: `**Complex numbers** $z = a + ib$ with $i^2 = -1$ add like 2D vectors and multiply by $(a + ib)(c + id) = (ac - bd) + i(ad + bc)$; for example $(3 + 4i)(1 - 2i) = 11 - 2i$. The modulus is $|z| = \\sqrt{a^2 + b^2} = \\sqrt{z\\bar z}$. The key fact is **Euler's formula**,
+$$e^{i\\theta} = \\cos\\theta + i\\sin\\theta,$$
+which you can prove by comparing the Taylor series of the three functions. It gives the polar form $z = |z|e^{i\\theta}$, in which multiplication multiplies moduli and adds angles: multiplying by $e^{i\\theta}$ is a rotation, the complex version of $R(\\theta)$ from module 8. So $e^{i\\pi} = -1$ and $(1 + i)^8 = (\\sqrt2\\,e^{i\\pi/4})^8 = 16$.
+
+\`\`\`interactive
+unit-circle
+{"degrees": 30, "tan": false, "graph": true, "title": "Euler's formula on the unit circle", "caption": "Read the point as the complex number e^(i theta) = cos theta + i sin theta: its horizontal coordinate is the real part, its vertical coordinate the imaginary part. Drag it round and the two parts trace out cosine and sine."}
+\`\`\`
+
+**Complex wave notation.** Write a wave as $\\mathrm{Re}[A\\,e^{i(kx - \\omega t)}]$ with a complex amplitude $A = |A|e^{i\\delta}$ that stores amplitude and phase together. Derivatives become multiplications, $\\partial_x \\to ik$ and $\\partial_t \\to -i\\omega$, so linear differential equations become algebra; take the real part only at the end, which is allowed because the equations are linear with real coefficients.
+
+**Fourier transforms** extend this to any function by writing it as a superposition of plane waves:
+$$\\tilde f(k) = \\int_{-\\infty}^{\\infty}f(x)e^{-ikx}\\,dx,\\qquad f(x) = \\frac{1}{2\\pi}\\int_{-\\infty}^{\\infty}\\tilde f(k)e^{ikx}\\,dk .$$
+A Gaussian of width $\\sigma$ transforms into a Gaussian of width $1/\\sigma$: narrow in $x$ means wide in $k$. To **solve a linear PDE**, transform it. The diffusion equation $u_t = Du_{xx}$ becomes, mode by mode, $\\tilde u_t = -Dk^2\\tilde u$, an ODE solved by $\\tilde u(k, t) = \\tilde u(k, 0)e^{-Dk^2t}$: short wavelengths die fastest. A Gaussian start stays Gaussian with $\\sigma^2 = \\sigma_0^2 + 2Dt$, so dye in water ($D = 10^{-9}$ m²/s) takes 1500 s to spread from a width of 1 mm to 2 mm. The next lesson does the same for the wave equation.
+
+\`\`\`interactive
+heat-wave
+{"equation": "heat", "ic": "box", "N": 15, "title": "Diffusion solved mode by mode", "caption": "On a finite rod the Fourier modes are sines, and each decays as exp(-alpha (n pi / L)^2 t), the finite-length version of exp(-D k^2 t). Play it and watch the bar chart: the short-wavelength modes vanish first, so the sharp corners of the box smooth out at once."}
+\`\`\`
+
+Read Feynman I-22 for Euler's formula, the MIT 18.03 material on complex exponentials and Fourier methods, and the math-methods lesson on the Fourier transform.`,
+          resources: [
+            feynman1(22, 'Algebra'),
+            {
+              title: 'MIT 18.03SC Differential Equations (Fall 2011)',
+              url: 'https://ocw.mit.edu/courses/18-03sc-differential-equations-fall-2011/',
+              type: 'course',
+              cost: 'free',
+              provider: 'MIT OpenCourseWare',
+              note: 'The sessions on complex numbers and complex exponentials, and Unit III on Fourier series and their use in solving equations.',
+              primary: true,
+            },
+            {
+              title: 'Shankar — Basic Training in Mathematics: A Fitness Program for Science Students',
+              url: 'https://link.springer.com/book/10.1007/978-1-4899-6798-5',
+              type: 'textbook',
+              cost: 'paid',
+              provider: 'Springer',
+              note: 'The chapter on complex numbers, including Euler\'s formula and its uses. Free alternatives: Feynman and MIT 18.03SC above.',
+            },
+          ],
+          exercises: [
+            {
+              slug: 'complex-arithmetic',
+              title: 'Complex arithmetic and Euler\'s formula',
+              prompt:
+                'Compute $(3 + 4i)(1 - 2i)$, $(3 + 4i)/(1 - 2i)$, $|3 + 4i|$ and $(1 + i)^8$, the last both directly and in polar form. Prove Euler\'s formula by comparing Taylor series. Use $e^{i(a+b)} = e^{ia}e^{ib}$ to derive the addition formulas for $\\cos(a + b)$ and $\\sin(a + b)$. Show that $\\mathrm{Re}[(1 + i)e^{i\\omega t}] = \\sqrt2\\cos(\\omega t + \\pi/4)$, and solve $\\ddot x + \\omega_0^2x = F_0\\cos\\omega t$ for the steady state by trying $x = \\mathrm{Re}[Ae^{i\\omega t}]$.',
+              kind: 'problem',
+              difficulty: 1,
+            },
+            {
+              slug: 'fourier-pairs',
+              title: 'Fourier pairs and widths',
+              prompt:
+                'Compute the Fourier transform of (a) the box $f = 1$ for $|x| < a/2$, 0 otherwise, getting $2\\sin(ka/2)/k$, and (b) the Gaussian $e^{-x^2/(2\\sigma^2)}$, getting $\\sigma\\sqrt{2\\pi}\\,e^{-\\sigma^2k^2/2}$ (complete the square). For each, define a width in $x$ and in $k$ and show their product is independent of $a$ or $\\sigma$. Optionally check (b) numerically with numpy.fft, taking care with the normalisation and the $k$ grid.',
+              kind: 'derivation',
+              difficulty: 2,
+            },
+            {
+              slug: 'diffusion-by-fourier',
+              title: 'The diffusion equation by Fourier transform',
+              prompt:
+                'Solve $u_t = Du_{xx}$ on the whole line with $u(x, 0) = e^{-x^2/(2\\sigma_0^2)}$: transform, solve each mode\'s ODE, and transform back to show $u$ stays Gaussian with $\\sigma^2 = \\sigma_0^2 + 2Dt$ and amplitude $\\sigma_0/\\sigma$. Check that the area is conserved. For dye in water with $D = 10^{-9}$ m²/s and $\\sigma_0 = 1$ mm, find the time for the width to double (1500 s) and the width after a day.',
+              kind: 'derivation',
+              difficulty: 2,
+            },
+          ],
+          selfAssessment: [
+            {
+              question: 'Why does multiplying by e^{iθ} rotate a complex number?',
+              answerOutline: 'In polar form z = |z|e^{iφ}; multiplying gives |z|e^{i(φ+θ)}: same modulus, angle increased by θ.',
+            },
+            {
+              question: 'Why may you solve a linear real equation with complex exponentials and take the real part at the end?',
+              answerOutline: 'The real and imaginary parts of a complex solution are each solutions when the equation is linear with real coefficients; derivatives become multiplications by ik or −iω.',
+            },
+            {
+              question: 'How does the Fourier transform turn the diffusion equation into something easy?',
+              answerOutline: 'Each mode e^{ikx} is an eigenfunction of ∂_x², so the PDE becomes an independent ODE ũ_t = −Dk²ũ for each k, solved by exponential decay.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'What is $(2 + i)(1 + 3i)$?',
+              options: ['$-1 + 7i$', '$5 + 7i$', '$2 + 3i$', '$-1 + 5i$'],
+              answer: 0,
+              explanation: '$2 + 6i + i + 3i^2 = 2 + 7i - 3 = -1 + 7i$. $5 + 7i$ treats $i^2$ as $+1$; $2 + 3i$ multiplies only matching parts.',
+            },
+            {
+              question: 'Which real function equals $\\mathrm{Re}[(1 + i)e^{i\\omega t}]$?',
+              options: ['$\\sqrt2\\cos(\\omega t - \\pi/4)$', '$2\\cos\\omega t$', '$\\sqrt2\\cos(\\omega t + \\pi/4)$', '$(1 + i)\\cos\\omega t$'],
+              answer: 2,
+              explanation:
+                '$1 + i = \\sqrt2\\,e^{i\\pi/4}$, so the product is $\\sqrt2\\,e^{i(\\omega t + \\pi/4)}$ with real part $\\sqrt2\\cos(\\omega t + \\pi/4)$. The phase sign is the usual slip: multiplying by $e^{i\\pi/4}$ advances the phase.',
+            },
+            {
+              question: 'In the diffusion equation solved by Fourier transform, mode $k$ decays as $e^{-Dk^2t}$. How much faster does the mode with twice the wavenumber decay?',
+              options: ['2 times faster', '4 times faster', 'At the same rate', '16 times faster'],
+              answer: 1,
+              explanation: 'The decay rate is $Dk^2$, so doubling $k$ quadruples it. This is why sharp features (large $k$) smooth out first.',
+            },
+            {
+              question: 'A Gaussian pulse is made 3 times narrower in $x$. What happens to its Fourier transform?',
+              options: ['It becomes 3 times narrower in $k$', 'Its width is unchanged', 'It becomes 9 times wider in $k$', 'It becomes 3 times wider in $k$'],
+              answer: 3,
+              explanation:
+                'A Gaussian of width $\\sigma$ transforms into one of width $1/\\sigma$, so the product of the widths is fixed: narrowing by 3 widens the transform by 3. This is the classical root of the uncertainty principle.',
+            },
+          ],
+          relatedLessons: [
+            'math-methods/fourier-and-complex-analysis/fourier-transform',
+            'complex-variables/complex-numbers-and-functions/complex-arithmetic-and-polar-form',
+            'waves-optics/fourier-analysis-of-waves/fourier-transforms-and-wave-packets',
+          ],
+        },
+        {
+          slug: 'the-wave-equation-and-its-lorentz-invariance',
+          title: 'The wave equation: from Maxwell to a Lorentz-invariant operator',
+          summary:
+            'The wave equation derived from Maxwell\'s equations, solved by Fourier transformation into plane waves with $\\omega = c|\\mathbf k|$, the lightlike four-wavevector, the Lorentz invariance of the wave operator, and Einstein\'s 1905 paper read in full.',
+          estimatedMinutes: 100,
+          objectives: [
+            'Derive the wave equation for $\\mathbf E$ and $\\mathbf B$ in vacuum from Maxwell\'s equations and compute $c = 1/\\sqrt{\\mu_0\\epsilon_0}$',
+            'Solve the wave equation by Fourier transformation and recover plane waves and d\'Alembert\'s solution',
+            'Show that plane-wave solutions have lightlike four-wavevectors $k^\\mu$',
+            'Prove that the wave operator $\\Box = \\eta^{\\mu\\nu}\\partial_\\mu\\partial_\\nu$ is Lorentz invariant but not Galilean invariant',
+            'Read Einstein\'s 1905 paper and connect each section to the course',
+          ],
+          concepts: [
+            'Vacuum wave equation from Faraday and Ampère-Maxwell',
+            '$c = 1/\\sqrt{\\mu_0\\epsilon_0}$',
+            'Dispersion relation $\\omega = c|\\mathbf k|$',
+            'Plane waves; transversality',
+            'd\'Alembert\'s solution $f(x - ct) + g(x + ct)$',
+            'Null four-wavevector $k_\\mu k^\\mu = 0$',
+            'Wave operator $\\Box = \\eta^{\\mu\\nu}\\partial_\\mu\\partial_\\nu$',
+            'Einstein (1905), "On the Electrodynamics of Moving Bodies"',
+          ],
+          explanation: `In empty space ($\\rho = 0$, $\\mathbf J = 0$) take the curl of Faraday's law and use $\\nabla\\times(\\nabla\\times\\mathbf E) = \\nabla(\\nabla\\cdot\\mathbf E) - \\nabla^2\\mathbf E$ with $\\nabla\\cdot\\mathbf E = 0$:
+$$\\nabla^2\\mathbf E = \\mu_0\\epsilon_0\\frac{\\partial^2\\mathbf E}{\\partial t^2},$$
+and the same for $\\mathbf B$. Every component obeys the **wave equation** with speed $c = 1/\\sqrt{\\mu_0\\epsilon_0} = 2.998\\times10^8$ m/s, computed from two constants measured with capacitors and coils. That this matched the measured speed of light is how Maxwell knew light is electromagnetic.
+
+**Solving it by Fourier transform.** In one dimension, $\\partial_t^2u = c^2\\partial_x^2u$. Transform in $x$ and each mode obeys $\\partial_t^2\\tilde u = -c^2k^2\\tilde u$, a harmonic oscillator with $\\omega = c|k|$: $\\tilde u(k, t) = a(k)e^{-ickt} + b(k)e^{ickt}$. Every solution is therefore a superposition of plane waves $e^{i(kx - \\omega t)}$ obeying the **dispersion relation** $\\omega = c|k|$, which reassembles into d'Alembert's $u = f(x - ct) + g(x + ct)$: shapes that travel without changing. Unlike diffusion, no mode decays. In 3D the plane waves are $e^{i(\\mathbf k\\cdot\\mathbf x - \\omega t)}$, transverse ($\\mathbf k\\cdot\\mathbf E = 0$), with $\\mathbf B = \\hat{\\mathbf k}\\times\\mathbf E/c$.
+
+\`\`\`interactive
+heat-wave
+{"equation": "wave", "ic": "pluck", "N": 20, "title": "The wave equation solved mode by mode", "caption": "Each mode now oscillates as cos(omega_n t) with omega_n = c n pi / L and never decays. Play the plucked string, then overlay the two travelling halves to see d'Alembert's f(x - ct) + g(x + ct)."}
+\`\`\`
+
+**Lightlike $k^\\mu$ and Lorentz invariance.** The phase $\\mathbf k\\cdot\\mathbf x - \\omega t = k_\\mu x^\\mu$ is invariant, so $k^\\mu = (\\omega/c, \\mathbf k)$ is a four-vector, and $\\omega = c|\\mathbf k|$ says it is null, $k_\\mu k^\\mu = 0$. The wave operator is
+$$\\Box = -\\frac{1}{c^2}\\partial_t^2 + \\nabla^2 = \\eta^{\\mu\\nu}\\partial_\\mu\\partial_\\nu ,$$
+and its Lorentz invariance is the rotation proof for $\\nabla^2$ with $\\eta$ in place of $\\delta$: the derivatives transform with $\\Lambda^{-1}$, and $\\Lambda^T\\eta\\Lambda = \\eta$ gives $\\Box' = \\Box$. A Galilean boost instead adds mixed derivatives (module 1). Acting on a plane wave, $\\Box\\,e^{ik_\\mu x^\\mu} = -k_\\mu k^\\mu\\,e^{ik_\\mu x^\\mu}$, so "solves the wave equation" and "has a null wavevector" are the same statement, true in every frame.
+
+This is the heart of Einstein's 1905 paper. Part I builds the kinematics of module 1, ending with the composition of velocities; Part II shows that the Maxwell-Hertz equations keep their form under the new transformation, derives how $\\mathbf E$ and $\\mathbf B$ transform, and gets the Doppler and aberration formulas from the invariance of a plane wave's phase. You can now follow every step.`,
+          resources: [
+            {
+              title: 'Einstein (1905) — On the Electrodynamics of Moving Bodies (English translation)',
+              url: 'https://www.fourmilab.ch/etexts/einstein/specrel/www/',
+              type: 'article',
+              cost: 'free',
+              provider: 'Fourmilab',
+              note: 'Read it all: Part I (sections 1-5, kinematics) and Part II (sections 6-10, electrodynamics; section 7 is Doppler and aberration).',
+              primary: true,
+            },
+            {
+              title: 'Feynman Lectures Vol. II, Ch. 20: Solutions of Maxwell\'s Equations in Free Space',
+              url: 'https://www.feynmanlectures.caltech.edu/II_20.html',
+              type: 'textbook',
+              cost: 'free',
+              provider: 'Caltech',
+            },
+            {
+              title: 'MIT 8.03SC Physics III: Vibrations and Waves (Fall 2016)',
+              url: 'https://ocw.mit.edu/courses/8-03sc-physics-iii-vibrations-and-waves-fall-2016/',
+              type: 'course',
+              cost: 'free',
+              provider: 'MIT OpenCourseWare',
+              note: 'The lectures on the wave equation, Fourier decomposition and electromagnetic waves.',
+            },
+          ],
+          exercises: [
+            {
+              slug: 'derive-the-wave-equation',
+              title: 'Light from Maxwell\'s equations',
+              prompt:
+                'Derive the vacuum wave equation for $\\mathbf E$ and for $\\mathbf B$, using the identity for the curl of a curl. Compute $c$ from $\\epsilon_0 = 8.854\\times10^{-12}$ F/m and $\\mu_0 = 1.2566\\times10^{-6}$ N/A². Show that a plane wave $\\mathbf E_0e^{i(\\mathbf k\\cdot\\mathbf x - \\omega t)}$ solves Maxwell\'s equations only if $\\omega = c|\\mathbf k|$, $\\mathbf k\\cdot\\mathbf E_0 = 0$ and $\\mathbf B = \\hat{\\mathbf k}\\times\\mathbf E/c$. For $\\omega = 3.0\\times10^{15}$ rad/s find $k$ and the wavelength (628 nm).',
+              kind: 'derivation',
+              difficulty: 1,
+            },
+            {
+              slug: 'wave-equation-by-fourier',
+              title: 'Solve the wave equation by Fourier transform',
+              prompt:
+                'Solve $u_{tt} = c^2u_{xx}$ on the whole line with $u(x, 0) = f(x)$ and $u_t(x, 0) = 0$ by Fourier transforming in $x$: solve each mode\'s ODE, impose the initial conditions, and transform back to get $u = \\tfrac12[f(x - ct) + f(x + ct)]$. Do it explicitly for $f = e^{-x^2}$. Then compare with the diffusion solution for the same $f$: which features of each solution come from $\\omega = ck$ versus $\\tilde u \\propto e^{-Dk^2t}$?',
+              kind: 'derivation',
+              difficulty: 2,
+            },
+            {
+              slug: 'invariance-of-the-wave-operator',
+              title: 'The wave operator is Lorentz invariant',
+              prompt:
+                'In 1+1 dimensions, use the chain rule to express $\\partial_t$ and $\\partial_x$ in terms of $\\partial_{t\'}$ and $\\partial_{x\'}$ for a Lorentz boost, and show $\\partial_x^2 - c^{-2}\\partial_t^2 = \\partial_{x\'}^2 - c^{-2}\\partial_{t\'}^2$. Repeat for a Galilean boost and find the extra terms. Then show in index notation that $\\eta^{\\mu\\nu}\\partial_\\mu\\partial_\\nu$ is invariant for any $\\Lambda$ with $\\Lambda^T\\eta\\Lambda = \\eta$, and that a plane wave solves the wave equation if and only if $k_\\mu k^\\mu = 0$. Use this to explain why the speed of light is the same in every frame.',
+              kind: 'derivation',
+              difficulty: 2,
+            },
+            {
+              slug: 'reading-einstein-1905',
+              title: 'Read Einstein\'s 1905 paper',
+              prompt:
+                'Read the whole paper in the Fourmilab translation. Write a 400-word guide that answers: how Einstein defines simultaneity (section 1); how he derives the transformation and what he assumes (section 3); where velocity addition appears (section 5); how he shows the Maxwell-Hertz equations keep their form and what follows for $\\mathbf E$ and $\\mathbf B$ (section 6); how his Doppler formula (section 7) compares with this course\'s, including his angle convention; and what he says about the "luminiferous ether". Note one place where his notation or reasoning differs from this course.',
+              kind: 'reading',
+              difficulty: 2,
+            },
+          ],
+          selfAssessment: [
+            {
+              question: 'How do Maxwell\'s equations give the wave equation, and what sets the speed?',
+              answerOutline: 'Curl of Faraday plus Ampère-Maxwell in vacuum, with ∇·E = 0, gives ∇²E = μ₀ε₀∂²E/∂t²; the speed is c = 1/√(μ₀ε₀).',
+            },
+            {
+              question: 'What does the dispersion relation ω = c|k| mean for the shape of a pulse, compared with diffusion?',
+              answerOutline: 'All modes move at the same speed and none decays, so the pulse travels without distortion (d\'Alembert); in diffusion each mode decays as e^{−Dk²t} and the pulse spreads.',
+            },
+            {
+              question: 'Why is the wave operator Lorentz invariant?',
+              answerOutline: '□ = η^{μν}∂_μ∂_ν; the derivatives transform with Λ⁻¹ and ΛᵀηΛ = η leaves the contraction unchanged, just as δ_ij makes ∇² rotation invariant.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'An electromagnetic wave in vacuum has angular frequency $\\omega = 3.0\\times10^{15}$ rad/s. What is its wavelength?',
+              options: ['100 nm', '628 nm', '314 nm', '1.0 μm'],
+              answer: 1,
+              explanation:
+                '$k = \\omega/c = 1.0\\times10^7$ rad/m and $\\lambda = 2\\pi/k = 628$ nm. 100 nm is $1/k$, forgetting the $2\\pi$ that relates wavenumber to wavelength.',
+            },
+            {
+              question: 'Solving $u_{tt} = c^2u_{xx}$ by Fourier transform in $x$, how does each mode $\\tilde u(k, t)$ evolve?',
+              options: ['It decays as $e^{-c^2k^2t}$', 'It stays constant', 'It oscillates as a combination of $\\cos ckt$ and $\\sin ckt$', 'It grows as $e^{ckt}$'],
+              answer: 2,
+              explanation:
+                'Each mode obeys $\\tilde u_{tt} = -c^2k^2\\tilde u$, a harmonic oscillator of frequency $\\omega = c|k|$. Exponential decay belongs to the first-order-in-time diffusion equation.',
+            },
+            {
+              question: 'Under a Lorentz boost, what becomes of a vacuum plane wave $e^{i(kx - \\omega t)}$ with $\\omega = ck$?',
+              options: [
+                'A plane wave with new $\\omega\'$ and $k\'$, still with $\\omega\' = ck\'$',
+                'The same wave with the same $\\omega$',
+                'A wave travelling at $c - v$',
+                'A function that no longer solves the wave equation',
+              ],
+              answer: 0,
+              explanation:
+                'The phase is invariant and $k^\\mu$ transforms as a null four-vector, so $\\omega$ and $k$ are Doppler-shifted together and $\\omega\' = ck\'$ still holds: light moves at $c$ in the new frame. Only a Galilean boost would give $c - v$.',
+            },
+            {
+              question: 'Which operator is unchanged by a Lorentz boost along $x$?',
+              options: ['$\\partial_t^2 + c^2\\partial_x^2$', '$\\partial_x^2$', '$\\partial_t^2$', '$\\partial_t^2 - c^2\\partial_x^2$'],
+              answer: 3,
+              explanation:
+                'It is $-c^2$ times $\\eta^{\\mu\\nu}\\partial_\\mu\\partial_\\nu$ in 1+1 dimensions, which is invariant because boosts preserve $\\eta$. The sum with a plus sign is the Euclidean (rotation-invariant) combination, and the single second derivatives mix under boosts.',
+            },
+          ],
+          relatedLessons: [
+            'physics-electricity-magnetism/electromagnetic-waves-and-optics/electromagnetic-waves',
+            'electromagnetism/maxwells-equations-and-waves/electromagnetic-waves-in-vacuum-and-matter',
+            'waves-optics/waves-on-strings-and-in-media/the-wave-equation-and-dalemberts-solution',
+          ],
+        },
+      ],
+      project: {
+        slug: 'maxwell-to-waves-notebook',
+        title: 'From Maxwell\'s integrals to light: a verified notebook',
+        description: `Write a notebook (paper or Jupyter) that carries Maxwell's equations from first-year integral laws to Lorentz-invariant waves, checking every step. (1) Verify both integral theorems for three fields in cylindrical or spherical coordinates, including the singular fields $\\hat{\\mathbf r}/r^2$ and $\\hat{\\boldsymbol\\phi}/s$. (2) Derive the differential Maxwell equations and charge conservation. (3) Work the moving-line-charge and neutral-wire calculations with real numbers and a one-page explanation of why magnetism is relativistic. (4) Solve the 1D wave and diffusion equations for the same Gaussian initial data by Fourier transform, plot both at several times, and, optionally, reproduce the plots with numpy.fft. (5) Show that the wave operator is Lorentz invariant and derive the Doppler formula from $k^\\mu$. (6) Close with a one-page summary of Part II of Einstein's 1905 paper.`,
+        deliverables: [
+          'The notebook with all six parts, each derivation checked numerically or against a limiting case',
+          'Plots of the wave and diffusion solutions at four times, and the one-page summaries for parts 3 and 6',
+        ],
+        estimatedHours: 7,
+        stretchGoals: ['Solve the 2D wave equation on a square membrane by Fourier series and animate a Gaussian pulse; compare with the 1D case', 'Show numerically that the Fourier solution of the wave equation is unchanged in form when the initial data are boosted'],
+      },
+    },
   ],
   capstone: {
     slug: 'black-hole-geodesics-and-classic-test',
@@ -2704,5 +4630,11 @@ Plot all tests on a "gravitational parameter space" diagram (potential versus cu
     'I can derive gravitational-wave solutions, the quadrupole formula and the chirp, and I have analysed real LIGO data',
     'I can derive the Friedmann equations and compute ages and distances in ΛCDM',
     'I can state the main experimental tests of GR, the parameters they constrain and their current precision, and I have reproduced one quantitatively',
+    'I can recover time dilation, length contraction and the rear-clock-ahead effect from the Lorentz transformation, and add parallel and transverse velocities',
+    'I can compose boosts as matrices, use rapidity, the group axioms, generators and the Lorentz group, compute a Wigner rotation, and make Taylor-series approximations',
+    'I can solve relativistic force problems in one and two dimensions, including hyperbolic motion by separation of variables, and work fluently in natural units',
+    'I can derive the relativistic Doppler effect from the four-wavevector and apply it to GPS, radar and astronomy',
+    'I can use vector calculus in curvilinear coordinates and the integral theorems to pass between the integral and differential forms of Maxwell\'s equations, and explain magnetism as a relativistic effect',
+    'I can solve the wave and diffusion equations by Fourier transform and show that the wave operator is Lorentz invariant',
   ],
 });

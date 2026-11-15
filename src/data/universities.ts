@@ -81,6 +81,7 @@ const uiuc: University = {
     'physics-electricity-magnetism': 'PHYS 212',
     'physics-thermal': 'PHYS 213',
     'physics-quantum': 'PHYS 214',
+    relativity: 'PHYS 225',
     'classical-mechanics': 'PHYS 325/326',
     'thermodynamics-statistical-mechanics': 'PHYS 427',
     electromagnetism: 'PHYS 435/436',

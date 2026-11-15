@@ -130,7 +130,7 @@ module projects and a capstone built on real data, and have no machine problems.
 | `electromagnetism` | Electromagnetism | advanced | 100 | classical-mechanics, math-methods | yes |
 | `thermodynamics-statistical-mechanics` | Thermodynamics and Statistical Mechanics | advanced | 90 | classical-mechanics, probability-statistics | yes |
 | `quantum-mechanics` | Quantum Mechanics | advanced | 110 | waves-optics, math-methods | yes |
-| `relativity` | Special and General Relativity | expert | 100 | electromagnetism, classical-mechanics | yes |
+| `relativity` | Special and General Relativity | expert | 136 | electromagnetism, classical-mechanics | yes |
 | `computational-physics` | Computational Physics | advanced | 80 | programming-fundamentals, classical-mechanics, math-methods | yes |
 | `physics-mechanics` | University Physics: Mechanics | beginner | 100 | calculus-1 | additional |
 | `physics-electricity-magnetism` | University Physics: Electricity and Magnetism | intermediate | 100 | physics-mechanics, calculus-2 | additional |
@@ -651,7 +651,11 @@ Capstone: an Ising-model Monte Carlo study with finite-size scaling.
 Capstone: a numerical Schrödinger solver and a written treatment of a quantum information protocol.
 
 ### relativity
-1. `special-relativity-foundations` 2. `relativistic-mechanics-and-four-vectors` 3. `tensors-and-curved-spaces` 4. `einsteins-field-equations` 5. `schwarzschild-solution-and-black-holes` 6. `gravitational-waves-and-cosmological-solutions` 7. `experimental-tests`
+1. `special-relativity-foundations` 2. `relativistic-mechanics-and-four-vectors` 3. `tensors-and-curved-spaces` 4. `einsteins-field-equations` 5. `schwarzschild-solution-and-black-holes` 6. `gravitational-waves-and-cosmological-solutions` 7. `experimental-tests` 8. `matrices-symmetry-and-groups` 9. `fields-waves-and-fourier-methods`
+
+Modules 1, 2, 8 and 9 cover all of UIUC PHYS 225 (Relativity & Math Applications), taken in the
+order 1, 8, 2, 9 and needing only `physics-electricity-magnetism` and `calculus-3`. Modules 8 and 9
+were appended rather than inserted because earlier lessons refer to modules by number.
 Capstone: compute and plot geodesics around a black hole and reproduce a classic test (Mercury perihelion, light bending).
 
 ### computational-physics
@@ -735,12 +739,12 @@ All 76 subjects are written. Every lesson is fully populated: none is marked `ou
 | Mathematics | 19 | 468 |
 | Statistics | 2 | 56 |
 | Economics | 2 | 72 |
-| Physics | 12 | 300 |
+| Physics | 12 | 314 |
 | Chemistry | 2 | 69 |
 | Biology | 1 | 38 |
 | Astronomy | 6 | 158 |
 | Miscellaneous | 1 | 35 |
-| **Total** | **76** | **2,016** |
+| **Total** | **76** | **2,030** |
 
 Run `npm run validate` for the per-subject table (modules, lessons, hours).
 
