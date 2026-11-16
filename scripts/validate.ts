@@ -101,6 +101,7 @@ const KNOWN_SUBJECT_IDS = [
   'text-information-systems',
   'data-mining',
   'genetics',
+  'quantum-computing',
 ];
 
 type Level = 'ERROR' | 'WARN';

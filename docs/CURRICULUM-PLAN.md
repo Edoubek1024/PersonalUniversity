@@ -136,6 +136,7 @@ module projects and a capstone built on real data, and have no machine problems.
 | `physics-electricity-magnetism` | University Physics: Electricity and Magnetism | intermediate | 100 | physics-mechanics, calculus-2 | additional |
 | `physics-thermal` | University Physics: Thermal Physics | intermediate | 50 | physics-mechanics | additional |
 | `physics-quantum` | University Physics: Quantum Physics | intermediate | 50 | physics-electricity-magnetism | additional |
+| `quantum-computing` | Quantum Computing | intermediate | 120 | — | additional |
 
 ## Chemistry (`chemistry`)
 
@@ -626,6 +627,11 @@ Calculus-based. `quantum-mechanics` is the next step.
 4. Wave mechanics: the Schrodinger equation, particle in a box, tunnelling
 5. Atoms and applications: the Bohr atom, atomic structure, spin, lasers and semiconductors in outline
 
+### quantum-computing (PHYS 370)
+Follows UIUC PHYS 370 (Introduction to Quantum Information and Computing), with the theory of UIUC CS 498QC, the hardware of Georgia Tech CS 8803 Quantum Hardware, and ideas from Berkeley CS C191 and MIT 8.370. Self-contained: no prerequisites.
+1. `bits-qubits-and-the-maths` 2. `one-qubit` 3. `many-qubits-and-circuits` 4. `entanglement-as-a-resource` 5. `first-quantum-algorithms` 6. `fourier-phase-estimation-shor-grover` 7. `mixed-states-and-noise` 8. `quantum-error-correction` 9. `building-a-quantum-computer`
+Capstone: explain a quantum computer end to end, from one platform's physics through one algorithm to a resource estimate.
+
 ### math-methods
 1. `single-variable-calculus` 2. `multivariable-calculus` 3. `linear-algebra` 4. `ordinary-differential-equations` 5. `vector-calculus` 6. `fourier-and-complex-analysis` 7. `partial-differential-equations-and-special-functions`
 Capstone: a solutions portfolio plus a notebook that numerically checks every major derivation.
@@ -729,7 +735,7 @@ Capstone: analyse a real X-ray or gravitational-wave dataset and interpret it ph
 
 ## Completion status
 
-All 76 subjects are written. Every lesson is fully populated: none is marked `outline`.
+All 77 subjects are written. Every lesson is fully populated: none is marked `outline`.
 `npm run validate` reports no errors and no warnings.
 
 | Category | Subjects | Lessons |
@@ -739,12 +745,12 @@ All 76 subjects are written. Every lesson is fully populated: none is marked `ou
 | Mathematics | 19 | 468 |
 | Statistics | 2 | 56 |
 | Economics | 2 | 72 |
-| Physics | 12 | 314 |
+| Physics | 13 | 358 |
 | Chemistry | 2 | 69 |
 | Biology | 1 | 38 |
 | Astronomy | 6 | 158 |
 | Miscellaneous | 1 | 35 |
-| **Total** | **76** | **2,030** |
+| **Total** | **77** | **2,074** |
 
 Run `npm run validate` for the per-subject table (modules, lessons, hours).
 

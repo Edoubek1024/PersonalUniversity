@@ -26,7 +26,7 @@ const uiuc: University = {
   short: 'UIUC',
   codes: {
     // Computer Science
-    'programming-fundamentals': 'CS 124',
+    // programming-fundamentals is taught in Python; UIUC CS 124 uses Java or Kotlin, so it stays unmapped.
     'discrete-mathematics': 'CS 173',
     'data-structures-algorithms': 'CS 225',
     'computer-architecture': 'CS 233',
@@ -82,6 +82,7 @@ const uiuc: University = {
     'physics-thermal': 'PHYS 213',
     'physics-quantum': 'PHYS 214',
     relativity: 'PHYS 225',
+    'quantum-computing': 'PHYS 370',
     'classical-mechanics': 'PHYS 325/326',
     'thermodynamics-statistical-mechanics': 'PHYS 427',
     electromagnetism: 'PHYS 435/436',

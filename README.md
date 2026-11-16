@@ -1,8 +1,8 @@
 # Teach Me — a personal university for CS, Data Science, Mathematics, Statistics, Economics, Physics, Chemistry, Biology and Astronomy
 
 A self-directed learning system: a course catalog, a learning-management dashboard and a personal
-knowledge base in one local web app. Seventy-six subjects (25 core tracks plus 51 additional
-subjects, 2,030 lessons, about 6,070 study hours), each with a full curriculum of modules, lessons,
+knowledge base in one local web app. Seventy-seven subjects (25 core tracks plus 52 additional
+subjects, 2,074 lessons, about 6,190 study hours), each with a full curriculum of modules, lessons,
 learning objectives, curated free resources, exercises, projects and a mastery checklist.
 Mathematics, economics, physics, chemistry, biology and astronomy subjects and the startup course end in a capstone. The 23 CS
 subjects, 8 data science subjects and Probability and Statistics for Scientists each have two machine
