@@ -77,6 +77,30 @@ export default defineSubject({
    subject, 3-8 lessons per module. Every module may have an optional `project`; every
    subject has a `capstone`.
 
+## Exercise answers and parts
+
+An exercise with a checkable result reveals its answer instead of giving a hint. A multi-part
+exercise is split into sections, each with its own answer, under a short lead-in:
+
+```ts
+{
+  slug: 'power-rule-drill',
+  title: 'Power rule',
+  prompt: 'Differentiate the following.',
+  kind: 'problem',
+  difficulty: 1,
+  parts: [
+    { prompt: '$x^2$', answer: '$2x$' },
+    { prompt: '$5x$', answer: '$5$' },
+  ],
+},
+```
+
+- One item per thing to compute. A one-question exercise uses `answer` instead of `parts`.
+- An answer gives the result and the one or two key steps. A proof gets a compact sketch.
+- Keep `hint` only where there is no single answer to reveal (an open essay or exploration).
+- Never rename an exercise's slug when converting it: progress is keyed by slug.
+
 ## Style
 
 - Explanations speak to the learner directly ("you"), are precise, and give the *why*.

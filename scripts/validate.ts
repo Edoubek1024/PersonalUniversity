@@ -227,7 +227,18 @@ function checkSubject(s: Subject, allLessonIds: Set<string>, presentSubjects: Se
       if (!(l.estimatedMinutes > 0)) err(id, w, 'estimatedMinutes must be > 0');
       if (l.objectives.length < 3) err(id, w, `only ${l.objectives.length} objectives (need 3-6)`);
       if (l.concepts.length < 4) err(id, w, `only ${l.concepts.length} concepts (need 4-10)`);
-      for (const md of [l.explanation, ...l.exercises.flatMap((ex) => [ex.prompt, ex.hint ?? ''])]) {
+      for (const ex of l.exercises) {
+        if (ex.parts) {
+          if (ex.parts.length < 2) err(id, w, `exercise "${ex.slug}" has ${ex.parts.length} part(s); use \`answer\` for a single question`);
+          ex.parts.forEach((p, i) => {
+            if (!p.prompt?.trim()) err(id, w, `exercise "${ex.slug}" part ${i + 1} has an empty prompt`);
+            if (p.answer !== undefined && !p.answer.trim()) err(id, w, `exercise "${ex.slug}" part ${i + 1} has an empty answer`);
+          });
+        }
+        if (ex.answer !== undefined && !ex.answer.trim()) err(id, w, `exercise "${ex.slug}" has an empty answer`);
+      }
+      const exerciseMd = l.exercises.flatMap((ex) => [ex.prompt, ex.hint ?? '', ex.answer ?? '', ...(ex.parts ?? []).flatMap((p) => [p.prompt, p.answer ?? ''])]);
+      for (const md of [l.explanation, ...exerciseMd]) {
         const blocks = findBlocks(md);
         const opened = (md.match(/```interactive/g) ?? []).length;
         if (opened !== blocks.length) err(id, w, `${opened - blocks.length} interactive block(s) not closed by a \`\`\` line of its own`);
@@ -251,7 +262,7 @@ function checkSubject(s: Subject, allLessonIds: Set<string>, presentSubjects: Se
         warn(id, w, 'all resources are paid; add a free alternative');
       }
       for (const ex of l.exercises) {
-        if (wordCount(ex.prompt) < 15) warn(id, w, `exercise "${ex.slug}" prompt is very short`);
+        if (wordCount([ex.prompt, ...(ex.parts ?? []).map((p) => p.prompt)].join(' ')) < 15) warn(id, w, `exercise "${ex.slug}" prompt is very short`);
       }
       for (const sa of l.selfAssessment) {
         if (!sa.answerOutline) err(id, w, 'self-assessment item missing answerOutline');

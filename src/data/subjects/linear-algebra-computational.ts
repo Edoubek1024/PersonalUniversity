@@ -153,28 +153,70 @@ Work a few systems by hand from the resources. In Python, \`sympy.Matrix(A).rref
             {
               slug: 'solve-two-systems',
               title: 'One change, a different kind of answer',
-              prompt:
-                'Solve $x - y + 2z = 5$, $3x + y + z = 8$, $2x + 2y - z = 3$ by hand. This system has a free variable, so give every solution in terms of $t = z$. Then change only the third equation to $2x + 2y + z = 9$ and solve again; this time the solution is unique. Check both answers by substitution.',
+              prompt: 'Solve each system by hand and check your answer by substitution.',
               kind: 'problem',
               difficulty: 1,
-              hint: 'In the first system the three left-hand sides are dependent: row 3 is a combination of rows 1 and 2.',
+              parts: [
+                {
+                  prompt:
+                    '$x - y + 2z = 5$, $3x + y + z = 8$, $2x + 2y - z = 3$. This system has a free variable, so give every solution in terms of $t = z$.',
+                  answer:
+                    'Row 3 is row 2 minus row 1, so it adds nothing. Adding the first two equations gives $4x + 3z = 13$. With $z = t$: $x = \\dfrac{13 - 3t}{4}$, $y = x + 2t - 5 = \\dfrac{5t - 7}{4}$, $z = t$, for every real $t$. For example $t = 3$ gives $(1, 2, 3)$.',
+                },
+                {
+                  prompt: 'Change only the third equation to $2x + 2y + z = 9$ and solve again; this time the solution is unique.',
+                  answer:
+                    'Subtracting rows 1 and 2 from the new row 3 now leaves $2z = 6$ instead of $0 = 0$, so $z = 3$. Then $4x + 9 = 13$ gives $x = 1$ and $y = 1 + 6 - 5 = 2$. The unique solution is $(1, 2, 3)$.',
+                },
+              ],
             },
             {
               slug: 'classify-by-parameters',
               title: 'Classify a system by its parameters',
               prompt:
-                'For $x + 2y = 3$ and $2x + ay = b$, find all pairs $(a, b)$ for which the system has (i) exactly one solution, (ii) no solution, (iii) infinitely many solutions. Give the solution in case (i) in terms of $a$ and $b$.',
+                'For $x + 2y = 3$ and $2x + ay = b$, find all pairs $(a, b)$ for which the system has each kind of solution set. Eliminating $x$ gives $(a - 4)y = b - 6$.',
               kind: 'problem',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: '(i) Exactly one solution. Give the solution in terms of $a$ and $b$.',
+                  answer:
+                    'Exactly when $a \\neq 4$, for any $b$. Then $y = \\dfrac{b - 6}{a - 4}$ and $x = 3 - 2y = \\dfrac{3a - 2b}{a - 4}$.',
+                },
+                {
+                  prompt: '(ii) No solution.',
+                  answer: '$a = 4$ and $b \\neq 6$: the reduced second row reads $0 = b - 6 \\neq 0$.',
+                },
+                {
+                  prompt: '(iii) Infinitely many solutions.',
+                  answer: '$a = 4$ and $b = 6$: the second equation is twice the first, and the solutions are $(3 - 2t, t)$.',
+                },
+              ],
             },
             {
               slug: 'write-rref',
               title: 'Write your own rref',
               prompt:
-                'Write a Python function `rref(A, tol=1e-12)` using NumPy that returns the reduced echelon form and the list of pivot columns, treating entries smaller than `tol` in size as zero. Test it on the matrix with rows $(1,2,1,0)$, $(2,4,0,2)$, $(1,2,3,-2)$. It should report pivots in columns 0 and 2 and produce rows $(1,2,0,1)$, $(0,0,1,-1)$, $(0,0,0,0)$. Compare with `sympy.Matrix(A).rref()` on five random integer matrices.',
+                'Write a Python function `rref(A, tol=1e-12)` using NumPy that returns the reduced echelon form and the list of pivot columns, treating entries smaller than `tol` in size as zero.',
               kind: 'coding',
               difficulty: 2,
-              hint: 'Keep two indices, one for the pivot row and one for the current column. A column with no usable pivot advances only the column index.',
+              parts: [
+                {
+                  prompt: 'Write the function.',
+                  answer:
+                    'Keep two indices, one for the pivot row `r` and one for the current column `c`. A column with no usable pivot advances only `c`. A sketch:\n\n```python\nr, piv = 0, []\nfor c in range(n):\n    if r == m: break\n    p = r + np.argmax(abs(A[r:, c]))\n    if abs(A[p, c]) < tol: continue\n    A[[r, p]] = A[[p, r]]; A[r] /= A[r, c]\n    for i in range(m):\n        if i != r: A[i] -= A[i, c] * A[r]\n    piv.append(c); r += 1\n```\n\nWork on a float copy of `A`, and set entries below `tol` to zero at the end.',
+                },
+                {
+                  prompt: 'Test it on the matrix with rows $(1,2,1,0)$, $(2,4,0,2)$, $(1,2,3,-2)$.',
+                  answer:
+                    'It should report pivots in columns 0 and 2 and produce rows $(1,2,0,1)$, $(0,0,1,-1)$, $(0,0,0,0)$. Column 1 is twice column 0, so it has no pivot.',
+                },
+                {
+                  prompt: 'Compare with `sympy.Matrix(A).rref()` on five random integer matrices.',
+                  answer:
+                    'SymPy returns the exact form and a tuple of pivot columns. Your pivots should match exactly and your entries should agree to about $10^{-12}$, for example `np.allclose(R, np.array(Rs, dtype=float))`. A mismatch in pivots usually means `tol` was compared with the wrong entry or the column index did not advance.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -192,6 +234,34 @@ Work a few systems by hand from the resources. In Python, \`sympy.Matrix(A).rref
               question: 'Can a linear system have exactly two solutions?',
               answerOutline:
                 'No. If $x$ and $y$ are different solutions then $x + t(y - x)$ is a solution for every $t$, so there are infinitely many.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'Elimination on a system in $x, y, z$ ends with the echelon rows $[1, 3, -2 \\mid 4]$, $[0, 0, 1 \\mid 2]$ and $[0, 0, 0 \\mid 0]$. What is the solution set?',
+              options: [
+                'Infinitely many: $(8 - 3t,\\ t,\\ 2)$ for every $t$',
+                'No solution, because of the row of zeros',
+                'Exactly one, because there are two pivots and two non-zero rows',
+                'Infinitely many: $(4 - 3t,\\ t,\\ 2)$ for every $t$',
+              ],
+              answer: 0,
+              explanation:
+                'Column 2 has no pivot, so $y = t$ is free. The second row gives $z = 2$, and the first gives $x = 4 - 3t + 2(2) = 8 - 3t$. The option $(4 - 3t, t, 2)$ forgets to substitute $z = 2$ into the first row. A row $[0, 0, 0 \\mid 0]$ says $0 = 0$, which is harmless.',
+            },
+            {
+              question:
+                'A system in $x, y, z$ reduces to the rows $[1, 2, 0 \\mid 1]$, $[0, 1, 4 \\mid 3]$ and $[0, 0, 0 \\mid 5]$. What does this tell you?',
+              options: [
+                'Infinitely many solutions, because $z$ has no pivot and is free',
+                'Exactly one solution, found by back substitution',
+                'No solution, because the last row says $0 = 5$',
+                'Infinitely many solutions: drop the last row and solve two equations in three unknowns',
+              ],
+              answer: 2,
+              explanation:
+                'The last row is the equation $0x + 0y + 0z = 5$, which no choice of numbers satisfies, so the system is inconsistent. Free variables only matter once the system is known to be consistent, so the missing pivot in column 3 does not give infinitely many solutions here.',
             },
           ],
           relatedLessons: ['linear-algebra-for-data-science/linear-systems/gaussian-elimination'],
@@ -248,26 +318,74 @@ In NumPy, \`A @ B\` is the matrix product and \`A * B\` multiplies entry by entr
               slug: 'products-both-ways',
               title: 'Products in both orders',
               prompt:
-                'Let $A$ have rows $(1, 0, 2)$ and $(0, 1, -1)$, and let $B$ have rows $(1, 2)$, $(0, 1)$, $(3, 0)$. Compute $AB$ and $BA$ by hand, state their shapes, and confirm that $\\operatorname{tr}(AB) = \\operatorname{tr}(BA) = 8$ even though the two products have different sizes. Check with NumPy.',
+                'Let $A$ have rows $(1, 0, 2)$ and $(0, 1, -1)$, and let $B$ have rows $(1, 2)$, $(0, 1)$, $(3, 0)$. Work by hand, then check with NumPy.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: 'Compute $AB$ and state its shape.',
+                  answer:
+                    '$2 \\times 3$ times $3 \\times 2$ is $2 \\times 2$: $AB = \\begin{bmatrix} 7 & 2 \\\\ -3 & 1 \\end{bmatrix}$. For example the $(1,1)$ entry is $1 \\cdot 1 + 0 \\cdot 0 + 2 \\cdot 3 = 7$.',
+                },
+                {
+                  prompt: 'Compute $BA$ and state its shape.',
+                  answer:
+                    '$3 \\times 2$ times $2 \\times 3$ is $3 \\times 3$: $BA = \\begin{bmatrix} 1 & 2 & 0 \\\\ 0 & 1 & -1 \\\\ 3 & 0 & 6 \\end{bmatrix}$. Each row of $BA$ is a combination of the rows of $A$; the first is $1(1,0,2) + 2(0,1,-1)$.',
+                },
+                {
+                  prompt: 'Confirm that $\\operatorname{tr}(AB) = \\operatorname{tr}(BA) = 8$ even though the two products have different sizes.',
+                  answer:
+                    '$\\operatorname{tr}(AB) = 7 + 1 = 8$ and $\\operatorname{tr}(BA) = 1 + 1 + 6 = 8$. In general both equal $\\sum_{i,k} a_{ik} b_{ki}$. In NumPy, `np.trace(A @ B)` and `np.trace(B @ A)` both print 8.',
+                },
+              ],
             },
             {
               slug: 'reverse-order-rules',
               title: 'Why the order reverses',
-              prompt:
-                'Prove from the definition of matrix multiplication that $(AB)^T = B^T A^T$. Then prove that if $A$ and $B$ are invertible $n \\times n$ matrices, $AB$ is invertible with inverse $B^{-1}A^{-1}$. Give a $2 \\times 2$ example showing that $(AB)^{-1} = A^{-1}B^{-1}$ can fail.',
+              prompt: 'Prove the two reverse-order rules, then see that the order matters.',
               kind: 'derivation',
               difficulty: 2,
-              hint: 'For the transpose, compare the $(i,j)$ entry of each side using the sum $\\sum_k a_{ik} b_{kj}$.',
+              parts: [
+                {
+                  prompt: 'Prove from the definition of matrix multiplication that $(AB)^T = B^T A^T$.',
+                  answer:
+                    'Compare $(i,j)$ entries. $\\big((AB)^T\\big)_{ij} = (AB)_{ji} = \\sum_k a_{jk} b_{ki}$. And $(B^T A^T)_{ij} = \\sum_k (B^T)_{ik} (A^T)_{kj} = \\sum_k b_{ki} a_{jk}$. The two sums are equal term by term.',
+                },
+                {
+                  prompt: 'Prove that if $A$ and $B$ are invertible $n \\times n$ matrices, $AB$ is invertible with inverse $B^{-1}A^{-1}$.',
+                  answer:
+                    'By associativity, $(AB)(B^{-1}A^{-1}) = A(BB^{-1})A^{-1} = AA^{-1} = I$, and likewise $(B^{-1}A^{-1})(AB) = B^{-1}(A^{-1}A)B = I$. So $B^{-1}A^{-1}$ is a two-sided inverse of $AB$.',
+                },
+                {
+                  prompt: 'Give a $2 \\times 2$ example showing that $(AB)^{-1} = A^{-1}B^{-1}$ can fail.',
+                  answer:
+                    'Take $A = \\begin{bmatrix} 1 & 1 \\\\ 0 & 1 \\end{bmatrix}$, $B = \\begin{bmatrix} 1 & 0 \\\\ 1 & 1 \\end{bmatrix}$. Then $AB = \\begin{bmatrix} 2 & 1 \\\\ 1 & 1 \\end{bmatrix}$ with $(AB)^{-1} = \\begin{bmatrix} 1 & -1 \\\\ -1 & 2 \\end{bmatrix}$, but $A^{-1}B^{-1} = \\begin{bmatrix} 2 & -1 \\\\ -1 & 1 \\end{bmatrix}$. Any pair with $AB \\neq BA$ works.',
+                },
+              ],
             },
             {
               slug: 'grouping-cost',
               title: 'Measure the cost of grouping',
-              prompt:
-                'For random $n \\times n$ arrays $A$, $B$ and a random vector $x$, time `(A @ B) @ x` against `A @ (B @ x)` for $n = 500, 1000, 2000$. Tabulate the times and the ratio. Confirm that both give the same vector up to rounding, then explain the growth of the ratio by counting multiplications ($n^3 + n^2$ against $2n^2$).',
+              prompt: 'For random $n \\times n$ arrays $A$, $B$ and a random vector $x$, compare `(A @ B) @ x` with `A @ (B @ x)`.',
               kind: 'coding',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Time both for $n = 500, 1000, 2000$ and tabulate the times and the ratio.',
+                  answer:
+                    'Use `time.perf_counter()` around each expression, and repeat a few times to steady the numbers. `A @ (B @ x)` should take well under a millisecond to a few milliseconds, and `(A @ B) @ x` tens of times longer, with the ratio growing as $n$ grows. One laptop gave ratios of about 24, 23 and 38. Exact times depend on your machine.',
+                },
+                {
+                  prompt: 'Confirm that both give the same vector up to rounding.',
+                  answer:
+                    '`np.allclose(r1, r2)` is `True`, and the relative difference `np.linalg.norm(r1 - r2) / np.linalg.norm(r1)` is around $10^{-15}$. Associativity holds exactly in exact arithmetic; only rounding differs.',
+                },
+                {
+                  prompt: 'Explain the growth of the ratio by counting multiplications ($n^3 + n^2$ against $2n^2$).',
+                  answer:
+                    '`A @ B` costs $n^3$ multiplications and the product with $x$ adds $n^2$, while two matrix-vector products cost $2n^2$. The ratio $(n^3 + n^2)/(2n^2) \\approx n/2$ grows linearly in $n$: about 250, 500 and 1000. The measured ratio is smaller because a matrix-matrix product reuses data in cache and runs on several threads, so it achieves many more operations per second than a matrix-vector product.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -284,6 +402,33 @@ In NumPy, \`A @ B\` is the matrix product and \`A * B\` multiplies entry by entr
               question: 'State a test for whether a square matrix is invertible using elimination.',
               answerOutline:
                 'It is invertible exactly when elimination, with row swaps allowed, produces $n$ pivots. Equivalently $Ax = 0$ has only the zero solution.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'In NumPy, `A = np.array([[1, 2], [3, 4]])` and `x = np.array([2, -1])`. What does `A @ x` return?',
+              options: [
+                '`[-1, 0]`',
+                '`[0, 2]`',
+                'The $2 \\times 2$ array with rows `[2, -2]` and `[6, -4]`',
+                '`[2, -4]`',
+              ],
+              answer: 1,
+              explanation:
+                '`A @ x` is the combination of the columns of $A$ with weights $2$ and $-1$: $2(1, 3) - (2, 4) = (0, 2)$. The $2 \\times 2$ array is what `A * x` gives, because `*` broadcasts and multiplies entry by entry. `[-1, 0]` is $x^T A$, a combination of the rows instead.',
+            },
+            {
+              question: 'If $A$ and $B$ are invertible $3 \\times 3$ matrices, which matrix is $(AB^T)^{-1}$?',
+              options: [
+                '$A^{-1}(B^{-1})^T$',
+                '$B^{-1}A^{-1}$',
+                '$(A^{-1}B^{-1})^T$',
+                '$(B^{-1})^T A^{-1}$',
+              ],
+              answer: 3,
+              explanation:
+                'Inverting a product reverses the order: $(AB^T)^{-1} = (B^T)^{-1}A^{-1}$, and the inverse of a transpose is the transpose of the inverse, so this is $(B^{-1})^T A^{-1}$. $A^{-1}(B^{-1})^T$ keeps the original order, which is only right when the factors commute. $B^{-1}A^{-1}$ drops the transpose.',
             },
           ],
         },
@@ -334,27 +479,67 @@ Library conventions differ, so read the documentation. \`scipy.linalg.lu(A)\` re
             {
               slug: 'lu-by-hand',
               title: 'Factor and solve by hand',
-              prompt:
-                'Find $L$ and $U$ for the matrix with rows $(1, 2, 0)$, $(3, 7, 2)$, $(2, 6, 5)$. Multiply them to check. Then solve $Ax = b$ for $b = (3, 11, 13)$ by forward and back substitution; the answer is an integer vector.',
+              prompt: 'Let $A$ be the matrix with rows $(1, 2, 0)$, $(3, 7, 2)$, $(2, 6, 5)$.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: 'Find $L$ and $U$, and multiply them to check.',
+                  answer:
+                    'Multipliers $\\ell_{21} = 3$ and $\\ell_{31} = 2$ give rows $(0, 1, 2)$ and $(0, 2, 5)$; then $\\ell_{32} = 2$ gives $(0, 0, 1)$. So $L = \\begin{bmatrix} 1 & 0 & 0 \\\\ 3 & 1 & 0 \\\\ 2 & 2 & 1 \\end{bmatrix}$ and $U = \\begin{bmatrix} 1 & 2 & 0 \\\\ 0 & 1 & 2 \\\\ 0 & 0 & 1 \\end{bmatrix}$, and $LU = A$.',
+                },
+                {
+                  prompt: 'Solve $Ax = b$ for $b = (3, 11, 13)$ by forward and back substitution; the answer is an integer vector.',
+                  answer:
+                    'Forward, $Ly = b$: $y_1 = 3$, $y_2 = 11 - 9 = 2$, $y_3 = 13 - 6 - 4 = 3$. Back, $Ux = y$: $x_3 = 3$, $x_2 = 2 - 6 = -4$, $x_1 = 3 - 2(-4) = 11$. So $x = (11, -4, 3)$.',
+                },
+              ],
             },
             {
               slug: 'tiny-pivot',
               title: 'A tiny pivot destroys the answer',
               prompt:
-                'Take $A$ with rows $(10^{-20}, 1)$ and $(1, 1)$, and $b = (1, 2)$. The true solution is very close to $(1, 1)$. Code elimination without pivoting in double precision and show that you get exactly $(0, 1)$. Explain which subtraction lost the information. Then swap the rows first and show that you recover $(1, 1)$.',
+                'Take $A$ with rows $(10^{-20}, 1)$ and $(1, 1)$, and $b = (1, 2)$. The true solution is very close to $(1, 1)$.',
               kind: 'coding',
               difficulty: 2,
-              hint: 'The multiplier is $10^{20}$, and $1 - 10^{20}$ rounds to $-10^{20}$.',
+              parts: [
+                {
+                  prompt: 'Code elimination without pivoting in double precision and show that you get exactly $(0, 1)$.',
+                  answer:
+                    'The multiplier is $m = 1/10^{-20} = 10^{20}$. Then $u_{22} = 1 - 10^{20}$ and the new right side $2 - 10^{20}$ both round to $-10^{20}$, so $x_2 = 1$. Back substitution gives $x_1 = (1 - 1)/10^{-20} = 0$. The code prints `0.0 1.0`.',
+                },
+                {
+                  prompt: 'Explain which subtraction lost the information.',
+                  answer:
+                    '$1 - 10^{20}$ rounds to $-10^{20}$, and $2 - 10^{20}$ rounds the same way: doubles near $10^{20}$ are spaced about $1.6 \\times 10^4$ apart, so the entries $a_{22} = 1$ and $b_2 = 2$ vanish completely. The reduced system no longer depends on them.',
+                },
+                {
+                  prompt: 'Swap the rows first and show that you recover $(1, 1)$.',
+                  answer:
+                    'Now the pivot is 1 and the multiplier is $10^{-20}$. Then $u_{22} = 1 - 10^{-20}$ rounds to 1 and the right side to 1, so $x_2 = 1$ and $x_1 = 2 - 1 = 1$. The exact solution is $(1 + 10^{-20},\\ 1 - 10^{-20})$ to that order, so $(1, 1)$ is correct to every digit a double can hold.',
+                },
+              ],
             },
             {
               slug: 'lu-scaling',
               title: 'Measure how LU scales',
-              prompt:
-                'Time `scipy.linalg.lu_factor` on random matrices with $n = 1000, 2000, 4000$, and time `lu_solve` for one right-hand side. Estimate the exponent in each cost by fitting the slope of $\\log(\\text{time})$ against $\\log n$. Expect values near 3 and 2, with some departure because of caches and threads. Then, for $n = 2000$, compare solving 100 right-hand sides with `np.linalg.solve` called 100 times against one `lu_factor` and 100 `lu_solve` calls.',
+              prompt: 'Time `scipy.linalg` on random matrices to see the $n^3$ and $n^2$ costs.',
               kind: 'coding',
               difficulty: 2,
+              parts: [
+                {
+                  prompt:
+                    'Time `scipy.linalg.lu_factor` on random matrices with $n = 1000, 2000, 4000$, and time `lu_solve` for one right-hand side. Estimate the exponent in each cost by fitting the slope of $\\log(\\text{time})$ against $\\log n$.',
+                  answer:
+                    'Fit with `np.polyfit(np.log(ns), np.log(times), 1)[0]`. Expect values near 3 and 2, with some departure because of caches and threads. One run gave about 15 ms, 48 ms and 330 ms for the factorisations (slope 2.2) and 0.14 ms, 1.2 ms and 4.4 ms for the solves (slope 2.5). Time each call several times and take the minimum, since the first call includes start-up costs and other programs add noise.',
+                },
+                {
+                  prompt:
+                    'For $n = 2000$, compare solving 100 right-hand sides with `np.linalg.solve` called 100 times against one `lu_factor` and 100 `lu_solve` calls.',
+                  answer:
+                    'Each `solve` call refactors $A$, so the first approach costs about $100 \\cdot \\tfrac23 n^3$ and the second $\\tfrac23 n^3 + 100 \\cdot 2n^2$. The predicted ratio is about $100/(1 + 300/n) \\approx 87$ for $n = 2000$. You should see the factor-once approach tens of times faster; one run gave about 70 times. (Passing all 100 right-hand sides as the columns of one matrix to `solve` also factors only once.)',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -371,6 +556,33 @@ Library conventions differ, so read the documentation. \`scipy.linalg.lu(A)\` re
               question: 'Give an invertible matrix with no LU factorisation unless rows are swapped.',
               answerOutline:
                 'The matrix with rows $(0, 1)$ and $(1, 0)$. Its first pivot is zero, and if $A = LU$ then $u_{11} = 0$, which makes $A$ singular, a contradiction.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'For $A = \\begin{bmatrix} 2 & 1 \\\\ 6 & 5 \\end{bmatrix}$, what is $L$ in the factorisation $A = LU$ without row swaps?',
+              options: [
+                '$\\begin{bmatrix} 1 & 0 \\\\ -3 & 1 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 1 & 0 \\\\ 1/3 & 1 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 1 & 0 \\\\ 3 & 1 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 2 & 0 \\\\ 6 & 2 \\end{bmatrix}$',
+              ],
+              answer: 2,
+              explanation:
+                'Elimination subtracts $\\ell_{21} = 6/2 = 3$ times row 1 from row 2, leaving $U = \\begin{bmatrix} 2 & 1 \\\\ 0 & 2 \\end{bmatrix}$, and $L$ stores the multiplier $+3$. The matrix with $-3$ is the elimination step itself, $L^{-1}$, which is the most common slip. Check: $LU$ has second row $3(2, 1) + (0, 2) = (6, 5)$.',
+            },
+            {
+              question:
+                'You must solve $Ax = b$ for 50 different right-hand sides with the same $1000 \\times 1000$ matrix $A$. Roughly how does one `lu_factor` plus 50 `lu_solve` calls compare with 50 calls to `np.linalg.solve`?',
+              options: [
+                'About 44 times fewer operations',
+                'The same number of operations, because `solve` also uses an LU factorisation',
+                'About 2 times fewer operations',
+                'About 1000 times fewer operations, a factor of $n$',
+              ],
+              answer: 0,
+              explanation:
+                'Each `solve` call refactors $A$: $50(\\tfrac23 n^3 + 2n^2) \\approx 3.3 \\times 10^{10}$ operations. Factoring once costs $\\tfrac23 n^3 + 50 \\cdot 2n^2 \\approx 7.7 \\times 10^8$, about 44 times less. `solve` does use LU, which is exactly why repeating it repeats the expensive part. The saving is capped by the number of right-hand sides, not by $n$.',
             },
           ],
           relatedLessons: ['linear-algebra-for-data-science/linear-systems/lu-factorisation'],
@@ -427,27 +639,73 @@ Two lessons follow. First, a small **residual** $\\|Ax - b\\|$ does not imply a 
             {
               slug: 'find-epsilon',
               title: 'Find machine epsilon',
-              prompt:
-                'Starting from `e = 1.0`, halve `e` while `1.0 + e/2 != 1.0`. Print the final `e` and confirm it equals `np.finfo(float).eps` and $2^{-52}$. Then show that $(1 + \\varepsilon/2) - 1$ evaluates to 0, and explain why $(x + 1) - x$ evaluates to 0 rather than 1 for $x = 10^{17}$.',
+              prompt: 'Find machine epsilon by experiment and see what it means for sums.',
               kind: 'coding',
               difficulty: 1,
+              parts: [
+                {
+                  prompt:
+                    'Starting from `e = 1.0`, halve `e` while `1.0 + e/2 != 1.0`. Print the final `e` and confirm it equals `np.finfo(float).eps` and $2^{-52}$.',
+                  answer:
+                    'The loop stops at `e = 2.220446049250313e-16`, and `e == np.finfo(float).eps == 2**-52` is `True`. One more halving would give a number too small to change 1.0.',
+                },
+                {
+                  prompt: 'Show that $(1 + \\varepsilon/2) - 1$ evaluates to 0.',
+                  answer:
+                    '$1 + \\varepsilon/2$ lies exactly halfway between 1 and $1 + \\varepsilon$, and round-to-nearest-even rounds the tie to 1. So `(1 + eps/2) - 1` prints `0.0`.',
+                },
+                {
+                  prompt: 'Explain why $(x + 1) - x$ evaluates to 0 rather than 1 for $x = 10^{17}$.',
+                  answer:
+                    'Near $10^{17}$ consecutive doubles are 16 apart (`np.spacing(1e17)` is `16.0`), because $10^{17}$ needs 57 bits and only 53 are kept. So $10^{17} + 1$ rounds back to $10^{17}$ and the difference is 0.',
+                },
+              ],
             },
             {
               slug: 'hilbert-experiment',
               title: 'Watch digits disappear',
               prompt:
-                'The Hilbert matrix has entries $1/(i + j + 1)$ for $i, j$ from 0 (`scipy.linalg.hilbert`). For $n = 5, 10, 15$, set $x = (1, \\dots, 1)$ and $b = Hx$, and solve for $\\hat{x}$. Tabulate $\\kappa(H)$, the relative error $\\|\\hat{x} - x\\| / \\|x\\|$ and the residual $\\|H\\hat{x} - b\\|$. You should see $\\kappa(H_{10}) \\approx 1.6 \\times 10^{13}$, residuals near $10^{-15}$ throughout, and an error that grows until at $n = 15$ no correct digits remain. Explain the contrast between residual and error.',
+                'The Hilbert matrix has entries $1/(i + j + 1)$ for $i, j$ from 0 (`scipy.linalg.hilbert`). For $n = 5, 10, 15$, set $x = (1, \\dots, 1)$ and $b = Hx$, and solve for $\\hat{x}$.',
               kind: 'coding',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Tabulate $\\kappa(H)$, the relative error $\\|\\hat{x} - x\\| / \\|x\\|$ and the residual $\\|H\\hat{x} - b\\|$.',
+                  answer:
+                    'You should see $\\kappa(H_{10}) \\approx 1.6 \\times 10^{13}$, residuals near $10^{-15}$ throughout, and an error that grows until at $n = 15$ no correct digits remain. One run gave: $n = 5$: $\\kappa \\approx 4.8 \\times 10^5$, error $\\approx 2 \\times 10^{-12}$; $n = 10$: $\\kappa \\approx 1.6 \\times 10^{13}$, error $\\approx 9 \\times 10^{-5}$; $n = 15$: `np.linalg.cond` reports about $4 \\times 10^{17}$ (the true value is about $6 \\times 10^{20}$, too large to compute in double precision), error $\\approx 5$. Residuals were $3 \\times 10^{-16}$, $6 \\times 10^{-16}$ and $10^{-15}$.',
+                },
+                {
+                  prompt: 'Explain the contrast between residual and error.',
+                  answer:
+                    'Pivoted LU is backward stable: $\\hat{x}$ solves a system within rounding of $Hx = b$, so the residual stays near $\\varepsilon\\|H\\|\\|\\hat{x}\\|$. The error is $H^{-1}r$, which multiplies the residual by $\\|H^{-1}\\|$, so it is about $\\kappa(H)\\,\\varepsilon$: $10^{13} \\times 10^{-16} \\approx 10^{-3}$ for $n = 10$, and more than 1 for $n = 15$.',
+                },
+              ],
             },
             {
               slug: 'solve-against-inverse',
               title: 'Solve against invert',
               prompt:
-                'For $n = 1500$ with a random matrix $A$, pick a random vector $x_{\\text{true}}$ and set $b = Ax_{\\text{true}}$. Compare `np.linalg.solve(A, b)` with `np.linalg.inv(A) @ b` for time and for residual $\\|Ax - b\\|$. Repeat with a matrix of known bad conditioning: build $A = U\\,\\mathrm{diag}(s)\\,V^T$ from random orthogonal $U, V$ (via QR) and singular values $s$ running from 1 to $10^{-12}$ on a log scale. You should find `solve` faster, and its residual smaller by many orders of magnitude in the ill-conditioned case. Finally use a random $b$ with the same ill-conditioned $A$, and explain why the two residuals now come out about equal.',
+                'Compare `np.linalg.solve(A, b)` with `np.linalg.inv(A) @ b` for time and for residual $\\|Ax - b\\|$, with $n = 1500$.',
               kind: 'coding',
               difficulty: 3,
-              hint: 'A stable solve keeps the residual near $\\varepsilon\\|A\\|\\|x\\|$. A random $b$ makes $\\|x\\|$ huge for this $A$.',
+              parts: [
+                {
+                  prompt: 'Use a random matrix $A$, pick a random vector $x_{\\text{true}}$ and set $b = Ax_{\\text{true}}$.',
+                  answer:
+                    '`solve` should be faster (it does one LU and two triangular solves, while `inv` does the LU and then $n$ solves for the columns of $A^{-1}$). Both residuals are small; one run gave about $4 \\times 10^{-11}$ for `solve` and $2 \\times 10^{-9}$ for `inv`.',
+                },
+                {
+                  prompt:
+                    'Repeat with a matrix of known bad conditioning: build $A = U\\,\\mathrm{diag}(s)\\,V^T$ from random orthogonal $U, V$ (via QR) and singular values $s$ running from 1 to $10^{-12}$ on a log scale.',
+                  answer:
+                    'Use `U, _ = np.linalg.qr(rng.standard_normal((n, n)))`, the same for `V`, and `s = np.logspace(0, -12, n)`. You should find `solve` faster, and its residual smaller by many orders of magnitude in the ill-conditioned case: one run gave about $1.5 \\times 10^{-14}$ for `solve` against $2 \\times 10^{-4}$ for `inv`.',
+                },
+                {
+                  prompt: 'Finally use a random $b$ with the same ill-conditioned $A$, and explain why the two residuals now come out about equal.',
+                  answer:
+                    'Both come out around $10^{-3}$. A stable solve keeps the residual near $\\varepsilon\\|A\\|\\|x\\|$. With $b = Ax_{\\text{true}}$ the solution had moderate size, but a random $b$ has components along the smallest singular directions, which $A^{-1}$ multiplies by up to $10^{12}$, so $\\|x\\| \\approx 4 \\times 10^{12}$. Then $\\varepsilon\\|x\\| \\approx 10^{-3}$ for both methods, and `inv` has no extra error left to show.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -464,6 +722,34 @@ Two lessons follow. First, a small **residual** $\\|Ax - b\\|$ does not imply a 
               question: 'Does a better algorithm fix an ill-conditioned problem?',
               answerOutline:
                 'No. Conditioning belongs to the problem. A stable algorithm avoids adding avoidable error, but it cannot recover information lost to the sensitivity of the problem. Reformulating the problem may help.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'A matrix has $\\kappa(A) = 5 \\times 10^8$. You solve $Ax = b$ in double precision with pivoted LU. About how large a relative error in $x$ should you expect?',
+              options: [
+                'About $10^{-16}$, the size of machine epsilon',
+                'About $4 \\times 10^{-25}$, machine epsilon divided by $\\kappa(A)$',
+                'About $2 \\times 10^{-9}$, which is $1/\\kappa(A)$',
+                'About $10^{-7}$',
+              ],
+              answer: 3,
+              explanation:
+                'The error is roughly $\\kappa(A)\\,\\varepsilon = 5 \\times 10^8 \\times 2.2 \\times 10^{-16} \\approx 1.1 \\times 10^{-7}$, so about 7 of the 16 digits survive. Machine epsilon alone describes the rounding of each operation, not the sensitivity of the problem, which multiplies it by $\\kappa$.',
+            },
+            {
+              question:
+                'A computed solution has relative residual $\\|A\\hat{x} - b\\| / \\|b\\| = 10^{-14}$, and $\\kappa(A) = 10^{12}$. What can you conclude about the relative error in $\\hat{x}$?',
+              options: [
+                'It is about $10^{-14}$ as well, since a small residual means a small error',
+                'It is at most about $10^{-2}$; the small residual alone does not make it small',
+                'It is at least $10^{-2}$',
+                'It is about $10^{-26}$, the residual divided by $\\kappa(A)$',
+              ],
+              answer: 1,
+              explanation:
+                'The bound $\\|\\delta x\\|/\\|x\\| \\le \\kappa(A)\\,\\|r\\|/\\|b\\| = 10^{12} \\times 10^{-14} = 10^{-2}$ caps the error at about 1 percent. A small residual guarantees a small error only for a well-conditioned matrix. The bound is an upper limit, so the error could also be much smaller; "at least" reads it the wrong way round.',
             },
           ],
           relatedLessons: ['linear-algebra-for-data-science/linear-systems/conditioning'],
@@ -540,26 +826,83 @@ Rank is defined properly in the next lessons. For now, read it as the number of 
               slug: 'subspace-or-not',
               title: 'Subspace or not',
               prompt:
-                'For each subset of $\\mathbb{R}^3$, either prove it is a subspace or show which requirement fails: (a) $x_1 + 2x_2 - x_3 = 0$; (b) $x_1 x_2 = 0$; (c) $x_1 + x_2 = 1$; (d) all vectors $(t, 2t, 3t)$; (e) all vectors with $x_1 \\geq 0$.',
+                'For each subset of $\\mathbb{R}^3$, either prove it is a subspace or show which requirement fails.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: '$x_1 + 2x_2 - x_3 = 0$',
+                  answer:
+                    'A subspace. It contains 0, and if $u$ and $v$ satisfy the equation then $(u_1 + v_1) + 2(u_2 + v_2) - (u_3 + v_3) = 0 + 0$ and $cu_1 + 2cu_2 - cu_3 = c \\cdot 0$. It is the null space of $[1, 2, -1]$, a plane through the origin.',
+                },
+                {
+                  prompt: '$x_1 x_2 = 0$',
+                  answer:
+                    'Not a subspace: closure under addition fails. $(1, 0, 0)$ and $(0, 1, 0)$ are in the set, but their sum $(1, 1, 0)$ has $x_1 x_2 = 1$. (It is the union of two planes.)',
+                },
+                {
+                  prompt: '$x_1 + x_2 = 1$',
+                  answer: 'Not a subspace: it does not contain 0, since $0 + 0 \\neq 1$. It is a plane that misses the origin.',
+                },
+                {
+                  prompt: 'All vectors $(t, 2t, 3t)$',
+                  answer:
+                    'A subspace: it is the span of $(1, 2, 3)$, a line through the origin. $t = 0$ gives 0, $(s + t)(1, 2, 3)$ is the sum, and $(ct)(1, 2, 3)$ the scalar multiple.',
+                },
+                {
+                  prompt: 'All vectors with $x_1 \\geq 0$',
+                  answer:
+                    'Not a subspace: closure under scaling fails. $(1, 0, 0)$ is in the set, but $-1 \\cdot (1, 0, 0) = (-1, 0, 0)$ is not. It does contain 0 and is closed under addition.',
+                },
+              ],
             },
             {
               slug: 'membership-in-a-span',
               title: 'Membership in a span',
-              prompt:
-                'Let $v_1 = (1, 2, 0, 1)$ and $v_2 = (0, 1, 1, 1)$. Show by hand that $(2, 7, 3, 5)$ lies in their span and find the coefficients. Show that $(1, 1, 1, 1)$ does not. Then write a function `in_span(vectors, b)` using `matrix_rank` and test it on both.',
+              prompt: 'Let $v_1 = (1, 2, 0, 1)$ and $v_2 = (0, 1, 1, 1)$.',
               kind: 'coding',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: 'Show by hand that $(2, 7, 3, 5)$ lies in their span and find the coefficients.',
+                  answer:
+                    'The first coordinate of $c_1 v_1 + c_2 v_2$ is $c_1$, so $c_1 = 2$, and the third is $c_2$, so $c_2 = 3$. Check the rest: $2 \\cdot 2 + 3 = 7$ and $2 + 3 = 5$. So $(2, 7, 3, 5) = 2v_1 + 3v_2$.',
+                },
+                {
+                  prompt: 'Show that $(1, 1, 1, 1)$ does not.',
+                  answer:
+                    'The first and third coordinates force $c_1 = 1$ and $c_2 = 1$, but then the second coordinate is $2 + 1 = 3 \\neq 1$. No coefficients work.',
+                },
+                {
+                  prompt: 'Write a function `in_span(vectors, b)` using `matrix_rank` and test it on both.',
+                  answer:
+                    'Compare the rank with and without $b$:\n\n```python\nfrom numpy.linalg import matrix_rank\n\ndef in_span(vectors, b):\n    A = np.column_stack(vectors)\n    return matrix_rank(A) == matrix_rank(np.column_stack([A, b]))\n```\n\nIt returns `True` for $(2, 7, 3, 5)$ (rank 2 both times) and `False` for $(1, 1, 1, 1)$ (rank 2, then 3).',
+                },
+              ],
             },
             {
               slug: 'intersections-and-unions',
               title: 'Intersections and unions',
-              prompt:
-                'Prove that the intersection of two subspaces of $\\mathbb{R}^n$ is a subspace. Show by example that a union of two subspaces need not be. Then prove that the union of subspaces $U$ and $V$ is a subspace only if one contains the other.',
+              prompt: 'Compare intersections and unions of two subspaces $U$ and $V$ of $\\mathbb{R}^n$.',
               kind: 'derivation',
               difficulty: 3,
-              hint: 'For the last part, suppose neither contains the other. Take $u \\in U \\setminus V$ and $v \\in V \\setminus U$, and ask where $u + v$ can live.',
+              parts: [
+                {
+                  prompt: 'Prove that the intersection of two subspaces of $\\mathbb{R}^n$ is a subspace.',
+                  answer:
+                    '$0$ is in both, so $0 \\in U \\cap V$. If $u, w \\in U \\cap V$, then $u + w$ and $cu$ lie in $U$ because $U$ is a subspace, and in $V$ for the same reason, so they lie in $U \\cap V$.',
+                },
+                {
+                  prompt: 'Show by example that a union of two subspaces need not be.',
+                  answer:
+                    'In $\\mathbb{R}^2$ take the $x$-axis and the $y$-axis. Both $(1, 0)$ and $(0, 1)$ are in the union, but $(1, 1)$ is on neither axis.',
+                },
+                {
+                  prompt: 'Prove that the union of subspaces $U$ and $V$ is a subspace only if one contains the other.',
+                  answer:
+                    'Suppose neither contains the other. Take $u \\in U \\setminus V$ and $v \\in V \\setminus U$, and ask where $u + v$ can live. If $u + v \\in U$, then $v = (u + v) - u \\in U$, a contradiction; if $u + v \\in V$, then $u = (u + v) - v \\in V$, also a contradiction. So $u + v$ is not in $U \\cup V$, and the union is not a subspace.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -574,6 +917,32 @@ Rank is defined properly in the next lessons. For now, read it as the number of 
             {
               question: 'Is the solution set of $Ax = b$ a subspace when $b \\neq 0$?',
               answerOutline: 'No. It does not contain 0, since $A0 = 0 \\neq b$. It is a shifted copy of the null space, or it is empty.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'Is $w = (1, 4, 7)$ in the span of $v_1 = (1, 1, 1)$ and $v_2 = (0, 1, 2)$?',
+              options: [
+                'Yes: $w = v_1 + 3v_2$',
+                'No: the coefficients from the first two coordinates fail the third',
+                'Yes: $w = v_1 + 4v_2$',
+                'No: two vectors cannot span a vector of $\\mathbb{R}^3$',
+              ],
+              answer: 0,
+              explanation:
+                'The first coordinate forces $c_1 = 1$, and the second gives $c_1 + c_2 = 4$, so $c_2 = 3$. The third must agree: $1 + 2 \\cdot 3 = 7$, and it does. Reading $c_2 = 4$ straight from the second coordinate forgets the contribution of $v_1$. Two vectors span a plane, and the question is only whether $w$ lies in it.',
+            },
+            {
+              question: 'Which of these subsets of $\\mathbb{R}^3$ is a subspace?',
+              options: [
+                'All solutions of $x + 2y - z = 4$',
+                'The union of the planes $z = 0$ and $x = 0$',
+                'All vectors with $x \\geq 0$, $y \\geq 0$ and $z \\geq 0$',
+                'All vectors of the form $(s - t,\\ 2s,\\ 3t)$ for real $s, t$',
+              ],
+              answer: 3,
+              explanation:
+                'The last set is the span of $(1, 2, 0)$ and $(-1, 0, 3)$, and every span is a subspace. The first misses 0. The union fails addition: $(1, 0, 0) + (0, 0, 1)$ lies on neither plane. The positive octant is closed under addition, which makes it tempting, but scaling by $-1$ leaves it.',
             },
           ],
         },
@@ -618,34 +987,90 @@ Rank is exact on paper and approximate on a computer. Floating-point data rarely
               slug: 'extract-a-basis',
               title: 'Extract a basis',
               prompt:
-                'The columns of a matrix are $(1, 0, 1, 2)$, $(2, 1, 1, 3)$, $(0, 1, -1, -1)$, $(1, 1, 1, 1)$. Row reduce by hand, select a basis of the column space from the original columns, and write the dependent column as a combination of the basis columns. State the dimension of the column space.',
+                'The columns of a matrix are $(1, 0, 1, 2)$, $(2, 1, 1, 3)$, $(0, 1, -1, -1)$, $(1, 1, 1, 1)$. Row reduce by hand.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: 'Select a basis of the column space from the original columns.',
+                  answer:
+                    'The reduced form has rows $(1, 0, -2, 0)$, $(0, 1, 1, 0)$, $(0, 0, 0, 1)$, $(0, 0, 0, 0)$, with pivots in columns 1, 2 and 4. So the basis is $(1, 0, 1, 2)$, $(2, 1, 1, 3)$, $(1, 1, 1, 1)$.',
+                },
+                {
+                  prompt: 'Write the dependent column as a combination of the basis columns.',
+                  answer:
+                    'Column 3 of the reduced form reads $(-2, 1, 0, 0)$, so $(0, 1, -1, -1) = -2(1, 0, 1, 2) + (2, 1, 1, 3)$. Check: $(-2 + 2, 0 + 1, -2 + 1, -4 + 3)$.',
+                },
+                {
+                  prompt: 'State the dimension of the column space.',
+                  answer: '3, the number of pivots.',
+                },
+              ],
             },
             {
               slug: 'polynomial-coordinates',
               title: 'Coordinates for polynomials',
-              prompt:
-                'Show that $1$, $1 + t$, $(1 + t)^2$ is a basis of the space of polynomials of degree at most 2. Find the coordinates of $3 + 2t + t^2$ in this basis. Then set up the same question as a $3 \\times 3$ linear system and solve it with NumPy.',
+              prompt: 'Work in the space of polynomials of degree at most 2.',
               kind: 'problem',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Show that $1$, $1 + t$, $(1 + t)^2$ is a basis of this space.',
+                  answer:
+                    'The space has dimension 3 (basis $1, t, t^2$), so three independent polynomials form a basis. If $a + b(1 + t) + c(1 + t)^2 = 0$, the $t^2$ coefficient gives $c = 0$, then the $t$ coefficient gives $b = 0$, then $a = 0$. So they are independent.',
+                },
+                {
+                  prompt: 'Find the coordinates of $3 + 2t + t^2$ in this basis.',
+                  answer:
+                    '$(2, 0, 1)$: matching $t^2$ gives $c = 1$, matching $t$ gives $b + 2c = 2$ so $b = 0$, and the constant gives $a + b + c = 3$ so $a = 2$. Indeed $2 + (1 + t)^2 = 3 + 2t + t^2$.',
+                },
+                {
+                  prompt: 'Set up the same question as a $3 \\times 3$ linear system and solve it with NumPy.',
+                  answer:
+                    'Write each basis polynomial as its coefficients on $1, t, t^2$ and use them as columns: $B = \\begin{bmatrix} 1 & 1 & 1 \\\\ 0 & 1 & 2 \\\\ 0 & 0 & 1 \\end{bmatrix}$. Then `np.linalg.solve(B, [3, 2, 1])` returns `[2., 0., 1.]`.',
+                },
+              ],
             },
             {
               slug: 'n-plus-one-vectors',
               title: 'Too many vectors',
-              prompt:
-                'Prove that any $n + 1$ vectors in $\\mathbb{R}^n$ are linearly dependent, by putting them in the columns of a matrix and considering pivots. Then prove that if $v_1, \\dots, v_k$ are independent and $w$ is not in their span, then $v_1, \\dots, v_k, w$ are independent.',
+              prompt: 'Prove two facts about independence.',
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                {
+                  prompt:
+                    'Prove that any $n + 1$ vectors in $\\mathbb{R}^n$ are linearly dependent, by putting them in the columns of a matrix and considering pivots.',
+                  answer:
+                    'The matrix is $n \\times (n + 1)$. Each pivot needs its own row, so there are at most $n$ pivots, and at least one column has none. That column gives a free variable, so $Ax = 0$ has a non-zero solution, which is a non-trivial dependence among the columns.',
+                },
+                {
+                  prompt: 'Prove that if $v_1, \\dots, v_k$ are independent and $w$ is not in their span, then $v_1, \\dots, v_k, w$ are independent.',
+                  answer:
+                    'Suppose $c_1 v_1 + \\dots + c_k v_k + d w = 0$. If $d \\neq 0$, then $w = -\\tfrac{1}{d}(c_1 v_1 + \\dots + c_k v_k)$ lies in the span, a contradiction. So $d = 0$, and then independence of the $v_i$ forces every $c_i = 0$.',
+                },
+              ],
             },
             {
               slug: 'rank-tolerance',
               title: 'When is rank a matter of opinion?',
               prompt:
-                'Let $A$ have rows $(1, 2)$ and $(2, 4 + \\delta)$. For $\\delta = 10^{-4}, 10^{-8}, 10^{-12}, 10^{-16}, 10^{-17}$, print the singular values and `matrix_rank(A)` with the default tolerance. Explain each result. In particular, explain why the last two values of $\\delta$ give an exactly rank-1 matrix in double precision, and why the computed second singular value is still not exactly 0 for them.',
+                'Let $A$ have rows $(1, 2)$ and $(2, 4 + \\delta)$. For $\\delta = 10^{-4}, 10^{-8}, 10^{-12}, 10^{-16}, 10^{-17}$, print the singular values and `matrix_rank(A)` with the default tolerance.',
               kind: 'coding',
               difficulty: 2,
-              hint: 'Doubles near 4 are spaced about $8.9 \\times 10^{-16}$ apart, so test whether `4 + delta == 4.0`. The SVD itself has rounding error of order $\\varepsilon\\sigma_1$.',
+              parts: [
+                {
+                  prompt: 'Explain each result.',
+                  answer:
+                    '$\\sigma_1 \\approx 5$ throughout, and since $\\sigma_1\\sigma_2 = |\\det A| = \\delta$, $\\sigma_2 \\approx \\delta/5$: about $2 \\times 10^{-5}$, $2 \\times 10^{-9}$ and $2 \\times 10^{-13}$ for the first three, all above the default tolerance $\\sigma_1 \\cdot 2 \\cdot \\varepsilon \\approx 2.2 \\times 10^{-15}$, so the rank is 2. For the last two, $\\sigma_2$ comes out about $2 \\times 10^{-16}$, below the tolerance, and the rank is 1.',
+                },
+                {
+                  prompt:
+                    'Explain why the last two values of $\\delta$ give an exactly rank-1 matrix in double precision, and why the computed second singular value is still not exactly 0 for them.',
+                  answer:
+                    'Doubles near 4 are spaced about $8.9 \\times 10^{-16}$ apart, so `4 + delta == 4.0` is `True` for $\\delta = 10^{-16}$ and $10^{-17}$: the stored matrix has rows $(1, 2)$ and $(2, 4)$, exactly rank 1. The SVD itself has rounding error of order $\\varepsilon\\sigma_1 \\approx 10^{-15}$, so it returns a tiny non-zero $\\sigma_2$ (about $2 \\times 10^{-16}$) in place of 0.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -662,6 +1087,27 @@ Rank is exact on paper and approximate on a computer. Floating-point data rarely
             {
               question: 'How does `matrix_rank` decide rank, and what can change its answer?',
               answerOutline: 'It counts singular values above a tolerance. Changing the tolerance can change the rank for nearly singular matrices.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'What are the coordinates of $x = (8, 1)$ in the basis $b_1 = (2, 1)$, $b_2 = (1, -1)$ of $\\mathbb{R}^2$?',
+              options: ['$(8, 1)$', '$(3, 2)$', '$(2, 3)$', '$(17, 7)$'],
+              answer: 1,
+              explanation:
+                'Solve $c_1(2, 1) + c_2(1, -1) = (8, 1)$: adding the equations $2c_1 + c_2 = 8$ and $c_1 - c_2 = 1$ gives $3c_1 = 9$, so $c = (3, 2)$. Check: $3(2, 1) + 2(1, -1) = (8, 1)$. $(17, 7)$ multiplies the basis matrix by $x$ instead of solving with it, and $(8, 1)$ is the coordinate vector in the standard basis.',
+            },
+            {
+              question: 'Three vectors $v_1, v_2, v_3$ in $\\mathbb{R}^4$ are linearly independent. Which statement must be true?',
+              options: [
+                'They form a basis of $\\mathbb{R}^4$',
+                'Adding any fourth vector of $\\mathbb{R}^4$ gives a basis of $\\mathbb{R}^4$',
+                'They form a basis of the 3-dimensional subspace they span',
+                'Every vector of $\\mathbb{R}^4$ is a combination of them in exactly one way',
+              ],
+              answer: 2,
+              explanation:
+                'Independent vectors are always a basis of their own span, so that span has dimension 3. They cannot span $\\mathbb{R}^4$, since a basis of $\\mathbb{R}^4$ needs 4 vectors. A fourth vector gives a basis only if it lies outside their span; adding $v_1 + v_2$, say, gives a dependent set. Uniqueness of coordinates holds only for vectors in the span.',
             },
           ],
           relatedLessons: ['linear-algebra-for-data-science/linear-systems/basis-and-dimension'],
@@ -718,27 +1164,73 @@ On a computer, \`scipy.linalg.null_space(A)\` and \`scipy.linalg.orth(A)\` retur
             {
               slug: 'all-four-subspaces',
               title: 'All four subspaces',
-              prompt:
-                'For the matrix with rows $(1, 0, 2)$, $(2, 1, 3)$, $(3, 1, 5)$, find bases of all four subspaces by hand. Verify the dimension formulas and the two orthogonality relations. Confirm with `scipy.linalg.null_space`: its output should be a scalar multiple of your null space vector.',
+              prompt: 'Let $A$ be the matrix with rows $(1, 0, 2)$, $(2, 1, 3)$, $(3, 1, 5)$.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: 'Find bases of all four subspaces by hand.',
+                  answer:
+                    'Row 3 is row 1 plus row 2, and $A$ reduces to $R$ with rows $(1, 0, 2)$, $(0, 1, -1)$, $(0, 0, 0)$, so $r = 2$. Column space: the pivot columns $(1, 2, 3)$ and $(0, 1, 1)$. Row space: $(1, 0, 2)$ and $(0, 1, -1)$. Null space: $x_3 = t$ free gives $(-2, 1, 1)$. Left null space: $y = (1, 1, -1)$, from the row relation $R_1 + R_2 - R_3 = 0$ (any multiple, such as $(-1, -1, 1)$, is equally good).',
+                },
+                {
+                  prompt: 'Verify the dimension formulas and the two orthogonality relations.',
+                  answer:
+                    'Here $m = n = 3$ and $r = 2$: $\\dim C(A) = \\dim C(A^T) = 2$ and $\\dim N(A) = \\dim N(A^T) = 3 - 2 = 1$. Orthogonality: $(-2, 1, 1) \\cdot (1, 0, 2) = 0$ and $(-2, 1, 1) \\cdot (0, 1, -1) = 0$; $(1, 1, -1) \\cdot (1, 2, 3) = 0$ and $(1, 1, -1) \\cdot (0, 1, 1) = 0$.',
+                },
+                {
+                  prompt: 'Confirm with `scipy.linalg.null_space`: its output should be a scalar multiple of your null space vector.',
+                  answer:
+                    'It returns one column, about $(0.816, -0.408, -0.408)$ (the sign may differ), which is $-(-2, 1, 1)/\\sqrt{6}$: a unit vector along your null space vector.',
+                },
+              ],
             },
             {
               slug: 'complete-solution',
               title: 'The complete solution',
-              prompt:
-                'For the matrix $A$ in the worked example, find the condition on $b$ for $Ax = b$ to be solvable and decide which of $(1, 1, 2)$, $(1, 3, 0)$ and $(0, 1, 2)$ qualify. For one that does, give the complete solution and check it in NumPy with three different values of $(s, t)$.',
+              prompt: 'Use the matrix $A$ in the worked example, with rows $(1, 2, 1, 0)$, $(2, 4, 0, 2)$, $(1, 2, 3, -2)$.',
               kind: 'problem',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Find the condition on $b$ for $Ax = b$ to be solvable.',
+                  answer: '$b$ must be perpendicular to the left null space vector $(-3, 1, 1)$: $-3b_1 + b_2 + b_3 = 0$.',
+                },
+                {
+                  prompt: 'Decide which of $(1, 1, 2)$, $(1, 3, 0)$ and $(0, 1, 2)$ qualify.',
+                  answer:
+                    '$(1, 1, 2)$: $-3 + 1 + 2 = 0$, solvable. $(1, 3, 0)$: $-3 + 3 + 0 = 0$, solvable. $(0, 1, 2)$: $0 + 1 + 2 = 3 \\neq 0$, not solvable.',
+                },
+                {
+                  prompt: 'For one that does, give the complete solution and check it in NumPy with three different values of $(s, t)$.',
+                  answer:
+                    'For $b = (1, 3, 0)$: $x = (\\tfrac32, 0, -\\tfrac12, 0) + s(-2, 1, 0, 0) + t(-1, 0, 1, 1)$. For $b = (1, 1, 2)$: $x = (\\tfrac12, 0, \\tfrac12, 0) + s(-2, 1, 0, 0) + t(-1, 0, 1, 1)$. With any three pairs, such as $(0, 0)$, $(1, 2)$ and $(-3, 0.5)$, `A @ x` returns $b$ each time.',
+                },
+              ],
             },
             {
               slug: 'rank-of-ata',
               title: 'Why the transpose product keeps the rank',
-              prompt:
-                'Prove that $N(A^T A) = N(A)$ for every real matrix $A$, and deduce that $\\operatorname{rank}(A^T A) = \\operatorname{rank}(A)$. Show by example that this fails over the complex numbers if you use the plain transpose in place of the conjugate transpose.',
+              prompt: 'Compare the null spaces of $A$ and $A^T A$.',
               kind: 'derivation',
               difficulty: 3,
-              hint: 'If $A^T A x = 0$, multiply on the left by $x^T$. For the example, try $A$ with a single column $(1, i)$.',
+              parts: [
+                {
+                  prompt: 'Prove that $N(A^T A) = N(A)$ for every real matrix $A$.',
+                  answer:
+                    'If $Ax = 0$ then $A^T A x = 0$, so $N(A) \\subseteq N(A^T A)$. Conversely, if $A^T A x = 0$, multiply on the left by $x^T$: $0 = x^T A^T A x = \\|Ax\\|^2$, so $Ax = 0$.',
+                },
+                {
+                  prompt: 'Deduce that $\\operatorname{rank}(A^T A) = \\operatorname{rank}(A)$.',
+                  answer:
+                    'Both matrices have $n$ columns, so by rank-nullity $\\operatorname{rank} = n - \\dim N$. The null spaces are equal, so the ranks are equal.',
+                },
+                {
+                  prompt: 'Show by example that this fails over the complex numbers if you use the plain transpose in place of the conjugate transpose.',
+                  answer:
+                    'Take $A$ with a single column $(1, i)$, which has rank 1. Then $A^T A = 1^2 + i^2 = 0$, which has rank 0. The proof breaks because $x^T A^T A x = (Ax)^T(Ax)$ is not $\\|Ax\\|^2$ for complex vectors. With the conjugate transpose, $A^* A = 1 + 1 = 2$.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -753,6 +1245,23 @@ On a computer, \`scipy.linalg.null_space(A)\` and \`scipy.linalg.orth(A)\` retur
             {
               question: 'Do row operations preserve the row space? The column space?',
               answerOutline: 'The row space and null space are preserved. The column space is generally changed, though its dimension is not.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A $4 \\times 7$ matrix $A$ has rank 3. What are $\\dim N(A)$ and $\\dim N(A^T)$?',
+              options: ['$1$ and $4$', '$3$ and $3$', '$4$ and $1$', '$7$ and $4$'],
+              answer: 2,
+              explanation:
+                'The null space lives in $\\mathbb{R}^7$ and has dimension $n - r = 7 - 3 = 4$. The left null space lives in $\\mathbb{R}^4$ and has dimension $m - r = 4 - 3 = 1$. Swapping the two comes from mixing up which of $m$ and $n$ counts the columns. The rank 3 is the dimension of the row and column spaces, not of the null spaces.',
+            },
+            {
+              question:
+                'The left null space of a $3 \\times 3$ matrix $A$ is spanned by $y = (1, -2, 1)$. For which $b$ does $Ax = b$ have a solution?',
+              options: ['$b = (1, -2, 1)$', '$b = (3, 2, 1)$', '$b = (1, 2, 1)$', '$b = (2, 1, 2)$'],
+              answer: 1,
+              explanation:
+                '$Ax = b$ is solvable exactly when $b$ is perpendicular to the left null space: $b_1 - 2b_2 + b_3 = 0$. For $(3, 2, 1)$ this is $3 - 4 + 1 = 0$. The vector $y$ itself is the worst choice: $y \\cdot y = 6 \\neq 0$, and since $C(A)$ is the orthogonal complement of $N(A^T)$, a non-zero vector of $N(A^T)$ is never in the column space.',
             },
           ],
         },
@@ -812,27 +1321,90 @@ In code, keep your points in the columns of a $2 \\times N$ array \`P\`. Then \`
             {
               slug: 'linear-or-not',
               title: 'Linear or not',
-              prompt:
-                'For each map on $\\mathbb{R}^2$, prove it is linear and give its matrix, or show it is not: (a) $(x, y) \\mapsto (x - y, 2x)$; (b) $(x, y) \\mapsto (x + y, 1)$; (c) $(x, y) \\mapsto (|x|, y)$; (d) $(x, y) \\mapsto (y, 0)$; (e) $(x, y) \\mapsto (xy, 0)$.',
+              prompt: 'For each map on $\\mathbb{R}^2$, prove it is linear and give its matrix, or show it is not.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: '$(x, y) \\mapsto (x - y, 2x)$',
+                  answer:
+                    'Linear: each output is a fixed combination of $x$ and $y$, so sums and scalar multiples carry through. $T(e_1) = (1, 2)$ and $T(e_2) = (-1, 0)$, so the matrix is $\\begin{bmatrix} 1 & -1 \\\\ 2 & 0 \\end{bmatrix}$.',
+                },
+                {
+                  prompt: '$(x, y) \\mapsto (x + y, 1)$',
+                  answer: 'Not linear: $T(0, 0) = (0, 1) \\neq 0$.',
+                },
+                {
+                  prompt: '$(x, y) \\mapsto (|x|, y)$',
+                  answer: 'Not linear: $T(-1, 0) = (1, 0)$, but $-T(1, 0) = (-1, 0)$, so scaling by $-1$ fails.',
+                },
+                {
+                  prompt: '$(x, y) \\mapsto (y, 0)$',
+                  answer:
+                    'Linear, with matrix $\\begin{bmatrix} 0 & 1 \\\\ 0 & 0 \\end{bmatrix}$: $T(e_1) = (0, 0)$ and $T(e_2) = (1, 0)$.',
+                },
+                {
+                  prompt: '$(x, y) \\mapsto (xy, 0)$',
+                  answer: 'Not linear: $T(2, 2) = (4, 0)$, but $2T(1, 1) = (2, 0)$. (It does send 0 to 0, so that test alone is not enough.)',
+                },
+              ],
             },
             {
               slug: 'build-plane-maps',
               title: 'Build the plane maps',
-              prompt:
-                'Find the matrix of (a) rotation by $30^\\circ$ anticlockwise; (b) projection onto the line $y = 2x$, which should come out as $\\tfrac15$ times the matrix with rows $(1, 2), (2, 4)$; (c) reflection across that same line. Check (b) by verifying $P^2 = P$, that $(1, 2)$ is fixed and that $(2, -1)$ goes to 0. Plot the unit square before and after each map and compare the area of the image with $|\\det|$.',
+              prompt: 'Find the matrix of each map of the plane, then check it in Python.',
               kind: 'coding',
               difficulty: 2,
-              hint: 'A reflection across a line is $2P - I$, where $P$ is the projection onto that line.',
+              parts: [
+                {
+                  prompt: 'Rotation by $30^\\circ$ anticlockwise.',
+                  answer: '$\\begin{bmatrix} \\cos 30^\\circ & -\\sin 30^\\circ \\\\ \\sin 30^\\circ & \\cos 30^\\circ \\end{bmatrix} = \\begin{bmatrix} \\sqrt3/2 & -1/2 \\\\ 1/2 & \\sqrt3/2 \\end{bmatrix}$.',
+                },
+                {
+                  prompt:
+                    'Projection onto the line $y = 2x$, which should come out as $\\tfrac15$ times the matrix with rows $(1, 2), (2, 4)$. Check it by verifying $P^2 = P$, that $(1, 2)$ is fixed and that $(2, -1)$ goes to 0.',
+                  answer:
+                    'With the unit vector $u = (1, 2)/\\sqrt5$, $P = uu^T = \\tfrac15\\begin{bmatrix} 1 & 2 \\\\ 2 & 4 \\end{bmatrix}$. Then $P^2 = \\tfrac{1}{25}\\begin{bmatrix} 5 & 10 \\\\ 10 & 20 \\end{bmatrix} = P$, $P(1, 2) = \\tfrac15(5, 10) = (1, 2)$ and $P(2, -1) = \\tfrac15(0, 0) = 0$.',
+                },
+                {
+                  prompt: 'Reflection across that same line.',
+                  answer:
+                    'A reflection across a line is $2P - I$, where $P$ is the projection onto that line: $\\tfrac15\\begin{bmatrix} -3 & 4 \\\\ 4 & 3 \\end{bmatrix}$. It fixes $(1, 2)$ and sends $(2, -1)$ to $(-2, 1)$.',
+                },
+                {
+                  prompt: 'Plot the unit square before and after each map and compare the area of the image with $|\\det|$.',
+                  answer:
+                    'Put the corners in the columns of `S = np.array([[0, 1, 1, 0], [0, 0, 1, 1]])` and plot `M @ S`. The rotation gives a tilted unit square, area 1 ($\\det = 1$). The projection squashes it onto a segment of the line, area 0 ($\\det = 0$). The reflection gives a flipped unit square, area 1 ($\\det = -1$, so $|\\det| = 1$).',
+                },
+              ],
             },
             {
               slug: 'derivative-matrix',
               title: 'Differentiation as a matrix',
-              prompt:
-                'Write the matrix $D$ of $d/dt$ on polynomials of degree at most 3, in the basis $1, t, t^2, t^3$. Use it to differentiate $1 - 2t + 5t^3$, and check by hand that you get $-2 + 15t^2$. Show that $D^3 \\neq 0$ and $D^4 = 0$, and explain this in terms of polynomials. Find the rank of $D$, and describe its kernel and image.',
+              prompt: 'Let $D$ be the matrix of $d/dt$ on polynomials of degree at most 3, in the basis $1, t, t^2, t^3$.',
               kind: 'problem',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Write $D$.',
+                  answer:
+                    'Its columns are the images of $1, t, t^2, t^3$, which are $0, 1, 2t, 3t^2$: $D = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 0 & 0 & 2 & 0 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 0 \\end{bmatrix}$.',
+                },
+                {
+                  prompt: 'Use it to differentiate $1 - 2t + 5t^3$, and check by hand that you get $-2 + 15t^2$.',
+                  answer: '$D(1, -2, 0, 5) = (-2, 0, 15, 0)$, which is $-2 + 15t^2$. By hand: $\\tfrac{d}{dt}(1 - 2t + 5t^3) = -2 + 15t^2$.',
+                },
+                {
+                  prompt: 'Show that $D^3 \\neq 0$ and $D^4 = 0$, and explain this in terms of polynomials.',
+                  answer:
+                    '$D^3$ has a single non-zero entry, a 6 in the top-right corner, because the third derivative of $t^3$ is $6$. Every polynomial of degree at most 3 has fourth derivative 0, so $D^4 = 0$.',
+                },
+                {
+                  prompt: 'Find the rank of $D$, and describe its kernel and image.',
+                  answer:
+                    'Rank 3 (three pivots). The kernel is the constants, spanned by $1$, since only constants have derivative 0. The image is all polynomials of degree at most 2, since every such polynomial is the derivative of a cubic.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -848,6 +1420,32 @@ In code, keep your points in the columns of a $2 \\times N$ array \`P\`. Then \`
               question: 'Why is translation not linear, and how do graphics systems work around that?',
               answerOutline:
                 'Translation moves 0, and linear maps fix 0. Graphics systems add an extra coordinate, so translation becomes a linear map one dimension up (homogeneous coordinates).',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A linear map $T$ on $\\mathbb{R}^2$ has $T(1, 0) = (3, 1)$ and $T(1, 1) = (5, 4)$. What is its matrix?',
+              options: [
+                '$\\begin{bmatrix} 3 & 5 \\\\ 1 & 4 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 3 & 1 \\\\ 2 & 3 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 3 & 1 \\\\ 5 & 4 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 3 & 2 \\\\ 1 & 3 \\end{bmatrix}$',
+              ],
+              answer: 3,
+              explanation:
+                'The columns are $T(e_1)$ and $T(e_2)$. By linearity $T(e_2) = T(1, 1) - T(1, 0) = (2, 3)$, so the columns are $(3, 1)$ and $(2, 3)$. Using $(5, 4)$ as the second column treats $(1, 1)$ as if it were $e_2$, and the matrix with rows $(3, 1)$, $(2, 3)$ writes the images as rows instead of columns.',
+            },
+            {
+              question: 'First project onto the $x$-axis, then rotate by $90^\\circ$ anticlockwise. What is the matrix of the combined map?',
+              options: [
+                '$\\begin{bmatrix} 0 & 0 \\\\ 1 & 0 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 0 & -1 \\\\ 0 & 0 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 0 & 0 \\\\ -1 & 0 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 0 & -1 \\\\ 1 & 0 \\end{bmatrix}$',
+              ],
+              answer: 0,
+              explanation:
+                'The matrix is $RP$, with the first map on the right. Follow the basis vectors: $e_1$ is projected to $e_1$ and rotated to $e_2$, while $e_2$ is projected to 0. So the columns are $(0, 1)$ and $(0, 0)$. The matrix with rows $(0, -1)$, $(0, 0)$ is $PR$, which rotates first. The third option uses a clockwise rotation.',
             },
           ],
         },
@@ -899,28 +1497,75 @@ In NumPy, avoid forming the inverse. Compute \`A_new = np.linalg.solve(P, A @ P)
             {
               slug: 'triangular-in-new-basis',
               title: 'A new basis by hand',
-              prompt:
-                'Let $A$ have rows $(1, 2)$ and $(0, 3)$, and let the new basis be $(1, 1)$, $(0, 1)$. Compute $A\' = P^{-1}AP$ by hand. You should get rows $(3, 2)$ and $(0, 1)$. Check that the trace and determinant match those of $A$. Verify that the first column of $A\'$ correctly describes $Ab_1$ in terms of $b_1$ and $b_2$.',
+              prompt: 'Let $A$ have rows $(1, 2)$ and $(0, 3)$, and let the new basis be $b_1 = (1, 1)$, $b_2 = (0, 1)$.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: 'Compute $A\' = P^{-1}AP$ by hand. You should get rows $(3, 2)$ and $(0, 1)$.',
+                  answer:
+                    '$P = \\begin{bmatrix} 1 & 0 \\\\ 1 & 1 \\end{bmatrix}$ and $P^{-1} = \\begin{bmatrix} 1 & 0 \\\\ -1 & 1 \\end{bmatrix}$. Then $AP = \\begin{bmatrix} 3 & 2 \\\\ 3 & 3 \\end{bmatrix}$ and $P^{-1}AP = \\begin{bmatrix} 3 & 2 \\\\ 0 & 1 \\end{bmatrix}$.',
+                },
+                {
+                  prompt: 'Check that the trace and determinant match those of $A$.',
+                  answer: 'Trace: $1 + 3 = 4$ and $3 + 1 = 4$. Determinant: $1 \\cdot 3 - 0 = 3$ and $3 \\cdot 1 - 0 = 3$.',
+                },
+                {
+                  prompt: 'Verify that the first column of $A\'$ correctly describes $Ab_1$ in terms of $b_1$ and $b_2$.',
+                  answer: 'The first column is $(3, 0)$, which predicts $Ab_1 = 3b_1 + 0b_2 = (3, 3)$. Directly, $A(1, 1) = (1 + 2, 3) = (3, 3)$. So $b_1$ is an eigenvector with eigenvalue 3.',
+                },
+              ],
             },
             {
               slug: 'taylor-shift',
               title: 'Re-centre a polynomial',
-              prompt:
-                'In the space of polynomials of degree at most 2, write the change-of-basis matrix from $1, t-1, (t-1)^2$ to $1, t, t^2$. Use its inverse to rewrite $t^2$ and $3 + 2t + t^2$ in powers of $t - 1$. Check the second answer by expanding it.',
+              prompt: 'Work in the space of polynomials of degree at most 2.',
               kind: 'problem',
               difficulty: 2,
-              hint: 'The columns of $P$ are the coefficients of $1$, $t-1$ and $(t-1)^2$ in the basis $1, t, t^2$.',
+              parts: [
+                {
+                  prompt: 'Write the change-of-basis matrix $P$ from $1, t-1, (t-1)^2$ to $1, t, t^2$.',
+                  answer:
+                    'The columns of $P$ are the coefficients of $1$, $t-1$ and $(t-1)^2 = 1 - 2t + t^2$ in the basis $1, t, t^2$: $P = \\begin{bmatrix} 1 & -1 & 1 \\\\ 0 & 1 & -2 \\\\ 0 & 0 & 1 \\end{bmatrix}$, with $P^{-1} = \\begin{bmatrix} 1 & 1 & 1 \\\\ 0 & 1 & 2 \\\\ 0 & 0 & 1 \\end{bmatrix}$.',
+                },
+                {
+                  prompt: 'Use its inverse to rewrite $t^2$ in powers of $t - 1$.',
+                  answer: '$P^{-1}(0, 0, 1) = (1, 2, 1)$, so $t^2 = 1 + 2(t - 1) + (t - 1)^2$.',
+                },
+                {
+                  prompt: 'Rewrite $3 + 2t + t^2$ in powers of $t - 1$, and check by expanding.',
+                  answer:
+                    '$P^{-1}(3, 2, 1) = (6, 4, 1)$, so $3 + 2t + t^2 = 6 + 4(t - 1) + (t - 1)^2$. Expanding: $6 + 4t - 4 + t^2 - 2t + 1 = 3 + 2t + t^2$. The coefficients are the Taylor coefficients at $t = 1$: $p(1) = 6$, $p\'(1) = 4$, $p\'\'(1)/2 = 1$.',
+                },
+              ],
             },
             {
               slug: 'similarity-invariants',
               title: 'What similarity preserves',
-              prompt:
-                'Prove that similar matrices have the same determinant, the same trace (use $\\operatorname{tr}(XY) = \\operatorname{tr}(YX)$) and the same rank. Then show that the matrices with rows $(1, 1), (0, 1)$ and rows $(1, 0), (0, 1)$ have the same trace, determinant and rank but are not similar.',
+              prompt: 'Suppose $B = P^{-1}AP$ with $P$ invertible.',
               kind: 'derivation',
               difficulty: 2,
-              hint: 'What is $P^{-1} I P$ for every invertible $P$?',
+              parts: [
+                {
+                  prompt: 'Prove that $A$ and $B$ have the same determinant.',
+                  answer: '$\\det B = \\det(P^{-1})\\det(A)\\det(P) = \\dfrac{1}{\\det P}\\det(A)\\det(P) = \\det A$.',
+                },
+                {
+                  prompt: 'Prove that they have the same trace (use $\\operatorname{tr}(XY) = \\operatorname{tr}(YX)$).',
+                  answer: 'With $X = P^{-1}$ and $Y = AP$: $\\operatorname{tr}(P^{-1}(AP)) = \\operatorname{tr}((AP)P^{-1}) = \\operatorname{tr}(A)$.',
+                },
+                {
+                  prompt: 'Prove that they have the same rank.',
+                  answer:
+                    'Multiplying by an invertible matrix does not change rank. $N(AP) = P^{-1}N(A)$ has the same dimension as $N(A)$, so $\\operatorname{rank}(AP) = \\operatorname{rank}(A)$; and $N(P^{-1}AP) = N(AP)$ because $P^{-1}$ is invertible. So $\\operatorname{rank} B = \\operatorname{rank} A$.',
+                },
+                {
+                  prompt:
+                    'Show that the matrices with rows $(1, 1), (0, 1)$ and rows $(1, 0), (0, 1)$ have the same trace, determinant and rank but are not similar.',
+                  answer:
+                    'Both have trace 2, determinant 1 and rank 2. But $P^{-1} I P = I$ for every invertible $P$, so the only matrix similar to $I$ is $I$ itself, and the first matrix is not $I$.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -935,6 +1580,33 @@ In NumPy, avoid forming the inverse. Compute \`A_new = np.linalg.solve(P, A @ P)
             {
               question: 'Name three quantities shared by similar matrices.',
               answerOutline: 'Any three of the determinant, trace, rank, characteristic polynomial and eigenvalues.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'Let $A = \\begin{bmatrix} 1 & 1 \\\\ 2 & 0 \\end{bmatrix}$ and take the new basis $b_1 = (1, 2)$, $b_2 = (0, 1)$. What is the matrix of the map in the new basis?',
+              options: [
+                '$\\begin{bmatrix} 3 & 1 \\\\ -4 & -2 \\end{bmatrix}$',
+                '$\\begin{bmatrix} -1 & 1 \\\\ 0 & 2 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 3 & 1 \\\\ 2 & 0 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 7 & 1 \\\\ 2 & 0 \\end{bmatrix}$',
+              ],
+              answer: 0,
+              explanation:
+                'Column $j$ holds the new coordinates of $Ab_j$. $Ab_1 = (3, 2) = 3b_1 - 4b_2$ and $Ab_2 = (1, 0) = b_1 - 2b_2$, so $A\' = P^{-1}AP$ has columns $(3, -4)$ and $(1, -2)$. The second option is $PAP^{-1}$, the conversion in the wrong direction; it even has the right trace and determinant, so checking those cannot catch the slip. The third gives the images $Ab_j$ in standard coordinates, without converting them.',
+            },
+            {
+              question: 'Let $A = \\begin{bmatrix} 2 & 1 \\\\ 0 & 2 \\end{bmatrix}$ and $B = 2I$. Which statement is true?',
+              options: [
+                'They are similar, because they have the same trace, determinant and rank',
+                'They are similar, with $P = \\begin{bmatrix} 1 & 1 \\\\ 0 & 1 \\end{bmatrix}$',
+                'They are not similar, because $P^{-1}(2I)P = 2I$ for every invertible $P$',
+                'They are not similar, because their determinants differ',
+              ],
+              answer: 2,
+              explanation:
+                'Whatever $P$ you choose, $P^{-1}(2I)P = 2P^{-1}P = 2I$, so the only matrix similar to $2I$ is $2I$, and $A \\neq 2I$. Equal trace, determinant and rank are necessary for similarity but not sufficient. Both determinants are 4, so the last option gives a false reason.',
             },
           ],
         },
@@ -989,27 +1661,80 @@ Two numerical traps deserve attention. First, determinants overflow and underflo
             {
               slug: 'determinant-by-elimination',
               title: 'Determinant by elimination',
-              prompt:
-                'Compute the determinant of the $4 \\times 4$ matrix with rows $(1, 2, 0, 1)$, $(2, 5, 1, 3)$, $(0, 1, 3, 2)$, $(1, 3, 2, 4)$ by elimination, keeping track of every step. Check with SymPy; the answer is 3. Then compute the volume of the parallelepiped with edges $(1, 0, 2)$, $(0, 1, 1)$, $(1, 1, 0)$, and the area of the parallelogram with edges $(3, 1)$, $(1, 2)$.',
+              prompt: 'Compute each determinant, area or volume.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt:
+                    'The determinant of the $4 \\times 4$ matrix with rows $(1, 2, 0, 1)$, $(2, 5, 1, 3)$, $(0, 1, 3, 2)$, $(1, 3, 2, 4)$, by elimination, keeping track of every step. Check with SymPy; the answer is 3.',
+                  answer:
+                    '$R_2 - 2R_1$ and $R_4 - R_1$ give rows $(0, 1, 1, 1)$ and $(0, 1, 2, 3)$. Then $R_3 - R_2$ and $R_4 - R_2$ give $(0, 0, 2, 1)$ and $(0, 0, 1, 2)$. Finally $R_4 - \\tfrac12 R_3$ gives $(0, 0, 0, \\tfrac32)$. No swaps, so $\\det = 1 \\cdot 1 \\cdot 2 \\cdot \\tfrac32 = 3$, matching `sympy.Matrix(A).det()`.',
+                },
+                {
+                  prompt: 'The volume of the parallelepiped with edges $(1, 0, 2)$, $(0, 1, 1)$, $(1, 1, 0)$.',
+                  answer:
+                    'Expand along the first row of the matrix with these rows: $1(0 - 1) - 0 + 2(0 - 1) = -3$. The volume is $|-3| = 3$.',
+                },
+                {
+                  prompt: 'The area of the parallelogram with edges $(3, 1)$, $(1, 2)$.',
+                  answer: '$|3 \\cdot 2 - 1 \\cdot 1| = 5$.',
+                },
+              ],
             },
             {
               slug: 'determinant-rules',
               title: 'Prove the rules you use',
-              prompt:
-                'Using $\\det(AB) = \\det(A)\\det(B)$, prove that $\\det(A^{-1}) = 1/\\det(A)$, that $\\det(A^k) = \\det(A)^k$, and that similar matrices have equal determinants. Then show that $\\det(A + B) = \\det(A) + \\det(B)$ fails with a $2 \\times 2$ example, and that $\\det(cA) = c^n \\det(A)$ for an $n \\times n$ matrix.',
+              prompt: 'Use $\\det(AB) = \\det(A)\\det(B)$ and the row-operation rules.',
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Prove that $\\det(A^{-1}) = 1/\\det(A)$.',
+                  answer: '$\\det(A)\\det(A^{-1}) = \\det(AA^{-1}) = \\det I = 1$, so $\\det A \\neq 0$ and $\\det(A^{-1}) = 1/\\det(A)$.',
+                },
+                {
+                  prompt: 'Prove that $\\det(A^k) = \\det(A)^k$.',
+                  answer: 'By induction: $\\det(A^{k+1}) = \\det(A^k A) = \\det(A^k)\\det(A) = \\det(A)^k\\det(A)$. The base case $k = 1$ is trivial.',
+                },
+                {
+                  prompt: 'Prove that similar matrices have equal determinants.',
+                  answer: '$\\det(P^{-1}AP) = \\det(P^{-1})\\det(A)\\det(P) = \\det(A)$, since $\\det(P^{-1})\\det(P) = 1$.',
+                },
+                {
+                  prompt: 'Show that $\\det(A + B) = \\det(A) + \\det(B)$ fails with a $2 \\times 2$ example.',
+                  answer: 'Take $A = B = I$: $\\det(2I) = 4$, but $\\det I + \\det I = 2$.',
+                },
+                {
+                  prompt: 'Show that $\\det(cA) = c^n \\det(A)$ for an $n \\times n$ matrix.',
+                  answer: '$cA$ multiplies each of the $n$ rows of $A$ by $c$, and each row scaling multiplies the determinant by $c$. (Or: $\\det(cA) = \\det(cI)\\det(A) = c^n\\det A$.)',
+                },
+              ],
             },
             {
               slug: 'log-determinant',
               title: 'Determinants that overflow',
-              prompt:
-                'Write `det_lu(A)` using `scipy.linalg.lu_factor`, multiplying the pivots and tracking the sign from the pivot indices, and a version that sums logs of absolute pivots. Check against `np.linalg.det` on random matrices. Then show that `det` gives `inf` for $2I$ of size 1100, while your log version gives $1100\\ln 2 \\approx 762.46$. Show also that $0.1 I$ of size 20 has determinant $10^{-20}$ and condition number 1.',
+              prompt: 'Build determinants from `scipy.linalg.lu_factor` and see where `np.linalg.det` fails.',
               kind: 'coding',
               difficulty: 2,
-              hint: 'The `piv` array from `lu_factor` says row $i$ was swapped with row `piv[i]`. Count the entries where `piv[i] != i`.',
+              parts: [
+                {
+                  prompt:
+                    'Write `det_lu(A)`, multiplying the pivots and tracking the sign from the pivot indices, and a version that sums logs of absolute pivots. Check against `np.linalg.det` on random matrices.',
+                  answer:
+                    'The `piv` array from `lu_factor` says row $i$ was swapped with row `piv[i]`. Count the entries where `piv[i] != i`:\n\n```python\nlu, piv = scipy.linalg.lu_factor(A)\nd = np.diag(lu)\nsign = (-1) ** np.sum(piv != np.arange(len(piv)))\ndet = sign * np.prod(d)\nlogabs = np.sum(np.log(np.abs(d)))  # with sign * np.prod(np.sign(d))\n```\n\nOn random $6 \\times 6$ matrices it agrees with `np.linalg.det` to about 15 digits.',
+                },
+                {
+                  prompt: 'Show that `det` gives `inf` for $2I$ of size 1100, while your log version gives $1100\\ln 2 \\approx 762.46$.',
+                  answer:
+                    '$2^{1100} \\approx 10^{331}$ exceeds the largest double, about $1.8 \\times 10^{308}$, so the product of pivots overflows and `det` returns `inf` with an overflow warning. The log version adds 1100 copies of $\\ln 2$ and returns sign 1 and $762.4619$.',
+                },
+                {
+                  prompt: 'Show also that $0.1 I$ of size 20 has determinant $10^{-20}$ and condition number 1.',
+                  answer:
+                    '`np.linalg.det(0.1 * np.eye(20))` gives about `1.0e-20` and `np.linalg.cond` gives `1.0`: all singular values equal 0.1, so their ratio is 1. A tiny determinant says nothing about near-singularity.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -1024,6 +1749,27 @@ Two numerical traps deserve attention. First, determinants overflow and underflo
             {
               question: 'Why is $\\det A$ a poor measure of how close $A$ is to singular?',
               answerOutline: 'It scales with $c^n$ under $A \\mapsto cA$, while singularity does not. The example $0.1I$ has a tiny determinant and condition number 1.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A $3 \\times 3$ matrix has $\\det A = 2$. What is $\\det(3A^{-1})$?',
+              options: ['$\\tfrac32$', '$\\tfrac{27}{2}$', '$54$', '$\\tfrac{1}{54}$'],
+              answer: 1,
+              explanation:
+                'Scaling a $3 \\times 3$ matrix by 3 multiplies the determinant by $3^3 = 27$, and $\\det(A^{-1}) = \\tfrac12$, so the answer is $27 \\cdot \\tfrac12 = \\tfrac{27}{2}$. $\\tfrac32$ scales the determinant by 3 only once instead of once per row. $\\tfrac{1}{54}$ is $\\det\\big((3A)^{-1}\\big)$, which inverts the factor 3 as well.',
+            },
+            {
+              question: 'Which of these $2 \\times 2$ matrices is closest to singular, in the sense of having the largest condition number?',
+              options: [
+                '$0.001\\,I$, with determinant $10^{-6}$',
+                '$\\begin{bmatrix} 100 & 0 \\\\ 0 & 50 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 2 & 1 \\\\ 1 & 2 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 1 & 1 \\\\ 1 & 1.001 \\end{bmatrix}$',
+              ],
+              answer: 3,
+              explanation:
+                'The last matrix has nearly parallel rows: its determinant is $0.001$ and its condition number is about 4000. The matrix $0.001\\,I$ has the smallest determinant but condition number 1, because every direction is shrunk by the same factor and nothing is close to being flattened. The other two have condition numbers 2 and 3.',
             },
           ],
         },
@@ -1097,27 +1843,77 @@ The Pythagorean theorem explains why $p$ is closest. For any other point $q$ in 
             {
               slug: 'project-onto-a-line',
               title: 'Project onto a line',
-              prompt:
-                'Project $b = (1, 1, 1)$ onto the line through $a = (2, 1, -2)$. Give $p$ as exact fractions, verify that $e \\cdot a = 0$, and show that the squared distance from $b$ to the line is $26/9$.',
+              prompt: 'Project $b = (1, 1, 1)$ onto the line through $a = (2, 1, -2)$.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: 'Give $p$ as exact fractions.',
+                  answer: '$a \\cdot b = 2 + 1 - 2 = 1$ and $a \\cdot a = 9$, so $p = \\tfrac19(2, 1, -2) = \\left(\\tfrac29, \\tfrac19, -\\tfrac29\\right)$.',
+                },
+                {
+                  prompt: 'Verify that $e \\cdot a = 0$.',
+                  answer: '$e = b - p = \\left(\\tfrac79, \\tfrac89, \\tfrac{11}{9}\\right)$, and $e \\cdot a = \\tfrac{14 + 8 - 22}{9} = 0$.',
+                },
+                {
+                  prompt: 'Show that the squared distance from $b$ to the line is $26/9$.',
+                  answer:
+                    '$\\|e\\|^2 = \\tfrac{49 + 64 + 121}{81} = \\tfrac{234}{81} = \\tfrac{26}{9}$. Or by Pythagoras: $\\|b\\|^2 - \\|p\\|^2 = 3 - \\tfrac19 = \\tfrac{26}{9}$.',
+                },
+              ],
             },
             {
               slug: 'project-onto-a-plane',
               title: 'Project onto a plane',
-              prompt:
-                'The plane $x + y + z = 0$ has normal $n = (1, 1, 1)$. Show that projection onto the plane has matrix $P = I - \\tfrac13 nn^T$. Verify $P^2 = P$ and $P^T = P$, find $P(1, 2, 3)$, and state the rank of $P$. Check your answer in NumPy by building a basis of the plane and using the formula $A(A^T A)^{-1}A^T$.',
+              prompt: 'The plane $x + y + z = 0$ has normal $n = (1, 1, 1)$.',
               kind: 'problem',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Show that projection onto the plane has matrix $P = I - \\tfrac13 nn^T$.',
+                  answer:
+                    'The projection onto the plane removes the component along $n$: $Pb = b - \\dfrac{n \\cdot b}{n \\cdot n}n = b - \\tfrac13 nn^Tb$, since $n \\cdot n = 3$. So $P = I - \\tfrac13 nn^T$, which has $\\tfrac23$ on the diagonal and $-\\tfrac13$ elsewhere.',
+                },
+                {
+                  prompt: 'Verify $P^2 = P$ and $P^T = P$.',
+                  answer:
+                    '$nn^T$ is symmetric, so $P$ is. And $P^2 = I - \\tfrac23 nn^T + \\tfrac19 n(n^Tn)n^T = I - \\tfrac23 nn^T + \\tfrac13 nn^T = P$, using $n^Tn = 3$.',
+                },
+                {
+                  prompt: 'Find $P(1, 2, 3)$, and state the rank of $P$.',
+                  answer:
+                    '$n \\cdot (1, 2, 3) = 6$, so $P(1, 2, 3) = (1, 2, 3) - 2(1, 1, 1) = (-1, 0, 1)$, which lies in the plane. The rank is 2, the dimension of the plane.',
+                },
+                {
+                  prompt: 'Check your answer in NumPy by building a basis of the plane and using the formula $A(A^T A)^{-1}A^T$.',
+                  answer:
+                    'Take columns $(1, -1, 0)$ and $(0, 1, -1)$, then `A @ np.linalg.inv(A.T @ A) @ A.T` prints $0.667$ on the diagonal and $-0.333$ off it, the same $P$. Any basis of the plane gives the same matrix.',
+                },
+              ],
             },
             {
               slug: 'prove-projection-properties',
               title: 'Prove the projection facts',
-              prompt:
-                'Let $A$ have independent columns and let $P = A(A^T A)^{-1}A^T$. Prove that $P^T = P$, that $P^2 = P$, that $Pb = b$ for $b \\in C(A)$, and that $Pb = 0$ for $b \\in N(A^T)$. Prove Cauchy-Schwarz by expanding $\\|u - tv\\|^2 \\geq 0$ with a well-chosen $t$.',
+              prompt: 'Let $A$ have independent columns and let $P = A(A^T A)^{-1}A^T$.',
               kind: 'derivation',
               difficulty: 2,
-              hint: 'For Cauchy-Schwarz with $v \\neq 0$, take $t = (u \\cdot v)/(v \\cdot v)$.',
+              parts: [
+                {
+                  prompt: 'Prove that $P^T = P$ and $P^2 = P$.',
+                  answer:
+                    '$A^TA$ is symmetric, so its inverse is too, and $P^T = A\\big((A^TA)^{-1}\\big)^TA^T = P$. Also $P^2 = A(A^TA)^{-1}(A^TA)(A^TA)^{-1}A^T = A(A^TA)^{-1}A^T = P$.',
+                },
+                {
+                  prompt: 'Prove that $Pb = b$ for $b \\in C(A)$, and that $Pb = 0$ for $b \\in N(A^T)$.',
+                  answer:
+                    'If $b = Ax$, then $Pb = A(A^TA)^{-1}A^TAx = Ax = b$. If $A^Tb = 0$, then $Pb = A(A^TA)^{-1}(A^Tb) = 0$.',
+                },
+                {
+                  prompt: 'Prove Cauchy-Schwarz by expanding $\\|u - tv\\|^2 \\geq 0$ with a well-chosen $t$.',
+                  answer:
+                    'If $v = 0$ both sides are 0. Otherwise $0 \\le \\|u - tv\\|^2 = \\|u\\|^2 - 2t\\,(u \\cdot v) + t^2\\|v\\|^2$. Take $t = (u \\cdot v)/(v \\cdot v)$: this gives $0 \\le \\|u\\|^2 - (u \\cdot v)^2/\\|v\\|^2$, so $(u \\cdot v)^2 \\le \\|u\\|^2\\|v\\|^2$. Equality forces $u = tv$.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -1132,6 +1928,27 @@ The Pythagorean theorem explains why $p$ is closest. For any other point $q$ in 
             {
               question: 'Why does the formula $P = A(A^T A)^{-1}A^T$ need independent columns?',
               answerOutline: 'Otherwise $A^T A$ is singular, because $N(A^T A) = N(A)$ is non-trivial.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'What is the projection of $b = (4, 2)$ onto the line through $a = (1, 3)$?',
+              options: ['$(10, 30)$', '$(3, -1)$', '$(1, 3)$', '$(2, 1)$'],
+              answer: 2,
+              explanation:
+                '$p = \\dfrac{a \\cdot b}{a \\cdot a}\\,a = \\dfrac{10}{10}(1, 3) = (1, 3)$, and the error $e = (3, -1)$ is perpendicular to $a$. $(10, 30)$ forgets to divide by $a \\cdot a$, $(3, -1)$ is the error rather than the projection, and $(2, 1)$ projects $a$ onto $b$, the wrong way round.',
+            },
+            {
+              question: 'Let $P$ be the matrix of orthogonal projection onto a plane through the origin in $\\mathbb{R}^3$. Which statement is true?',
+              options: [
+                '$P^2 = P$ and $\\operatorname{rank} P = 2$',
+                '$P$ is invertible, with $P^{-1} = P$',
+                '$P^2 = I$, because projecting twice gets you back',
+                '$Pb$ is the closest point of the plane to $b$, and $b - Pb$ also lies in the plane',
+              ],
+              answer: 0,
+              explanation:
+                'Projecting twice changes nothing, so $P^2 = P$, and the image of $P$ is the plane, so its rank is 2. It sends the normal vector to 0, so it is not invertible. $P^2 = I$ and $P^{-1} = P$ describe a reflection, such as $2P - I$. The error $b - Pb$ is perpendicular to the plane, not in it.',
             },
           ],
         },
@@ -1182,18 +1999,45 @@ Note that \`np.linalg.qr\` does not promise a positive diagonal. On this example
             {
               slug: 'qr-by-hand',
               title: 'QR by hand',
-              prompt:
-                'Apply Gram-Schmidt to $a_1 = (1, 2, 2)$, $a_2 = (3, 0, 3)$. You should find $q_1 = \\tfrac13(1, 2, 2)$, $q_2 = \\tfrac13(2, -2, 1)$, and $R$ with rows $(3, 3)$ and $(0, 3)$. Check $QR = A$ and $Q^TQ = I$. Then extend $q_1, q_2$ to an orthonormal basis of $\\mathbb{R}^3$.',
+              prompt: 'Apply Gram-Schmidt to $a_1 = (1, 2, 2)$, $a_2 = (3, 0, 3)$.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: 'Find $q_1$, $q_2$ and $R$. You should find $q_1 = \\tfrac13(1, 2, 2)$, $q_2 = \\tfrac13(2, -2, 1)$, and $R$ with rows $(3, 3)$ and $(0, 3)$.',
+                  answer:
+                    '$r_{11} = \\|a_1\\| = 3$, so $q_1 = \\tfrac13(1, 2, 2)$. Then $r_{12} = q_1 \\cdot a_2 = \\tfrac13(3 + 0 + 6) = 3$, and $a_2 - 3q_1 = (2, -2, 1)$, with length $r_{22} = 3$. So $q_2 = \\tfrac13(2, -2, 1)$.',
+                },
+                {
+                  prompt: 'Check $QR = A$ and $Q^TQ = I$.',
+                  answer:
+                    'Column 1 of $QR$ is $3q_1 = (1, 2, 2)$ and column 2 is $3q_1 + 3q_2 = (1, 2, 2) + (2, -2, 1) = (3, 0, 3)$. Each $q_i$ has length $\\tfrac13\\sqrt9 = 1$, and $q_1 \\cdot q_2 = \\tfrac19(2 - 4 + 2) = 0$.',
+                },
+                {
+                  prompt: 'Extend $q_1, q_2$ to an orthonormal basis of $\\mathbb{R}^3$.',
+                  answer:
+                    'Take $q_3 = q_1 \\times q_2 = \\tfrac13(2, 1, -2)$, or its negative. Check: $q_3 \\cdot q_1 = \\tfrac19(2 + 2 - 4) = 0$, $q_3 \\cdot q_2 = \\tfrac19(4 - 2 - 2) = 0$, length 1. (Gram-Schmidt on any third vector outside the plane, such as $e_3$, gives the same line.)',
+                },
+              ],
             },
             {
               slug: 'classical-against-modified',
               title: 'Classical against modified',
-              prompt:
-                'Implement classical and modified Gram-Schmidt. For Hilbert matrices with $n = 6, 8, 10$, measure $\\|Q^TQ - I\\|$ for both and for `np.linalg.qr`. Tabulate these against $\\kappa$. You should see modified lose orthogonality roughly in proportion to $\\kappa\\varepsilon$ and classical much faster, with no meaningful orthogonality left by $n = 8$, while Householder stays near $10^{-15}$. Then implement classical Gram-Schmidt with a second pass of orthogonalisation, and report the effect.',
+              prompt: 'Implement classical and modified Gram-Schmidt.',
               kind: 'coding',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'For Hilbert matrices with $n = 6, 8, 10$, measure $\\|Q^TQ - I\\|$ for both and for `np.linalg.qr`. Tabulate these against $\\kappa$.',
+                  answer:
+                    'You should see modified lose orthogonality roughly in proportion to $\\kappa\\varepsilon$ and classical much faster, with no meaningful orthogonality left by $n = 8$, while Householder stays near $10^{-15}$. One run with the Frobenius norm gave: $n = 6$, $\\kappa \\approx 1.5 \\times 10^7$: classical $4 \\times 10^{-4}$, modified $4 \\times 10^{-10}$; $n = 8$, $\\kappa \\approx 1.5 \\times 10^{10}$: classical $1.4$, modified $4 \\times 10^{-7}$; $n = 10$, $\\kappa \\approx 1.6 \\times 10^{13}$: classical $3.5$, modified $5 \\times 10^{-5}$. `np.linalg.qr` gave about $10^{-15}$ each time.',
+                },
+                {
+                  prompt: 'Implement classical Gram-Schmidt with a second pass of orthogonalisation, and report the effect.',
+                  answer:
+                    'Repeat `v = v - Q[:, :j] @ (Q[:, :j].T @ v)` twice before normalising. Orthogonality is restored to rounding level, about $4 \\times 10^{-16}$ to $6 \\times 10^{-16}$ for all three sizes, as good as Householder ("twice is enough"), at double the cost of the projections.',
+                },
+              ],
             },
             {
               slug: 'qr-is-unique',
@@ -1202,7 +2046,8 @@ Note that \`np.linalg.qr\` does not promise a positive diagonal. On this example
                 'Let $A$ be $m \\times n$ with independent columns. Prove that $A$ has exactly one factorisation $A = QR$ with $Q$ having orthonormal columns and $R$ upper triangular with positive diagonal.',
               kind: 'derivation',
               difficulty: 3,
-              hint: 'If $Q_1R_1 = Q_2R_2$, then $T = R_1R_2^{-1}$ is upper triangular and $T^TT = R_2^{-T}A^TAR_2^{-1}$ can be shown to equal $I$. An upper triangular orthogonal matrix with positive diagonal must be $I$.',
+              answer:
+                'Existence is Gram-Schmidt. For uniqueness, suppose $Q_1R_1 = Q_2R_2 = A$. Each $R_i$ is invertible, since $A^TA = R_i^TR_i$ is invertible. Then $T = R_1R_2^{-1}$ is upper triangular with positive diagonal, and $Q_2 = Q_1T$. So $I = Q_2^TQ_2 = T^TQ_1^TQ_1T = T^TT$: equivalently $T^TT = R_2^{-T}A^TAR_2^{-1} = R_2^{-T}R_2^TR_2R_2^{-1} = I$. Thus $T$ is orthogonal and upper triangular, so $T^{-1} = T^T$ is both upper and lower triangular, hence diagonal, with entries $\\pm 1$. A positive diagonal forces $T = I$, so $R_1 = R_2$ and $Q_1 = Q_2$.',
             },
           ],
           selfAssessment: [
@@ -1218,6 +2063,33 @@ Note that \`np.linalg.qr\` does not promise a positive diagonal. On this example
               question: 'Name the difference between classical and modified Gram-Schmidt.',
               answerOutline:
                 'Classical computes projections from the original vector. Modified subtracts them one at a time from the updated vector. They agree in exact arithmetic, and modified is far more stable numerically.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'Gram-Schmidt on the columns $a_1 = (3, 4)$ and $a_2 = (1, 0)$ gives $A = QR$ with a positive diagonal. What is $R$?',
+              options: [
+                '$\\begin{bmatrix} 5 & 3 \\\\ 0 & 4/5 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 1 & 3/5 \\\\ 0 & 1 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 5 & 3/5 \\\\ 0 & 16/25 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 5 & 3/5 \\\\ 0 & 4/5 \\end{bmatrix}$',
+              ],
+              answer: 3,
+              explanation:
+                '$r_{11} = \\|a_1\\| = 5$ and $q_1 = (\\tfrac35, \\tfrac45)$. Then $r_{12} = q_1 \\cdot a_2 = \\tfrac35$, and $a_2 - \\tfrac35 q_1 = (\\tfrac{16}{25}, -\\tfrac{12}{25})$ has length $r_{22} = \\tfrac45$. Using $a_1 \\cdot a_2 = 3$ for $r_{12}$ forgets to normalise $a_1$ first, and $\\tfrac{16}{25}$ is only the first entry of the leftover vector, not its length.',
+            },
+            {
+              question: '$Q$ is a $5 \\times 3$ matrix with orthonormal columns. Which statement is true?',
+              options: [
+                '$QQ^T = I_5$',
+                '$Q^TQ = I_3$, and $QQ^T$ is the projection onto the column space of $Q$',
+                '$Q^{-1} = Q^T$',
+                '$\\det Q = \\pm 1$',
+              ],
+              answer: 1,
+              explanation:
+                'Orthonormal columns say exactly that $Q^TQ = I_3$, and then $QQ^T$ is the projection onto $C(Q)$, a rank-3 matrix, so it cannot be $I_5$. Inverses and determinants exist only for square matrices; $Q^{-1} = Q^T$ and $\\det Q = \\pm1$ hold when $Q$ is a square orthogonal matrix.',
             },
           ],
           relatedLessons: ['linear-algebra-for-data-science/orthogonality-and-regression/qr-factorisation'],
@@ -1261,7 +2133,7 @@ least-squares
 
 **Computing it.** Forming $A^T A$ squares the condition number, $\\kappa(A^T A) = \\kappa(A)^2$, so the normal equations can lose twice as many digits as necessary. Instead substitute $A = QR$. The normal equations reduce to the triangular system
 $$R\\hat{x} = Q^T b.$$
-A degree-12 polynomial fit in the monomial basis on 50 points in $[0, 1]$ has $\\kappa(A) \\approx 7 \\times 10^8$. In a test with coefficients all equal to 1, QR recovered them with error about $6 \\times 10^{-9}$, while the normal equations gave an error of about 3, which is useless.
+A degree-12 polynomial fit in the monomial basis on 50 points in $[0, 1]$ has $\\kappa(A) \\approx 7 \\times 10^8$. In a test with coefficients all equal to 1, QR recovered them with error of about $10^{-8}$ to $10^{-7}$ (it varies a little by machine), while the normal equations gave an error of about 3, which is useless.
 
 If the columns of $A$ are dependent, infinitely many $\\hat{x}$ minimise the residual. \`np.linalg.lstsq\` uses the SVD and returns the one with the smallest norm. For $x + y + z = 3$ that is $(1, 1, 1)$. Later lessons explain why.`,
           resources: [
@@ -1273,26 +2145,66 @@ If the columns of $A$ are dependent, infinitely many $\\hat{x}$ minimise the res
             {
               slug: 'fit-a-parabola',
               title: 'Fit a parabola',
-              prompt:
-                'Fit $y = c_0 + c_1 t + c_2 t^2$ to the points $(-1, 1)$, $(0, 0)$, $(1, 1)$, $(2, 3)$ using the normal equations with exact fractions. You should get $c = (3/20, -1/20, 3/4)$. Check that the residual is perpendicular to all three columns, then confirm with `np.linalg.lstsq`.',
+              prompt: 'Fit $y = c_0 + c_1 t + c_2 t^2$ to the points $(-1, 1)$, $(0, 0)$, $(1, 1)$, $(2, 3)$.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: 'Solve the normal equations with exact fractions. You should get $c = (3/20, -1/20, 3/4)$.',
+                  answer:
+                    'The design matrix has rows $(1, t_i, t_i^2)$. Then $A^TA = \\begin{bmatrix} 4 & 2 & 6 \\\\ 2 & 6 & 8 \\\\ 6 & 8 & 18 \\end{bmatrix}$ and $A^Ty = (5, 6, 14)$. Solving gives $c = (\\tfrac{3}{20}, -\\tfrac{1}{20}, \\tfrac34)$.',
+                },
+                {
+                  prompt: 'Check that the residual is perpendicular to all three columns.',
+                  answer:
+                    'The fitted values are $(\\tfrac{19}{20}, \\tfrac{3}{20}, \\tfrac{17}{20}, \\tfrac{61}{20})$, so the residual is $\\tfrac{1}{20}(1, -3, 3, -1)$. Its dot products with $(1, 1, 1, 1)$, $(-1, 0, 1, 2)$ and $(1, 0, 1, 4)$ are $0$, $\\tfrac{1}{20}(-1 + 3 - 2) = 0$ and $\\tfrac{1}{20}(1 + 3 - 4) = 0$.',
+                },
+                {
+                  prompt: 'Confirm with `np.linalg.lstsq`.',
+                  answer: '`np.linalg.lstsq(A, y, rcond=None)[0]` returns `[0.15, -0.05, 0.75]`.',
+                },
+              ],
             },
             {
               slug: 'normal-equations-versus-qr',
               title: 'Normal equations against QR',
               prompt:
-                'Take 50 equally spaced points $t$ in $[0, 1]$ and form the monomial design matrix of degree $d = 8, 12, 16$. Set $y = Ac$ with all coefficients $c_i = 1$, then recover $c$ with the normal equations and with QR. Tabulate $\\kappa(A)$ and the error $\\|\\hat{c} - c\\|$ for both. Explain the table using $\\kappa(A^T A) = \\kappa(A)^2$.',
+                'Take 50 equally spaced points $t$ in $[0, 1]$ and form the monomial design matrix of degree $d = 8, 12, 16$. Set $y = Ac$ with all coefficients $c_i = 1$, then recover $c$ with the normal equations and with QR.',
               kind: 'coding',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Tabulate $\\kappa(A)$ and the error $\\|\\hat{c} - c\\|$ for both.',
+                  answer:
+                    'Build $A$ with `np.vander(t, d + 1, increasing=True)` and solve $R\\hat{c} = Q^Ty$ with `scipy.linalg.solve_triangular`. One run gave: $d = 8$: $\\kappa \\approx 6 \\times 10^5$, normal equations $2 \\times 10^{-5}$, QR $7 \\times 10^{-12}$; $d = 12$: $\\kappa \\approx 7 \\times 10^8$, normal $2.8$, QR $9 \\times 10^{-8}$; $d = 16$: $\\kappa \\approx 8 \\times 10^{11}$, normal $15$, QR $5 \\times 10^{-5}$. The last digits vary between machines.',
+                },
+                {
+                  prompt: 'Explain the table using $\\kappa(A^T A) = \\kappa(A)^2$.',
+                  answer:
+                    'QR works with $A$, so its error is about $\\kappa(A)\\varepsilon$: $10^{-10}$ to $10^{-4}$ here. The normal equations solve a system with condition number $\\kappa(A)^2$, about $4 \\times 10^{11}$, $5 \\times 10^{17}$ and $7 \\times 10^{23}$, so they lose about twice as many digits; beyond $\\kappa(A) \\approx 10^8$, $\\kappa(A)^2\\varepsilon > 1$ and no digits are left.',
+                },
+              ],
             },
             {
               slug: 'calculus-derivation',
               title: 'Derive it with calculus',
-              prompt:
-                'Let $f(x) = \\|b - Ax\\|^2$ for a function of two unknowns $x = (x_1, x_2)$ with $A$ having independent columns. Expand $f$, set both partial derivatives to zero and show that you recover the normal equations. If partial derivatives are new to you, treat $x_2$ as a constant when differentiating with respect to $x_1$. Then prove without calculus that $\\hat{x}$ is the global minimiser, using the identity $\\|b - Ax\\|^2 = \\|b - A\\hat{x}\\|^2 + \\|A(\\hat{x} - x)\\|^2$.',
+              prompt: 'Let $f(x) = \\|b - Ax\\|^2$ for a function of two unknowns $x = (x_1, x_2)$ with $A$ having independent columns $a_1, a_2$.',
               kind: 'derivation',
               difficulty: 3,
+              parts: [
+                {
+                  prompt:
+                    'Expand $f$, set both partial derivatives to zero and show that you recover the normal equations. If partial derivatives are new to you, treat $x_2$ as a constant when differentiating with respect to $x_1$.',
+                  answer:
+                    '$f = \\|b - x_1a_1 - x_2a_2\\|^2 = b \\cdot b - 2x_1\\,a_1 \\cdot b - 2x_2\\,a_2 \\cdot b + x_1^2\\,a_1 \\cdot a_1 + 2x_1x_2\\,a_1 \\cdot a_2 + x_2^2\\,a_2 \\cdot a_2$. Then $\\partial f/\\partial x_1 = -2a_1 \\cdot b + 2x_1\\,a_1 \\cdot a_1 + 2x_2\\,a_1 \\cdot a_2 = 0$ and likewise for $x_2$. These two equations say $a_i \\cdot (Ax) = a_i \\cdot b$ for $i = 1, 2$, which is $A^TAx = A^Tb$.',
+                },
+                {
+                  prompt:
+                    'Prove without calculus that $\\hat{x}$ is the global minimiser, using the identity $\\|b - Ax\\|^2 = \\|b - A\\hat{x}\\|^2 + \\|A(\\hat{x} - x)\\|^2$.',
+                  answer:
+                    'Write $b - Ax = (b - A\\hat{x}) + A(\\hat{x} - x)$. The first term is perpendicular to $C(A)$ by the normal equations and the second lies in $C(A)$, so Pythagoras gives the identity. The second term is $\\ge 0$, and it is 0 only when $A(\\hat{x} - x) = 0$, that is $x = \\hat{x}$, since the columns are independent. So $\\hat{x}$ is the unique global minimiser.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -1307,6 +2219,28 @@ If the columns of $A$ are dependent, infinitely many $\\hat{x}$ minimise the res
             {
               question: 'Is fitting $c_0 + c_1 e^{t}$ a linear least-squares problem? What about $c_0 e^{c_1 t}$?',
               answerOutline: 'The first is, since it is linear in $c_0, c_1$. The second is not, though taking logs gives a related linear fit with different error weighting.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'What is the least-squares line $y = c_0 + c_1 t$ through the points $(0, 0)$, $(1, 2)$, $(2, 1)$?',
+              options: ['$y = \\tfrac12 + \\tfrac12 t$', '$y = 1$', '$y = \\tfrac45 t$', '$y = 2t$'],
+              answer: 0,
+              explanation:
+                'The normal equations are $3c_0 + 3c_1 = 3$ and $3c_0 + 5c_1 = 4$, so $c_1 = \\tfrac12$ and $c_0 = \\tfrac12$. The residuals $(-\\tfrac12, 1, -\\tfrac12)$ sum to 0, as they must with an intercept. $y = \\tfrac45 t$ is the best line through the origin, which drops the column of ones, and $y = 1$ is just the mean.',
+            },
+            {
+              question:
+                'A design matrix has $\\kappa(A) = 10^6$. About how many of the 16 digits do you expect to lose solving the least-squares problem with QR, and with the normal equations?',
+              options: [
+                'About 6 with both, since the problem is the same',
+                'About 12 with QR and 6 with the normal equations',
+                'About 12 with both',
+                'About 6 with QR and 12 with the normal equations',
+              ],
+              answer: 3,
+              explanation:
+                'QR works with $A$ itself, so the loss is about $\\log_{10}\\kappa(A) = 6$ digits. Forming $A^TA$ squares the condition number to $10^{12}$, so the normal equations lose about 12. The minimiser is the same, but the two algorithms do not see the same conditioning, which is why the choice matters.',
             },
           ],
           relatedLessons: ['linear-algebra-for-data-science/orthogonality-and-regression/least-squares'],
@@ -1359,34 +2293,95 @@ and the matrix on the left is invertible for every $A$ when $\\lambda > 0$. Take
               slug: 'recover-a-seasonal-signal',
               title: 'Recover a seasonal signal',
               prompt:
-                'Simulate 120 months of data, $y_t = 1 + 0.5t + 2\\sin(2\\pi t/12) + \\epsilon_t$, with $\\epsilon_t$ normal with standard deviation 0.5. Fit columns $1$, $t$, $\\sin(2\\pi t/12)$, $\\cos(2\\pi t/12)$. Your coefficients should come out near $(1, 0.5, 2, 0)$. Report $R^2$, plot the residuals, and then repeat with the seasonal columns removed and describe how the residual plot exposes the missing term.',
+                'Simulate 120 months of data, $y_t = 1 + 0.5t + 2\\sin(2\\pi t/12) + \\epsilon_t$, with $\\epsilon_t$ normal with standard deviation 0.5.',
               kind: 'coding',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Fit columns $1$, $t$, $\\sin(2\\pi t/12)$, $\\cos(2\\pi t/12)$. Your coefficients should come out near $(1, 0.5, 2, 0)$.',
+                  answer:
+                    'With `t = np.arange(120)` and `np.column_stack` for the four columns, `lstsq` gave about $(1.01, 0.500, 1.96, -0.09)$ in one run. The slope is pinned down very precisely because $t$ spans 120 months; the intercept and seasonal terms wobble by about $0.1$.',
+                },
+                {
+                  prompt: 'Report $R^2$ and plot the residuals.',
+                  answer:
+                    '$R^2 \\approx 0.999$, because the trend dominates the variation. The residuals should look like noise: no pattern, scattered with standard deviation about 0.5.',
+                },
+                {
+                  prompt: 'Repeat with the seasonal columns removed and describe how the residual plot exposes the missing term.',
+                  answer:
+                    '$R^2$ barely drops (about $0.993$), but the residuals now trace a clear wave with period 12 months and amplitude about 2, and their standard deviation rises to about 1.5. The residual plot shows what $R^2$ hides.',
+                },
+              ],
             },
             {
               slug: 'exponential-through-logs',
               title: 'An exponential through logs',
-              prompt:
-                'Fit $y = ae^{bt}$ to $(0, 3)$, $(1, 6.1)$, $(2, 11.9)$, $(3, 24.2)$ by a straight-line fit to $\\log y$. You should get $b \\approx 0.693$ and $a \\approx 3.01$. Then minimise the error in $y$ directly with `scipy.optimize.curve_fit`, compare the two sets of parameters, and explain why they differ slightly.',
+              prompt: 'Fit $y = ae^{bt}$ to $(0, 3)$, $(1, 6.1)$, $(2, 11.9)$, $(3, 24.2)$.',
               kind: 'coding',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: 'Use a straight-line fit to $\\log y$. You should get $b \\approx 0.693$ and $a \\approx 3.01$.',
+                  answer:
+                    '`b, log_a = np.polyfit(t, np.log(y), 1)` gives $b \\approx 0.6931$ and $a = e^{\\log a} \\approx 3.012$. The data roughly doubles each step, and $\\ln 2 \\approx 0.693$.',
+                },
+                {
+                  prompt: 'Minimise the error in $y$ directly with `scipy.optimize.curve_fit`, and compare the two sets of parameters.',
+                  answer:
+                    '`curve_fit(lambda t, a, b: a * np.exp(b * t), t, y, p0=[3, 0.7])` gives $a \\approx 2.980$ and $b \\approx 0.698$: a slightly smaller $a$ and a slightly larger $b$.',
+                },
+                {
+                  prompt: 'Explain why they differ slightly.',
+                  answer:
+                    'The log fit minimises squared errors in $\\log y$, which weights relative errors equally across all points. The direct fit minimises squared errors in $y$, so the largest value, $24.2$, dominates and the curve bends to fit it. The models are the same; the error measures are not.',
+                },
+              ],
             },
             {
               slug: 'overfitting-curve',
               title: 'Draw the overfitting curve',
               prompt:
-                'Generate 30 points from $y = \\sin(2\\pi t) + \\epsilon$ on $[0, 1]$ with noise standard deviation 0.2. Use 20 for training and 10 for testing. Fit polynomials of degree 0 to 15, using QR or a Legendre basis, and plot training and test error against degree. Training error should not increase with degree; describe what test error does. Then fix degree 15, add ridge regularisation, and plot test error against $\\lambda$ on a log scale.',
+                'Generate 30 points from $y = \\sin(2\\pi t) + \\epsilon$ on $[0, 1]$ with noise standard deviation 0.2. Use 20 for training and 10 for testing.',
               kind: 'coding',
               difficulty: 2,
+              parts: [
+                {
+                  prompt:
+                    'Fit polynomials of degree 0 to 15, using QR or a Legendre basis, and plot training and test error against degree. Training error should not increase with degree; describe what test error does.',
+                  answer:
+                    'Test error falls with training error at first, levels off near the noise level (RMSE about 0.15 to 0.2) around degree 3 to 7, then climbs sharply: in two runs it was between 3 and 85 at degrees 12 to 15, tens to hundreds of times the noise level, while training error kept falling, to about 0.06 to 0.11. The plot is the classic U shape. Exact numbers depend on the random draw. (Map $t$ to $[-1, 1]$ and use `numpy.polynomial.legendre.legvander` to keep the basis well-conditioned.)',
+                },
+                {
+                  prompt: 'Fix degree 15, add ridge regularisation, and plot test error against $\\lambda$ on a log scale.',
+                  answer:
+                    'Test error is large for tiny $\\lambda$ (essentially the unregularised fit), falls to a minimum near the noise level at a moderate $\\lambda$, then rises again for large $\\lambda$ as the coefficients are shrunk towards 0 and the fit underfits. In one run with a Legendre basis the minimum was about 0.2 near $\\lambda = 1$, against about 0.7 at $\\lambda = 100$.',
+                },
+              ],
             },
             {
               slug: 'ridge-always-invertible',
               title: 'Why ridge is always solvable',
-              prompt:
-                'Prove that $A^T A + \\lambda I$ is invertible for every real matrix $A$ and every $\\lambda > 0$. Show that the ridge solution with $A$ as in the lesson and $\\lambda = 1$ is $(7/8, 11/8)$. Then compute $\\|\\hat{x}\\|$ for $\\lambda = 0, 0.1, 1, 10, 100$. You should see 2.2361, 2.1512, 1.6298, 0.4937, 0.0622.',
+              prompt: 'Study the ridge matrix $A^T A + \\lambda I$.',
               kind: 'problem',
               difficulty: 2,
-              hint: 'If $(A^TA + \\lambda I)x = 0$, multiply by $x^T$.',
+              parts: [
+                {
+                  prompt: 'Prove that $A^T A + \\lambda I$ is invertible for every real matrix $A$ and every $\\lambda > 0$.',
+                  answer:
+                    'If $(A^TA + \\lambda I)x = 0$, multiply by $x^T$: $\\|Ax\\|^2 + \\lambda\\|x\\|^2 = 0$. Both terms are $\\ge 0$ and $\\lambda > 0$, so $x = 0$. A square matrix with trivial null space is invertible.',
+                },
+                {
+                  prompt: 'Show that the ridge solution with $A$ as in the lesson and $\\lambda = 1$ is $(7/8, 11/8)$.',
+                  answer:
+                    'With rows $(1, 0), (0, 1), (1, 1)$ and $b = (1, 2, 3)$: $A^TA + I = \\begin{bmatrix} 3 & 1 \\\\ 1 & 3 \\end{bmatrix}$ and $A^Tb = (4, 5)$. The inverse is $\\tfrac18\\begin{bmatrix} 3 & -1 \\\\ -1 & 3 \\end{bmatrix}$, so $\\hat{x} = \\tfrac18(12 - 5, -4 + 15) = (\\tfrac78, \\tfrac{11}{8})$.',
+                },
+                {
+                  prompt: 'Compute $\\|\\hat{x}\\|$ for $\\lambda = 0, 0.1, 1, 10, 100$.',
+                  answer:
+                    'You should see 2.2361, 2.1512, 1.6298, 0.4937, 0.0622. The first is $\\|(1, 2)\\| = \\sqrt5$, and the norm falls steadily towards 0 as $\\lambda$ grows.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -1401,6 +2396,28 @@ and the matrix on the left is invertible for every $A$ when $\\lambda > 0$. Take
             {
               question: 'Why should you usually avoid penalising the intercept in ridge regression?',
               answerOutline: 'The intercept only sets the overall level. Penalising it makes the fit depend on the origin of $y$, which has no meaning.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'The least-squares line through $(0, 2)$, $(1, 4)$, $(2, 3)$, $(3, 7)$ is $y = 1.9 + 1.4t$. What is its $R^2$?',
+              options: ['$0.3$', '$0.7$', '$4.2$', '$0.84$'],
+              answer: 1,
+              explanation:
+                'The fitted values are $1.9, 3.3, 4.7, 6.1$, so the residuals are $0.1, 0.7, -1.7, 0.9$ with squared sum $4.2$. The mean of $y$ is 4, so the total sum of squares is $4 + 0 + 1 + 9 = 14$, and $R^2 = 1 - 4.2/14 = 0.7$. $0.3$ is the unexplained fraction $4.2/14$ itself, $4.2$ is the residual sum, and $0.84 \\approx \\sqrt{0.7}$ is the correlation coefficient.',
+            },
+            {
+              question:
+                'On the same data, a degree-2 polynomial has training RMSE 0.30 and test RMSE 0.33, and a degree-9 polynomial has training RMSE 0.05 and test RMSE 1.8. What should you conclude?',
+              options: [
+                'Use degree 9, because its training error is six times smaller',
+                'Use degree 9, because its $R^2$ on the fitted data is higher',
+                'Use degree 2: its error on unseen data is far lower, and degree 9 has fitted the noise',
+                'Use degree 2, because a simpler model always predicts better',
+              ],
+              answer: 2,
+              explanation:
+                'Prediction is judged on held-out data, and there degree 2 wins by a factor of more than 5. A tiny training error with a large test error is the signature of overfitting. Training error and $R^2$ can only improve as columns are added, so they cannot settle the choice. Simpler is not always better either: a straight line would underfit curved data, and the test set is what shows which model is right.',
             },
           ],
         },
@@ -1473,26 +2490,74 @@ On a computer, \`w, V = np.linalg.eig(A)\` returns eigenvalues and a matrix whos
             {
               slug: 'eigenpairs-by-hand',
               title: 'Eigenpairs by hand',
-              prompt:
-                'Find the eigenvalues and eigenvectors of the matrix with rows $(5, 2), (2, 2)$. You should find eigenvalues 6 and 1. Then find the eigenvalues of the matrix with rows $(2, 1, 0), (0, 2, 0), (0, 0, 3)$, and give the algebraic and geometric multiplicity of each. Check the trace and determinant relations for both.',
+              prompt: 'Find eigenvalues by hand and check them with the trace and determinant.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: 'Find the eigenvalues and eigenvectors of the matrix with rows $(5, 2), (2, 2)$. You should find eigenvalues 6 and 1.',
+                  answer:
+                    '$\\det(A - \\lambda I) = (5 - \\lambda)(2 - \\lambda) - 4 = \\lambda^2 - 7\\lambda + 6 = (\\lambda - 6)(\\lambda - 1)$. For $\\lambda = 6$, $A - 6I$ has rows $(-1, 2), (2, -4)$, so $v = (2, 1)$. For $\\lambda = 1$, $A - I$ has rows $(4, 2), (2, 1)$, so $v = (1, -2)$.',
+                },
+                {
+                  prompt:
+                    'Find the eigenvalues of the matrix with rows $(2, 1, 0), (0, 2, 0), (0, 0, 3)$, and give the algebraic and geometric multiplicity of each.',
+                  answer:
+                    'It is triangular, so the eigenvalues are the diagonal entries 2, 2, 3. $\\lambda = 2$: algebraic multiplicity 2, but $A - 2I$ has rank 2, so its eigenspace is spanned by $(1, 0, 0)$ alone and the geometric multiplicity is 1. $\\lambda = 3$: both multiplicities 1, eigenvector $(0, 0, 1)$.',
+                },
+                {
+                  prompt: 'Check the trace and determinant relations for both.',
+                  answer: 'First matrix: $6 + 1 = 7 = 5 + 2$ and $6 \\cdot 1 = 6 = 10 - 4$. Second: $2 + 2 + 3 = 7$ is the trace, and $2 \\cdot 2 \\cdot 3 = 12$ is the determinant.',
+                },
+              ],
             },
             {
               slug: 'eigenvalue-facts',
               title: 'Facts worth proving',
-              prompt:
-                'Prove that if $Av = \\lambda v$ then $A^k v = \\lambda^k v$ for every positive integer $k$, and that $A^{-1}v = \\lambda^{-1}v$ when $A$ is invertible, and explain why $\\lambda \\neq 0$ in that case. Then prove that eigenvectors for two different eigenvalues are independent. Show by a $2 \\times 2$ example that the eigenvalues of $A + B$ are not in general sums of eigenvalues of $A$ and $B$.',
+              prompt: 'Suppose $Av = \\lambda v$ with $v \\neq 0$.',
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Prove that $A^k v = \\lambda^k v$ for every positive integer $k$.',
+                  answer: 'By induction: $A^{k+1}v = A(A^kv) = A(\\lambda^kv) = \\lambda^k Av = \\lambda^{k+1}v$.',
+                },
+                {
+                  prompt: 'Prove that $A^{-1}v = \\lambda^{-1}v$ when $A$ is invertible, and explain why $\\lambda \\neq 0$ in that case.',
+                  answer:
+                    'If $\\lambda = 0$ then $Av = 0$ with $v \\neq 0$, so $A$ would be singular. So $\\lambda \\neq 0$, and applying $A^{-1}$ to $Av = \\lambda v$ gives $v = \\lambda A^{-1}v$, that is $A^{-1}v = \\lambda^{-1}v$.',
+                },
+                {
+                  prompt: 'Prove that eigenvectors for two different eigenvalues are independent.',
+                  answer:
+                    'Let $Av = \\lambda v$, $Aw = \\mu w$ with $\\lambda \\neq \\mu$, and suppose $av + bw = 0$. Apply $A$: $a\\lambda v + b\\mu w = 0$. Subtract $\\lambda$ times the first equation: $b(\\mu - \\lambda)w = 0$, so $b = 0$, and then $av = 0$ gives $a = 0$.',
+                },
+                {
+                  prompt: 'Show by a $2 \\times 2$ example that the eigenvalues of $A + B$ are not in general sums of eigenvalues of $A$ and $B$.',
+                  answer:
+                    '$A = \\begin{bmatrix} 0 & 1 \\\\ 0 & 0 \\end{bmatrix}$ and $B = \\begin{bmatrix} 0 & 0 \\\\ 1 & 0 \\end{bmatrix}$ both have only the eigenvalue 0, but $A + B = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}$ has eigenvalues $1$ and $-1$.',
+                },
+              ],
             },
             {
               slug: 'polynomial-roots-are-unstable',
               title: 'Why not use the characteristic polynomial',
-              prompt:
-                'Let $A = \\mathrm{diag}(1, 2, \\dots, 20)$. Compute the coefficients of its characteristic polynomial with `np.poly`, find the roots with `np.roots`, and compare them with the true eigenvalues. You should find errors far above machine precision, around 0.01 to 0.1 for the eigenvalues in the upper middle of the range, and some computed roots may even be complex. `np.linalg.eigvals(A)` is exact here. Explain why this makes the polynomial route a poor algorithm even though it is correct mathematics.',
+              prompt: 'Let $A = \\mathrm{diag}(1, 2, \\dots, 20)$.',
               kind: 'coding',
               difficulty: 2,
+              parts: [
+                {
+                  prompt:
+                    'Compute the coefficients of its characteristic polynomial with `np.poly`, find the roots with `np.roots`, and compare them with the true eigenvalues.',
+                  answer:
+                    'You should find errors far above machine precision, around 0.01 to 0.1 for the eigenvalues in the upper middle of the range, and some computed roots may even be complex. One run gave errors of about $0.03$ at 11, $0.08$ at 13, $0.09$ at 14 and $0.08$ at 15, while 1 to 5 were accurate to $10^{-6}$ or better. `np.linalg.eigvals(A)` is exact here.',
+                },
+                {
+                  prompt: 'Explain why this makes the polynomial route a poor algorithm even though it is correct mathematics.',
+                  answer:
+                    'The coefficients range up to about $1.4 \\times 10^{19}$, and several of them cannot be stored exactly in double precision, so they carry relative errors near $10^{-16}$ (and `np.poly` adds rounding as it multiplies out the factors). The roots of this polynomial (Wilkinson\'s example) are extremely sensitive to the coefficients, so those tiny errors move them by up to $0.1$. Forming the polynomial turns a well-conditioned eigenvalue problem into an ill-conditioned root-finding problem.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -1507,6 +2572,23 @@ On a computer, \`w, V = np.linalg.eig(A)\` returns eigenvalues and a matrix whos
             {
               question: 'Can a real $2 \\times 2$ matrix have no real eigenvectors? Give an example.',
               answerOutline: 'Yes. A rotation by $90^\\circ$ has eigenvalues $\\pm i$ and moves every real direction.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'What are the eigenvalues of $A = \\begin{bmatrix} 1 & 2 \\\\ 3 & 2 \\end{bmatrix}$?',
+              options: ['$1$ and $2$', '$4$ and $1$', '$4$ and $-1$', '$-4$ and $1$'],
+              answer: 2,
+              explanation:
+                '$\\det(A - \\lambda I) = (1 - \\lambda)(2 - \\lambda) - 6 = \\lambda^2 - 3\\lambda - 4 = (\\lambda - 4)(\\lambda + 1)$. Check: $4 + (-1) = 3$ is the trace and $4 \\cdot (-1) = -4$ is the determinant. The diagonal entries are the eigenvalues only for a triangular matrix. $-4$ and $1$ have the right product but the wrong sum.',
+            },
+            {
+              question:
+                'For $A = \\begin{bmatrix} 3 & 1 & 0 \\\\ 0 & 3 & 0 \\\\ 0 & 0 & 3 \\end{bmatrix}$, what are the algebraic and geometric multiplicities of the eigenvalue 3?',
+              options: ['Algebraic 3, geometric 3', 'Algebraic 3, geometric 2', 'Algebraic 3, geometric 1', 'Algebraic 2, geometric 2'],
+              answer: 1,
+              explanation:
+                'The characteristic polynomial is $(3 - \\lambda)^3$, so the algebraic multiplicity is 3. The eigenspace is $N(A - 3I)$, and $A - 3I$ has a single non-zero entry, so its rank is 1 and its null space has dimension $3 - 1 = 2$, spanned by $e_1$ and $e_3$. Geometric multiplicity 1 would be right for the $2 \\times 2$ block alone, but $e_3$ adds a second eigenvector.',
             },
           ],
           relatedLessons: ['math-methods/linear-algebra/eigenvalues-and-eigenvectors'],
@@ -1560,35 +2642,103 @@ Note a numerical caveat as well. Even for a diagonalisable matrix, \`np.linalg.e
             {
               slug: 'closed-form-power',
               title: 'A closed form for powers',
-              prompt:
-                'Diagonalise the matrix with rows $(2, 1), (1, 2)$. Write a closed form for $A^k$ and use it to show that $A^5$ has rows $(122, 121), (121, 122)$. Confirm with `np.linalg.matrix_power`.',
+              prompt: 'Let $A$ be the matrix with rows $(2, 1), (1, 2)$.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: 'Diagonalise $A$.',
+                  answer:
+                    'Trace 4 and determinant 3 give eigenvalues 3 and 1, with eigenvectors $(1, 1)$ and $(1, -1)$. So $P = \\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix}$, $D = \\begin{bmatrix} 3 & 0 \\\\ 0 & 1 \\end{bmatrix}$ and $P^{-1} = \\tfrac12 P$.',
+                },
+                {
+                  prompt: 'Write a closed form for $A^k$ and use it to show that $A^5$ has rows $(122, 121), (121, 122)$.',
+                  answer:
+                    '$A^k = PD^kP^{-1} = \\tfrac12\\begin{bmatrix} 3^k + 1 & 3^k - 1 \\\\ 3^k - 1 & 3^k + 1 \\end{bmatrix}$. With $3^5 = 243$: $\\tfrac12(244) = 122$ and $\\tfrac12(242) = 121$.',
+                },
+                {
+                  prompt: 'Confirm with `np.linalg.matrix_power`.',
+                  answer: '`np.linalg.matrix_power(A, 5)` returns `[[122, 121], [121, 122]]`.',
+                },
+              ],
             },
             {
               slug: 'diagonalisable-or-not',
               title: 'Diagonalisable or not',
-              prompt:
-                'Decide whether each matrix is diagonalisable over the real numbers, and justify your answer: (a) rows $(2, 1), (0, 2)$; (b) rows $(2, 0), (1, 3)$; (c) rows $(0, -1), (1, 0)$; (d) rows $(1, 0, 0), (0, 1, 0), (1, 1, 2)$. For the one that is not diagonalisable over the reals but is over the complex numbers, give $P$ and $D$ over $\\mathbb{C}$.',
+              prompt: 'Decide whether each matrix is diagonalisable over the real numbers, and justify your answer.',
               kind: 'problem',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Rows $(2, 1), (0, 2)$',
+                  answer:
+                    'Not diagonalisable, over $\\mathbb{R}$ or $\\mathbb{C}$. The eigenvalue 2 has algebraic multiplicity 2, but $A - 2I$ has rank 1, so there is only one independent eigenvector, $(1, 0)$.',
+                },
+                {
+                  prompt: 'Rows $(2, 0), (1, 3)$',
+                  answer: 'Diagonalisable: it is triangular with distinct eigenvalues 2 and 3. Eigenvectors $(1, -1)$ for 2 and $(0, 1)$ for 3.',
+                },
+                {
+                  prompt: 'Rows $(0, -1), (1, 0)$',
+                  answer: 'Not over $\\mathbb{R}$: the characteristic polynomial $\\lambda^2 + 1$ has no real roots. Its eigenvalues are $\\pm i$.',
+                },
+                {
+                  prompt: 'Rows $(1, 0, 0), (0, 1, 0), (1, 1, 2)$',
+                  answer:
+                    'Diagonalisable. The eigenvalues are 1, 1, 2. $A - I$ has rank 1, so $\\lambda = 1$ has a 2-dimensional eigenspace, spanned by $(1, -1, 0)$ and $(1, 0, -1)$, and $\\lambda = 2$ has eigenvector $(0, 0, 1)$. Three independent eigenvectors in all.',
+                },
+                {
+                  prompt: 'For the one that is not diagonalisable over the reals but is over the complex numbers, give $P$ and $D$ over $\\mathbb{C}$.',
+                  answer:
+                    'The rotation, rows $(0, -1), (1, 0)$. Its eigenvalues $i$ and $-i$ are distinct, with eigenvectors $(i, 1)$ and $(-i, 1)$: check $A(i, 1) = (-1, i) = i(i, 1)$. So $P = \\begin{bmatrix} i & -i \\\\ 1 & 1 \\end{bmatrix}$ and $D = \\begin{bmatrix} i & 0 \\\\ 0 & -i \\end{bmatrix}$.',
+                },
+              ],
             },
             {
               slug: 'fibonacci-by-eigenvalues',
               title: 'Fibonacci by eigenvalues',
-              prompt:
-                'Show that $(F_{n+1}, F_n)^T = M(F_n, F_{n-1})^T$ for $M$ with rows $(1, 1), (1, 0)$. Diagonalise $M$ and derive the closed form $F_n = (\\varphi^n - \\psi^n)/\\sqrt{5}$. Compute $F_{50} = 12586269025$ exactly with Python integers and matrix powers. Then evaluate the closed form in floating point, find the first $n$ for which rounding it gives the wrong integer, and explain why.',
+              prompt: 'Let $M$ have rows $(1, 1), (1, 0)$, and let $F_0 = 0$, $F_1 = 1$, $F_{n+1} = F_n + F_{n-1}$.',
               kind: 'coding',
               difficulty: 2,
-              hint: 'Use a Python integer `dtype=object` matrix, or plain lists, to avoid 64-bit overflow beyond about $F_{92}$.',
+              parts: [
+                {
+                  prompt: 'Show that $(F_{n+1}, F_n)^T = M(F_n, F_{n-1})^T$.',
+                  answer: '$M(F_n, F_{n-1}) = (F_n + F_{n-1},\\ F_n) = (F_{n+1}, F_n)$. So $(F_{n+1}, F_n) = M^n(1, 0)$.',
+                },
+                {
+                  prompt: 'Diagonalise $M$ and derive the closed form $F_n = (\\varphi^n - \\psi^n)/\\sqrt{5}$.',
+                  answer:
+                    'The characteristic polynomial is $\\lambda^2 - \\lambda - 1$, with roots $\\varphi = \\tfrac{1 + \\sqrt5}{2}$ and $\\psi = \\tfrac{1 - \\sqrt5}{2}$, and eigenvectors $(\\varphi, 1)$ and $(\\psi, 1)$. Since $\\varphi - \\psi = \\sqrt5$, $(1, 0) = \\big((\\varphi, 1) - (\\psi, 1)\\big)/\\sqrt5$. Then $M^n(1, 0) = \\big(\\varphi^n(\\varphi, 1) - \\psi^n(\\psi, 1)\\big)/\\sqrt5$, whose second entry is $F_n = (\\varphi^n - \\psi^n)/\\sqrt5$.',
+                },
+                {
+                  prompt: 'Compute $F_{50} = 12586269025$ exactly with Python integers and matrix powers.',
+                  answer:
+                    'Use a Python integer `dtype=object` matrix, or plain lists, to avoid 64-bit overflow beyond about $F_{92}$: `np.linalg.matrix_power(np.array([[1, 1], [1, 0]], dtype=object), 50)[0, 1]` gives `12586269025`. (With `int64`, $F_{93} \\approx 1.2 \\times 10^{19}$ silently wraps to a negative number.)',
+                },
+                {
+                  prompt: 'Evaluate the closed form in floating point, find the first $n$ for which rounding it gives the wrong integer, and explain why.',
+                  answer:
+                    'The first failure is $n = 71$: `round((phi**71 - psi**71) / 5**0.5)` gives 308061521170130, but $F_{71} = 308061521170129$. The stored $\\varphi$ has a relative rounding error near $10^{-16}$, which $\\varphi^n$ multiplies by about $n$. Once $n \\cdot 10^{-16}$ times $F_n \\approx 3 \\times 10^{14}$ approaches $\\tfrac12$, rounding can land on the wrong integer.',
+                },
+              ],
             },
             {
               slug: 'shared-eigenvectors',
               title: 'Commuting and shared eigenvectors',
-              prompt:
-                'Prove that if $A = PD_1P^{-1}$ and $B = PD_2P^{-1}$ with the same $P$, then $AB = BA$. Then show that if $Av = \\lambda v$ and $AB = BA$, then $Bv$ is either 0 or an eigenvector of $A$ for the same $\\lambda$.',
+              prompt: 'Relate shared eigenvectors to commuting matrices.',
               kind: 'derivation',
               difficulty: 3,
+              parts: [
+                {
+                  prompt: 'Prove that if $A = PD_1P^{-1}$ and $B = PD_2P^{-1}$ with the same $P$, then $AB = BA$.',
+                  answer: '$AB = PD_1P^{-1}PD_2P^{-1} = PD_1D_2P^{-1}$ and $BA = PD_2D_1P^{-1}$. Diagonal matrices commute, so $D_1D_2 = D_2D_1$ and $AB = BA$.',
+                },
+                {
+                  prompt: 'Show that if $Av = \\lambda v$ and $AB = BA$, then $Bv$ is either 0 or an eigenvector of $A$ for the same $\\lambda$.',
+                  answer:
+                    '$A(Bv) = (AB)v = (BA)v = B(\\lambda v) = \\lambda(Bv)$. So $Bv$ lies in the $\\lambda$-eigenspace of $A$: if it is not 0, it is an eigenvector for $\\lambda$. In other words, $B$ maps each eigenspace of $A$ into itself.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -1603,6 +2753,33 @@ Note a numerical caveat as well. Even for a diagonalisable matrix, \`np.linalg.e
             {
               question: 'Is every invertible matrix diagonalisable? Is every diagonalisable matrix invertible?',
               answerOutline: 'Neither. The matrix with rows $(1,1),(0,1)$ is invertible and defective. The zero matrix is diagonalisable and singular.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                '$A = \\begin{bmatrix} 2 & -1 \\\\ 0 & 1 \\end{bmatrix}$ has eigenvalues 2 and 1, with eigenvectors $(1, 0)$ and $(1, 1)$. What is $A^{10}$?',
+              options: [
+                '$\\begin{bmatrix} 1024 & 1 \\\\ 0 & 1 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 1024 & -10 \\\\ 0 & 1 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 1024 & -1024 \\\\ 0 & 1 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 1024 & -1023 \\\\ 0 & 1 \\end{bmatrix}$',
+              ],
+              answer: 3,
+              explanation:
+                'With $P = \\begin{bmatrix} 1 & 1 \\\\ 0 & 1 \\end{bmatrix}$ and $P^{-1} = \\begin{bmatrix} 1 & -1 \\\\ 0 & 1 \\end{bmatrix}$, $A^k = P\\,\\mathrm{diag}(2^k, 1)\\,P^{-1}$ has top-right entry $1 - 2^k$, which is $-1023$ for $k = 10$. Check $k = 2$: $A^2$ has top-right entry $-3$. Raising each entry to the 10th power gives the first option, which is not how matrix powers work.',
+            },
+            {
+              question: 'Which matrix is diagonalisable over the real numbers?',
+              options: [
+                '$\\begin{bmatrix} 3 & 1 \\\\ 0 & 2 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 3 & 1 \\\\ 0 & 3 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 0 & 1 \\\\ 0 & 0 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 0 & -1 \\\\ 1 & 0 \\end{bmatrix}$',
+              ],
+              answer: 0,
+              explanation:
+                'The first matrix has two distinct real eigenvalues, 3 and 2, so its eigenvectors are independent. The second is invertible (determinant 9) but defective: $\\lambda = 3$ is repeated and has only the eigenvector $(1, 0)$. Invertibility has nothing to do with diagonalisability. The third is defective in the same way, and the rotation has eigenvalues $\\pm i$, so it diagonalises only over $\\mathbb{C}$.',
             },
           ],
           relatedLessons: ['math-methods/linear-algebra/diagonalization-and-matrix-functions'],
@@ -1659,34 +2836,99 @@ A better eigenvalue estimate is the **Rayleigh quotient** $r(x) = x^T A x / x^T 
             {
               slug: 'three-steps-by-hand',
               title: 'Three steps by hand',
-              prompt:
-                'Take $A$ with rows $(2, 1), (1, 3)$ and $x_0 = (1, 1)$. Do three steps of power iteration by hand, dividing by the largest entry each time. You should get $x_1 = (0.75, 1)$, $x_2 = (2/3, 1)$, $x_3 = (7/11, 1)$. Compare the scale factors with the exact $\\lambda_1 = (5 + \\sqrt{5})/2 \\approx 3.618$, and predict the convergence ratio from the exact eigenvalues.',
+              prompt: 'Take $A$ with rows $(2, 1), (1, 3)$ and $x_0 = (1, 1)$.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt:
+                    'Do three steps of power iteration by hand, dividing by the largest entry each time. You should get $x_1 = (0.75, 1)$, $x_2 = (2/3, 1)$, $x_3 = (7/11, 1)$.',
+                  answer:
+                    '$Ax_0 = (3, 4)$, scale 4, $x_1 = (\\tfrac34, 1)$. $Ax_1 = (\\tfrac52, \\tfrac{15}{4})$, scale $\\tfrac{15}{4}$, $x_2 = (\\tfrac23, 1)$. $Ax_2 = (\\tfrac73, \\tfrac{11}{3})$, scale $\\tfrac{11}{3}$, $x_3 = (\\tfrac{7}{11}, 1)$.',
+                },
+                {
+                  prompt: 'Compare the scale factors with the exact $\\lambda_1 = (5 + \\sqrt{5})/2 \\approx 3.618$.',
+                  answer: 'The scale factors $4$, $3.75$, $3.667$ decrease towards $3.618$, with errors $0.38$, $0.13$, $0.05$.',
+                },
+                {
+                  prompt: 'Predict the convergence ratio from the exact eigenvalues.',
+                  answer:
+                    '$\\lambda_2 = (5 - \\sqrt5)/2 \\approx 1.382$, so the ratio is $|\\lambda_2/\\lambda_1| \\approx 0.382$. The errors above shrink by about that factor each step. The eigenvector is $(\\sqrt5 - 1)/2 \\approx 0.618$ in the first entry, and $0.75, 0.667, 0.636$ approach it the same way.',
+                },
+              ],
             },
             {
               slug: 'measure-the-rate',
               title: 'Measure the convergence rate',
               prompt:
-                'Implement power iteration with 2-norm normalisation and a Rayleigh quotient estimate. For the matrix with rows $(2, 1, 0), (1, 3, 1), (0, 1, 4)$, whose eigenvalues are $3 - \\sqrt{3}$, 3, $3 + \\sqrt{3}$, plot the error in the eigenvector and the error in the eigenvalue estimate against iteration on a log scale. Measure the slopes. You should find ratios near $3/(3 + \\sqrt{3}) \\approx 0.634$ and its square, $0.402$.',
+                'Implement power iteration with 2-norm normalisation and a Rayleigh quotient estimate. Use the matrix with rows $(2, 1, 0), (1, 3, 1), (0, 1, 4)$, whose eigenvalues are $3 - \\sqrt{3}$, 3, $3 + \\sqrt{3}$.',
               kind: 'coding',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Plot the error in the eigenvector and the error in the eigenvalue estimate against iteration on a log scale.',
+                  answer:
+                    'Get the true eigenvector from `np.linalg.eigh` and fix the sign of each iterate before comparing. Both errors fall along straight lines on the log plot; the eigenvalue error falls about twice as steeply, reaching $10^{-14}$ in roughly 35 iterations against about 70 for the eigenvector.',
+                },
+                {
+                  prompt: 'Measure the slopes.',
+                  answer:
+                    'You should find ratios near $3/(3 + \\sqrt{3}) \\approx 0.634$ and its square, $0.402$. One run from $(1, 1, 1)/\\sqrt3$ gave successive error ratios settling at $0.6340$ for the eigenvector and $0.4019$ for the Rayleigh quotient. The square appears because $A$ is symmetric.',
+                },
+              ],
             },
             {
               slug: 'when-it-fails',
               title: 'Make it fail',
-              prompt:
-                'Produce and explain three failures: (a) $A$ with rows $(0, 1), (1, 0)$ and $x_0 = (1, 0)$, where the iterates oscillate; (b) $A = \\mathrm{diag}(2, 1)$ with $x_0 = (0, 1)$, where the method finds the wrong eigenvalue; (c) a real matrix with dominant complex pair, such as a rotation times 2. For (b), show that adding a perturbation of $10^{-10}$ to the first entry of $x_0$ restores convergence, and predict how many iterations that takes.',
+              prompt: 'Produce and explain three failures of power iteration.',
               kind: 'coding',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: '$A$ with rows $(0, 1), (1, 0)$ and $x_0 = (1, 0)$, where the iterates oscillate.',
+                  answer:
+                    'The iterates alternate $(1, 0), (0, 1), (1, 0), \\dots$ forever. The eigenvalues are $1$ and $-1$, equal in size, so neither component dominates: $x_0 = \\tfrac12(1, 1) + \\tfrac12(1, -1)$ and the second part just flips sign each step.',
+                },
+                {
+                  prompt: '$A = \\mathrm{diag}(2, 1)$ with $x_0 = (0, 1)$, where the method finds the wrong eigenvalue.',
+                  answer:
+                    '$x_0$ is exactly the eigenvector for 1 and has no component along $e_1$, so every iterate is $(0, 1)$ and the scale factor is 1, not 2. Here even rounding cannot help, because $A$ is diagonal and $0$ stays exactly 0.',
+                },
+                {
+                  prompt: 'A real matrix with dominant complex pair, such as a rotation times 2.',
+                  answer:
+                    'Take $2\\begin{bmatrix} \\cos\\theta & -\\sin\\theta \\\\ \\sin\\theta & \\cos\\theta \\end{bmatrix}$. Its eigenvalues $2e^{\\pm i\\theta}$ have equal modulus, and a real iteration rotates by $\\theta$ every step, so the direction never settles and the scale factors oscillate.',
+                },
+                {
+                  prompt: 'For the diagonal case, add a perturbation of $10^{-10}$ to the first entry of $x_0$. Show that this restores convergence, and predict how many iterations that takes.',
+                  answer:
+                    'The ratio of first to second component doubles each step, from $10^{-10}$. It reaches 1 after about $\\log_2 10^{10} \\approx 33$ steps, and the second component is then left behind by a factor of 2 per step. One run reached $(1, 0.009)$ after 40 steps, and full double precision takes about 45 more.',
+                },
+              ],
             },
             {
               slug: 'inverse-iteration',
               title: 'Reach the other eigenvalues',
-              prompt:
-                'For the $3 \\times 3$ matrix in the convergence exercise, use inverse iteration with shift $\\mu = 1$ and with a stored LU factorisation to find the smallest eigenvalue, $3 - \\sqrt{3} \\approx 1.268$. Predict the convergence ratio from the eigenvalues of $(A - \\mu I)^{-1}$ and compare it with what you measure. Then find the middle eigenvalue with a suitable shift.',
+              prompt: 'Use the $3 \\times 3$ matrix in the convergence exercise, with eigenvalues $3 - \\sqrt3 \\approx 1.268$, $3$ and $3 + \\sqrt3 \\approx 4.732$.',
               kind: 'coding',
               difficulty: 3,
+              parts: [
+                {
+                  prompt: 'Use inverse iteration with shift $\\mu = 1$ and with a stored LU factorisation to find the smallest eigenvalue, $3 - \\sqrt{3} \\approx 1.268$.',
+                  answer:
+                    'Factor once with `lu = scipy.linalg.lu_factor(A - mu * np.eye(3))`, then repeat `x = lu_solve(lu, x); x /= np.linalg.norm(x)` and report the Rayleigh quotient `x @ A @ x`. It reaches $1.2679491924$ to about 10 digits within 6 iterations.',
+                },
+                {
+                  prompt: 'Predict the convergence ratio from the eigenvalues of $(A - \\mu I)^{-1}$ and compare it with what you measure.',
+                  answer:
+                    'The eigenvalues of $(A - I)^{-1}$ are $1/(\\lambda_i - 1)$: about $3.732$, $0.5$ and $0.268$. The ratio is $0.5/3.732 \\approx 0.134$ per step for the eigenvector, and its square, about $0.018$, for the Rayleigh quotient. The measured eigenvalue errors $0.28, 0.0023, 2.5 \\times 10^{-5}, 3.7 \\times 10^{-7}$ shrink by factors near $0.01$ to $0.017$, approaching $0.018$.',
+                },
+                {
+                  prompt: 'Find the middle eigenvalue with a suitable shift.',
+                  answer:
+                    'Any shift closer to 3 than to the other eigenvalues works, such as $\\mu = 3.1$. Then $(A - 3.1I)^{-1}$ has dominant eigenvalue $1/(3 - 3.1) = -10$ and next $1/(4.732 - 3.1) \\approx 0.61$, so the ratio is about $0.06$ and the iteration converges to $3$ in a handful of steps.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -1701,6 +2943,33 @@ A better eigenvalue estimate is the **Rayleigh quotient** $r(x) = x^T A x / x^T 
             {
               question: 'What does a shift do in inverse iteration?',
               answerOutline: 'It makes the eigenvalue nearest $\\mu$ the dominant one of $(A - \\mu I)^{-1}$, so the iteration converges to its eigenvector.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'A diagonalisable matrix has eigenvalues $10$, $-8$ and $3$. About how many power iterations does it take to shrink the error in the eigenvector direction by a factor of $10^6$?',
+              options: [
+                'About 62',
+                'About 12',
+                'About 6',
+                'It never converges, because one eigenvalue is negative',
+              ],
+              answer: 0,
+              explanation:
+                'The error shrinks by $|\\lambda_2/\\lambda_1| = 8/10 = 0.8$ per step, so you need $0.8^k = 10^{-6}$, or $k = 6/\\log_{10}(1.25) \\approx 62$. The answer 12 uses $3/10$, the smallest eigenvalue instead of the second largest in size. The sign of $-8$ does not matter, only $|{-8}| < 10$; a tie in size, such as $10$ and $-10$, would prevent convergence.',
+            },
+            {
+              question: 'A symmetric matrix has eigenvalues 1, 4 and 6. Inverse iteration with shift $\\mu = 4.6$ converges to which eigenvalue, and at what ratio per step?',
+              options: [
+                '6, with ratio $4/6$',
+                '1, the smallest eigenvalue, with ratio $1/4$',
+                '4, with ratio $0.6/1.4 \\approx 0.43$',
+                '4, with ratio $0.6/3.6 \\approx 0.17$',
+              ],
+              answer: 2,
+              explanation:
+                'The eigenvalues of $(A - 4.6I)^{-1}$ are $1/(\\lambda - 4.6)$, with sizes $1/3.6$, $1/0.6$ and $1/1.4$. The largest belongs to $\\lambda = 4$, the eigenvalue nearest the shift, and the ratio is the second largest over the largest: $(1/1.4)/(1/0.6) = 0.6/1.4$. The ratio $0.6/3.6$ compares with the farthest eigenvalue instead of the next nearest. Without a shift, inverse iteration would find the smallest eigenvalue, 1.',
             },
           ],
         },
@@ -1760,35 +3029,97 @@ To check this, differentiate: each term's derivative is $\\lambda_i$ times itsel
             {
               slug: 'solve-a-discrete-system',
               title: 'Solve a discrete system exactly',
-              prompt:
-                'Let $A$ have rows $(0.6, 0.5), (-0.16, 1.2)$ and $x_0 = (10, 6)$. Find the eigenvalues (they are $1$ and $0.8$) and show that $x_k = (5, 4) + 0.8^k(5, 2)$. State the long-run limit, and find the first $k$ for which $x_k$ is within 1% of it in each coordinate. Confirm by iteration in NumPy.',
+              prompt: 'Let $A$ have rows $(0.6, 0.5), (-0.16, 1.2)$ and $x_0 = (10, 6)$.',
               kind: 'problem',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Find the eigenvalues (they are $1$ and $0.8$) and show that $x_k = (5, 4) + 0.8^k(5, 2)$.',
+                  answer:
+                    'Trace $1.8$ and determinant $0.72 + 0.08 = 0.8$ give $\\lambda^2 - 1.8\\lambda + 0.8 = (\\lambda - 1)(\\lambda - 0.8)$. $A - I$ has first row $(-0.4, 0.5)$, so $v_1 = (5, 4)$; $A - 0.8I$ has first row $(-0.2, 0.5)$, so $v_2 = (5, 2)$. Since $x_0 = (10, 6) = v_1 + v_2$, $x_k = 1^k v_1 + 0.8^k v_2$.',
+                },
+                {
+                  prompt: 'State the long-run limit, and find the first $k$ for which $x_k$ is within 1% of it in each coordinate.',
+                  answer:
+                    'The limit is $(5, 4)$. Within 1% needs $5 \\cdot 0.8^k \\le 0.05$ and $2 \\cdot 0.8^k \\le 0.04$, that is $0.8^k \\le 0.01$ and $0.8^k \\le 0.02$. The first holds from $k = 21$ ($0.8^{21} \\approx 0.0092$, while $0.8^{20} \\approx 0.0115$), so $k = 21$.',
+                },
+                {
+                  prompt: 'Confirm by iteration in NumPy.',
+                  answer: 'Applying `A @ x` 21 times to $(10, 6)$ gives about $(5.046, 4.018)$, within $0.92\\%$ and $0.46\\%$ of $(5, 4)$; after 20 steps the first coordinate is still $1.15\\%$ away.',
+                },
+              ],
             },
             {
               slug: 'spiral',
               title: 'Spirals from complex eigenvalues',
-              prompt:
-                'Let $A = 0.9\\,Q$, where $Q$ has rows $(0.8, -0.6), (0.6, 0.8)$. Show that the eigenvalues are complex with modulus $0.9$, and find the rotation angle per step. Iterate from $(1, 0)$ for 50 steps and plot the path. Then replace $0.9$ with $1$ and with $1.02$, and describe how each picture matches the eigenvalues.',
+              prompt: 'Let $A = 0.9\\,Q$, where $Q$ has rows $(0.8, -0.6), (0.6, 0.8)$.',
               kind: 'coding',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: 'Show that the eigenvalues are complex with modulus $0.9$, and find the rotation angle per step.',
+                  answer:
+                    '$Q$ is a rotation with $\\cos\\theta = 0.8$, $\\sin\\theta = 0.6$, so its eigenvalues are $0.8 \\pm 0.6i = e^{\\pm i\\theta}$, of modulus 1. Then $A$ has eigenvalues $0.72 \\pm 0.54i$, modulus $0.9$. The angle is $\\theta = \\arctan(0.6/0.8) \\approx 36.87^\\circ$ per step.',
+                },
+                {
+                  prompt: 'Iterate from $(1, 0)$ for 50 steps and plot the path.',
+                  answer: 'An inward spiral, turning about $36.9^\\circ$ each step (a full turn roughly every 10 steps), with radius $0.9^k$: after 50 steps the radius is $0.9^{50} \\approx 0.0052$.',
+                },
+                {
+                  prompt: 'Replace $0.9$ with $1$ and with $1.02$, and describe how each picture matches the eigenvalues.',
+                  answer:
+                    'With 1, the eigenvalues have modulus 1 and the points stay on the unit circle. With $1.02$, the modulus exceeds 1 and the path spirals outwards, to radius $1.02^{50} \\approx 2.69$ after 50 steps. The angle per step is the same in all three.',
+                },
+              ],
             },
             {
               slug: 'continuous-from-eigenvalues',
               title: 'A continuous system',
-              prompt:
-                'For $x\' = Ax$ with $A$ having rows $(0, 1), (-2, -3)$ and $x(0) = (1, 0)$, derive $x(t)$ using eigenvectors. Show that $x_1(1) = 2e^{-1} - e^{-2} \\approx 0.6004$ and $x_2(1) \\approx -0.4651$, and confirm with `scipy.linalg.expm`. Explain why this system corresponds to the single equation $y\'\' + 3y\' + 2y = 0$.',
+              prompt: 'Solve $x\' = Ax$ with $A$ having rows $(0, 1), (-2, -3)$ and $x(0) = (1, 0)$.',
               kind: 'problem',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Derive $x(t)$ using eigenvectors.',
+                  answer:
+                    'The eigenvalues are $-1$ and $-2$, with eigenvectors $(1, -1)$ and $(1, -2)$. Solving $c_1(1, -1) + c_2(1, -2) = (1, 0)$ gives $c_1 = 2$, $c_2 = -1$. So $x(t) = 2e^{-t}(1, -1) - e^{-2t}(1, -2)$: $x_1 = 2e^{-t} - e^{-2t}$ and $x_2 = -2e^{-t} + 2e^{-2t}$.',
+                },
+                {
+                  prompt: 'Show that $x_1(1) = 2e^{-1} - e^{-2} \\approx 0.6004$ and $x_2(1) \\approx -0.4651$, and confirm with `scipy.linalg.expm`.',
+                  answer:
+                    '$2e^{-1} - e^{-2} = 0.73576 - 0.13534 = 0.60042$ and $-2e^{-1} + 2e^{-2} = -0.73576 + 0.27067 = -0.46509$. `expm(A) @ [1, 0]` returns `[0.60042, -0.46509]`.',
+                },
+                {
+                  prompt: 'Explain why this system corresponds to the single equation $y\'\' + 3y\' + 2y = 0$.',
+                  answer:
+                    'Set $x_1 = y$ and $x_2 = y\'$. The first row says $x_1\' = x_2$, which is the definition, and the second says $x_2\' = -2x_1 - 3x_2$, which is $y\'\' = -2y - 3y\'$. The characteristic equation $\\lambda^2 + 3\\lambda + 2 = 0$ is the same as $\\det(A - \\lambda I) = 0$.',
+                },
+              ],
             },
             {
               slug: 'stable-but-growing',
               title: 'Stable, but growing first',
               prompt:
-                'Let $A$ have rows $(0.9, 5), (0, 0.9)$, so that both eigenvalues are 0.9 and the system is stable. Iterate from $(0, 1)$ and plot $\\|x_k\\|$. Show that it grows to about 19.4, near $k = 9$, before it decays. Derive a formula for $A^k$, and explain why eigenvalues alone do not describe short-term behaviour of a defective or non-normal matrix.',
+                'Let $A$ have rows $(0.9, 5), (0, 0.9)$, so that both eigenvalues are 0.9 and the system is stable.',
               kind: 'coding',
               difficulty: 3,
-              hint: 'Write $A = 0.9I + N$ with $N^2 = 0$, and use the binomial theorem.',
+              parts: [
+                {
+                  prompt: 'Iterate from $(0, 1)$ and plot $\\|x_k\\|$. Show that it grows to about 19.4, near $k = 9$, before it decays.',
+                  answer:
+                    'The norms are about 5.1, 9.0, 12.2, 14.6, 16.4, 17.7, 18.6, 19.1 and 19.37 for $k = 1$ to $9$, then 19.37 at $k = 10$ (a hair lower) and falling after that. They drop below 1, the starting size, only at $k = 55$.',
+                },
+                {
+                  prompt: 'Derive a formula for $A^k$.',
+                  answer:
+                    'Write $A = 0.9I + N$ with $N^2 = 0$, and use the binomial theorem. $I$ commutes with $N$ and all terms with $N^2$ or higher vanish, so $A^k = 0.9^kI + k\\,0.9^{k-1}N = \\begin{bmatrix} 0.9^k & 5k\\,0.9^{k-1} \\\\ 0 & 0.9^k \\end{bmatrix}$. So $x_k = (5k\\,0.9^{k-1},\\ 0.9^k)$, and $k\\,0.9^{k-1}$ peaks where $k \\approx 1/\\ln(1/0.9) \\approx 9.5$.',
+                },
+                {
+                  prompt: 'Explain why eigenvalues alone do not describe short-term behaviour of a defective or non-normal matrix.',
+                  answer:
+                    'Eigenvalues give the long-run rate, $0.9^k$, but the factor $k$ and the large off-diagonal entry multiply it first. For a non-normal matrix the eigenvectors are far from orthogonal (here there is only one), so components can reinforce before they decay. The size of $\\|A^k\\|$ for small $k$ is governed by such structure, for example by the singular values of $A$, not by $|\\lambda|$.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -1803,6 +3134,28 @@ To check this, differentiate: each term's derivative is $\\lambda_i$ times itsel
             {
               question: 'Do eigenvalues tell you the behaviour for small $k$?',
               answerOutline: 'Not reliably. They govern the long run, and non-normal matrices can show large transient growth first.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'In $x_{k+1} = Ax_k$, the matrix $A$ has eigenvalue 1 with eigenvector $(2, 1)$ and eigenvalue $0.5$ with eigenvector $(1, -1)$. Starting from $x_0 = (5, 1)$, what is the long-run limit of $x_k$?',
+              options: ['$(2, 1)$', '$(4, 2)$', '$(0, 0)$', '$(5, 1)$'],
+              answer: 1,
+              explanation:
+                'Expand $x_0 = c_1(2, 1) + c_2(1, -1)$: $2c_1 + c_2 = 5$ and $c_1 - c_2 = 1$ give $c_1 = 2$, $c_2 = 1$. Then $x_k = 2(2, 1) + 0.5^k(1, -1) \\to (4, 2)$. The direction $(2, 1)$ is right, but the coefficient $c_1 = 2$ sets the size. Only the component along the eigenvalue $0.5$ dies, so the limit is not 0.',
+            },
+            {
+              question: 'A matrix $A$ has eigenvalues $-0.5$ and $-2$. What happens to $x\' = Ax$ and to $x_{k+1} = Ax_k$ from a general start?',
+              options: [
+                'Both decay to 0, because both eigenvalues are negative',
+                'Both blow up, because $|-2| > 1$',
+                'The discrete system decays to 0 and the continuous one blows up',
+                'The continuous system decays to 0 and the discrete one blows up',
+              ],
+              answer: 3,
+              explanation:
+                'Continuous stability needs $\\operatorname{Re}\\lambda < 0$, and both eigenvalues pass, so $e^{-0.5t}$ and $e^{-2t}$ both decay. Discrete stability needs $|\\lambda| < 1$, and $(-2)^k$ grows in size while alternating in sign. Negative eigenvalues are stable only in continuous time, which is why the first option is the tempting trap.',
             },
           ],
           relatedLessons: ['math-methods/ordinary-differential-equations/systems-of-odes-and-phase-plane'],
@@ -1854,27 +3207,80 @@ usually with $d = 0.85$. Here $S$ is the link matrix, with its columns for pages
             {
               slug: 'three-state-chain',
               title: 'A three-state chain',
-              prompt:
-                'Let $P$ have columns $(1/2, 1/2, 0)$, $(1/4, 1/2, 1/4)$, $(0, 1/2, 1/2)$. Show that it is column-stochastic and regular, find its stationary distribution, which should be $(1/4, 1/2, 1/4)$, and find all its eigenvalues. Predict the convergence rate, then measure it starting from $(1, 0, 0)$.',
+              prompt: 'Let $P$ have columns $(1/2, 1/2, 0)$, $(1/4, 1/2, 1/4)$, $(0, 1/2, 1/2)$.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: 'Show that it is column-stochastic and regular.',
+                  answer:
+                    'All entries are non-negative and each column sums to 1. $P$ itself has zeros, but $P^2$ has rows $(\\tfrac38, \\tfrac14, \\tfrac18)$, $(\\tfrac12, \\tfrac12, \\tfrac12)$, $(\\tfrac18, \\tfrac14, \\tfrac38)$, all positive, so the chain is regular.',
+                },
+                {
+                  prompt: 'Find its stationary distribution, which should be $(1/4, 1/2, 1/4)$.',
+                  answer:
+                    '$(P - I)\\pi = 0$: the first row gives $-\\tfrac12\\pi_1 + \\tfrac14\\pi_2 = 0$, so $\\pi_2 = 2\\pi_1$, and the third gives $\\pi_3 = \\pi_1$ in the same way. Scaling $(1, 2, 1)$ to sum to 1 gives $(\\tfrac14, \\tfrac12, \\tfrac14)$.',
+                },
+                {
+                  prompt: 'Find all its eigenvalues.',
+                  answer:
+                    '$1$, $\\tfrac12$ and $0$, with eigenvectors $(1, 2, 1)$, $(1, 0, -1)$ and $(1, -2, 1)$. Check: the trace is $\\tfrac32 = 1 + \\tfrac12 + 0$, and $P$ is singular because columns 1 and 3 add to twice column 2.',
+                },
+                {
+                  prompt: 'Predict the convergence rate, then measure it starting from $(1, 0, 0)$.',
+                  answer:
+                    'The second-largest eigenvalue in size is $\\tfrac12$, so the distance to $\\pi$ should halve each step. From $(1, 0, 0)$ the 1-norm distances are $0.5, 0.25, 0.125, \\dots$, a ratio of exactly $0.5$, because $(1, 0, 0) = \\pi + \\tfrac12(1, 0, -1) + \\tfrac14(1, -2, 1)$ and the last part vanishes after one step.',
+                },
+              ],
             },
             {
               slug: 'why-one-is-an-eigenvalue',
               title: 'Why 1 is always an eigenvalue',
-              prompt:
-                'Prove that every column-stochastic matrix has eigenvalue 1, by considering $P^T\\mathbf{1}$. Then prove that every eigenvalue has $|\\lambda| \\leq 1$, by applying $P^T$ to an eigenvector of $P^T$ and looking at its largest entry in modulus. Why is it enough to study $P^T$?',
+              prompt: 'Let $P$ be any column-stochastic matrix.',
               kind: 'derivation',
               difficulty: 3,
-              hint: '$P$ and $P^T$ have the same characteristic polynomial.',
+              parts: [
+                {
+                  prompt: 'Why is it enough to study $P^T$?',
+                  answer:
+                    '$P$ and $P^T$ have the same characteristic polynomial, since $\\det(P^T - \\lambda I) = \\det\\big((P - \\lambda I)^T\\big) = \\det(P - \\lambda I)$. So they have the same eigenvalues, though not the same eigenvectors.',
+                },
+                {
+                  prompt: 'Prove that $P$ has eigenvalue 1, by considering $P^T\\mathbf{1}$.',
+                  answer:
+                    'Entry $i$ of $P^T\\mathbf{1}$ is the sum of row $i$ of $P^T$, which is the sum of column $i$ of $P$, which is 1. So $P^T\\mathbf{1} = \\mathbf{1}$, and 1 is an eigenvalue of $P^T$, hence of $P$.',
+                },
+                {
+                  prompt: 'Prove that every eigenvalue has $|\\lambda| \\leq 1$, by applying $P^T$ to an eigenvector of $P^T$ and looking at its largest entry in modulus.',
+                  answer:
+                    'Let $P^Ty = \\lambda y$ and pick $i$ with $|y_i|$ largest. Then $|\\lambda||y_i| = \\big|\\sum_j P_{ji}y_j\\big| \\le \\sum_j P_{ji}|y_j| \\le |y_i|\\sum_j P_{ji} = |y_i|$, and $|y_i| > 0$, so $|\\lambda| \\le 1$.',
+                },
+              ],
             },
             {
               slug: 'small-pagerank',
               title: 'A small PageRank',
-              prompt:
-                'Four pages link as follows: 1 links to 2 and 3; 2 links to 3; 3 links to 1; 4 links to 3. Build $S$ and $G$ with $d = 0.85$, and run power iteration until the 1-norm change is below $10^{-10}$. You should get about $(0.3725, 0.1958, 0.3941, 0.0375)$. Compare the iteration count with the prediction from $|\\lambda_2|$, which here is about 0.60. Explain why page 4 receives exactly $(1 - d)/4$.',
+              prompt: 'Four pages link as follows: 1 links to 2 and 3; 2 links to 3; 3 links to 1; 4 links to 3.',
               kind: 'coding',
               difficulty: 2,
+              parts: [
+                {
+                  prompt:
+                    'Build $S$ and $G$ with $d = 0.85$, and run power iteration until the 1-norm change is below $10^{-10}$. You should get about $(0.3725, 0.1958, 0.3941, 0.0375)$.',
+                  answer:
+                    'Column $j$ of $S$ spreads 1 over the pages that $j$ links to: column 1 is $(0, \\tfrac12, \\tfrac12, 0)$, column 2 is $e_3$, column 3 is $e_1$ and column 4 is $e_3$. No page is without links, so no column needs replacing. Then `G = 0.85 * S + 0.15 / 4`, and iterating from $(\\tfrac14, \\tfrac14, \\tfrac14, \\tfrac14)$ gives $(0.37253, 0.19582, 0.39415, 0.0375)$.',
+                },
+                {
+                  prompt: 'Compare the iteration count with the prediction from $|\\lambda_2|$, which here is about 0.60.',
+                  answer:
+                    'The other eigenvalues are $-0.425 \\pm 0.425i$ (modulus $0.601$) and 0. The prediction is $\\log(10^{-10})/\\log(0.601) \\approx 45$ iterations; one run stopped after 47.',
+                },
+                {
+                  prompt: 'Explain why page 4 receives exactly $(1 - d)/4$.',
+                  answer:
+                    'No page links to page 4, so row 4 of $S$ is zero and row 4 of $G$ is all $(1 - d)/4$. Hence $\\pi_4 = \\tfrac{1 - d}{4}(\\pi_1 + \\dots + \\pi_4) = \\tfrac{0.15}{4} = 0.0375$: the only way to reach page 4 is a random jump.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -1889,6 +3295,27 @@ usually with $d = 0.85$. Here $S$ is the link matrix, with its columns for pages
             {
               question: 'What is the role of damping in PageRank?',
               answerOutline: 'It makes $G$ entrywise positive, which gives a unique stationary distribution and bounds $|\\lambda_2|$ by $d$, so convergence is fast.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'What is the stationary distribution of the chain $P = \\begin{bmatrix} 0.8 & 0.3 \\\\ 0.2 & 0.7 \\end{bmatrix}$ (columns sum to 1)?',
+              options: ['$(0.4, 0.6)$', '$(0.5, 0.5)$', '$(0.6, 0.4)$', '$(0.8, 0.2)$'],
+              answer: 2,
+              explanation:
+                'The first row of $(P - I)\\pi = 0$ gives $-0.2\\pi_1 + 0.3\\pi_2 = 0$, so $\\pi_1 = 1.5\\pi_2$, and scaling to sum to 1 gives $(0.6, 0.4)$. Check: $P(0.6, 0.4) = (0.48 + 0.12, 0.12 + 0.28) = (0.6, 0.4)$. $(0.4, 0.6)$ swaps the states, and $(0.8, 0.2)$ is just the first column, where you go from state 1 in one step.',
+            },
+            {
+              question: 'Which column-stochastic matrix is guaranteed to converge to a unique stationary distribution from every starting distribution?',
+              options: [
+                '$\\begin{bmatrix} 0.5 & 1 \\\\ 0.5 & 0 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 0 & 0 & 1 \\\\ 1 & 0 & 0 \\\\ 0 & 1 & 0 \\end{bmatrix}$',
+              ],
+              answer: 0,
+              explanation:
+                'The first matrix has a zero entry, but its square has rows $(0.75, 0.5)$ and $(0.25, 0.5)$, all positive, so it is regular and Perron-Frobenius applies: its other eigenvalue is $-0.5$. A zero in $P$ itself does not rule out regularity. The swap and the 3-cycle are periodic (eigenvalues on the unit circle other than 1), so they cycle for ever, and the identity has every distribution as a stationary one.',
             },
           ],
           relatedLessons: ['linear-algebra-for-data-science/eigenvalues-and-networks/markov-chains'],
@@ -1970,26 +3397,71 @@ In NumPy, use \`np.linalg.eigh\` for symmetric matrices, not \`eig\`. It is fast
               slug: 'orthogonally-diagonalise',
               title: 'Orthogonally diagonalise',
               prompt:
-                'The matrix with rows $(2, -1, 0), (-1, 2, -1), (0, -1, 2)$ has eigenvalues $2 - \\sqrt{2}$, 2, $2 + \\sqrt{2}$. Find the eigenvectors, normalise them, check that they are orthonormal, and verify $A = Q\\Lambda Q^T$ exactly in SymPy.',
+                'The matrix with rows $(2, -1, 0), (-1, 2, -1), (0, -1, 2)$ has eigenvalues $2 - \\sqrt{2}$, 2, $2 + \\sqrt{2}$.',
               kind: 'problem',
               difficulty: 2,
-              hint: 'Try vectors of the form $(1, s, 1)$ and $(1, 0, -1)$.',
+              parts: [
+                {
+                  prompt: 'Find the eigenvectors.',
+                  answer:
+                    'Try vectors of the form $(1, s, 1)$ and $(1, 0, -1)$. $A(1, 0, -1) = (2, 0, -2)$, so $(1, 0, -1)$ has eigenvalue 2. $A(1, s, 1) = (2 - s, 2s - 2, 2 - s)$, which is $\\lambda(1, s, 1)$ when $\\lambda = 2 - s$ and $2s - 2 = (2 - s)s$, so $s^2 = 2$. Thus $(1, \\sqrt2, 1)$ for $2 - \\sqrt2$ and $(1, -\\sqrt2, 1)$ for $2 + \\sqrt2$.',
+                },
+                {
+                  prompt: 'Normalise them and check that they are orthonormal.',
+                  answer:
+                    '$q_1 = \\tfrac12(1, \\sqrt2, 1)$, $q_2 = \\tfrac{1}{\\sqrt2}(1, 0, -1)$, $q_3 = \\tfrac12(1, -\\sqrt2, 1)$, each of length 1. The dot products are $q_1 \\cdot q_2 = 0$, $q_2 \\cdot q_3 = 0$ and $q_1 \\cdot q_3 = \\tfrac14(1 - 2 + 1) = 0$.',
+                },
+                {
+                  prompt: 'Verify $A = Q\\Lambda Q^T$ exactly in SymPy.',
+                  answer:
+                    'With `Q = sp.Matrix.hstack(q1, q2, q3)` and `L = sp.diag(2 - sp.sqrt(2), 2, 2 + sp.sqrt(2))`, `sp.simplify(Q * L * Q.T - A)` is the zero matrix and `sp.simplify(Q.T * Q)` is the identity.',
+                },
+              ],
             },
             {
               slug: 'real-eigenvalues-proof',
               title: 'Eigenvalues are real',
               prompt:
-                'Let $A$ be real symmetric, and suppose $Av = \\lambda v$ with $v$ a complex non-zero vector and $\\lambda$ complex. By computing $\\bar{v}^T A v$ in two ways, prove that $\\lambda$ is real. Then show that the real matrix with rows $(1, 1), (-1, 1)$ fails the conclusion and identify where the proof breaks.',
+                'Let $A$ be real symmetric, and suppose $Av = \\lambda v$ with $v$ a complex non-zero vector and $\\lambda$ complex.',
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'By computing $\\bar{v}^T A v$ in two ways, prove that $\\lambda$ is real.',
+                  answer:
+                    'First, $\\bar{v}^TAv = \\lambda\\,\\bar{v}^Tv = \\lambda\\|v\\|^2$. Second, $A$ is real, so $A\\bar{v} = \\bar{\\lambda}\\bar{v}$, and with $A^T = A$: $\\bar{v}^TAv = (A^T\\bar{v})^Tv = (A\\bar{v})^Tv = \\bar{\\lambda}\\|v\\|^2$. Since $\\|v\\|^2 = \\sum|v_i|^2 > 0$, $\\lambda = \\bar{\\lambda}$, so $\\lambda$ is real.',
+                },
+                {
+                  prompt: 'Show that the real matrix with rows $(1, 1), (-1, 1)$ fails the conclusion and identify where the proof breaks.',
+                  answer:
+                    'Its characteristic polynomial is $(1 - \\lambda)^2 + 1$, so $\\lambda = 1 \\pm i$, not real. The matrix is not symmetric: its transpose has rows $(1, -1), (1, 1)$. The proof breaks at the step $A^T\\bar{v} = A\\bar{v}$.',
+                },
+              ],
             },
             {
               slug: 'quadratic-form-extremes',
               title: 'Extremes of a quadratic form',
-              prompt:
-                'For $A$ with rows $(2, 2), (2, 5)$, evaluate $x^T A x$ at 1000 points on the unit circle and plot it against angle. Confirm that the maximum is 6 and the minimum is 1, attained at the normalised eigenvectors. Then time `eig` and `eigh` on a random symmetric matrix with $n = 1500$, and compare $\\|Q^TQ - I\\|$ for each. Finally, prove the claim for general $n$ using the coordinates $y = Q^T x$.',
+              prompt: 'Let $A$ have rows $(2, 2), (2, 5)$.',
               kind: 'coding',
               difficulty: 2,
+              parts: [
+                {
+                  prompt:
+                    'Evaluate $x^T A x$ at 1000 points on the unit circle and plot it against angle. Confirm that the maximum is 6 and the minimum is 1, attained at the normalised eigenvectors.',
+                  answer:
+                    'With $x = (\\cos\\theta, \\sin\\theta)$, $x^TAx = 2\\cos^2\\theta + 4\\cos\\theta\\sin\\theta + 5\\sin^2\\theta$, a wave with period $180^\\circ$. The sampled maximum is $5.99999$ near $\\theta = 63.4^\\circ$, the direction of $(1, 2)/\\sqrt5$, and the minimum is $1.00001$ near $153.4^\\circ$, the direction of $\\pm(2, -1)/\\sqrt5$.',
+                },
+                {
+                  prompt: 'Time `eig` and `eigh` on a random symmetric matrix with $n = 1500$, and compare $\\|Q^TQ - I\\|$ for each.',
+                  answer:
+                    'Build it as `(B + B.T) / 2`. One run took about 1.6 s with `eig` and 0.33 s with `eigh`, five times faster. `eigh` gave $\\|Q^TQ - I\\|_F \\approx 10^{-13}$; `eig` only normalises each vector and does not enforce orthogonality, and gave about $2 \\times 10^{-11}$. `eig` may also return complex dtype with zero imaginary parts.',
+                },
+                {
+                  prompt: 'Prove the claim for general $n$ using the coordinates $y = Q^T x$.',
+                  answer:
+                    'With $A = Q\\Lambda Q^T$ and $y = Q^Tx$, $x^TAx = y^T\\Lambda y = \\sum_i \\lambda_i y_i^2$, and $\\|y\\| = \\|x\\| = 1$. So $\\lambda_{\\min} = \\lambda_{\\min}\\sum y_i^2 \\le \\sum\\lambda_iy_i^2 \\le \\lambda_{\\max}\\sum y_i^2 = \\lambda_{\\max}$, with equality when $y$ is the matching standard basis vector, that is, when $x$ is the matching eigenvector.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -2005,6 +3477,32 @@ In NumPy, use \`np.linalg.eigh\` for symmetric matrices, not \`eig\`. It is fast
               question: 'Is a matrix with orthogonal eigenvectors necessarily symmetric?',
               answerOutline:
                 'If it has a real orthonormal eigenbasis with real eigenvalues, yes. But a rotation has orthogonal complex eigenvectors and is not symmetric, because its eigenvalues are complex.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'What is the largest value of $x^TAx$ over unit vectors $x$, for $A = \\begin{bmatrix} 3 & 1 \\\\ 1 & 3 \\end{bmatrix}$, and where is it attained?',
+              options: [
+                '$3$, at $x = (1, 0)$',
+                '$6$, the trace',
+                '$4$, at $x = (1, -1)/\\sqrt2$',
+                '$4$, at $x = (1, 1)/\\sqrt2$',
+              ],
+              answer: 3,
+              explanation:
+                'The eigenvalues are $4$ and $2$, with eigenvectors $(1, 1)$ and $(1, -1)$, so the maximum of the quadratic form on the unit circle is $\\lambda_{\\max} = 4$, at $(1, 1)/\\sqrt2$: $\\tfrac12(3 + 2 + 3) = 4$. At $(1, -1)/\\sqrt2$ the value is $\\tfrac12(3 - 2 + 3) = 2$, the minimum. The diagonal entry 3 is only the value at $e_1$.',
+            },
+            {
+              question: 'Which matrix is guaranteed to have an orthonormal basis of real eigenvectors?',
+              options: [
+                '$\\begin{bmatrix} 1 & 2 \\\\ 0 & 3 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 4 & -2 \\\\ -2 & 1 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 0 & -1 \\\\ 1 & 0 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 1 & 1 \\\\ 0 & 1 \\end{bmatrix}$',
+              ],
+              answer: 1,
+              explanation:
+                'The second matrix is symmetric, so the spectral theorem applies (its eigenvectors are $(2, -1)$ and $(1, 2)$, for 5 and 0). The first has distinct real eigenvalues and is diagonalisable, but its eigenvectors $(1, 0)$ and $(1, 1)$ are not perpendicular. The rotation is an orthogonal matrix, which is not the same thing: its eigenvalues are $\\pm i$. The last is defective.',
             },
           ],
         },
@@ -2063,26 +3561,74 @@ matrix-transform
             {
               slug: 'test-for-definiteness',
               title: 'Test for definiteness',
-              prompt:
-                'Find all real $b$ for which the matrix with rows $(1, b), (b, 1)$ is positive definite, and all $b$ for which it is positive semidefinite. Then show by leading minors, by pivots and by eigenvalues that the matrix with rows $(2, -1, 0), (-1, 2, -1), (0, -1, 2)$ is positive definite. The pivots are $2, 3/2, 4/3$.',
+              prompt: 'Apply the tests for positive definiteness.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: 'Find all real $b$ for which the matrix with rows $(1, b), (b, 1)$ is positive definite, and all $b$ for which it is positive semidefinite.',
+                  answer:
+                    'The eigenvalues are $1 + b$ and $1 - b$ (eigenvectors $(1, 1)$ and $(1, -1)$). Positive definite when both are positive: $-1 < b < 1$. Positive semidefinite when both are $\\ge 0$: $-1 \\le b \\le 1$. Equivalently the leading minors are $1$ and $1 - b^2$.',
+                },
+                {
+                  prompt:
+                    'Show by leading minors, by pivots and by eigenvalues that the matrix with rows $(2, -1, 0), (-1, 2, -1), (0, -1, 2)$ is positive definite. The pivots are $2, 3/2, 4/3$.',
+                  answer:
+                    'Leading minors: $2$, $4 - 1 = 3$ and $\\det A = 4$, all positive. Pivots: $2$, then $2 - \\tfrac12 = \\tfrac32$, then $2 - \\tfrac23 = \\tfrac43$, all positive (each is a ratio of consecutive minors: $\\tfrac32$, $\\tfrac43$). Eigenvalues: $2 - \\sqrt2 \\approx 0.59$, $2$ and $2 + \\sqrt2$, all positive.',
+                },
+              ],
             },
             {
               slug: 'write-cholesky',
               title: 'Write Cholesky',
-              prompt:
-                'Implement Cholesky from the formula for $L_{ij}$. Raise an error if a value under a square root is not positive, and reject non-symmetric input. Test against `np.linalg.cholesky` on 100 matrices $B^TB + I$. Confirm that a run on an indefinite matrix fails at the right step, and that your code rejects rows $(1, 5), (0, 1)$, which NumPy accepts silently. Measure how much faster `scipy.linalg.cho_factor` is than `lu_factor` at $n = 3000$.',
+              prompt: 'Implement Cholesky from the formula for $L_{ij}$.',
               kind: 'coding',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Raise an error if a value under a square root is not positive, and reject non-symmetric input.',
+                  answer:
+                    'A sketch, column by column:\n\n```python\nif not np.allclose(A, A.T): raise ValueError("not symmetric")\nfor j in range(n):\n    d = A[j, j] - L[j, :j] @ L[j, :j]\n    if d <= 0: raise ValueError(f"not positive definite at step {j}")\n    L[j, j] = np.sqrt(d)\n    for i in range(j + 1, n):\n        L[i, j] = (A[i, j] - L[i, :j] @ L[j, :j]) / L[j, j]\n```',
+                },
+                {
+                  prompt: 'Test against `np.linalg.cholesky` on 100 matrices $B^TB + I$.',
+                  answer: 'The largest entrywise difference should be at rounding level; one run on $6 \\times 6$ matrices gave $9 \\times 10^{-16}$.',
+                },
+                {
+                  prompt: 'Confirm that a run on an indefinite matrix fails at the right step, and that your code rejects rows $(1, 5), (0, 1)$, which NumPy accepts silently.',
+                  answer:
+                    'For rows $(1, 2, 0), (2, 1, 0), (0, 0, 1)$, the second step finds $1 - 2^2 = -3 \\le 0$ and stops there: the second leading minor is $-3$. For rows $(1, 5), (0, 1)$ the symmetry check fails, while `np.linalg.cholesky` reads only the lower triangle and returns the identity.',
+                },
+                {
+                  prompt: 'Measure how much faster `scipy.linalg.cho_factor` is than `lu_factor` at $n = 3000$.',
+                  answer:
+                    'Use a positive definite test matrix such as `B.T @ B + n * np.eye(n)`. The operation counts predict a factor of 2 ($\\tfrac13 n^3$ against $\\tfrac23 n^3$); one run gave 0.21 s against 0.62 s, about 3 times, since Cholesky also needs no pivot search or row swaps.',
+                },
+              ],
             },
             {
               slug: 'minimum-of-a-quadratic',
               title: 'Linear systems as minimisation',
-              prompt:
-                'Let $A$ be symmetric positive definite and let $Ax^* = b$. Prove that $\\tfrac12 x^TAx - b^Tx = \\tfrac12(x - x^*)^T A (x - x^*) - \\tfrac12 (x^*)^T A x^*$. Deduce that $x^*$ is the unique minimiser. Then show that $A^TA$ is positive semidefinite for every real $A$, and positive definite exactly when $A$ has independent columns.',
+              prompt: 'Let $A$ be symmetric positive definite and let $Ax^* = b$.',
               kind: 'derivation',
               difficulty: 3,
+              parts: [
+                {
+                  prompt: 'Prove that $\\tfrac12 x^TAx - b^Tx = \\tfrac12(x - x^*)^T A (x - x^*) - \\tfrac12 (x^*)^T A x^*$.',
+                  answer:
+                    'Expand the right side: $\\tfrac12x^TAx - \\tfrac12x^TAx^* - \\tfrac12(x^*)^TAx + \\tfrac12(x^*)^TAx^* - \\tfrac12(x^*)^TAx^*$. By symmetry the two middle terms are equal, and together they are $-x^TAx^* = -x^Tb = -b^Tx$. What remains is $\\tfrac12x^TAx - b^Tx$.',
+                },
+                {
+                  prompt: 'Deduce that $x^*$ is the unique minimiser.',
+                  answer:
+                    'The last term does not depend on $x$, and $\\tfrac12(x - x^*)^TA(x - x^*) \\ge 0$, with equality only when $x - x^* = 0$, by positive definiteness. So the minimum is attained at $x^*$ and nowhere else.',
+                },
+                {
+                  prompt: 'Show that $A^TA$ is positive semidefinite for every real $A$, and positive definite exactly when $A$ has independent columns.',
+                  answer:
+                    '$A^TA$ is symmetric, and $x^TA^TAx = \\|Ax\\|^2 \\ge 0$. It equals 0 exactly when $Ax = 0$. So $x^TA^TAx > 0$ for all $x \\neq 0$ exactly when $N(A) = \\{0\\}$, that is, when the columns are independent.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -2097,6 +3643,32 @@ matrix-transform
             {
               question: 'Does a positive determinant and positive trace imply positive definiteness?',
               answerOutline: 'For a symmetric $2 \\times 2$ matrix, yes, since the eigenvalues have positive sum and product. For larger matrices no: $\\mathrm{diag}(-1, -1, 3)$ has trace 1 and determinant 3 and is indefinite. It also requires symmetry.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'What is the Cholesky factor $L$ of $A = \\begin{bmatrix} 9 & 3 \\\\ 3 & 5 \\end{bmatrix}$, with $A = LL^T$?',
+              options: [
+                '$\\begin{bmatrix} 3 & 0 \\\\ 1 & 2 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 3 & 0 \\\\ 3 & 2 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 9 & 0 \\\\ 3 & 4 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 3 & 0 \\\\ 1 & \\sqrt5 \\end{bmatrix}$',
+              ],
+              answer: 0,
+              explanation:
+                '$L_{11}^2 = 9$ gives $L_{11} = 3$; $3L_{21} = 3$ gives $L_{21} = 1$; and $1 + L_{22}^2 = 5$ gives $L_{22} = 2$. Check: $LL^T$ has rows $(9, 3)$ and $(3, 1 + 4)$. Keeping $L_{21} = 3$ forgets to divide by $L_{11}$, and $L_{22} = \\sqrt5$ forgets to subtract $L_{21}^2$.',
+            },
+            {
+              question: 'Which symmetric matrix is positive definite?',
+              options: [
+                '$\\begin{bmatrix} 1 & 2 \\\\ 2 & 1 \\end{bmatrix}$',
+                '$\\mathrm{diag}(-1, -1, 3)$',
+                '$\\begin{bmatrix} 1 & 0 \\\\ 0 & 0 \\end{bmatrix}$',
+                '$\\begin{bmatrix} 2 & -1 \\\\ -1 & 2 \\end{bmatrix}$',
+              ],
+              answer: 3,
+              explanation:
+                'The last matrix has leading minors $2$ and $3$, and eigenvalues 1 and 3; negative off-diagonal entries are allowed. The first has all entries positive, but its determinant is $-3$ (eigenvalues 3 and $-1$), so it is indefinite. $\\mathrm{diag}(-1, -1, 3)$ has positive trace and determinant but two negative eigenvalues, and $\\mathrm{diag}(1, 0)$ is only semidefinite.',
             },
           ],
         },
@@ -2160,34 +3732,92 @@ The SVD exposes the whole structure. The rank $r$ is the number of non-zero sing
             {
               slug: 'svd-by-hand',
               title: 'Two SVDs by hand',
-              prompt:
-                'Find an SVD of the diagonal matrix with rows $(2, 0), (0, -3)$. Note that $\\sigma_1 = 3$, so the columns must be ordered, and the minus sign has to go into $U$ or $V$. Then find an SVD of the matrix with rows $(1, 1), (1, 1)$, which has rank 1, and give bases of all four subspaces from it.',
+              prompt: 'Find each SVD by hand.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt:
+                    'The diagonal matrix with rows $(2, 0), (0, -3)$. Note that $\\sigma_1 = 3$, so the columns must be ordered, and the minus sign has to go into $U$ or $V$.',
+                  answer:
+                    'Take $v_1 = e_2$, $u_1 = -e_2$ (since $Ae_2 = -3e_2 = 3(-e_2)$), and $v_2 = e_1$, $u_2 = e_1$. So $U = \\begin{bmatrix} 0 & 1 \\\\ -1 & 0 \\end{bmatrix}$, $\\Sigma = \\begin{bmatrix} 3 & 0 \\\\ 0 & 2 \\end{bmatrix}$, $V = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}$, and $U\\Sigma V^T = A$. Putting the sign into $v_1 = -e_2$ with $u_1 = e_2$ works equally well.',
+                },
+                {
+                  prompt: 'The matrix with rows $(1, 1), (1, 1)$, which has rank 1.',
+                  answer:
+                    '$A^TA = \\begin{bmatrix} 2 & 2 \\\\ 2 & 2 \\end{bmatrix}$ has eigenvalues 4 and 0, so $\\sigma_1 = 2$, $\\sigma_2 = 0$, with $v_1 = (1, 1)/\\sqrt2$ and $v_2 = (1, -1)/\\sqrt2$. Then $u_1 = Av_1/2 = (1, 1)/\\sqrt2$, and $u_2 = (1, -1)/\\sqrt2$ completes the basis. So $A = 2u_1v_1^T$.',
+                },
+                {
+                  prompt: 'Give bases of all four subspaces of the rank-1 matrix from its SVD.',
+                  answer:
+                    'Column space: $u_1 \\propto (1, 1)$. Left null space: $u_2 \\propto (1, -1)$. Row space: $v_1 \\propto (1, 1)$. Null space: $v_2 \\propto (1, -1)$.',
+                },
+              ],
             },
             {
               slug: 'circle-to-ellipse',
               title: 'See the ellipse',
-              prompt:
-                'For $A$ with rows $(2, 1), (1, 2)$, map 200 points of the unit circle and plot the image. Compute the SVD and overlay the semi-axes $\\sigma_i u_i$, which should have lengths 3 and 1. Plot the $v_i$ on the original circle. Then repeat with the non-symmetric matrix with rows $(1, 2), (0, 1)$, and show that its singular values are not the absolute values of its eigenvalues.',
+              prompt: 'Map 200 points of the unit circle through a $2 \\times 2$ matrix and plot the image.',
               kind: 'coding',
               difficulty: 2,
+              parts: [
+                {
+                  prompt:
+                    'For $A$ with rows $(2, 1), (1, 2)$, compute the SVD and overlay the semi-axes $\\sigma_i u_i$, which should have lengths 3 and 1. Plot the $v_i$ on the original circle.',
+                  answer:
+                    '`np.linalg.svd(A)` gives $s = (3, 1)$, with $u_1 = v_1 = \\pm(1, 1)/\\sqrt2$ and $u_2 = v_2 = \\pm(1, -1)/\\sqrt2$ (signs may vary). The ellipse is stretched to length 3 along $(1, 1)$ and has semi-axis 1 along $(1, -1)$. For a symmetric positive definite matrix the $u_i$ and $v_i$ coincide.',
+                },
+                {
+                  prompt: 'Repeat with the non-symmetric matrix with rows $(1, 2), (0, 1)$, and show that its singular values are not the absolute values of its eigenvalues.',
+                  answer:
+                    'Both eigenvalues are 1 (it is triangular), but the singular values are $1 + \\sqrt2 \\approx 2.414$ and $\\sqrt2 - 1 \\approx 0.414$: $A^TA$ has trace 6 and determinant 1, so $\\sigma^2 = 3 \\pm 2\\sqrt2$. The ellipse is long and thin, tilted away from the eigenvector $(1, 0)$.',
+                },
+              ],
             },
             {
               slug: 'why-not-through-ata',
               title: 'Why not compute it through the normal matrix',
               prompt:
-                'Build a $10 \\times 10$ matrix with known singular values $10^{0}, 10^{-1}, \\dots, 10^{-9}$ from random orthogonal factors. Compare the true values with `np.linalg.svd(A)` and with the square roots of the eigenvalues of $A^TA$. Report the relative error of each estimate of the smallest values. Explain the result using the size of $\\varepsilon\\sigma_1^2$ compared with $\\sigma_n^2$.',
+                'Build a $10 \\times 10$ matrix with known singular values $10^{0}, 10^{-1}, \\dots, 10^{-9}$ from random orthogonal factors.',
               kind: 'coding',
               difficulty: 2,
+              parts: [
+                {
+                  prompt:
+                    'Compare the true values with `np.linalg.svd(A)` and with the square roots of the eigenvalues of $A^TA$. Report the relative error of each estimate of the smallest values.',
+                  answer:
+                    'Use `np.linalg.qr` of random matrices for $U$ and $V$, and take absolute values before the square root, since tiny eigenvalues can come out negative. `svd` gets every value with relative error at most about $5 \\times 10^{-9}$ (for $10^{-9}$). Through $A^TA$, one run gave relative errors of $4 \\times 10^{-5}$ at $10^{-6}$, $2 \\times 10^{-3}$ at $10^{-7}$, $0.08$ at $10^{-8}$ and $1.0$ at $10^{-9}$: the smallest value is lost entirely.',
+                },
+                {
+                  prompt: 'Explain the result using the size of $\\varepsilon\\sigma_1^2$ compared with $\\sigma_n^2$.',
+                  answer:
+                    'Any eigenvalue routine applied to $A^TA$ makes absolute errors of about $\\varepsilon\\|A^TA\\| = \\varepsilon\\sigma_1^2 \\approx 2 \\times 10^{-16}$. The eigenvalue $\\sigma_{10}^2 = 10^{-18}$ is far below that, so it is pure noise, and $\\sigma_9^2 = 10^{-16}$ is just at it. The SVD works on $A$ with absolute errors near $\\varepsilon\\sigma_1 \\approx 2 \\times 10^{-16}$, well below $\\sigma_{10} = 10^{-9}$.',
+                },
+              ],
             },
             {
               slug: 'orthonormal-left-vectors',
               title: 'Why the left vectors are orthonormal',
-              prompt:
-                'Let $v_1, \\dots, v_r$ be orthonormal eigenvectors of $A^TA$ with positive eigenvalues $\\sigma_i^2$, and set $u_i = Av_i/\\sigma_i$. Prove that the $u_i$ are orthonormal. Prove that $A^TA$ and $AA^T$ have the same non-zero eigenvalues. Finally, prove that the non-zero singular values of a real symmetric matrix are the absolute values of its non-zero eigenvalues.',
+              prompt: 'Let $v_1, \\dots, v_r$ be orthonormal eigenvectors of $A^TA$ with positive eigenvalues $\\sigma_i^2$, and set $u_i = Av_i/\\sigma_i$.',
               kind: 'derivation',
               difficulty: 3,
+              parts: [
+                {
+                  prompt: 'Prove that the $u_i$ are orthonormal.',
+                  answer:
+                    '$u_i \\cdot u_j = \\dfrac{(Av_i)^T(Av_j)}{\\sigma_i\\sigma_j} = \\dfrac{v_i^T(A^TAv_j)}{\\sigma_i\\sigma_j} = \\dfrac{\\sigma_j^2\\,v_i \\cdot v_j}{\\sigma_i\\sigma_j}$, which is 0 for $i \\neq j$ and $\\sigma_i^2/\\sigma_i^2 = 1$ for $i = j$.',
+                },
+                {
+                  prompt: 'Prove that $A^TA$ and $AA^T$ have the same non-zero eigenvalues.',
+                  answer:
+                    'If $A^TAv = \\lambda v$ with $\\lambda \\neq 0$, then $Av \\neq 0$ (else $\\lambda v = 0$), and $AA^T(Av) = A(A^TAv) = \\lambda(Av)$. So $\\lambda$ is an eigenvalue of $AA^T$. The same argument with $A^T$ in place of $A$ gives the reverse, and $v \\mapsto Av$ maps the eigenspaces one-to-one, so multiplicities agree.',
+                },
+                {
+                  prompt: 'Prove that the non-zero singular values of a real symmetric matrix are the absolute values of its non-zero eigenvalues.',
+                  answer:
+                    'Write $A = Q\\Lambda Q^T$. Then $A^TA = A^2 = Q\\Lambda^2Q^T$, whose eigenvalues are $\\lambda_i^2$, so $\\sigma_i = \\sqrt{\\lambda_i^2} = |\\lambda_i|$. Explicitly, $A = Q|\\Lambda|(QS)^T$ is an SVD after reordering, where $S$ is the diagonal matrix of signs of the $\\lambda_i$ (any sign for $\\lambda_i = 0$).',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -2202,6 +3832,22 @@ The SVD exposes the whole structure. The rank $r$ is the number of non-zero sing
             {
               question: 'What is the difference between `Vt` and $V$ in the NumPy output?',
               answerOutline: '`Vt` is $V^T$, so the right singular vectors are its rows. `Vt[i]` is $v_{i+1}$.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'What are the singular values of $A = \\begin{bmatrix} 3 & 0 \\\\ 4 & 5 \\end{bmatrix}$?',
+              options: ['$5$ and $3$', '$3\\sqrt5$ and $\\sqrt5$', '$45$ and $5$', '$5$ and $5$'],
+              answer: 1,
+              explanation:
+                '$A^TA = \\begin{bmatrix} 25 & 20 \\\\ 20 & 25 \\end{bmatrix}$ has eigenvalues $45$ and $5$, so $\\sigma_1 = \\sqrt{45} = 3\\sqrt5$ and $\\sigma_2 = \\sqrt5$. Check: $\\sigma_1\\sigma_2 = 15 = |\\det A|$. The eigenvalues of the triangular matrix, 3 and 5, are not its singular values, because $A$ is not symmetric. $45$ and $5$ forget the square root, and $5, 5$ are the column lengths.',
+            },
+            {
+              question: 'After `U, s, Vt = np.linalg.svd(A)`, which expression is the first right singular vector $v_1$?',
+              options: ['`Vt[:, 0]`', '`U[:, 0]`', '`Vt[0]`', '`U[0]`'],
+              answer: 2,
+              explanation:
+                'NumPy returns $V^T$, whose rows are the right singular vectors, so $v_1$ is the first row, `Vt[0]`. `Vt[:, 0]` is the first column of $V^T$, which holds the first entry of every $v_i$. `U[:, 0]` is $u_1$, the first left singular vector, which lives in the other space.',
             },
           ],
           relatedLessons: ['linear-algebra-for-data-science/svd-and-pca/singular-value-decomposition'],
@@ -2256,26 +3902,70 @@ The relative Frobenius error is exactly $\\sqrt{\\sum_{i>k}\\sigma_i^2 / \\sum_i
             {
               slug: 'errors-from-singular-values',
               title: 'Errors from singular values',
-              prompt:
-                'A matrix has singular values 10, 5, 2, 1. Without knowing the matrix, give the spectral and Frobenius errors of its best rank-2 approximation, and the relative Frobenius error. You should find $2$, $\\sqrt{5}$ and about $0.196$. Then build such a $6 \\times 4$ matrix from random orthonormal factors and confirm all three numbers.',
+              prompt: 'A matrix has singular values 10, 5, 2, 1.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt:
+                    'Without knowing the matrix, give the spectral and Frobenius errors of its best rank-2 approximation, and the relative Frobenius error. You should find $2$, $\\sqrt{5}$ and about $0.196$.',
+                  answer:
+                    'By Eckart-Young the discarded values are 2 and 1. Spectral error $\\sigma_3 = 2$. Frobenius error $\\sqrt{2^2 + 1^2} = \\sqrt5 \\approx 2.236$. Relative Frobenius error $\\sqrt{5/(100 + 25 + 4 + 1)} = \\sqrt{5/130} \\approx 0.196$.',
+                },
+                {
+                  prompt: 'Build such a $6 \\times 4$ matrix from random orthonormal factors and confirm all three numbers.',
+                  answer:
+                    'Take `U, _ = np.linalg.qr(rng.standard_normal((6, 4)))`, a $4 \\times 4$ orthogonal `V` the same way, and `A = U @ np.diag([10, 5, 2, 1]) @ V.T`. Truncate with `(u[:, :2] * s[:2]) @ vt[:2]`. Then `np.linalg.norm(E, 2)`, `np.linalg.norm(E)` and `np.linalg.norm(E) / np.linalg.norm(A)` print $2.0$, $2.2361$ and $0.1961$, to about 15 digits.',
+                },
+              ],
             },
             {
               slug: 'compress-a-photo',
               title: 'Compress a photo',
-              prompt:
-                'Load a greyscale photo as a matrix with entries in $[0, 1]$. For $k = 1, 5, 20, 50, 100$, show the reconstruction, the compression ratio $k(m + n + 1)/(mn)$, and the relative Frobenius error. Plot the singular values on a log scale. Confirm that the error computed directly matches the formula from the singular values to within $10^{-10}$. Repeat with a matrix of uniform random noise of the same shape, and compare the two singular value curves.',
+              prompt: 'Load a greyscale photo as a matrix with entries in $[0, 1]$.',
               kind: 'coding',
               difficulty: 2,
+              parts: [
+                {
+                  prompt:
+                    'For $k = 1, 5, 20, 50, 100$, show the reconstruction, the compression ratio $k(m + n + 1)/(mn)$, and the relative Frobenius error.',
+                  answer:
+                    'For a $512 \\times 512$ photo the ratios are $0.0039$, $0.0196$, $0.078$, $0.196$ and $0.391$; use your own $m$ and $n$. $k = 1$ shows only broad horizontal and vertical bands; by $k = 20$ to $50$ the picture is clearly recognisable, and $k = 100$ is hard to tell from the original. The relative error falls steadily but depends on the image: scikit-learn\'s sample photo `china.jpg` in greyscale ($427 \\times 640$) gave $0.29$, $0.18$, $0.14$, $0.10$ and $0.074$.',
+                },
+                {
+                  prompt: 'Plot the singular values on a log scale, and confirm that the error computed directly matches the formula from the singular values to within $10^{-10}$.',
+                  answer:
+                    'A photo gives a curve that drops by several orders of magnitude from $\\sigma_1$, steeply at first (from about 327 to 0.012 for that sample photo). Compare `np.linalg.norm(A - Ak) / np.linalg.norm(A)` with `np.sqrt(np.sum(s[k:]**2) / np.sum(s**2))`: they agree to about $10^{-14}$.',
+                },
+                {
+                  prompt: 'Repeat with a matrix of uniform random noise of the same shape, and compare the two singular value curves.',
+                  answer:
+                    'For $512 \\times 512$ uniform noise, $\\sigma_1 \\approx 256$ (the mean brightness $0.5$ forms a rank-one part), and the rest form a nearly flat curve starting near 13 and falling slowly to 0. The relative error stays near $0.5$ at $k = 1$ and only drops to about $0.34$ at $k = 100$, so no small $k$ captures noise.',
+                },
+              ],
             },
             {
               slug: 'rank-one-by-hand',
               title: 'Best rank-one by hand',
-              prompt:
-                'Find the best rank-one approximation of the matrix with rows $(2, 0), (0, 3)$. Its error in the spectral norm should be 2. Now show that the best approximation of $I_2$ by a rank-one matrix is not unique, by giving two different optimal ones. Explain which hypothesis of uniqueness fails.',
+              prompt: 'Find best rank-one approximations directly from the SVD.',
               kind: 'problem',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Find the best rank-one approximation of the matrix with rows $(2, 0), (0, 3)$. Its error in the spectral norm should be 2.',
+                  answer:
+                    'The singular values are 3 (along $e_2$) and 2 (along $e_1$), so $A_1 = 3e_2e_2^T = \\begin{bmatrix} 0 & 0 \\\\ 0 & 3 \\end{bmatrix}$. The error $A - A_1 = \\begin{bmatrix} 2 & 0 \\\\ 0 & 0 \\end{bmatrix}$ has spectral norm $2 = \\sigma_2$.',
+                },
+                {
+                  prompt: 'Show that the best approximation of $I_2$ by a rank-one matrix is not unique, by giving two different optimal ones.',
+                  answer:
+                    'Both singular values of $I_2$ are 1, so the minimum error is $\\sigma_2 = 1$. $e_1e_1^T$ leaves error $\\mathrm{diag}(0, 1)$ and $e_2e_2^T$ leaves error $\\mathrm{diag}(1, 0)$, both of norm 1. In fact $uu^T$ for any unit vector $u$ is optimal.',
+                },
+                {
+                  prompt: 'Explain which hypothesis of uniqueness fails.',
+                  answer: 'Uniqueness needs $\\sigma_k > \\sigma_{k+1}$. Here $k = 1$ and $\\sigma_1 = \\sigma_2 = 1$, so every direction is an equally good first singular vector.',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -2290,6 +3980,23 @@ The relative Frobenius error is exactly $\\sqrt{\\sum_{i>k}\\sigma_i^2 / \\sum_i
             {
               question: 'Why does an image compress better than random noise?',
               answerOutline: 'Images have correlated structure, so their singular values fall quickly. Noise has no such structure and its energy is spread across many singular values.',
+            },
+          ],
+          quiz: [
+            {
+              question: 'A matrix has singular values $6$, $3$ and $2$. What is the Frobenius-norm error of its best rank-one approximation?',
+              options: ['$3$', '$5$', '$\\sqrt{13}$', '$13$'],
+              answer: 2,
+              explanation:
+                'By Eckart-Young the error is the root of the sum of squares of the discarded values: $\\sqrt{3^2 + 2^2} = \\sqrt{13} \\approx 3.61$. $3$ is the error in the spectral norm, $\\sigma_2$. Adding $3 + 2$ forgets to square, and $13$ forgets the square root.',
+            },
+            {
+              question:
+                'A $1000 \\times 800$ greyscale image is replaced by its rank-40 truncated SVD. How many numbers must be stored, compared with $800{,}000$ for the full image?',
+              options: ['$1600$', '$72{,}040$', '$40{,}000$', '$800{,}000$, because $A_{40}$ is still a $1000 \\times 800$ matrix'],
+              answer: 1,
+              explanation:
+                'Store 40 left vectors of length 1000, 40 right vectors of length 800 and 40 singular values: $40(1000 + 800 + 1) = 72{,}040$, about 9% of the original. $40{,}000$ counts only the left vectors. Forming $A_{40}$ as a full matrix would indeed take $800{,}000$ entries, which is why you store the factors instead.',
             },
           ],
           relatedLessons: ['linear-algebra-for-data-science/svd-and-pca/low-rank-approximation'],
@@ -2341,34 +4048,102 @@ Three cautions. Forget to centre, and the first direction largely points at the 
             {
               slug: 'pseudoinverse-by-hand',
               title: 'A pseudoinverse by hand',
-              prompt:
-                'Using the SVD you found earlier, show that the pseudoinverse of the matrix with rows $(1, 1), (1, 1)$ has every entry equal to $1/4$. Use it to find the minimum-norm solution of $x_1 + x_2 = 2$ written twice, and of the inconsistent system $x_1 + x_2 = 1$, $x_1 + x_2 = 3$. Check both with `np.linalg.pinv` and `lstsq`.',
+              prompt: 'Let $A$ be the matrix with rows $(1, 1), (1, 1)$, with the SVD $A = 2u_1v_1^T$, $u_1 = v_1 = (1, 1)/\\sqrt2$, found earlier.',
               kind: 'problem',
               difficulty: 1,
+              parts: [
+                {
+                  prompt: 'Show that the pseudoinverse has every entry equal to $1/4$.',
+                  answer: '$A^+ = \\tfrac12 v_1u_1^T = \\tfrac12 \\cdot \\tfrac12\\begin{bmatrix} 1 & 1 \\\\ 1 & 1 \\end{bmatrix} = \\tfrac14\\begin{bmatrix} 1 & 1 \\\\ 1 & 1 \\end{bmatrix}$.',
+                },
+                {
+                  prompt: 'Find the minimum-norm solution of $x_1 + x_2 = 2$ written twice.',
+                  answer:
+                    '$A^+(2, 2) = \\tfrac14(4, 4) = (1, 1)$. Every solution is $(1 + t, 1 - t)$, and $(1, 1)$, which lies in the row space, is the shortest.',
+                },
+                {
+                  prompt: 'Find the minimum-norm least-squares solution of the inconsistent system $x_1 + x_2 = 1$, $x_1 + x_2 = 3$.',
+                  answer:
+                    '$A^+(1, 3) = \\tfrac14(4, 4) = (1, 1)$. Least squares makes $x_1 + x_2$ equal the average, 2, and the shortest such vector is again $(1, 1)$.',
+                },
+                {
+                  prompt: 'Check both with `np.linalg.pinv` and `lstsq`.',
+                  answer: '`np.linalg.pinv(A)` prints `0.25` everywhere, and both `pinv(A) @ b` and `lstsq(A, b, rcond=None)[0]` return `[1., 1.]` for each right-hand side.',
+                },
+              ],
             },
             {
               slug: 'penrose-conditions',
               title: 'The Penrose conditions',
-              prompt:
-                'Using $A^+ = V\\Sigma^+U^T$, prove that $AA^+A = A$, $A^+AA^+ = A^+$, and that $AA^+$ and $A^+A$ are symmetric. Identify $AA^+$ and $A^+A$ as orthogonal projections, and say onto which of the four subspaces.',
+              prompt: 'Use $A = U\\Sigma V^T$ and $A^+ = V\\Sigma^+U^T$, where $A$ has rank $r$.',
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Prove that $AA^+A = A$ and $A^+AA^+ = A^+$.',
+                  answer:
+                    'Using $U^TU = I$ and $V^TV = I$: $AA^+A = U\\Sigma\\Sigma^+\\Sigma V^T$ and $A^+AA^+ = V\\Sigma^+\\Sigma\\Sigma^+U^T$. Entry by entry on the diagonal, $\\sigma \\cdot \\tfrac1\\sigma \\cdot \\sigma = \\sigma$ and $\\tfrac1\\sigma \\cdot \\sigma \\cdot \\tfrac1\\sigma = \\tfrac1\\sigma$, and zeros stay zero. So $\\Sigma\\Sigma^+\\Sigma = \\Sigma$ and $\\Sigma^+\\Sigma\\Sigma^+ = \\Sigma^+$.',
+                },
+                {
+                  prompt: 'Prove that $AA^+$ and $A^+A$ are symmetric.',
+                  answer:
+                    '$AA^+ = U(\\Sigma\\Sigma^+)U^T$ and $A^+A = V(\\Sigma^+\\Sigma)V^T$. Both $\\Sigma\\Sigma^+$ ($m \\times m$) and $\\Sigma^+\\Sigma$ ($n \\times n$) are diagonal, with $r$ ones and then zeros, so both products are symmetric.',
+                },
+                {
+                  prompt: 'Identify $AA^+$ and $A^+A$ as orthogonal projections, and say onto which of the four subspaces.',
+                  answer:
+                    '$AA^+ = u_1u_1^T + \\dots + u_ru_r^T$ is the projection onto the span of $u_1, \\dots, u_r$, the column space $C(A)$. $A^+A = v_1v_1^T + \\dots + v_rv_r^T$ is the projection onto the span of $v_1, \\dots, v_r$, the row space $C(A^T)$. Each is symmetric and idempotent.',
+                },
+              ],
             },
             {
               slug: 'centring-matters',
               title: 'Why you must centre',
               prompt:
-                'Generate 200 points in the plane with independent coordinates of standard deviation 3 and 0.5, shifted to have mean $(10, 10)$. Find the first right singular vector of the raw data and of the centred data. The raw one should point close to $(1, 1)/\\sqrt{2}$ and the centred one close to the $x$-axis. Explain both results using the fact that the SVD measures distance from the origin.',
+                'Generate 200 points in the plane with independent coordinates of standard deviation 3 and 0.5, shifted to have mean $(10, 10)$.',
               kind: 'coding',
               difficulty: 1,
+              parts: [
+                {
+                  prompt:
+                    'Find the first right singular vector of the raw data and of the centred data. The raw one should point close to $(1, 1)/\\sqrt{2}$ and the centred one close to the $x$-axis.',
+                  answer:
+                    '`np.linalg.svd(X, full_matrices=False)[2][0]` gave about $\\pm(0.712, 0.702)$ for the raw data, and the same for `X - X.mean(axis=0)` gave about $\\pm(0.9999, -0.011)$.',
+                },
+                {
+                  prompt: 'Explain both results using the fact that the SVD measures distance from the origin.',
+                  answer:
+                    '$v_1$ maximises $\\sum_i (x_i \\cdot v)^2$, the spread measured from the origin. For raw data, every point is about $(10, 10)$ from the origin, and that shared offset (squared length about 200 per point) dwarfs the spread around the mean (variance 9 and 0.25), so $v_1$ points at the mean. After centring, the origin is the mean, and $v_1$ follows the direction of largest variance, the $x$-axis.',
+                },
+              ],
             },
             {
               slug: 'pca-on-real-data',
               title: 'PCA on real data',
-              prompt:
-                'Load `sklearn.datasets.load_wine`, which has 178 samples and 13 chemical measurements. Using only NumPy, centre and scale the columns, compute the SVD, and report the explained variance ratios. Plot the data on the first two components, coloured by the class label, which PCA did not use. Repeat without scaling, and explain the difference by looking at the standard deviations of the columns. Finally, check your ratios against `sklearn.decomposition.PCA`.',
+              prompt: 'Load `sklearn.datasets.load_wine`, which has 178 samples and 13 chemical measurements. Use only NumPy for the PCA itself.',
               kind: 'data-analysis',
               difficulty: 2,
+              parts: [
+                {
+                  prompt: 'Centre and scale the columns, compute the SVD, and report the explained variance ratios.',
+                  answer:
+                    'With `Z = (X - X.mean(0)) / X.std(0)` and `s = np.linalg.svd(Z, compute_uv=False)`, the ratios `s**2 / np.sum(s**2)` begin $0.362$, $0.192$, $0.111$, $0.071$, $0.066$: the first two components explain about 55% and the first three about 67%.',
+                },
+                {
+                  prompt: 'Plot the data on the first two components, coloured by the class label, which PCA did not use.',
+                  answer:
+                    'Plot the first two columns of `U * s` (equivalently `Z @ Vt[:2].T`). You should see the three cultivars form three fairly well-separated groups, even though PCA never saw the labels: classes 0 and 2 sit at opposite ends of the first component, and class 1 lies between them on it but apart from both along the second.',
+                },
+                {
+                  prompt: 'Repeat without scaling, and explain the difference by looking at the standard deviations of the columns.',
+                  answer:
+                    'Unscaled, the first component explains about 99.8% of the variance and is almost exactly the proline axis: proline has standard deviation about 315, magnesium about 14 and every other column below 4. PCA then follows units, not structure, and the plot mostly shows proline.',
+                },
+                {
+                  prompt: 'Check your ratios against `sklearn.decomposition.PCA`.',
+                  answer: '`PCA().fit(Z).explained_variance_ratio_` gives the same numbers, $0.362$, $0.192$, $0.111$, and so on. (Scaling with `ddof=0` or `ddof=1` does not change the ratios.)',
+                },
+              ],
             },
           ],
           selfAssessment: [
@@ -2387,6 +4162,34 @@ Three cautions. Forget to centre, and the first direction largely points at the 
             {
               question: 'What does PCA not tell you?',
               answerOutline: 'It does not show which directions matter for a particular question or label, nor that components have causal or physical meaning. Results also depend on scaling.',
+            },
+          ],
+          quiz: [
+            {
+              question:
+                'Use the pseudoinverse to find the minimum-norm least-squares solution of $2x_1 = 4$, $0x_2 = 3$, that is, $A = \\mathrm{diag}(2, 0)$ and $b = (4, 3)$.',
+              options: [
+                'There is none, because the second equation cannot be satisfied',
+                '$(2, t)$ for every real $t$',
+                '$(2, 3)$',
+                '$(2, 0)$',
+              ],
+              answer: 3,
+              explanation:
+                '$A^+ = \\mathrm{diag}(\\tfrac12, 0)$: invert the non-zero singular value and leave the zero one at zero. So $A^+b = (2, 0)$. Every $(2, t)$ is a least-squares solution, with residual 3 in the second equation, and the pseudoinverse picks the shortest one. Getting $x_2 = 3$ treats the zero as if it could be inverted.',
+            },
+            {
+              question:
+                'A data set records height in centimetres (standard deviation 10) and income in dollars (standard deviation 20,000). You run PCA on the centred but unscaled data. What will the first principal direction be?',
+              options: [
+                'Almost exactly the income axis, because that column has by far the largest variance',
+                'The direction that best predicts income from height',
+                'Equal weights on both variables, since PCA treats variables symmetrically',
+                'Almost exactly the height axis, since height varies more relative to its mean',
+              ],
+              answer: 0,
+              explanation:
+                'Unscaled PCA maximises raw variance, and income has $20{,}000^2$ against $10^2$, so $v_1$ is essentially the income axis whatever the relationship between the variables. Scale each column to unit variance first if the units are arbitrary. PCA is not regression: it uses no target variable, and it measures absolute, not relative, variation.',
             },
           ],
           relatedLessons: ['linear-algebra-for-data-science/svd-and-pca/principal-component-analysis'],

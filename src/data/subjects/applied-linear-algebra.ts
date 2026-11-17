@@ -151,37 +151,49 @@ Two habits will save you. Always record the multiplier $\\ell_{ij}$, the number 
             {
               slug: 'three-by-three',
               title: 'Eliminate a 3 by 3 system',
-              prompt:
-                'Solve $x_1 + x_2 + x_3 = 6$, $2x_1 + 3x_2 + x_3 = 11$, $x_1 - x_2 + 2x_3 = 5$ by elimination and back substitution. List the multipliers and the three pivots, and check the solution in the original equations.',
+              prompt: `Solve $x_1 + x_2 + x_3 = 6$, $2x_1 + 3x_2 + x_3 = 11$, $x_1 - x_2 + 2x_3 = 5$ by elimination and back substitution.`,
               kind: 'problem',
               difficulty: 1,
-              hint: 'The multipliers are $\\ell_{21} = 2$, $\\ell_{31} = 1$ and $\\ell_{32} = -2$. The pivots are $1, 1, -1$ and the solution is $(1, 2, 3)$.',
+              parts: [
+                { prompt: `List the multipliers you use.`, answer: `$\\ell_{21} = 2$ and $\\ell_{31} = 1$ clear column 1, leaving rows $[0\\ 1\\ {-1} \\mid -1]$ and $[0\\ {-2}\\ 1 \\mid -1]$. Then $\\ell_{32} = -2$: add twice row 2 to row 3, giving $[0\\ 0\\ {-1} \\mid -3]$.` },
+                { prompt: `Give the three pivots.`, answer: `$1, 1, -1$, read from the diagonal of the triangular system.` },
+                { prompt: `Back substitute, and check the solution in the original equations.`, answer: `$x_3 = 3$, then $x_2 = -1 + x_3 = 2$, then $x_1 = 6 - 2 - 3 = 1$, so $x = (1, 2, 3)$. Check: $1 + 2 + 3 = 6$, $2 + 6 + 3 = 11$, $1 - 2 + 6 = 5$.` },
+              ],
             },
             {
               slug: 'mesh-currents',
               title: 'Loop currents in a three-mesh circuit',
-              prompt:
-                'Mesh analysis of a resistor circuit gives, with currents in amperes, $6I_1 - 2I_2 = 10$, $-2I_1 + 9I_2 - 3I_3 = 2$ and $-3I_2 + 7I_3 = 4$. Solve by elimination. Explain why the matrix is symmetric: what does the $-2$ in positions $(1,2)$ and $(2,1)$ represent physically?',
+              prompt: `Mesh analysis of a resistor circuit gives, with currents in amperes, $6I_1 - 2I_2 = 10$, $-2I_1 + 9I_2 - 3I_3 = 2$ and $-3I_2 + 7I_3 = 4$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: 'You should get $(I_1, I_2, I_3) = (2, 1, 1)$ A. Off-diagonal entries are minus the resistance shared by two meshes.',
+              parts: [
+                { prompt: `Solve by elimination.`, answer: `$\\ell_{21} = -\\tfrac13$ turns row 2 into $[0\\ \\tfrac{25}{3}\\ {-3} \\mid \\tfrac{16}{3}]$, and $\\ell_{32} = -\\tfrac{9}{25}$ turns row 3 into $[0\\ 0\\ \\tfrac{148}{25} \\mid \\tfrac{148}{25}]$. So $I_3 = 1$, $I_2 = (\\tfrac{16}{3} + 3)/\\tfrac{25}{3} = 1$ and $I_1 = (10 + 2)/6 = 2$: $(I_1, I_2, I_3) = (2, 1, 1)$ A.` },
+                { prompt: `Explain why the matrix is symmetric: what does the $-2$ in positions $(1,2)$ and $(2,1)$ represent physically?`, answer: `It is minus the $2\\ \\Omega$ resistance shared by meshes 1 and 2. A shared resistor carries both loop currents, so it enters the equation of each mesh with the same value, and entry $(i, j)$ equals entry $(j, i)$. The diagonal entries are the total resistance around each mesh.` },
+              ],
             },
             {
               slug: 'parameter-cases',
               title: 'Zero, one or infinitely many',
-              prompt:
-                'For which values of $h$ and $k$ does the system $x + 2y = 3$, $3x + hy = k$ have (a) exactly one solution, (b) no solution, (c) infinitely many solutions? In case (c), write the solution set in parametric form.',
+              prompt: `For which values of $h$ and $k$ does the system $x + 2y = 3$, $3x + hy = k$ have each of these solution sets?`,
               kind: 'problem',
               difficulty: 2,
-              hint: 'After elimination the second equation is $(h - 6)y = k - 9$.',
+              parts: [
+                { prompt: `Exactly one solution.`, answer: `Subtract $3$ times row 1: the second equation becomes $(h - 6)y = k - 9$. There is a second pivot exactly when $h \\ne 6$, for any $k$.` },
+                { prompt: `No solution.`, answer: `$h = 6$ and $k \\ne 9$: the second equation reads $0 = k - 9 \\ne 0$.` },
+                { prompt: `Infinitely many solutions. Write the solution set in parametric form.`, answer: `$h = 6$ and $k = 9$: the second equation is $0 = 0$, $y = t$ is free and $x = 3 - 2t$, so $(x, y) = (3, 0) + t(-2, 1)$.` },
+              ],
             },
             {
               slug: 'never-two-solutions',
               title: 'Prove that two solutions give infinitely many',
-              prompt:
-                'Let $A$ be an $m \\times n$ matrix. Prove that if $Ax = b$ has two different solutions $x \\ne y$, then the vectors $x + t(y - x)$ are distinct solutions for all real $t$. Conclude that the number of solutions is $0$, $1$ or infinite. Then show that the set of all solutions is $\\{x_p + z : Az = 0\\}$ for any one particular solution $x_p$.',
+              prompt: `Let $A$ be an $m \\times n$ matrix and consider the system $Ax = b$.`,
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                { prompt: `Prove that if $Ax = b$ has two different solutions $x \\ne y$, then the vectors $x + t(y - x)$ are distinct solutions for all real $t$.`, answer: `$A(x + t(y - x)) = Ax + t(Ay - Ax) = b + t(b - b) = b$. If $x + s(y - x) = x + t(y - x)$, then $(s - t)(y - x) = 0$, and $y - x \\ne 0$ forces $s = t$. So different values of $t$ give different solutions.` },
+                { prompt: `Conclude that the number of solutions is $0$, $1$ or infinite.`, answer: `If there are at least two solutions, the previous part gives infinitely many. So the number of solutions can never be a finite number larger than $1$.` },
+                { prompt: `Show that the set of all solutions is $\\{x_p + z : Az = 0\\}$ for any one particular solution $x_p$.`, answer: `If $Az = 0$ then $A(x_p + z) = b + 0 = b$. Conversely, if $Ax = b$ then $z = x - x_p$ satisfies $Az = b - b = 0$, and $x = x_p + z$. Each set contains the other, so they are equal.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -204,6 +216,20 @@ Two habits will save you. Always record the multiplier $\\ell_{ij}$, the number 
               question: 'Why should you check a solution in the original equations rather than the reduced ones?',
               answerOutline:
                 'An arithmetic slip during elimination changes the reduced system; a solution of the wrong reduced system still satisfies it, so only the original equations catch the error.',
+            },
+          ],
+          quiz: [
+            {
+              question: `Eliminate $x$ from $x + 3y = 5$, $2x + 7y = 12$ and back substitute. What is the solution $(x, y)$?`,
+              options: [`$(-1, 2)$`, `$(11, 2)$`, `$(-31, 12)$`, `$(2, 1)$`],
+              answer: 0,
+              explanation: `Subtracting $2$ times row 1 from row 2 gives $y = 12 - 10 = 2$, and then $x = 5 - 3y = -1$. Check: $-1 + 6 = 5$ and $-2 + 14 = 12$. $(11, 2)$ comes from back substituting with the wrong sign, $x = 5 + 3y$. $(-31, 12)$ forgets to subtract on the right-hand side, and $(2, 1)$ satisfies the first equation but not the second, which is why you check in every original equation.`,
+            },
+            {
+              question: `Elimination on a $3 \\times 3$ augmented matrix $[A \\mid b]$ ends with the last row $[0\\ 0\\ 0 \\mid 0]$, and no row of the form $[0\\ 0\\ 0 \\mid c]$ with $c \\ne 0$. What does this say about $Ax = b$?`,
+              options: [`It has no solution`, `It has exactly one solution, because $0 = 0$ is always true`, `It has infinitely many solutions`, `It cannot be decided without knowing $b$`],
+              answer: 2,
+              explanation: `The zero row means one column has no pivot, so one variable is free, and the absence of a row $0 = c$ means the system is consistent. A consistent system with a free variable has infinitely many solutions. The singular matrix alone would leave "none or infinitely many" open, but $b$ has already been carried through the elimination in the last column, so the answer is decided.`,
             },
           ],
         },
@@ -257,38 +283,50 @@ row-reduce
             {
               slug: 'order-matters',
               title: 'Products in both orders',
-              prompt:
-                'Let $A = \\begin{pmatrix} 1 & 2\\\\ 3 & 4 \\end{pmatrix}$ and $B = \\begin{pmatrix} 0 & 1\\\\ 1 & 0 \\end{pmatrix}$. Compute $AB$ and $BA$, and describe in words what multiplying by $B$ on the right and on the left does to $A$. Then compute $(AB)^T$ and check that it equals $B^T A^T$.',
+              prompt: `Let $A = \\begin{pmatrix} 1 & 2\\\\ 3 & 4 \\end{pmatrix}$ and $B = \\begin{pmatrix} 0 & 1\\\\ 1 & 0 \\end{pmatrix}$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: '$AB = \\begin{pmatrix} 2 & 1\\\\ 4 & 3 \\end{pmatrix}$ swaps the columns; $BA = \\begin{pmatrix} 3 & 4\\\\ 1 & 2 \\end{pmatrix}$ swaps the rows.',
+              parts: [
+                { prompt: `Compute $AB$ and describe in words what multiplying by $B$ on the right does to $A$.`, answer: `$AB = \\begin{pmatrix} 2 & 1\\\\ 4 & 3 \\end{pmatrix}$. Multiplying on the right swaps the columns of $A$: column 1 of $AB$ is $A(0, 1)$, the second column of $A$.` },
+                { prompt: `Compute $BA$ and describe in words what multiplying by $B$ on the left does to $A$.`, answer: `$BA = \\begin{pmatrix} 3 & 4\\\\ 1 & 2 \\end{pmatrix}$. Multiplying on the left swaps the rows of $A$.` },
+                { prompt: `Compute $(AB)^T$ and check that it equals $B^T A^T$.`, answer: `$(AB)^T = \\begin{pmatrix} 2 & 4\\\\ 1 & 3 \\end{pmatrix}$. Since $B^T = B$, $B^TA^T = \\begin{pmatrix} 0 & 1\\\\ 1 & 0 \\end{pmatrix}\\begin{pmatrix} 1 & 3\\\\ 2 & 4 \\end{pmatrix} = \\begin{pmatrix} 2 & 4\\\\ 1 & 3 \\end{pmatrix}$, the same matrix.` },
+              ],
             },
             {
               slug: 'difference-and-sum',
               title: 'The difference matrix and its inverse',
-              prompt:
-                'Let $D = \\begin{pmatrix} 1 & 0 & 0\\\\ -1 & 1 & 0\\\\ 0 & -1 & 1 \\end{pmatrix}$, so $Dx$ lists the differences $x_1, x_2 - x_1, x_3 - x_2$. Find $D^{-1}$ by Gauss-Jordan elimination and explain why the answer is a running-sum matrix. Then find the inverse of the upper triangular matrix $\\begin{pmatrix} 1 & 1 & 0\\\\ 0 & 1 & 1\\\\ 0 & 0 & 1 \\end{pmatrix}$.',
+              prompt: `Let $D = \\begin{pmatrix} 1 & 0 & 0\\\\ -1 & 1 & 0\\\\ 0 & -1 & 1 \\end{pmatrix}$, so $Dx$ lists the differences $x_1, x_2 - x_1, x_3 - x_2$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: '$D^{-1}$ is lower triangular with every entry on or below the diagonal equal to $1$. The second inverse is $\\begin{pmatrix} 1 & -1 & 1\\\\ 0 & 1 & -1\\\\ 0 & 0 & 1 \\end{pmatrix}$.',
+              parts: [
+                { prompt: `Find $D^{-1}$ by Gauss-Jordan elimination.`, answer: `Reduce $[D \\mid I]$: add row 1 to row 2, then add the new row 2 to row 3. The left block is then $I$ and $D^{-1} = \\begin{pmatrix} 1 & 0 & 0\\\\ 1 & 1 & 0\\\\ 1 & 1 & 1 \\end{pmatrix}$.` },
+                { prompt: `Explain why the answer is a running-sum matrix.`, answer: `$D^{-1}b = (b_1, b_1 + b_2, b_1 + b_2 + b_3)$. If $b$ lists the differences of $x$, you recover $x_k$ by adding the first $k$ differences back up, so undoing differences is taking running sums.` },
+                { prompt: `Find the inverse of the upper triangular matrix $\\begin{pmatrix} 1 & 1 & 0\\\\ 0 & 1 & 1\\\\ 0 & 0 & 1 \\end{pmatrix}$.`, answer: `$\\begin{pmatrix} 1 & -1 & 1\\\\ 0 & 1 & -1\\\\ 0 & 0 & 1 \\end{pmatrix}$. Back substitution gives $x_3 = b_3$, $x_2 = b_2 - b_3$, $x_1 = b_1 - b_2 + b_3$, and those coefficients are the rows of the inverse.` },
+              ],
             },
             {
               slug: 'unit-load-response',
               title: 'Unit loads on a spring chain',
-              prompt:
-                'Using $K^{-1}$ from the worked example, find the displacements when forces $f = (1, 0, -1)$ act on the three masses, and when $f = (1, 1, 1)$ (gravity with unit weights). Verify each by computing $Ku$. Explain from the symmetry of the chain why the first answer is antisymmetric and the second symmetric.',
+              prompt: `Use $K^{-1}$ from the worked example for the three forces below.`,
               kind: 'problem',
               difficulty: 2,
-              hint: 'The answers are $u = (\\tfrac12, 0, -\\tfrac12)$ and $u = (\\tfrac32, 2, \\tfrac32)$.',
+              parts: [
+                { prompt: `Find the displacements when forces $f = (1, 0, -1)$ act on the three masses, and verify by computing $Ku$.`, answer: `$u = K^{-1}f = \\tfrac14(3 - 1, 2 - 2, 1 - 3) = (\\tfrac12, 0, -\\tfrac12)$. Check: $Ku = (1 - 0,\\ -\\tfrac12 + 0 + \\tfrac12,\\ 0 - 1) = (1, 0, -1)$.` },
+                { prompt: `Find the displacements when $f = (1, 1, 1)$ (gravity with unit weights), and verify by computing $Ku$.`, answer: `$u = \\tfrac14(6, 8, 6) = (\\tfrac32, 2, \\tfrac32)$. Check: $Ku = (3 - 2,\\ -\\tfrac32 + 4 - \\tfrac32,\\ -2 + 3) = (1, 1, 1)$.` },
+                { prompt: `Explain from the symmetry of the chain why the first answer is antisymmetric and the second symmetric.`, answer: `The chain looks the same when reversed, which swaps masses 1 and 3. Reversing $f = (1, 0, -1)$ gives $-f$, so the response reverses to $-u$: $u_3 = -u_1$ and $u_2 = 0$. Reversing $(1, 1, 1)$ leaves it unchanged, so $u$ is unchanged too: $u_3 = u_1$.` },
+              ],
             },
             {
               slug: 'inverse-proofs',
               title: 'Inverse rules',
-              prompt:
-                'Prove: (a) if $A$ and $B$ are invertible $n \\times n$ matrices, then $AB$ is invertible with inverse $B^{-1}A^{-1}$; (b) if $A$ is invertible then $A^T$ is invertible and $(A^T)^{-1} = (A^{-1})^T$; (c) if a square matrix $A$ has a nonzero vector $x$ with $Ax = 0$, then $A$ is not invertible.',
+              prompt: `Prove each of these rules for square matrices.`,
               kind: 'derivation',
               difficulty: 2,
-              hint: 'For (c), suppose $A^{-1}$ exists and multiply $Ax = 0$ by it.',
+              parts: [
+                { prompt: `If $A$ and $B$ are invertible $n \\times n$ matrices, then $AB$ is invertible with inverse $B^{-1}A^{-1}$.`, answer: `$(AB)(B^{-1}A^{-1}) = A(BB^{-1})A^{-1} = AA^{-1} = I$, and in the other order $(B^{-1}A^{-1})(AB) = B^{-1}(A^{-1}A)B = B^{-1}B = I$.` },
+                { prompt: `If $A$ is invertible then $A^T$ is invertible and $(A^T)^{-1} = (A^{-1})^T$.`, answer: `Transpose $AA^{-1} = I$ and $A^{-1}A = I$ using $(XY)^T = Y^TX^T$: $(A^{-1})^TA^T = I$ and $A^T(A^{-1})^T = I$. So $(A^{-1})^T$ is the inverse of $A^T$.` },
+                { prompt: `If a square matrix $A$ has a nonzero vector $x$ with $Ax = 0$, then $A$ is not invertible.`, answer: `Suppose $A^{-1}$ exists and multiply $Ax = 0$ by it: $x = A^{-1}Ax = A^{-1}0 = 0$, which contradicts $x \\ne 0$.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -311,6 +349,20 @@ row-reduce
               question: 'Why is solving $Ax = b$ by forming $A^{-1}$ a poor idea in practice?',
               answerOutline:
                 'It costs about three times as much as elimination for one right-hand side and is usually less accurate; elimination (LU) solves directly.',
+            },
+          ],
+          quiz: [
+            {
+              question: `What is the inverse of $\\begin{pmatrix} 3 & 1\\\\ 5 & 2 \\end{pmatrix}$?`,
+              options: [`$\\begin{pmatrix} 2 & 1\\\\ 5 & 3 \\end{pmatrix}$`, `$\\begin{pmatrix} 3 & -1\\\\ -5 & 2 \\end{pmatrix}$`, `$\\begin{pmatrix} -2 & 1\\\\ 5 & -3 \\end{pmatrix}$`, `$\\begin{pmatrix} 2 & -1\\\\ -5 & 3 \\end{pmatrix}$`],
+              answer: 3,
+              explanation: `$ad - bc = 6 - 5 = 1$, so the inverse is $\\begin{pmatrix} d & -b\\\\ -c & a \\end{pmatrix} = \\begin{pmatrix} 2 & -1\\\\ -5 & 3 \\end{pmatrix}$; multiplying back gives $I$. Swapping the diagonal without negating the off-diagonal entries gives the first option, and negating them without swapping the diagonal gives the second.`,
+            },
+            {
+              question: `Let $A = \\begin{pmatrix} 1 & 2\\\\ 2 & 4 \\end{pmatrix}$. Does $AB = AC$ force $B = C$?`,
+              options: [`Yes: you can always cancel $A$ from both sides`, `No: $A$ is singular, and for example $B = 0$, $C = \\begin{pmatrix} 2 & 0\\\\ -1 & 0 \\end{pmatrix}$ give $AB = AC$`, `Yes, because $A$ is not the zero matrix`, `No, because matrix multiplication is not commutative`],
+              answer: 1,
+              explanation: `Cancelling means multiplying both sides on the left by $A^{-1}$, which needs $A$ to be invertible. Here $\\det A = 0$ and $A(2, -1) = 0$, so the given $C$ has $AC = 0 = AB$ with $C \\ne B$. Non-commutativity is not the reason: the cancellation is on the same side of both products, and for an invertible $A$ it works.`,
             },
           ],
         },
@@ -365,36 +417,51 @@ Notice that $L$ and $U$ are bidiagonal: elimination on a tridiagonal matrix crea
             {
               slug: 'lu-by-hand',
               title: 'Factor and solve',
-              prompt:
-                'Find the $LU$ factorisation of $A = \\begin{pmatrix} 1 & 2 & 0\\\\ 2 & 5 & 3\\\\ 0 & 3 & 10 \\end{pmatrix}$. Since $A$ is symmetric, write it as $LDL^T$. Use the factors to solve $Ax = (3, 10, 13)$ by forward and back substitution.',
+              prompt: `Let $A = \\begin{pmatrix} 1 & 2 & 0\\\\ 2 & 5 & 3\\\\ 0 & 3 & 10 \\end{pmatrix}$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: 'The multipliers are $\\ell_{21} = 2$, $\\ell_{31} = 0$, $\\ell_{32} = 3$; all pivots are $1$, so $D = I$. The solution is $(1, 1, 1)$.',
+              parts: [
+                { prompt: `Find the $LU$ factorisation of $A$.`, answer: `The multipliers are $\\ell_{21} = 2$, $\\ell_{31} = 0$ and then $\\ell_{32} = 3$, so $L = \\begin{pmatrix} 1 & 0 & 0\\\\ 2 & 1 & 0\\\\ 0 & 3 & 1 \\end{pmatrix}$ and $U = \\begin{pmatrix} 1 & 2 & 0\\\\ 0 & 1 & 3\\\\ 0 & 0 & 1 \\end{pmatrix}$.` },
+                { prompt: `Since $A$ is symmetric, write it as $LDL^T$.`, answer: `All three pivots are $1$, so $D = I$ and $U = L^T$: $A = LDL^T = LL^T$ with the $L$ above.` },
+                { prompt: `Use the factors to solve $Ax = (3, 10, 13)$ by forward and back substitution.`, answer: `Forward, $Lc = b$: $c_1 = 3$, $c_2 = 10 - 6 = 4$, $c_3 = 13 - 12 = 1$. Back, $Ux = c$: $x_3 = 1$, $x_2 = 4 - 3 = 1$, $x_1 = 3 - 2 = 1$. So $x = (1, 1, 1)$.` },
+              ],
             },
             {
               slug: 'no-lu',
               title: 'An invertible matrix with no LU',
-              prompt:
-                'Show that $\\begin{pmatrix} 0 & 1\\\\ 1 & 1 \\end{pmatrix}$ cannot be written as $\\begin{pmatrix} 1 & 0\\\\ \\ell & 1 \\end{pmatrix}\\begin{pmatrix} p & q\\\\ 0 & r \\end{pmatrix}$ for any numbers $\\ell, p, q, r$, by multiplying out and comparing entries. Then show that swapping the rows gives a matrix that does factor.',
+              prompt: `Consider the invertible matrix $\\begin{pmatrix} 0 & 1\\\\ 1 & 1 \\end{pmatrix}$.`,
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                { prompt: `Show that it cannot be written as $\\begin{pmatrix} 1 & 0\\\\ \\ell & 1 \\end{pmatrix}\\begin{pmatrix} p & q\\\\ 0 & r \\end{pmatrix}$ for any numbers $\\ell, p, q, r$, by multiplying out and comparing entries.`, answer: `The product is $\\begin{pmatrix} p & q\\\\ \\ell p & \\ell q + r \\end{pmatrix}$. The $(1,1)$ entry forces $p = 0$, and then the $(2,1)$ entry is $\\ell p = 0$, never $1$. So no choice of $\\ell, p, q, r$ works.` },
+                { prompt: `Show that swapping the rows gives a matrix that does factor.`, answer: `The swapped matrix $\\begin{pmatrix} 1 & 1\\\\ 0 & 1 \\end{pmatrix}$ is already upper triangular, so $L = I$ and $U$ is the matrix itself. With $P$ the row swap, $PA = LU$.` },
+              ],
             },
             {
               slug: 'second-difference-pivots',
               title: 'Pivots of the second-difference matrix',
-              prompt:
-                'Let $K_n$ be the $n \\times n$ tridiagonal matrix with $2$ on the diagonal and $-1$ beside it. Prove by induction that elimination without row exchanges gives pivots $d_k = (k+1)/k$ for $k = 1, \\dots, n$, that every multiplier is $\\ell_{k+1,k} = -k/(k+1)$, and that $\\det K_n = n + 1$.',
+              prompt: `Let $K_n$ be the $n \\times n$ tridiagonal matrix with $2$ on the diagonal and $-1$ beside it, and apply elimination without row exchanges.`,
               kind: 'derivation',
               difficulty: 3,
-              hint: 'Show $d_{k+1} = 2 - 1/d_k$ and check that $(k+1)/k$ satisfies it.',
+              parts: [
+                { prompt: `Prove by induction that the pivots are $d_k = (k+1)/k$ for $k = 1, \\dots, n$.`, answer: `When row $k$ has been reduced, it has pivot $d_k$ with $-1$ to its right, and row $k + 1$ still starts $-1, 2$. Its multiplier is $-1/d_k$, so the next pivot is $d_{k+1} = 2 - 1/d_k$. Now induct: $d_1 = 2 = 2/1$, and if $d_k = (k+1)/k$ then $d_{k+1} = 2 - k/(k+1) = (k+2)/(k+1)$.` },
+                { prompt: `Show that every multiplier is $\\ell_{k+1,k} = -k/(k+1)$.`, answer: `The multiplier is the entry to clear divided by the pivot: $\\ell_{k+1,k} = -1/d_k = -k/(k+1)$.` },
+                { prompt: `Show that $\\det K_n = n + 1$.`, answer: `The determinant is the product of the pivots, which telescopes: $\\tfrac21 \\cdot \\tfrac32 \\cdots \\tfrac{n+1}{n} = n + 1$.` },
+              ],
             },
             {
               slug: 'factor-once',
               title: 'Factor once, solve three times',
-              prompt:
-                'With $K$ from the worked example, use the same $L$ and $U$ to solve $Ku = f$ for $f = (1, 0, 0)$, $(0, 1, 0)$ and $(0, 0, 1)$. Confirm that the three solutions are the columns of $K^{-1}$ from the previous lesson. Then check all three in NumPy with scipy.linalg.lu_factor and lu_solve.',
+              prompt: `With $K$ from the worked example, factor $K = LU$ once and use the same $L$ and $U$ to solve $Ku = f$ for each right-hand side.`,
               kind: 'problem',
               difficulty: 2,
+              parts: [
+                { prompt: `$f = (1, 0, 0)$`, answer: `$L$ has $\\ell_{21} = -\\tfrac12$ and $\\ell_{32} = -\\tfrac23$; $U$ has pivots $2, \\tfrac32, \\tfrac43$. Forward: $c = (1, \\tfrac12, \\tfrac13)$. Back: $u = (\\tfrac34, \\tfrac12, \\tfrac14)$.` },
+                { prompt: `$f = (0, 1, 0)$`, answer: `$c = (0, 1, \\tfrac23)$ and $u = (\\tfrac12, 1, \\tfrac12)$.` },
+                { prompt: `$f = (0, 0, 1)$`, answer: `$c = (0, 0, 1)$ and $u = (\\tfrac14, \\tfrac12, \\tfrac34)$.` },
+                { prompt: `Confirm that the three solutions are the columns of $K^{-1}$ from the previous lesson.`, answer: `They are the columns of $K^{-1} = \\tfrac14\\begin{pmatrix} 3 & 2 & 1\\\\ 2 & 4 & 2\\\\ 1 & 2 & 3 \\end{pmatrix}$, as they must be: solving $Ku = e_j$ produces column $j$ of $K^{-1}$.` },
+                { prompt: `Check all three in NumPy with scipy.linalg.lu_factor and lu_solve.`, answer: `After lu, piv = lu_factor(K), calling lu_solve((lu, piv), np.eye(3)) returns [[0.75, 0.5, 0.25], [0.5, 1, 0.5], [0.25, 0.5, 0.75]]. No row exchanges occur here (piv is [0, 1, 2]), so SciPy's factors are the ones you found by hand.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -412,6 +479,20 @@ Notice that $L$ and $U$ are bidiagonal: elimination on a tridiagonal matrix crea
               question: 'What is the advantage of LU over solving from scratch when there are many right-hand sides?',
               answerOutline:
                 'Factoring costs about $n^3/3$ multiplications once; each new right-hand side then needs only about $n^2$ for the two triangular solves.',
+            },
+          ],
+          quiz: [
+            {
+              question: `Elimination without row exchanges writes $A = \\begin{pmatrix} 2 & 1\\\\ 6 & 8 \\end{pmatrix}$ as $LU$. What are $L$ and $U$?`,
+              options: [`$L = \\begin{pmatrix} 1 & 0\\\\ -3 & 1 \\end{pmatrix}$, $U = \\begin{pmatrix} 2 & 1\\\\ 0 & 5 \\end{pmatrix}$`, `$L = \\begin{pmatrix} 1 & 0\\\\ 3 & 1 \\end{pmatrix}$, $U = \\begin{pmatrix} 2 & 1\\\\ 0 & 5 \\end{pmatrix}$`, `$L = \\begin{pmatrix} 1 & 0\\\\ 3 & 1 \\end{pmatrix}$, $U = \\begin{pmatrix} 2 & 1\\\\ 0 & 8 \\end{pmatrix}$`, `$L = \\begin{pmatrix} 1 & 0\\\\ \\tfrac13 & 1 \\end{pmatrix}$, $U = \\begin{pmatrix} 2 & 1\\\\ 0 & 5 \\end{pmatrix}$`],
+              answer: 1,
+              explanation: `The multiplier is $\\ell_{21} = 6/2 = 3$, and row 2 becomes $[6\\ 8] - 3[2\\ 1] = [0\\ 5]$. $L$ stores the multiplier itself, $+3$, because it undoes the subtraction; $-3$ belongs to the elimination matrix $E$ with $EA = U$, not to $L = E^{-1}$. Check: $LU = \\begin{pmatrix} 2 & 1\\\\ 6 & 8 \\end{pmatrix}$.`,
+            },
+            {
+              question: `For the symmetric matrix $A = \\begin{pmatrix} 4 & 8\\\\ 8 & 25 \\end{pmatrix}$, what is $D$ in $A = LDL^T$?`,
+              options: [`$\\begin{pmatrix} 4 & 0\\\\ 0 & 9 \\end{pmatrix}$`, `$\\begin{pmatrix} 4 & 0\\\\ 0 & 25 \\end{pmatrix}$`, `$\\begin{pmatrix} 2 & 0\\\\ 0 & 3 \\end{pmatrix}$`, `$I$, because $L$ has ones on its diagonal`],
+              answer: 0,
+              explanation: `$D$ holds the pivots. With $\\ell_{21} = 2$, the second pivot is $25 - 2 \\cdot 8 = 9$, so $D = \\operatorname{diag}(4, 9)$ and $L = \\begin{pmatrix} 1 & 0\\\\ 2 & 1 \\end{pmatrix}$. The diagonal of $A$ is not the pivots, and $\\operatorname{diag}(2, 3)$ is the diagonal of the Cholesky factor $LD^{1/2}$, the square roots of the pivots.`,
             },
           ],
         },
@@ -465,37 +546,50 @@ Pivoting protects the algorithm. It cannot rescue a problem that is itself sensi
             {
               slug: 'count-and-time',
               title: 'Count and time',
-              prompt:
-                'Verify the identity $\\sum_{j=1}^{n-1} j(j+1) = (n^3 - n)/3$ by induction. Then estimate how long a dense $n = 10^4$ factorisation takes on a machine sustaining $10^{10}$ floating-point operations per second, using $\\tfrac23 n^3$ operations. Time numpy.linalg.solve for $n = 1000, 2000, 4000$ on your machine and check the ratio between successive times against the factor $8$.',
+              prompt: `Check the operation count of elimination, then test it on your own machine.`,
               kind: 'problem',
               difficulty: 1,
-              hint: 'About $6.7 \\times 10^{11}$ operations, so roughly a minute. Measured ratios are often below 8 for small $n$ because of caching and threading.',
+              parts: [
+                { prompt: `Verify the identity $\\sum_{j=1}^{n-1} j(j+1) = (n^3 - n)/3$ by induction.`, answer: `At $n = 1$ both sides are $0$. Going from $n$ to $n + 1$ adds $n(n+1)$ to the left side, and adds $\\dfrac{(n+1)^3 - (n+1) - n^3 + n}{3} = \\dfrac{3n^2 + 3n}{3} = n(n+1)$ to the right side.` },
+                { prompt: `Estimate how long a dense $n = 10^4$ factorisation takes on a machine sustaining $10^{10}$ floating-point operations per second, using $\\tfrac23 n^3$ operations.`, answer: `$\\tfrac23(10^4)^3 \\approx 6.7 \\times 10^{11}$ operations, so about $67$ seconds: roughly a minute.` },
+                { prompt: `Time numpy.linalg.solve for $n = 1000, 2000, 4000$ on your machine and check the ratio between successive times against the factor $8$.`, answer: `Doubling $n$ multiplies $n^3$ by $8$, so you should see ratios approaching $8$. Measured ratios are often below $8$ for small $n$ because of caching and multithreading, and get closer to $8$ as $n$ grows.` },
+              ],
             },
             {
               slug: 'pivot-by-hand',
               title: 'Partial pivoting by hand',
-              prompt:
-                'Apply elimination with partial pivoting to $A = \\begin{pmatrix} 1 & 2 & 4\\\\ 2 & 1 & 3\\\\ 4 & 2 & 2 \\end{pmatrix}$. Record each swap and multiplier, and write the result as $PA = LU$. Check by multiplying out, and compare with scipy.linalg.lu, remembering that SciPy returns $A = PLU$.',
+              prompt: `Apply elimination with partial pivoting to $A = \\begin{pmatrix} 1 & 2 & 4\\\\ 2 & 1 & 3\\\\ 4 & 2 & 2 \\end{pmatrix}$.`,
               kind: 'problem',
               difficulty: 2,
-              hint: 'The first pivot is $4$ (row 3). After step 1 the largest candidate in column 2 is $3/2$, from the original row 1. You should get $L = \\begin{pmatrix} 1 & 0 & 0\\\\ \\tfrac14 & 1 & 0\\\\ \\tfrac12 & 0 & 1 \\end{pmatrix}$ and $U = \\begin{pmatrix} 4 & 2 & 2\\\\ 0 & \\tfrac32 & \\tfrac72\\\\ 0 & 0 & 2 \\end{pmatrix}$.',
+              parts: [
+                { prompt: `Record each swap and multiplier.`, answer: `Column 1: the largest entry is $4$, in row 3, so swap rows 1 and 3. The multipliers $\\tfrac12$ (for $[2\\ 1\\ 3]$) and $\\tfrac14$ (for $[1\\ 2\\ 4]$) leave $[0\\ 0\\ 2]$ and $[0\\ \\tfrac32\\ \\tfrac72]$. Column 2: the candidates are $0$ and $\\tfrac32$, the latter from the original row 1, so swap those two rows; the last multiplier is $0$.` },
+                { prompt: `Write the result as $PA = LU$ and check by multiplying out.`, answer: `$P$ takes the original rows in the order 3, 1, 2: $P = \\begin{pmatrix} 0 & 0 & 1\\\\ 1 & 0 & 0\\\\ 0 & 1 & 0 \\end{pmatrix}$, $L = \\begin{pmatrix} 1 & 0 & 0\\\\ \\tfrac14 & 1 & 0\\\\ \\tfrac12 & 0 & 1 \\end{pmatrix}$, $U = \\begin{pmatrix} 4 & 2 & 2\\\\ 0 & \\tfrac32 & \\tfrac72\\\\ 0 & 0 & 2 \\end{pmatrix}$. Both $LU$ and $PA$ equal $\\begin{pmatrix} 4 & 2 & 2\\\\ 1 & 2 & 4\\\\ 2 & 1 & 3 \\end{pmatrix}$. The multipliers moved with their rows at the second swap.` },
+                { prompt: `Compare with scipy.linalg.lu, remembering that SciPy returns $A = PLU$.`, answer: `SciPy returns the same $L$ and $U$, and its permutation is the transpose of the $P$ above, $\\begin{pmatrix} 0 & 1 & 0\\\\ 0 & 0 & 1\\\\ 1 & 0 & 0 \\end{pmatrix}$, because $PA = LU$ means $A = P^TLU$.` },
+              ],
             },
             {
               slug: 'tiny-pivot-in-double',
               title: 'A tiny pivot in double precision',
-              prompt:
-                'Write a ten-line Python function that solves a $2 \\times 2$ system by elimination without row exchanges. Apply it to $\\varepsilon x_1 + x_2 = 1$, $x_1 + x_2 = 2$ with $\\varepsilon = 10^{-20}$ and compare with numpy.linalg.solve. Explain the result in terms of what $1 - 10^{20}$ rounds to in double precision.',
+              prompt: `Test elimination without row exchanges on the system $\\varepsilon x_1 + x_2 = 1$, $x_1 + x_2 = 2$ with $\\varepsilon = 10^{-20}$.`,
               kind: 'coding',
               difficulty: 2,
-              hint: 'Without pivoting you should get $x_1 = 0$, $x_2 = 1$, while the true answer is $x_1 \\approx x_2 \\approx 1$.',
+              parts: [
+                { prompt: `Write a ten-line Python function that solves a $2 \\times 2$ system by elimination without row exchanges.`, answer: `The shape of a correct solution: compute $\\ell = a_{21}/a_{11}$, replace $a_{22}$ by $a_{22} - \\ell a_{12}$ and $b_2$ by $b_2 - \\ell b_1$, then return $x_2 = b_2/a_{22}$ and $x_1 = (b_1 - a_{12}x_2)/a_{11}$. Test it first on a harmless system such as $x_1 + x_2 = 2$, $x_1 - x_2 = 0$, which should give $(1, 1)$.` },
+                { prompt: `Apply it to the system with $\\varepsilon = 10^{-20}$ and compare with numpy.linalg.solve.`, answer: `Your function returns $x_1 = 0$, $x_2 = 1$. numpy.linalg.solve, which pivots, returns $x_1 = x_2 = 1$. The exact solution is $x_1 = 1/(1 - \\varepsilon)$, $x_2 = (1 - 2\\varepsilon)/(1 - \\varepsilon)$, both within $10^{-20}$ of $1$.` },
+                { prompt: `Explain the result in terms of what $1 - 10^{20}$ rounds to in double precision.`, answer: `The multiplier is $10^{20}$, so the reduced equation has coefficient $1 - 10^{20}$ and right-hand side $2 - 10^{20}$. Doubles carry about 16 significant digits, so both round to $-10^{20}$ and the second equation becomes $x_2 = 1$, with its information lost. Then $x_1 = (1 - x_2)/\\varepsilon = 0$.` },
+              ],
             },
             {
               slug: 'tridiagonal-count',
               title: 'Elimination on a tridiagonal matrix',
-              prompt:
-                'Show that elimination without row exchanges on an $n \\times n$ tridiagonal matrix produces bidiagonal $L$ and $U$. Count the multiplications and divisions needed to factor ($2(n-1)$) and then to solve one system by forward and back substitution, and show the total is $5n - 4$.',
+              prompt: `Consider elimination without row exchanges on an $n \\times n$ tridiagonal matrix.`,
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                { prompt: `Show that it produces bidiagonal $L$ and $U$.`, answer: `At step $k$ only row $k + 1$ has a nonzero entry below the pivot, so there is a single multiplier $\\ell_{k+1,k}$. Row $k$ is nonzero only in columns $k$ and $k + 1$, so subtracting a multiple of it changes only $a_{k+1,k+1}$ and creates no new nonzeros. $L$ keeps one subdiagonal and $U$ one superdiagonal.` },
+                { prompt: `Count the multiplications and divisions needed to factor, and confirm the count $2(n-1)$.`, answer: `Each of the $n - 1$ steps needs one division, $\\ell_{k+1,k} = a_{k+1,k}/d_k$, and one multiplication, $d_{k+1} = a_{k+1,k+1} - \\ell_{k+1,k}a_{k,k+1}$: $2(n - 1)$ in all.` },
+                { prompt: `Count the operations to solve one system by forward and back substitution, and show the total is $5n - 4$.`, answer: `Forward, $c_{k+1} = b_{k+1} - \\ell_{k+1,k}c_k$: $n - 1$ multiplications. Back, $x_n = c_n/d_n$ and $x_k = (c_k - u_{k,k+1}x_{k+1})/d_k$: $n - 1$ multiplications and $n$ divisions. Total $2(n - 1) + (n - 1) + (2n - 1) = 5n - 4$.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -516,6 +610,20 @@ Pivoting protects the algorithm. It cannot rescue a problem that is itself sensi
             {
               question: 'SciPy\'s lu returns P, L, U. Which equation do they satisfy?',
               answerOutline: '$A = PLU$, so the permutation in the textbook form $PA = LU$ is the transpose of SciPy\'s $P$.',
+            },
+          ],
+          quiz: [
+            {
+              question: `Factoring a dense $3000 \\times 3000$ matrix takes $2$ s on your laptop. About how long should a $6000 \\times 6000$ factorisation take?`,
+              options: [`$4$ s`, `$8$ s`, `$16$ s`, `$10.7$ s`],
+              answer: 2,
+              explanation: `The cost grows like $\\tfrac23n^3$, so doubling $n$ multiplies the time by $2^3 = 8$: about $16$ s. The constant $\\tfrac23$ cancels in the ratio, so $10.7$ s (applying it again) is wrong, and $8$ s is the factor $4$ you would get from the $n^2$ cost of a triangular solve, not of the factorisation.`,
+            },
+            {
+              question: `You apply partial pivoting to $\\begin{pmatrix} 1 & 5\\\\ -3 & 2 \\end{pmatrix}$. Which row becomes the first pivot row?`,
+              options: [`Row 1, because $1$ is larger than $-3$`, `Row 1, because it contains the largest entry, $5$`, `Neither needs to move: pivoting is only for zero pivots`, `Row 2, because $|-3| > |1|$`],
+              answer: 3,
+              explanation: `Partial pivoting compares absolute values in the pivot column, so the $-3$ wins and rows are swapped. That keeps every multiplier at most $1$ in size ($\\ell_{21} = -\\tfrac13$ here), which limits the growth of rounding errors. The $5$ sits in column 2 and plays no part in choosing the first pivot, and swapping only for exact zeros is what fails on tiny pivots such as $10^{-20}$.`,
             },
           ],
         },
@@ -593,37 +701,53 @@ The **span** of vectors $v_1, \\dots, v_k$ is the set of all their linear combin
             {
               slug: 'subspace-or-not',
               title: 'Subspace or not?',
-              prompt:
-                'Decide, with proof or a counterexample, whether each set is a subspace: (a) $\\{x \\in \\mathbb{R}^3 : x_1 = 2x_3\\}$; (b) $\\{x \\in \\mathbb{R}^2 : x_1 x_2 = 0\\}$; (c) $\\{p \\in P_3 : p(1) = 0\\}$; (d) the symmetric $2 \\times 2$ matrices; (e) $\\{f \\in C[0,1] : \\int_0^1 f(t)\\,dt = 1\\}$.',
+              prompt: `Decide, with proof or a counterexample, whether each set is a subspace.`,
               kind: 'problem',
               difficulty: 1,
-              hint: 'Subspaces: (a), (c), (d). Not subspaces: (b) fails addition, (e) does not contain $0$.',
+              parts: [
+                { prompt: `$\\{x \\in \\mathbb{R}^3 : x_1 = 2x_3\\}$`, answer: `A subspace. It contains $0$, and if $x_1 = 2x_3$ and $y_1 = 2y_3$ then $x_1 + y_1 = 2(x_3 + y_3)$ and $cx_1 = 2(cx_3)$. It is the null space of the row $[1\\ 0\\ {-2}]$.` },
+                { prompt: `$\\{x \\in \\mathbb{R}^2 : x_1 x_2 = 0\\}$`, answer: `Not a subspace: it fails addition. $(1, 0)$ and $(0, 1)$ are in it, but their sum $(1, 1)$ is not. The set is the union of the two axes.` },
+                { prompt: `$\\{p \\in P_3 : p(1) = 0\\}$`, answer: `A subspace. The zero polynomial vanishes at $1$, and $(p + q)(1) = 0 + 0$ and $(cp)(1) = c \\cdot 0$.` },
+                { prompt: `The symmetric $2 \\times 2$ matrices.`, answer: `A subspace: $0^T = 0$, $(A + B)^T = A^T + B^T = A + B$ and $(cA)^T = cA^T = cA$.` },
+                { prompt: `$\\{f \\in C[0,1] : \\int_0^1 f(t)\\,dt = 1\\}$`, answer: `Not a subspace: it does not contain $0$, since the zero function has integral $0$. Sums fail too: two members add to a function with integral $2$.` },
+              ],
             },
             {
               slug: 'in-the-span',
               title: 'Is it in the span?',
-              prompt:
-                'Decide whether $(1, 2, 3)$ and $(1, 2, 4)$ lie in the span of $(1, 0, 1)$ and $(0, 1, 1)$. Describe the span as a plane through the origin by giving one equation $a x_1 + b x_2 + c x_3 = 0$ that it satisfies.',
+              prompt: `Work with the span of $(1, 0, 1)$ and $(0, 1, 1)$ in $\\mathbb{R}^3$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: 'The span is $\\{(a, b, a+b)\\}$, so its equation is $x_1 + x_2 - x_3 = 0$.',
+              parts: [
+                { prompt: `Does $(1, 2, 3)$ lie in the span?`, answer: `Yes. In $a(1, 0, 1) + b(0, 1, 1) = (1, 2, 3)$ the first two entries force $a = 1$, $b = 2$, and the third entry $a + b = 3$ matches.` },
+                { prompt: `Does $(1, 2, 4)$ lie in the span?`, answer: `No. Again $a = 1$ and $b = 2$ are forced, but then the third entry is $a + b = 3 \\ne 4$.` },
+                { prompt: `Describe the span as a plane through the origin by giving one equation $a x_1 + b x_2 + c x_3 = 0$ that it satisfies.`, answer: `The span is $\\{(a, b, a + b)\\}$, so $x_1 + x_2 - x_3 = 0$. The two test vectors give $0$ and $-1$, which agrees with the answers above.` },
+              ],
             },
             {
               slug: 'intersection-union',
               title: 'Intersections and unions',
-              prompt:
-                'Prove that the intersection of two subspaces of $V$ is a subspace. Show by an example in $\\mathbb{R}^2$ that the union of two subspaces need not be one, and prove that $U \\cup W$ is a subspace only if $U \\subseteq W$ or $W \\subseteq U$.',
+              prompt: `Let $U$ and $W$ be subspaces of a vector space $V$.`,
               kind: 'derivation',
               difficulty: 3,
-              hint: 'For the last part, take $u \\in U \\setminus W$ and $w \\in W \\setminus U$ and ask where $u + w$ lies.',
+              parts: [
+                { prompt: `Prove that the intersection $U \\cap W$ is a subspace.`, answer: `$0$ lies in both. If $u, v \\in U \\cap W$, then $u + v$ and $cu$ lie in $U$ because $U$ is a subspace, and in $W$ for the same reason, so they lie in $U \\cap W$.` },
+                { prompt: `Show by an example in $\\mathbb{R}^2$ that the union of two subspaces need not be one.`, answer: `Take the two coordinate axes. $(1, 0)$ and $(0, 1)$ are in the union, but $(1, 1)$ lies on neither axis.` },
+                { prompt: `Prove that $U \\cup W$ is a subspace only if $U \\subseteq W$ or $W \\subseteq U$.`, answer: `Suppose neither contains the other, and take $u \\in U \\setminus W$ and $w \\in W \\setminus U$. If $u + w \\in U$ then $w = (u + w) - u \\in U$, a contradiction. If $u + w \\in W$ then $u = (u + w) - w \\in W$, also a contradiction. So $u + w$ is not in the union, which is therefore not closed under addition.` },
+              ],
             },
             {
               slug: 'oscillator-solutions',
               title: 'Solutions of an oscillator equation',
-              prompt:
-                'Show that the solutions of $y\'\' + 4y = 0$ form a subspace of the twice-differentiable functions, and that $\\cos 2t$ and $\\sin 2t$ lie in it. Then show that the solutions of the forced equation $y\'\' + 4y = 1$ do not form a subspace, and that every solution is $\\tfrac14$ plus a solution of the unforced equation.',
+              prompt: `Compare the unforced equation $y'' + 4y = 0$ with the forced equation $y'' + 4y = 1$.`,
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                { prompt: `Show that the solutions of $y'' + 4y = 0$ form a subspace of the twice-differentiable functions.`, answer: `The zero function is a solution. If $y_1'' + 4y_1 = 0$ and $y_2'' + 4y_2 = 0$, then $(ay_1 + by_2)'' + 4(ay_1 + by_2) = a \\cdot 0 + b \\cdot 0 = 0$. The set is the null space of the linear map $y \\mapsto y'' + 4y$.` },
+                { prompt: `Show that $\\cos 2t$ and $\\sin 2t$ lie in it.`, answer: `$(\\cos 2t)'' = -4\\cos 2t$ and $(\\sin 2t)'' = -4\\sin 2t$, so each gives $-4y + 4y = 0$.` },
+                { prompt: `Show that the solutions of the forced equation $y'' + 4y = 1$ do not form a subspace.`, answer: `$y = 0$ gives $0 \\ne 1$, so the zero function is missing. Also the sum of two solutions satisfies $y'' + 4y = 2$.` },
+                { prompt: `Show that every solution of the forced equation is $\\tfrac14$ plus a solution of the unforced equation.`, answer: `The constant $\\tfrac14$ is one solution. If $y'' + 4y = 1$, then $z = y - \\tfrac14$ has $z'' + 4z = 1 - 1 = 0$, so $y = \\tfrac14 + z$. Conversely $\\tfrac14 + z$ solves the forced equation for every unforced solution $z$.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -641,6 +765,20 @@ The **span** of vectors $v_1, \\dots, v_k$ is the set of all their linear combin
               question: 'How do you decide whether $b$ lies in the span of $v_1, \\dots, v_k$?',
               answerOutline:
                 'Put the $v_i$ as columns of $A$ and decide by elimination whether $Ax = b$ is consistent.',
+            },
+          ],
+          quiz: [
+            {
+              question: `Which of these subsets of $\\mathbb{R}^3$ is a subspace?`,
+              options: [`$\\{x : x_1 + 2x_2 - x_3 = 0\\}$`, `$\\{x : x_1 + 2x_2 - x_3 = 1\\}$`, `$\\{x : x_1 \\ge 0\\}$`, `$\\{x : x_1 x_3 = 0\\}$`],
+              answer: 0,
+              explanation: `The first set is the null space of the row $[1\\ 2\\ {-1}]$, a plane through the origin, so it is closed under addition and scaling. The second is a parallel plane that misses $0$. The half-space fails scaling by $-1$, and $\\{x_1x_3 = 0\\}$ is the union of two planes, which fails addition: $(1, 0, 0) + (0, 0, 1)$ is not in it.`,
+            },
+            {
+              question: `Let $A$ be a $3 \\times 3$ matrix and $b \\ne 0$, and suppose $Ax = b$ has at least one solution. What is its solution set?`,
+              options: [`A subspace, because it is the solution set of linear equations`, `A subspace only when $A$ is invertible`, `A subspace whose dimension is the rank of $A$`, `Not a subspace, since it misses $0$; it is $N(A)$ shifted by one particular solution`],
+              answer: 3,
+              explanation: `$A0 = 0 \\ne b$, so $0$ is not a solution and the set cannot be a subspace. Every solution is $x_p + z$ with $Az = 0$, a copy of the null space moved away from the origin. Only homogeneous equations ($b = 0$) have subspaces as solution sets; even an invertible $A$ gives the single point $A^{-1}b \\ne 0$.`,
             },
           ],
         },
@@ -688,37 +826,47 @@ For functions, evaluate at several points. If $c_1 e^t + c_2 e^{2t} = 0$ for all
             {
               slug: 'three-vectors',
               title: 'Independent or not',
-              prompt:
-                'Are $(1, 1, 0)$, $(1, 0, 1)$, $(0, 1, 1)$ independent in $\\mathbb{R}^3$? Answer by elimination and again by a determinant. Then decide whether $(1, -1, 0)$, $(0, 1, -1)$, $(-1, 0, 1)$ are independent, and give a dependence relation if not.',
+              prompt: `Test two sets of three vectors in $\\mathbb{R}^3$ for independence.`,
               kind: 'problem',
               difficulty: 1,
-              hint: 'The first determinant is $-2$. The second set sums to zero.',
+              parts: [
+                { prompt: `Are $(1, 1, 0)$, $(1, 0, 1)$, $(0, 1, 1)$ independent? Answer by elimination.`, answer: `Yes. As columns, $\\begin{pmatrix} 1 & 1 & 0\\\\ 1 & 0 & 1\\\\ 0 & 1 & 1 \\end{pmatrix}$. Subtracting row 1 from row 2 gives $[0\\ {-1}\\ 1]$, and adding that to row 3 gives $[0\\ 0\\ 2]$. There are three pivots, $1, -1, 2$, so only the zero combination gives $0$.` },
+                { prompt: `Answer the same question with a determinant.`, answer: `The determinant is the product of the pivots, $1 \\cdot (-1) \\cdot 2 = -2 \\ne 0$, so the vectors are independent.` },
+                { prompt: `Are $(1, -1, 0)$, $(0, 1, -1)$, $(-1, 0, 1)$ independent? Give a dependence relation if not.`, answer: `No: they sum to zero, $v_1 + v_2 + v_3 = 0$. All three lie in the plane $x_1 + x_2 + x_3 = 0$, which has dimension $2$.` },
+              ],
             },
             {
               slug: 'basis-from-equations',
               title: 'A basis for a subspace given by equations',
-              prompt:
-                'Find a basis and the dimension of $W = \\{x \\in \\mathbb{R}^4 : x_1 + x_2 + x_3 + x_4 = 0,\\ x_1 - x_2 = 0\\}$. Then extend your basis to a basis of $\\mathbb{R}^4$ and justify that the extended set is independent.',
+              prompt: `Let $W = \\{x \\in \\mathbb{R}^4 : x_1 + x_2 + x_3 + x_4 = 0,\\ x_1 - x_2 = 0\\}$.`,
               kind: 'problem',
               difficulty: 2,
-              hint: 'Take $x_1$ and $x_3$ free: one basis is $(1, 1, 0, -2)$, $(0, 0, 1, -1)$, so $\\dim W = 2$.',
+              parts: [
+                { prompt: `Find a basis and the dimension of $W$.`, answer: `Take $x_1$ and $x_3$ free. Then $x_2 = x_1$ and $x_4 = -2x_1 - x_3$, so one basis is $(1, 1, 0, -2)$, $(0, 0, 1, -1)$ and $\\dim W = 2$.` },
+                { prompt: `Extend your basis to a basis of $\\mathbb{R}^4$ and justify that the extended set is independent.`, answer: `One choice adds $e_1 = (1, 0, 0, 0)$ and $e_4 = (0, 0, 0, 1)$. If $aw_1 + bw_2 + ce_1 + de_4 = 0$, entry 2 gives $a = 0$, entry 3 gives $b = 0$, entry 1 gives $c = 0$ and entry 4 gives $d = 0$. Four independent vectors in $\\mathbb{R}^4$ form a basis. Other choices work if they pass the same test.` },
+              ],
             },
             {
               slug: 'n-plus-one-dependent',
               title: 'Too many vectors are dependent',
-              prompt:
-                'Prove that if $V$ is spanned by $w_1, \\dots, w_n$, then any $n + 1$ vectors $v_1, \\dots, v_{n+1}$ in $V$ are dependent. Write each $v_j$ in terms of the $w_i$ and use the fact that a homogeneous system with more unknowns than equations has a nonzero solution. Deduce that any two bases of $V$ have the same size.',
+              prompt: `Let $V$ be spanned by $w_1, \\dots, w_n$.`,
               kind: 'derivation',
               difficulty: 3,
+              parts: [
+                { prompt: `Prove that any $n + 1$ vectors $v_1, \\dots, v_{n+1}$ in $V$ are dependent. Write each $v_j$ in terms of the $w_i$ and use the fact that a homogeneous system with more unknowns than equations has a nonzero solution.`, answer: `Write $v_j = \\sum_i a_{ij}w_i$, which defines an $n \\times (n+1)$ matrix $A = (a_{ij})$. The system $Ac = 0$ has more unknowns than equations, so it has a solution $c \\ne 0$. Then $\\sum_j c_jv_j = \\sum_i \\big(\\sum_j a_{ij}c_j\\big)w_i = \\sum_i (Ac)_i\\,w_i = 0$, a nontrivial dependence.` },
+                { prompt: `Deduce that any two bases of $V$ have the same size.`, answer: `If one basis has $m$ vectors and another has $n$, the second spans $V$ and the first is independent, so $m \\le n$: more than $n$ vectors would be dependent. Swapping the roles gives $n \\le m$.` },
+              ],
             },
             {
               slug: 'function-independence',
               title: 'Independence of functions',
-              prompt:
-                'Show that $e^t$, $e^{2t}$, $e^{3t}$ are independent by evaluating a vanishing combination at $t = 0$, $\\ln 2$ and $\\ln 3$ and solving the resulting $3 \\times 3$ system. Show that $1$, $\\cos^2 t$, $\\sin^2 t$ are dependent and find the dimension of their span.',
+              prompt: `Decide the independence of two sets of functions.`,
               kind: 'problem',
               difficulty: 2,
-              hint: 'The rows of the $3 \\times 3$ matrix are $(x, x^2, x^3)$ for $x = 1, 2, 3$. Its determinant is $1 \\cdot 2 \\cdot 3$ times the Vandermonde determinant $(2-1)(3-1)(3-2)$, so it equals $12$. The span of the second set has dimension $2$.',
+              parts: [
+                { prompt: `Show that $e^t$, $e^{2t}$, $e^{3t}$ are independent by evaluating a vanishing combination at $t = 0$, $\\ln 2$ and $\\ln 3$ and solving the resulting $3 \\times 3$ system.`, answer: `If $c_1e^t + c_2e^{2t} + c_3e^{3t} = 0$ for all $t$, the three values $e^t = 1, 2, 3$ give rows $(x, x^2, x^3)$ for $x = 1, 2, 3$: $\\begin{pmatrix} 1 & 1 & 1\\\\ 2 & 4 & 8\\\\ 3 & 9 & 27 \\end{pmatrix}c = 0$. The determinant is $1 \\cdot 2 \\cdot 3$ times the Vandermonde determinant $(2-1)(3-1)(3-2)$, so it equals $12 \\ne 0$ and $c = 0$.` },
+                { prompt: `Show that $1$, $\\cos^2 t$, $\\sin^2 t$ are dependent and find the dimension of their span.`, answer: `$1 - \\cos^2t - \\sin^2t = 0$ is a dependence. $1$ and $\\cos^2t$ are independent because $\\cos^2t$ is not constant, so the span has dimension $2$.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -738,6 +886,20 @@ For functions, evaluate at several points. If $c_1 e^t + c_2 e^{2t} = 0$ for all
             {
               question: 'Give three vectors in $\\mathbb{R}^3$, no two parallel, that are dependent.',
               answerOutline: 'Any three in a plane through the origin, e.g. $(1,0,0)$, $(0,1,0)$, $(1,1,0)$.',
+            },
+          ],
+          quiz: [
+            {
+              question: `For which value of $c$ are $(1, 2, 3)$, $(0, 1, 4)$ and $(1, 3, c)$ linearly dependent?`,
+              options: [`$c = 12$`, `$c = -7$`, `$c = 7$`, `No value: the first two are independent, so all three are`],
+              answer: 2,
+              explanation: `With the vectors as columns, the determinant is $c - 7$, so they are dependent exactly when $c = 7$. Then $(1, 3, 7) = (1, 2, 3) + (0, 1, 4)$. $c = 12$ keeps only one term of the cofactor expansion. Two independent vectors say nothing about a third, which can still be their combination.`,
+            },
+            {
+              question: `Five nonzero vectors lie in $\\mathbb{R}^4$, and no two of them are parallel. What must be true?`,
+              options: [`They span $\\mathbb{R}^4$`, `They are linearly dependent`, `They contain a basis of $\\mathbb{R}^4$`, `They are independent, since none is a multiple of another`],
+              answer: 1,
+              explanation: `Any five vectors in a space of dimension $4$ are dependent: $Ac = 0$ with $A$ of size $4 \\times 5$ has a nonzero solution. They need not span, since all five could lie in one plane, and then they contain no basis. Not being parallel only rules out dependence between pairs, not combinations of three or more.`,
             },
           ],
         },
@@ -796,37 +958,51 @@ row-reduce
             {
               slug: 'rank-one-subspaces',
               title: 'Four subspaces of a rank-one matrix',
-              prompt:
-                'For $A = \\begin{pmatrix} 1 & 3\\\\ 2 & 6 \\end{pmatrix}$ find a basis for each of the four subspaces, sketch them in two planes, and check the two orthogonality relations.',
+              prompt: `Let $A = \\begin{pmatrix} 1 & 3\\\\ 2 & 6 \\end{pmatrix}$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: '$C(A)$ is spanned by $(1, 2)$, $N(A)$ by $(-3, 1)$, $C(A^T)$ by $(1, 3)$, $N(A^T)$ by $(-2, 1)$.',
+              parts: [
+                { prompt: `Find a basis for each of the four subspaces.`, answer: `$C(A)$ is spanned by $(1, 2)$, $N(A)$ by $(-3, 1)$, $C(A^T)$ by $(1, 3)$ and $N(A^T)$ by $(-2, 1)$. Each is a line, since the rank is $1$.` },
+                { prompt: `Sketch them in two planes.`, answer: `In the input plane: the row space is the line through $(1, 3)$ and the null space is the perpendicular line through $(-3, 1)$. In the output plane: the column space is the line through $(1, 2)$ and the left null space is the perpendicular line through $(-2, 1)$.` },
+                { prompt: `Check the two orthogonality relations.`, answer: `$(1, 3) \\cdot (-3, 1) = 0$, so $N(A) \\perp C(A^T)$, and $(1, 2) \\cdot (-2, 1) = 0$, so $N(A^T) \\perp C(A)$.` },
+              ],
             },
             {
               slug: 'complete-solution',
               title: 'Complete solution and solvability',
-              prompt:
-                'Let $A = \\begin{pmatrix} 1 & 1 & 2\\\\ 2 & 3 & 5\\\\ 1 & 2 & 3 \\end{pmatrix}$. Find the rank, a basis for each of the four subspaces, and the condition on $b$ for $Ax = b$ to be solvable. Find the complete solution for $b = (2, 5, 3)$.',
+              prompt: `Let $A = \\begin{pmatrix} 1 & 1 & 2\\\\ 2 & 3 & 5\\\\ 1 & 2 & 3 \\end{pmatrix}$.`,
               kind: 'problem',
               difficulty: 2,
-              hint: 'Rank $2$; $N(A)$ is spanned by $(-1, -1, 1)$; $N(A^T)$ by $(1, -1, 1)$, so solvable iff $b_1 - b_2 + b_3 = 0$; $x_p = (1, 1, 0)$.',
+              parts: [
+                { prompt: `Find the rank.`, answer: `Elimination gives $R = \\begin{pmatrix} 1 & 0 & 1\\\\ 0 & 1 & 1\\\\ 0 & 0 & 0 \\end{pmatrix}$, with pivots in columns 1 and 2, so the rank is $2$.` },
+                { prompt: `Find a basis for each of the four subspaces.`, answer: `$C(A)$: the pivot columns of $A$, $(1, 2, 1)$ and $(1, 3, 2)$. $C(A^T)$: the nonzero rows of $R$, $(1, 0, 1)$ and $(0, 1, 1)$. $N(A)$: $(-1, -1, 1)$. $N(A^T)$: $(1, -1, 1)$.` },
+                { prompt: `Find the condition on $b$ for $Ax = b$ to be solvable.`, answer: `$b$ must be orthogonal to $N(A^T)$: $b_1 - b_2 + b_3 = 0$.` },
+                { prompt: `Find the complete solution for $b = (2, 5, 3)$.`, answer: `The condition holds: $2 - 5 + 3 = 0$. A particular solution is $x_p = (1, 1, 0)$, and the complete solution is $x = (1, 1, 0) + t(-1, -1, 1)$.` },
+              ],
             },
             {
               slug: 'orthogonality-proof',
               title: 'Null space is orthogonal to row space',
-              prompt:
-                'Prove that every vector in $N(A)$ is orthogonal to every vector in $C(A^T)$. Then prove that if $Ax = b$ is solvable, $y^T b = 0$ for every $y \\in N(A^T)$.',
+              prompt: `Let $A$ be an $m \\times n$ matrix.`,
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                { prompt: `Prove that every vector in $N(A)$ is orthogonal to every vector in $C(A^T)$.`, answer: `A vector in $C(A^T)$ has the form $A^Ty$. If $Ax = 0$, then $x^T(A^Ty) = (Ax)^Ty = 0$. In words, $Ax = 0$ says $x$ is orthogonal to every row of $A$, so it is orthogonal to every combination of rows.` },
+                { prompt: `Prove that if $Ax = b$ is solvable, then $y^T b = 0$ for every $y \\in N(A^T)$.`, answer: `If $b = Ax$ and $A^Ty = 0$, then $y^Tb = y^TAx = (A^Ty)^Tx = 0$.` },
+              ],
             },
             {
               slug: 'rank-of-gram',
               title: 'The rank of the Gram matrix',
-              prompt:
-                'Prove that $N(A^T A) = N(A)$ for any real $m \\times n$ matrix $A$, and deduce that $\\operatorname{rank}(A^T A) = \\operatorname{rank}(A)$. Conclude that $A^T A$ is invertible exactly when the columns of $A$ are independent. Where does the proof use that the entries are real?',
+              prompt: `Let $A$ be a real $m \\times n$ matrix.`,
               kind: 'derivation',
               difficulty: 3,
-              hint: 'If $A^T A x = 0$, multiply on the left by $x^T$.',
+              parts: [
+                { prompt: `Prove that $N(A^T A) = N(A)$.`, answer: `If $Ax = 0$ then $A^TAx = 0$. Conversely, if $A^TAx = 0$, multiply on the left by $x^T$: $x^TA^TAx = \\|Ax\\|^2 = 0$, so $Ax = 0$.` },
+                { prompt: `Deduce that $\\operatorname{rank}(A^T A) = \\operatorname{rank}(A)$.`, answer: `Both matrices have $n$ columns and the same null space, so rank-nullity gives $\\operatorname{rank}(A^TA) = n - \\dim N(A) = \\operatorname{rank}(A)$.` },
+                { prompt: `Conclude that $A^T A$ is invertible exactly when the columns of $A$ are independent.`, answer: `$A^TA$ is $n \\times n$, so it is invertible iff its rank is $n$, iff $\\operatorname{rank}A = n$, iff the $n$ columns of $A$ are independent.` },
+                { prompt: `Where does the proof use that the entries are real?`, answer: `In the step $\\|Ax\\|^2 = 0 \\Rightarrow Ax = 0$: a sum of squares of real numbers vanishes only when each one does. Over $\\mathbb{C}$ it fails: for the column $A = (1, i)^T$, $A^TA = 1 + i^2 = 0$ although the column is independent. That is why complex matrices use $A^*A$ (conjugate transpose) instead.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -846,6 +1022,20 @@ row-reduce
             {
               question: 'Describe the complete solution set of a consistent $Ax = b$.',
               answerOutline: '$x_p + N(A)$: one particular solution plus every null-space vector, an affine set of dimension $n - r$.',
+            },
+          ],
+          quiz: [
+            {
+              question: `A $5 \\times 8$ matrix $A$ has rank $3$. What are $\\dim N(A)$ and $\\dim N(A^T)$?`,
+              options: [`$2$ and $5$`, `$5$ and $2$`, `$3$ and $3$`, `$5$ and $5$`],
+              answer: 1,
+              explanation: `$N(A)$ lives in $\\mathbb{R}^8$, the input space, with dimension $n - r = 8 - 3 = 5$. $N(A^T)$ lives in $\\mathbb{R}^5$, the output space, with dimension $m - r = 5 - 3 = 2$. Swapping $m$ and $n$ gives the first option; the rank $3$ is the dimension of the column and row spaces, not of the null spaces.`,
+            },
+            {
+              question: `Elimination reduces $A$ to $R$ with pivots in columns 1 and 3. Which statement is always true?`,
+              options: [`Columns 1 and 3 of $R$ form a basis for $C(A)$`, `Rows 1 and 2 of $A$ form a basis for $C(A^T)$`, `Columns 1 and 3 of $A$ form a basis for $C(A)$`, `$N(A)$ has dimension $2$`],
+              answer: 2,
+              explanation: `Row operations preserve the linear relations among the columns, so the pivot columns of $A$ are independent and span $C(A)$. They do change the column space itself, so columns of $R$ are usually not in $C(A)$ at all. The nonzero rows of $R$ give the row space, but rows 1 and 2 of $A$ could be parallel. $\\dim N(A) = n - 2$ depends on how many columns $A$ has.`,
             },
           ],
         },
@@ -902,38 +1092,49 @@ For a planar graph, the dimension count is Euler's formula: (nodes) $-$ (edges) 
             {
               slug: 'triangle-graph',
               title: 'The triangle network',
-              prompt:
-                'Three nodes are joined by edges $1 \\to 2$, $2 \\to 3$, $1 \\to 3$. Write the $3 \\times 3$ incidence matrix, find its rank, and find bases for $N(A)$ and $N(A^T)$. Interpret each basis vector physically.',
+              prompt: `Three nodes are joined by edges $1 \\to 2$, $2 \\to 3$, $1 \\to 3$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: 'Rank $2$; $N(A)$ is spanned by $(1, 1, 1)$; $N(A^T)$ by the loop $(1, 1, -1)$.',
+              parts: [
+                { prompt: `Write the $3 \\times 3$ incidence matrix.`, answer: `With $-1$ at the start of each edge and $+1$ at its end, the rows for edges $1 \\to 2$, $2 \\to 3$, $1 \\to 3$ give $A = \\begin{pmatrix} -1 & 1 & 0\\\\ 0 & -1 & 1\\\\ -1 & 0 & 1 \\end{pmatrix}$.` },
+                { prompt: `Find its rank.`, answer: `Row 3 is row 1 plus row 2, and rows 1 and 2 are independent, so the rank is $2$.` },
+                { prompt: `Find a basis for $N(A)$ and interpret it physically.`, answer: `$(1, 1, 1)$. Equal potentials at every node give zero potential differences, so no current flows: potentials are fixed only up to an added constant.` },
+                { prompt: `Find a basis for $N(A^T)$ and interpret it physically.`, answer: `$(1, 1, -1)$: the loop $1 \\to 2 \\to 3 \\to 1$, which uses edges 1 and 2 forwards and edge 3 backwards. A unit current around it satisfies Kirchhoff's current law at every node.` },
+              ],
             },
             {
               slug: 'solvable-differences',
               title: 'Which edge differences come from potentials?',
-              prompt:
-                'For the five-edge network of the worked example, find the conditions on $b \\in \\mathbb{R}^5$ for $Au = b$ to be solvable, using the two loop vectors. Is $b = (1, 3, 2, 1, -1)$ a valid set of potential differences? If so, find the potentials with node 1 grounded ($u_1 = 0$).',
+              prompt: `Use the five-edge network of the worked example and its two loop vectors.`,
               kind: 'problem',
               difficulty: 2,
-              hint: 'The conditions are $b_1 - b_2 + b_3 = 0$ and $b_3 - b_4 + b_5 = 0$. Both hold, and $u = (0, 1, 3, 2)$.',
+              parts: [
+                { prompt: `Find the conditions on $b \\in \\mathbb{R}^5$ for $Au = b$ to be solvable.`, answer: `$b$ must be orthogonal to the loops $(1, -1, 1, 0, 0)$ and $(0, 0, 1, -1, 1)$ that span $N(A^T)$: $b_1 - b_2 + b_3 = 0$ and $b_3 - b_4 + b_5 = 0$. Potential differences around every loop must add to zero.` },
+                { prompt: `Is $b = (1, 3, 2, 1, -1)$ a valid set of potential differences?`, answer: `Yes: $1 - 3 + 2 = 0$ and $2 - 1 - 1 = 0$.` },
+                { prompt: `If so, find the potentials with node 1 grounded ($u_1 = 0$).`, answer: `$u_2 = u_1 + b_1 = 1$, $u_3 = u_1 + b_2 = 3$ and $u_4 = u_2 + b_4 = 2$, so $u = (0, 1, 3, 2)$. The other two edges check: $u_3 - u_2 = 2 = b_3$ and $u_4 - u_3 = -1 = b_5$.` },
+              ],
             },
             {
               slug: 'connected-null-space',
               title: 'Connected graphs have a one-dimensional null space',
-              prompt:
-                'Prove that if a directed graph is connected (ignoring edge directions), then the null space of its incidence matrix is spanned by $(1, \\dots, 1)$. What is the null space for a graph with $c$ connected components?',
+              prompt: `Relate the null space of an incidence matrix to the connectivity of its graph.`,
               kind: 'derivation',
               difficulty: 2,
-              hint: 'Follow a path between any two nodes.',
+              parts: [
+                { prompt: `Prove that if a directed graph is connected (ignoring edge directions), then the null space of its incidence matrix is spanned by $(1, \\dots, 1)$.`, answer: `$Au = 0$ says $u_j = u_i$ for every edge $i \\to j$. Between any two nodes there is a path; each edge on it forces equal potentials at its ends, so all potentials are equal and $u = c(1, \\dots, 1)$. Conversely, constant potentials give $Au = 0$.` },
+                { prompt: `What is the null space for a graph with $c$ connected components?`, answer: `The potential must be constant on each component, but the constants can differ. So $N(A)$ has dimension $c$, spanned by the indicator vectors of the components, and $\\operatorname{rank}A = n - c$.` },
+              ],
             },
             {
               slug: 'complete-graph-loops',
               title: 'Loops in a complete graph',
-              prompt:
-                'The complete graph $K_n$ has an edge between every pair of $n$ nodes. How many independent loops does it have? Check your formula for $n = 3$ and $n = 4$ by building the incidence matrix in NumPy and computing $m - \\operatorname{rank}(A)$.',
+              prompt: `The complete graph $K_n$ has an edge between every pair of $n$ nodes.`,
               kind: 'problem',
               difficulty: 2,
-              hint: '$m = n(n-1)/2$ and $r = n - 1$, so $(n-1)(n-2)/2$ loops: 1 and 3.',
+              parts: [
+                { prompt: `How many independent loops does it have?`, answer: `It has $m = n(n-1)/2$ edges and, being connected, rank $r = n - 1$. So there are $m - r = n(n-1)/2 - (n - 1) = (n-1)(n-2)/2$ independent loops.` },
+                { prompt: `Check your formula for $n = 3$ and $n = 4$ by building the incidence matrix in NumPy and computing $m - \\operatorname{rank}(A)$.`, answer: `The formula gives $1$ and $3$. NumPy agrees: $K_3$ has $m = 3$ and rank $2$, $K_4$ has $m = 6$ and rank $3$.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -950,6 +1151,20 @@ For a planar graph, the dimension count is Euler's formula: (nodes) $-$ (edges) 
             {
               question: 'How many independent loops does a connected graph with $n$ nodes and $m$ edges have, and why?',
               answerOutline: '$\\dim N(A^T) = m - r = m - (n - 1) = m - n + 1$.',
+            },
+          ],
+          quiz: [
+            {
+              question: `A connected network has $6$ nodes and $9$ edges. How many independent loops does it have?`,
+              options: [`$3$`, `$5$`, `$9$`, `$4$`],
+              answer: 3,
+              explanation: `The incidence matrix is $9 \\times 6$ with rank $n - 1 = 5$, so $\\dim N(A^T) = m - r = 9 - 5 = 4$. $3 = m - n$ forgets that the rank is $n - 1$, not $n$; $5$ is the rank itself; and not every edge closes a loop, since the five edges of a spanning tree close none.`,
+            },
+            {
+              question: `For a network with incidence matrix $A$ (edges by nodes), which equation is Kirchhoff's current law?`,
+              options: [`$A^Ty = 0$ for the edge currents $y$`, `$Au = 0$ for the node potentials $u$`, `$Ay = 0$ for the edge currents $y$`, `$A^Tu = 0$ for the node potentials $u$`],
+              answer: 0,
+              explanation: `Row $j$ of $A^Ty$ adds the currents entering node $j$ and subtracts those leaving it, so $A^Ty = 0$ says the net current at every node is zero. $Au = 0$ is a different statement: every potential difference vanishes, which means constant potentials. $Ay$ and $A^Tu$ do not even have matching sizes.`,
             },
           ],
         },
@@ -1015,37 +1230,50 @@ The kernel and range of $T$ are the null space and column space of its matrix, s
             {
               slug: 'rotations-compose',
               title: 'Rotations compose by adding angles',
-              prompt:
-                'Let $R(\\theta)$ be the rotation matrix. Multiply $R(\\alpha)R(\\beta)$ and use the fact that composition of rotations adds angles to derive the addition formulas for $\\cos(\\alpha + \\beta)$ and $\\sin(\\alpha + \\beta)$. What is $R(\\theta)^{-1}$, and how does it relate to $R(\\theta)^T$?',
+              prompt: `Let $R(\\theta) = \\begin{pmatrix} \\cos\\theta & -\\sin\\theta\\\\ \\sin\\theta & \\cos\\theta \\end{pmatrix}$ be the rotation matrix.`,
               kind: 'derivation',
               difficulty: 1,
+              parts: [
+                { prompt: `Multiply $R(\\alpha)R(\\beta)$ and use the fact that composition of rotations adds angles to derive the addition formulas for $\\cos(\\alpha + \\beta)$ and $\\sin(\\alpha + \\beta)$.`, answer: `The first column of $R(\\alpha)R(\\beta)$ is $(\\cos\\alpha\\cos\\beta - \\sin\\alpha\\sin\\beta,\\ \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta)$, and the second column is the same pair rotated by $90^\\circ$. Rotating by $\\beta$ and then $\\alpha$ is rotating by $\\alpha + \\beta$, so this must equal the first column of $R(\\alpha + \\beta)$: $\\cos(\\alpha + \\beta) = \\cos\\alpha\\cos\\beta - \\sin\\alpha\\sin\\beta$ and $\\sin(\\alpha + \\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$.` },
+                { prompt: `What is $R(\\theta)^{-1}$, and how does it relate to $R(\\theta)^T$?`, answer: `Undoing a rotation by $\\theta$ is rotating by $-\\theta$, so $R(\\theta)^{-1} = R(-\\theta) = \\begin{pmatrix} \\cos\\theta & \\sin\\theta\\\\ -\\sin\\theta & \\cos\\theta \\end{pmatrix}$. That is exactly $R(\\theta)^T$: a rotation is an orthogonal matrix.` },
+              ],
             },
             {
               slug: 'reflection-matrix',
               title: 'Reflection across a line',
-              prompt:
-                'Find the matrix $H$ of reflection across the line through $(1, 2)$. Verify that $H^2 = I$, that $H(1, 2) = (1, 2)$, that $H(-2, 1) = (2, -1)$, and that $\\det H = -1$. Explain each fact geometrically.',
+              prompt: `Let $H$ be the reflection across the line through $(1, 2)$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: '$H = 2P - I = \\tfrac15\\begin{pmatrix} -3 & 4\\\\ 4 & 3 \\end{pmatrix}$.',
+              parts: [
+                { prompt: `Find the matrix $H$.`, answer: `Projection onto the line is $P = \\dfrac{aa^T}{a^Ta} = \\tfrac15\\begin{pmatrix} 1 & 2\\\\ 2 & 4 \\end{pmatrix}$ with $a = (1, 2)$, and $H = 2P - I = \\tfrac15\\begin{pmatrix} -3 & 4\\\\ 4 & 3 \\end{pmatrix}$.` },
+                { prompt: `Verify that $H^2 = I$, and explain it geometrically.`, answer: `$H^2 = \\tfrac1{25}\\begin{pmatrix} 9 + 16 & -12 + 12\\\\ -12 + 12 & 16 + 9 \\end{pmatrix} = I$. Reflecting twice puts every vector back where it started.` },
+                { prompt: `Verify that $H(1, 2) = (1, 2)$ and $H(-2, 1) = (2, -1)$, and explain each geometrically.`, answer: `$H(1, 2) = \\tfrac15(-3 + 8, 4 + 6) = (1, 2)$: vectors on the mirror line stay put. $H(-2, 1) = \\tfrac15(6 + 4, -8 + 3) = (2, -1)$: the perpendicular direction is flipped.` },
+                { prompt: `Verify that $\\det H = -1$, and explain it geometrically.`, answer: `$\\det H = \\tfrac{1}{25}(-9 - 16) = -1$. A reflection preserves areas (size $1$) and reverses orientation (sign $-$).` },
+              ],
             },
             {
               slug: 'derivative-on-cubics',
               title: 'Differentiation on cubics',
-              prompt:
-                'Write the $4 \\times 4$ matrix of $D = d/dt$ on $P_3$ with basis $1, t, t^2, t^3$. Find its rank, kernel and range, and show $D^4 = 0$. Then write the matrix of $T(p) = p + p\'$ and explain why $T$ is invertible even though $D$ is not.',
+              prompt: `Let $D = d/dt$ act on $P_3$ with basis $1, t, t^2, t^3$.`,
               kind: 'problem',
               difficulty: 2,
-              hint: '$T = I + D$ is upper triangular with ones on the diagonal.',
+              parts: [
+                { prompt: `Write the $4 \\times 4$ matrix of $D$.`, answer: `The columns are the coordinates of $D(1) = 0$, $D(t) = 1$, $D(t^2) = 2t$ and $D(t^3) = 3t^2$: $D = \\begin{pmatrix} 0 & 1 & 0 & 0\\\\ 0 & 0 & 2 & 0\\\\ 0 & 0 & 0 & 3\\\\ 0 & 0 & 0 & 0 \\end{pmatrix}$.` },
+                { prompt: `Find its rank, kernel and range.`, answer: `Rank $3$. The kernel is the constants, spanned by $1$, and the range is $P_2$, spanned by $1, t, t^2$. Rank-nullity checks: $3 + 1 = 4$.` },
+                { prompt: `Show $D^4 = 0$.`, answer: `Each derivative lowers the degree by one, so four derivatives of any cubic give $0$. In the matrix, each power of $D$ pushes the nonzero entries one diagonal further up, and $D^4$ has none left.` },
+                { prompt: `Write the matrix of $T(p) = p + p'$ and explain why $T$ is invertible even though $D$ is not.`, answer: `$T = I + D = \\begin{pmatrix} 1 & 1 & 0 & 0\\\\ 0 & 1 & 2 & 0\\\\ 0 & 0 & 1 & 3\\\\ 0 & 0 & 0 & 1 \\end{pmatrix}$ is upper triangular with ones on the diagonal, so $\\det T = 1$. $D$ kills the constants; $T$ kills nothing, since $p + p' = 0$ would need the leading term of $p$ to vanish. In fact $T^{-1} = I - D + D^2 - D^3$ because $D^4 = 0$.` },
+              ],
             },
             {
               slug: 'determined-by-basis',
               title: 'A linear map is fixed by a basis',
-              prompt:
-                'Prove that if $v_1, \\dots, v_n$ is a basis of $V$ and $w_1, \\dots, w_n$ are any vectors in $W$, there is exactly one linear map $T$ with $T(v_i) = w_i$ for each $i$. Use this to find the matrix of the linear map on $\\mathbb{R}^2$ with $T(1, 1) = (2, 0)$ and $T(1, -1) = (0, 4)$.',
+              prompt: `Let $v_1, \\dots, v_n$ be a basis of $V$ and $w_1, \\dots, w_n$ any vectors in $W$.`,
               kind: 'derivation',
               difficulty: 2,
-              hint: 'The matrix is $\\begin{pmatrix} 1 & 1\\\\ 2 & -2 \\end{pmatrix}$.',
+              parts: [
+                { prompt: `Prove that there is exactly one linear map $T$ with $T(v_i) = w_i$ for each $i$.`, answer: `Existence: every $v$ has unique coordinates, $v = \\sum c_iv_i$, so define $T(v) = \\sum c_iw_i$. The coordinates depend linearly on $v$, so $T$ is linear, and $T(v_i) = w_i$. Uniqueness: any linear $S$ with $S(v_i) = w_i$ has $S(v) = \\sum c_iS(v_i) = \\sum c_iw_i = T(v)$.` },
+                { prompt: `Use this to find the matrix of the linear map on $\\mathbb{R}^2$ with $T(1, 1) = (2, 0)$ and $T(1, -1) = (0, 4)$.`, answer: `With the inputs as columns of $S = \\begin{pmatrix} 1 & 1\\\\ 1 & -1 \\end{pmatrix}$ and the outputs as columns of $W = \\begin{pmatrix} 2 & 0\\\\ 0 & 4 \\end{pmatrix}$, $TS = W$, so $T = WS^{-1} = \\begin{pmatrix} 1 & 1\\\\ 2 & -2 \\end{pmatrix}$. Check: $T(1, 1) = (2, 0)$ and $T(1, -1) = (0, 4)$.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -1060,6 +1288,20 @@ The kernel and range of $T$ are the null space and column space of its matrix, s
             {
               question: 'What are the kernel and range of differentiation on $P_n$?',
               answerOutline: 'Kernel: the constants (dimension 1). Range: $P_{n-1}$ (dimension $n$). Their dimensions add to $n + 1 = \\dim P_n$.',
+            },
+          ],
+          quiz: [
+            {
+              question: `A linear map $T$ on $\\mathbb{R}^2$ sends $(1, 0)$ to $(2, 1)$ and $(0, 1)$ to $(-1, 3)$. What is $T(3, 2)$?`,
+              options: [`$(4, 9)$`, `$(8, 3)$`, `$(1, 4)$`, `$(6, 6)$`],
+              answer: 0,
+              explanation: `By linearity, $T(3, 2) = 3T(1, 0) + 2T(0, 1) = (6, 3) + (-2, 6) = (4, 9)$. The images are the columns of the matrix, $\\begin{pmatrix} 2 & -1\\\\ 1 & 3 \\end{pmatrix}$; putting them in as rows gives $(8, 3)$. $(1, 4)$ adds the images without the coefficients $3$ and $2$, and $(6, 6)$ only scales by the diagonal entries.`,
+            },
+            {
+              question: `Let $R$ be rotation by $90^\\circ$ counterclockwise and $F$ reflection across the $x$-axis. What is the map $RF$, which applies $F$ first and then $R$?`,
+              options: [`Reflection across the line $y = -x$`, `Rotation by $-90^\\circ$`, `Reflection across the line $y = x$`, `The identity, since the reflection undoes the rotation`],
+              answer: 2,
+              explanation: `$RF = \\begin{pmatrix} 0 & -1\\\\ 1 & 0 \\end{pmatrix}\\begin{pmatrix} 1 & 0\\\\ 0 & -1 \\end{pmatrix} = \\begin{pmatrix} 0 & 1\\\\ 1 & 0 \\end{pmatrix}$, which swaps the coordinates: reflection across $y = x$. Its determinant is $-1$, so it cannot be a rotation. Reflection across $y = -x$ is $FR$, the product in the other order, which is the usual slip.`,
             },
           ],
         },
@@ -1113,37 +1355,50 @@ matrix-transform
             {
               slug: 'coordinates-in-a-basis',
               title: 'Coordinates in a rotated basis',
-              prompt:
-                'Find the coordinates of $(5, 3)$ in the basis $(1, 1)$, $(1, -1)$. Then normalise the basis to make it orthonormal and recompute the coordinates using dot products only.',
+              prompt: `Express $(5, 3)$ in the basis $(1, 1)$, $(1, -1)$, first as it is and then normalised.`,
               kind: 'problem',
               difficulty: 1,
-              hint: 'In the unnormalised basis the coordinates are $(4, 1)$; in the normalised one, $(4\\sqrt2, \\sqrt2)$.',
+              parts: [
+                { prompt: `Find the coordinates of $(5, 3)$ in the basis $(1, 1)$, $(1, -1)$.`, answer: `Solve $c_1 + c_2 = 5$, $c_1 - c_2 = 3$: the coordinates are $(4, 1)$, since $4(1, 1) + (1, -1) = (5, 3)$.` },
+                { prompt: `Normalise the basis to make it orthonormal and recompute the coordinates using dot products only.`, answer: `$q_1 = (1, 1)/\\sqrt2$ and $q_2 = (1, -1)/\\sqrt2$, so the coordinates are $(5, 3) \\cdot q_1 = 8/\\sqrt2 = 4\\sqrt2$ and $(5, 3) \\cdot q_2 = 2/\\sqrt2 = \\sqrt2$: $(4\\sqrt2, \\sqrt2)$. Shortening each basis vector by $\\sqrt2$ lengthens its coordinate by $\\sqrt2$.` },
+              ],
             },
             {
               slug: 'adapted-basis-diagonalises',
               title: 'An adapted basis makes a matrix diagonal',
-              prompt:
-                'Let $A = \\begin{pmatrix} 4 & 1\\\\ 2 & 3 \\end{pmatrix}$ and take the basis $v_1 = (1, 1)$, $v_2 = (1, -2)$. Compute $Av_1$ and $Av_2$, write down $S^{-1}AS$ without multiplying matrices, then confirm by multiplying. Check that the trace and determinant agree.',
+              prompt: `Let $A = \\begin{pmatrix} 4 & 1\\\\ 2 & 3 \\end{pmatrix}$ and take the basis $v_1 = (1, 1)$, $v_2 = (1, -2)$, the columns of $S$.`,
               kind: 'problem',
               difficulty: 2,
-              hint: '$Av_1 = 5v_1$ and $Av_2 = 2v_2$, so $S^{-1}AS = \\operatorname{diag}(5, 2)$; trace $7$, determinant $10$.',
+              parts: [
+                { prompt: `Compute $Av_1$ and $Av_2$.`, answer: `$Av_1 = (5, 5) = 5v_1$ and $Av_2 = (2, -4) = 2v_2$.` },
+                { prompt: `Write down $S^{-1}AS$ without multiplying matrices.`, answer: `Column $j$ of $S^{-1}AS$ holds the coordinates of $Av_j$ in the new basis, which are $(5, 0)$ and $(0, 2)$. So $S^{-1}AS = \\operatorname{diag}(5, 2)$.` },
+                { prompt: `Confirm by multiplying.`, answer: `$S^{-1} = \\tfrac13\\begin{pmatrix} 2 & 1\\\\ 1 & -1 \\end{pmatrix}$ and $AS = \\begin{pmatrix} 5 & 2\\\\ 5 & -4 \\end{pmatrix}$, so $S^{-1}AS = \\tfrac13\\begin{pmatrix} 15 & 0\\\\ 0 & 6 \\end{pmatrix} = \\begin{pmatrix} 5 & 0\\\\ 0 & 2 \\end{pmatrix}$.` },
+                { prompt: `Check that the trace and determinant agree.`, answer: `$\\operatorname{tr}A = 4 + 3 = 7 = 5 + 2$ and $\\det A = 12 - 2 = 10 = 5 \\cdot 2$.` },
+              ],
             },
             {
               slug: 'reflection-two-ways',
               title: 'A reflection in its own basis',
-              prompt:
-                'Using the basis $v_1 = (1, 2)$, $v_2 = (-2, 1)$ from the worked example, write down the matrix of reflection across the line $y = 2x$ in this basis. Convert it to the standard basis with $S(\\cdot)S^{-1}$ and confirm that you recover the reflection matrix from the previous lesson.',
+              prompt: `Use the basis $v_1 = (1, 2)$, $v_2 = (-2, 1)$ from the worked example for the reflection across the line $y = 2x$.`,
               kind: 'problem',
               difficulty: 2,
+              parts: [
+                { prompt: `Write down the matrix of the reflection in this basis.`, answer: `$v_1$ lies on the line and is fixed, and $v_2$ is perpendicular and is flipped, so the matrix is $\\operatorname{diag}(1, -1)$.` },
+                { prompt: `Convert it to the standard basis with $S(\\cdot)S^{-1}$ and confirm that you recover the reflection matrix from the previous lesson.`, answer: `$S = \\begin{pmatrix} 1 & -2\\\\ 2 & 1 \\end{pmatrix}$ and $S^{-1} = \\tfrac15\\begin{pmatrix} 1 & 2\\\\ -2 & 1 \\end{pmatrix}$, so $S\\operatorname{diag}(1, -1)S^{-1} = \\tfrac15\\begin{pmatrix} -3 & 4\\\\ 4 & 3 \\end{pmatrix}$, the matrix $H = 2P - I$ from the previous lesson.` },
+              ],
             },
             {
               slug: 'similarity-invariants',
               title: 'What similarity preserves',
-              prompt:
-                'Prove that if $B = S^{-1}AS$ then $\\det B = \\det A$, $\\operatorname{tr} B = \\operatorname{tr} A$ and $\\operatorname{rank} B = \\operatorname{rank} A$. For the trace, first prove $\\operatorname{tr}(XY) = \\operatorname{tr}(YX)$. Give two $2 \\times 2$ matrices with the same trace and determinant that are not similar.',
+              prompt: `Let $B = S^{-1}AS$ with $S$ invertible.`,
               kind: 'derivation',
               difficulty: 3,
-              hint: 'Consider $I$ and $\\begin{pmatrix} 1 & 1\\\\ 0 & 1 \\end{pmatrix}$: the only matrix similar to $I$ is $I$.',
+              parts: [
+                { prompt: `Prove that $\\det B = \\det A$.`, answer: `$\\det B = \\det S^{-1}\\,\\det A\\,\\det S = \\det A$, since $\\det S^{-1} = 1/\\det S$.` },
+                { prompt: `Prove $\\operatorname{tr}(XY) = \\operatorname{tr}(YX)$, and use it to show $\\operatorname{tr} B = \\operatorname{tr} A$.`, answer: `$\\operatorname{tr}(XY) = \\sum_i\\sum_j x_{ij}y_{ji}$, and swapping the names of $i$ and $j$ gives $\\operatorname{tr}(YX)$. Then $\\operatorname{tr}(S^{-1}(AS)) = \\operatorname{tr}((AS)S^{-1}) = \\operatorname{tr}A$.` },
+                { prompt: `Prove that $\\operatorname{rank} B = \\operatorname{rank} A$.`, answer: `$C(AS) = C(A)$ because $S$ is invertible (every $Ay$ is $AS(S^{-1}y)$). Then $C(S^{-1}AS) = S^{-1}C(A)$, and an invertible map sends a subspace to one of the same dimension.` },
+                { prompt: `Give two $2 \\times 2$ matrices with the same trace and determinant that are not similar.`, answer: `$I$ and $\\begin{pmatrix} 1 & 1\\\\ 0 & 1 \\end{pmatrix}$: both have trace $2$ and determinant $1$. But $S^{-1}IS = I$ for every $S$, so the only matrix similar to $I$ is $I$ itself.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -1158,6 +1413,20 @@ matrix-transform
             {
               question: 'Why does an orthonormal basis make coordinates easy?',
               answerOutline: '$S^{-1} = S^T$, so each coordinate is the dot product $q_i^T v$.',
+            },
+          ],
+          quiz: [
+            {
+              question: `What are the coordinates of $(3, 7)$ in the basis $v_1 = (1, 2)$, $v_2 = (1, 3)$?`,
+              options: [`$(3, 7)$`, `$(1, 2)$`, `$(10, 27)$`, `$(2, 1)$`],
+              answer: 3,
+              explanation: `Solve $c_1v_1 + c_2v_2 = (3, 7)$: $c_1 + c_2 = 3$ and $2c_1 + 3c_2 = 7$ give $c_2 = 1$, $c_1 = 2$. Check: $2(1, 2) + (1, 3) = (3, 7)$. The coordinates are $S^{-1}(3, 7)$; multiplying by $S$ instead gives $(10, 27)$, and $(3, 7)$ is just the standard coordinates.`,
+            },
+            {
+              question: `$S$ has the new basis vectors as its columns, and $A$ is the matrix of a map in the standard basis. Which matrix represents the same map in the new basis?`,
+              options: [`$SAS^{-1}$`, `$S^{-1}AS$`, `$S^TAS$`, `$A$ itself, since the map has not changed`],
+              answer: 1,
+              explanation: `Read right to left: $S$ turns new coordinates into standard ones, $A$ applies the map, and $S^{-1}$ turns the result back into new coordinates. $SAS^{-1}$ goes the other way, from the new-basis matrix to the standard one. $S^TAS$ agrees with $S^{-1}AS$ only when $S$ is orthogonal, and the map is unchanged but its matrix depends on the basis.`,
             },
           ],
         },
@@ -1220,36 +1489,50 @@ Cofactor expansion is useful for small matrices, for matrices with many zeros, a
             {
               slug: 'two-ways',
               title: 'A determinant two ways',
-              prompt:
-                'Compute $\\det\\begin{pmatrix} 1 & 2 & 3\\\\ 4 & 5 & 6\\\\ 7 & 8 & 10 \\end{pmatrix}$ by elimination (as a product of pivots) and by cofactor expansion along the first row. What is the determinant if the last entry is $9$ instead of $10$, and why could you predict that without computing?',
+              prompt: `Let $A = \\begin{pmatrix} 1 & 2 & 3\\\\ 4 & 5 & 6\\\\ 7 & 8 & 10 \\end{pmatrix}$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: 'The answer is $-3$. With $9$, row 3 is $2R_2 - R_1$, so the determinant is $0$.',
+              parts: [
+                { prompt: `Compute $\\det A$ by elimination, as a product of pivots.`, answer: `Multipliers $4$ and $7$ leave rows $[0\\ {-3}\\ {-6}]$ and $[0\\ {-6}\\ {-11}]$; the multiplier $2$ then leaves $[0\\ 0\\ 1]$. The pivots are $1, -3, 1$, so $\\det A = -3$.` },
+                { prompt: `Compute it by cofactor expansion along the first row.`, answer: `$1(50 - 48) - 2(40 - 42) + 3(32 - 35) = 2 + 4 - 9 = -3$.` },
+                { prompt: `What is the determinant if the last entry is $9$ instead of $10$, and why could you predict that without computing?`, answer: `$0$. With $9$, row 3 is $(7, 8, 9) = 2(4, 5, 6) - (1, 2, 3)$, so the rows are dependent and the matrix is singular.` },
+              ],
             },
             {
               slug: 'determinant-rules',
               title: 'Consequences of the defining properties',
-              prompt:
-                'Using only the three defining properties and the product rule, prove: (a) $\\det(cA) = c^n \\det A$ for an $n \\times n$ matrix; (b) $\\det(A^{-1}) = 1/\\det A$; (c) if $A^T = -A$ and $n$ is odd then $\\det A = 0$; (d) if $Q^TQ = I$ then $\\det Q = \\pm 1$. You may use $\\det A^T = \\det A$.',
+              prompt: `Using only the three defining properties and the product rule, prove each statement. You may use $\\det A^T = \\det A$.`,
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                { prompt: `$\\det(cA) = c^n \\det A$ for an $n \\times n$ matrix.`, answer: `$cA$ multiplies each of the $n$ rows by $c$. The determinant is linear in each row separately, so each row contributes one factor $c$: $c^n\\det A$.` },
+                { prompt: `$\\det(A^{-1}) = 1/\\det A$.`, answer: `$\\det A\\,\\det A^{-1} = \\det(AA^{-1}) = \\det I = 1$.` },
+                { prompt: `If $A^T = -A$ and $n$ is odd, then $\\det A = 0$.`, answer: `$\\det A = \\det A^T = \\det(-A) = (-1)^n\\det A = -\\det A$ for odd $n$, so $\\det A = 0$.` },
+                { prompt: `If $Q^TQ = I$ then $\\det Q = \\pm 1$.`, answer: `$1 = \\det(Q^TQ) = \\det Q^T\\det Q = (\\det Q)^2$.` },
+              ],
             },
             {
               slug: 'cramer-and-cost',
               title: 'Cramer\'s rule and its cost',
-              prompt:
-                'Solve $3x + 2y = 7$, $x + 4y = 9$ by Cramer\'s rule. Then estimate the number of multiplications needed to solve a $20 \\times 20$ system by Cramer\'s rule with every determinant expanded by cofactors, compared with elimination, and say how long each would take at $10^{10}$ multiplications per second.',
+              prompt: `Compare Cramer's rule with elimination, first on a small system and then on a large one.`,
               kind: 'problem',
               difficulty: 2,
-              hint: '$\\det A = 10$ and $(x, y) = (1, 2)$. Cramer with cofactors needs $21$ determinants of roughly $20!$ products each; elimination needs a few thousand multiplications.',
+              parts: [
+                { prompt: `Solve $3x + 2y = 7$, $x + 4y = 9$ by Cramer's rule.`, answer: `$\\det A = 12 - 2 = 10$. Then $x = \\det\\begin{pmatrix} 7 & 2\\\\ 9 & 4 \\end{pmatrix}/10 = 10/10 = 1$ and $y = \\det\\begin{pmatrix} 3 & 7\\\\ 1 & 9 \\end{pmatrix}/10 = 20/10 = 2$.` },
+                { prompt: `Estimate the number of multiplications needed to solve a $20 \\times 20$ system by Cramer's rule with every determinant expanded by cofactors, compared with elimination.`, answer: `Cramer needs $21$ determinants of size $20$: $\\det A$ and one for each unknown. Full cofactor expansion of one has $20! \\approx 2.4 \\times 10^{18}$ terms, each a product of $20$ entries, so the total is about $21 \\times 20! \\times 19 \\approx 10^{21}$ multiplications. Elimination needs about $n^3/3 \\approx 2700$, plus about $n^2 = 400$ for the substitutions: a few thousand.` },
+                { prompt: `Say how long each would take at $10^{10}$ multiplications per second.`, answer: `Cramer: about $10^{11}$ s, roughly $3000$ years (still about $160$ years if you count each of the $21 \\times 20!$ products as a single multiplication). Elimination: about $3 \\times 10^{-7}$ s, well under a microsecond.` },
+              ],
             },
             {
               slug: 'vandermonde-3',
               title: 'The 3 by 3 Vandermonde determinant',
-              prompt:
-                'Prove that $\\det\\begin{pmatrix} 1 & a & a^2\\\\ 1 & b & b^2\\\\ 1 & c & c^2 \\end{pmatrix} = (b - a)(c - a)(c - b)$ using row operations. Deduce that a quadratic polynomial through three points with distinct $x$-coordinates exists and is unique.',
+              prompt: `Let $V = \\begin{pmatrix} 1 & a & a^2\\\\ 1 & b & b^2\\\\ 1 & c & c^2 \\end{pmatrix}$.`,
               kind: 'derivation',
               difficulty: 3,
+              parts: [
+                { prompt: `Prove that $\\det V = (b - a)(c - a)(c - b)$ using row operations.`, answer: `Subtract row 1 from rows 2 and 3: they become $(0,\\ b - a,\\ b^2 - a^2)$ and $(0,\\ c - a,\\ c^2 - a^2)$. Factor $b - a$ out of row 2 and $c - a$ out of row 3, leaving $(0, 1, b + a)$ and $(0, 1, c + a)$. Subtracting the new row 2 from row 3 gives $(0, 0, c - b)$, so $\\det V = (b - a)(c - a) \\cdot 1 \\cdot 1 \\cdot (c - b)$.` },
+                { prompt: `Deduce that a quadratic polynomial through three points with distinct $x$-coordinates exists and is unique.`, answer: `$p(x) = \\alpha + \\beta x + \\gamma x^2$ passes through $(a, y_1)$, $(b, y_2)$, $(c, y_3)$ exactly when $V(\\alpha, \\beta, \\gamma) = (y_1, y_2, y_3)$. Distinct $a, b, c$ make $\\det V \\ne 0$, so this system has exactly one solution.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -1268,6 +1551,20 @@ Cofactor expansion is useful for small matrices, for matrices with many zeros, a
             {
               question: 'Why does adding a multiple of one row to another leave the determinant unchanged?',
               answerOutline: 'Linearity in that row splits it into $\\det A$ plus $c$ times a determinant with two equal rows, which is zero.',
+            },
+          ],
+          quiz: [
+            {
+              question: `What is $\\det\\begin{pmatrix} 2 & 1 & 0\\\\ 1 & 3 & 1\\\\ 0 & 1 & 4 \\end{pmatrix}$?`,
+              options: [`$24$`, `$18$`, `$26$`, `$22$`],
+              answer: 1,
+              explanation: `Expand along the first row: $2(3 \\cdot 4 - 1 \\cdot 1) - 1(1 \\cdot 4 - 1 \\cdot 0) + 0 = 22 - 4 = 18$. The pivots $2, \\tfrac52, \\tfrac{18}{5}$ multiply to the same value. $26$ comes from using $+$ for the middle cofactor, $22$ from dropping it, and $24$ is the product of the diagonal, which equals the determinant only for a triangular matrix.`,
+            },
+            {
+              question: `A $3 \\times 3$ matrix $A$ has $\\det A = 2$. What is $\\det(2A)$?`,
+              options: [`$16$`, `$4$`, `$8$`, `$2$`],
+              answer: 0,
+              explanation: `Multiplying $A$ by $2$ multiplies each of its three rows by $2$, and each row contributes a factor: $\\det(2A) = 2^3\\det A = 16$. $4 = 2\\det A$ treats the factor $2$ as if it scaled only one row. $8$ is the factor $2^3$ without the original determinant.`,
             },
           ],
         },
@@ -1325,46 +1622,62 @@ Cauchy-Schwarz holds, since $\\tfrac12 \\le 1/\\sqrt3 \\approx 0.577$. On $[-1, 
             {
               slug: 'three-norms',
               title: 'Three norms and their unit balls',
-              prompt:
-                'Compute $\\|v\\|_1$, $\\|v\\|_2$ and $\\|v\\|_\\infty$ for $v = (1, -2, 2)$. Sketch the unit balls $\\{x \\in \\mathbb{R}^2 : \\|x\\| \\le 1\\}$ for the three norms on one set of axes, and prove $\\|x\\|_\\infty \\le \\|x\\|_2 \\le \\|x\\|_1 \\le n\\|x\\|_\\infty$ in $\\mathbb{R}^n$.',
+              prompt: `Compare the 1, 2 and infinity norms on a vector and on the plane.`,
               kind: 'problem',
               difficulty: 1,
-              hint: 'The norms are $5$, $3$ and $2$.',
+              parts: [
+                { prompt: `Compute $\\|v\\|_1$, $\\|v\\|_2$ and $\\|v\\|_\\infty$ for $v = (1, -2, 2)$.`, answer: `$\\|v\\|_1 = 1 + 2 + 2 = 5$, $\\|v\\|_2 = \\sqrt{1 + 4 + 4} = 3$ and $\\|v\\|_\\infty = 2$.` },
+                { prompt: `Sketch the unit balls $\\{x \\in \\mathbb{R}^2 : \\|x\\| \\le 1\\}$ for the three norms on one set of axes.`, answer: `The 1-norm ball is the diamond with corners $(\\pm1, 0)$ and $(0, \\pm1)$. The 2-norm ball is the unit disc. The infinity-norm ball is the square with corners $(\\pm1, \\pm1)$. They nest: diamond inside disc inside square, touching at $(\\pm1, 0)$ and $(0, \\pm1)$.` },
+                { prompt: `Prove $\\|x\\|_\\infty \\le \\|x\\|_2 \\le \\|x\\|_1 \\le n\\|x\\|_\\infty$ in $\\mathbb{R}^n$.`, answer: `If $|x_k|$ is the largest entry, $\\|x\\|_2^2 \\ge x_k^2$, which gives the first inequality. Squaring $\\|x\\|_1$ gives $\\sum x_i^2$ plus the nonnegative cross terms $2|x_i||x_j|$, so $\\|x\\|_1^2 \\ge \\|x\\|_2^2$. Finally each $|x_i| \\le \\|x\\|_\\infty$, so the sum of $n$ of them is at most $n\\|x\\|_\\infty$.` },
+              ],
             },
             {
               slug: 'weighted-angle',
               title: 'Angles in a weighted inner product',
-              prompt:
-                'Show that $\\langle v, w\\rangle = 2v_1 w_1 + 3v_2 w_2$ is an inner product on $\\mathbb{R}^2$ and find the cosine of the angle between $(1, 0)$ and $(1, 1)$ in it. Find a nonzero vector orthogonal to $(1, 1)$ in this inner product.',
+              prompt: `Let $\\langle v, w\\rangle = 2v_1 w_1 + 3v_2 w_2$ on $\\mathbb{R}^2$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: 'The cosine is $2/\\sqrt{10}$; one orthogonal vector is $(3, -2)$.',
+              parts: [
+                { prompt: `Show that this is an inner product.`, answer: `It is linear in each argument and symmetric by inspection. Positivity: $\\langle v, v\\rangle = 2v_1^2 + 3v_2^2 > 0$ for $v \\ne 0$ because both weights are positive.` },
+                { prompt: `Find the cosine of the angle between $(1, 0)$ and $(1, 1)$ in it.`, answer: `$\\langle a, b\\rangle = 2$, $\\|a\\|^2 = 2$ and $\\|b\\|^2 = 5$, so $\\cos\\theta = 2/\\sqrt{10} \\approx 0.632$, an angle of about $50.8^\\circ$ instead of the usual $45^\\circ$.` },
+                { prompt: `Find a nonzero vector orthogonal to $(1, 1)$ in this inner product.`, answer: `You need $2w_1 + 3w_2 = 0$, so $(3, -2)$ works (or any multiple). It is not perpendicular to $(1, 1)$ in the ordinary dot product.` },
+              ],
             },
             {
               slug: 'orthogonal-polynomials',
               title: 'Orthogonal polynomials on an interval',
-              prompt:
-                'With $\\langle f, g\\rangle = \\int_{-1}^1 f g\\,dt$, show that $1$, $t$ and $t^2 - \\tfrac13$ are mutually orthogonal and compute their norms. Then compute the angle between $t$ and $t^2$ on $[0, 1]$ instead.',
+              prompt: `Use the function inner product $\\langle f, g\\rangle = \\int f g\\,dt$, first on $[-1, 1]$ and then on $[0, 1]$.`,
               kind: 'problem',
               difficulty: 2,
-              hint: 'Norms squared: $2$, $\\tfrac23$, $\\tfrac{8}{45}$. On $[0,1]$, $\\cos\\theta = (1/4)/\\sqrt{(1/3)(1/5)} = \\sqrt{15}/4$.',
+              parts: [
+                { prompt: `On $[-1, 1]$, show that $1$, $t$ and $t^2 - \\tfrac13$ are mutually orthogonal.`, answer: `$\\int_{-1}^1 t\\,dt = 0$ and $\\int_{-1}^1 t(t^2 - \\tfrac13)\\,dt = 0$ because the integrands are odd, and $\\int_{-1}^1 (t^2 - \\tfrac13)\\,dt = \\tfrac23 - \\tfrac23 = 0$.` },
+                { prompt: `Compute their norms on $[-1, 1]$.`, answer: `The squared norms are $2$, $\\tfrac23$ and $\\tfrac{8}{45}$, so the norms are $\\sqrt2$, $\\sqrt{2/3}$ and $\\sqrt{8/45} \\approx 0.422$.` },
+                { prompt: `Compute the angle between $t$ and $t^2$ on $[0, 1]$.`, answer: `$\\langle t, t^2\\rangle = \\tfrac14$, $\\|t\\|^2 = \\tfrac13$ and $\\|t^2\\|^2 = \\tfrac15$, so $\\cos\\theta = \\dfrac{1/4}{\\sqrt{1/15}} = \\dfrac{\\sqrt{15}}{4} \\approx 0.968$ and $\\theta \\approx 14.5^\\circ$: on $[0, 1]$ the two functions are nearly parallel.` },
+              ],
             },
             {
               slug: 'cauchy-schwarz-proof',
               title: 'Prove Cauchy-Schwarz and the triangle inequality',
-              prompt:
-                'Prove the Cauchy-Schwarz inequality for a general real inner product using the quadratic $\\|v - tw\\|^2 \\ge 0$, including the equality case. Derive the triangle inequality. Then show that the 1-norm on $\\mathbb{R}^2$ does not come from any inner product by checking the parallelogram law $\\|v + w\\|^2 + \\|v - w\\|^2 = 2\\|v\\|^2 + 2\\|w\\|^2$ on $v = (1, 0)$, $w = (0, 1)$.',
+              prompt: `Work in a general real inner product space.`,
               kind: 'derivation',
               difficulty: 3,
+              parts: [
+                { prompt: `Prove the Cauchy-Schwarz inequality using the quadratic $\\|v - tw\\|^2 \\ge 0$, including the equality case.`, answer: `If $w = 0$ both sides are $0$. Otherwise $q(t) = \\|v\\|^2 - 2t\\langle v, w\\rangle + t^2\\|w\\|^2 \\ge 0$ for every $t$, so its discriminant is at most $0$: $4\\langle v, w\\rangle^2 - 4\\|v\\|^2\\|w\\|^2 \\le 0$. Equality holds iff the discriminant is $0$, iff $q$ has a root $t_0$, iff $v = t_0w$: the vectors are parallel.` },
+                { prompt: `Derive the triangle inequality.`, answer: `$\\|v + w\\|^2 = \\|v\\|^2 + 2\\langle v, w\\rangle + \\|w\\|^2 \\le \\|v\\|^2 + 2\\|v\\|\\|w\\| + \\|w\\|^2 = (\\|v\\| + \\|w\\|)^2$, using Cauchy-Schwarz in the middle. Take square roots.` },
+                { prompt: `Show that the 1-norm on $\\mathbb{R}^2$ does not come from any inner product by checking the parallelogram law $\\|v + w\\|^2 + \\|v - w\\|^2 = 2\\|v\\|^2 + 2\\|w\\|^2$ on $v = (1, 0)$, $w = (0, 1)$.`, answer: `$\\|v + w\\|_1 = \\|v - w\\|_1 = 2$, so the left side is $4 + 4 = 8$, while the right side is $2 + 2 = 4$. Every norm that comes from an inner product satisfies the law (expand both squares and add), so the 1-norm does not.` },
+              ],
             },
             {
               slug: 'matrix-norms',
               title: 'Induced matrix norms',
-              prompt:
-                'For $A = \\begin{pmatrix} 1 & -2\\\\ 3 & 4 \\end{pmatrix}$ compute $\\|A\\|_1$ and $\\|A\\|_\\infty$ from the column and row sum rules, and find a vector $x$ with $\\|x\\|_\\infty = 1$ that attains $\\|Ax\\|_\\infty = \\|A\\|_\\infty$. Check $\\|A\\|_2$ with numpy.linalg.norm(A, 2) and confirm it lies between the other two.',
+              prompt: `Let $A = \\begin{pmatrix} 1 & -2\\\\ 3 & 4 \\end{pmatrix}$.`,
               kind: 'problem',
               difficulty: 2,
-              hint: '$\\|A\\|_1 = 6$, $\\|A\\|_\\infty = 7$ attained at $x = (1, 1)$, and $\\|A\\|_2 \\approx 5.117$.',
+              parts: [
+                { prompt: `Compute $\\|A\\|_1$ and $\\|A\\|_\\infty$ from the column and row sum rules.`, answer: `The absolute column sums are $4$ and $6$, so $\\|A\\|_1 = 6$. The absolute row sums are $3$ and $7$, so $\\|A\\|_\\infty = 7$.` },
+                { prompt: `Find a vector $x$ with $\\|x\\|_\\infty = 1$ that attains $\\|Ax\\|_\\infty = \\|A\\|_\\infty$.`, answer: `Take the signs of the largest row, row 2: $x = (1, 1)$. Then $Ax = (-1, 7)$ and $\\|Ax\\|_\\infty = 7$.` },
+                { prompt: `Check $\\|A\\|_2$ with numpy.linalg.norm(A, 2), and compare it with the other two and with $\\sqrt{\\|A\\|_1\\|A\\|_\\infty}$.`, answer: `$\\|A\\|_2 \\approx 5.117$. It is smaller than both $\\|A\\|_1 = 6$ and $\\|A\\|_\\infty = 7$, so it need not lie between them. What always holds is $\\|A\\|_2 \\le \\sqrt{\\|A\\|_1\\|A\\|_\\infty} = \\sqrt{42} \\approx 6.48$.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -1383,6 +1696,20 @@ Cauchy-Schwarz holds, since $\\tfrac12 \\le 1/\\sqrt3 \\approx 0.577$. On $[-1, 
             {
               question: 'How do you compute the induced 1 and infinity norms of a matrix?',
               answerOutline: '1-norm: largest absolute column sum. Infinity norm: largest absolute row sum.',
+            },
+          ],
+          quiz: [
+            {
+              question: `For $v = (2, -6, 3)$, what are $\\|v\\|_1$, $\\|v\\|_2$ and $\\|v\\|_\\infty$?`,
+              options: [`$11$, $7$, $3$`, `$-1$, $7$, $6$`, `$11$, $7$, $6$`, `$11$, $49$, $6$`],
+              answer: 2,
+              explanation: `$\\|v\\|_1 = 2 + 6 + 3 = 11$, $\\|v\\|_2 = \\sqrt{4 + 36 + 9} = 7$ and $\\|v\\|_\\infty = \\max|v_i| = 6$. Every norm uses absolute values: the largest signed entry is $3$ and the signed sum is $-1$, which are the slips in the first two options. $49$ is $\\|v\\|_2^2$.`,
+            },
+            {
+              question: `With the inner product $\\langle v, w\\rangle = v_1w_1 + 4v_2w_2$ on $\\mathbb{R}^2$, are $(1, 1)$ and $(1, -1)$ orthogonal?`,
+              options: [`Yes: their dot product is $0$`, `Yes: orthogonality does not depend on the inner product`, `No, because they have different lengths in this inner product`, `No: their inner product is $1 - 4 = -3$`],
+              answer: 3,
+              explanation: `Orthogonality means $\\langle v, w\\rangle = 0$ in the inner product you are using, and here $\\langle (1, 1), (1, -1)\\rangle = 1 \\cdot 1 + 4 \\cdot 1 \\cdot (-1) = -3$. The ordinary dot product is $0$, but that is a different inner product. Lengths have nothing to do with it: both vectors have length $\\sqrt5$ here.`,
             },
           ],
         },
@@ -1444,38 +1771,52 @@ The same steps work in any inner product space. Applied to $1, t, t^2$ with $\\i
             {
               slug: 'expand-in-orthogonal-basis',
               title: 'Expand in an orthogonal basis',
-              prompt:
-                'Check that $(1, 1, 0)$, $(1, -1, 2)$, $(-1, 1, 1)$ are mutually orthogonal and expand $v = (3, 1, 2)$ in this basis using only dot products. Verify by recombining.',
+              prompt: `Use the basis $v_1 = (1, 1, 0)$, $v_2 = (1, -1, 2)$, $v_3 = (-1, 1, 1)$ and the vector $v = (3, 1, 2)$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: 'The coefficients are $2$, $1$, $0$.',
+              parts: [
+                { prompt: `Check that the three basis vectors are mutually orthogonal.`, answer: `$v_1 \\cdot v_2 = 1 - 1 + 0 = 0$, $v_1 \\cdot v_3 = -1 + 1 + 0 = 0$ and $v_2 \\cdot v_3 = -1 - 1 + 2 = 0$.` },
+                { prompt: `Expand $v$ in this basis using only dot products.`, answer: `$c_i = (v \\cdot v_i)/(v_i \\cdot v_i)$: $c_1 = 4/2 = 2$, $c_2 = 6/6 = 1$, $c_3 = 0/3 = 0$.` },
+                { prompt: `Verify by recombining.`, answer: `$2(1, 1, 0) + 1(1, -1, 2) + 0(-1, 1, 1) = (3, 1, 2)$.` },
+              ],
             },
             {
               slug: 'gram-schmidt-polynomials',
               title: 'Gram-Schmidt on polynomials',
-              prompt:
-                'Apply Gram-Schmidt (without normalising) to $1, t, t^2$ with $\\langle f, g\\rangle = \\int_0^1 f g\\,dt$. Show that you obtain $1$, $t - \\tfrac12$, $t^2 - t + \\tfrac16$, and compute the norm of each. Check the orthogonality with SymPy.',
+              prompt: `Apply Gram-Schmidt (without normalising) to $1, t, t^2$ with $\\langle f, g\\rangle = \\int_0^1 f g\\,dt$.`,
               kind: 'problem',
               difficulty: 2,
-              hint: '$\\|t - \\tfrac12\\|^2 = \\tfrac1{12}$ and $\\|t^2 - t + \\tfrac16\\|^2 = \\tfrac1{180}$.',
+              parts: [
+                { prompt: `Show that you obtain $1$, $t - \\tfrac12$, $t^2 - t + \\tfrac16$.`, answer: `$v_2 = t - \\dfrac{\\langle t, 1\\rangle}{\\langle 1, 1\\rangle}1 = t - \\tfrac12$. For $v_3$: $\\langle t^2, 1\\rangle = \\tfrac13$, $\\langle t^2, t - \\tfrac12\\rangle = \\tfrac14 - \\tfrac16 = \\tfrac1{12}$ and $\\|t - \\tfrac12\\|^2 = \\tfrac1{12}$, so $v_3 = t^2 - \\tfrac13 - 1 \\cdot (t - \\tfrac12) = t^2 - t + \\tfrac16$.` },
+                { prompt: `Compute the norm of each.`, answer: `$\\|1\\| = 1$, $\\|t - \\tfrac12\\|^2 = \\tfrac1{12}$ and $\\|t^2 - t + \\tfrac16\\|^2 = \\tfrac1{180}$, so the norms are $1$, $1/(2\\sqrt3)$ and $1/(6\\sqrt5)$.` },
+                { prompt: `Check the orthogonality with SymPy.`, answer: `With t = sympy.symbols('t'), the three integrals over $[0, 1]$ of the pairwise products, for example sympy.integrate((t - sympy.Rational(1, 2))*(t**2 - t + sympy.Rational(1, 6)), (t, 0, 1)), all return $0$.` },
+              ],
             },
             {
               slug: 'orthogonal-matrix-facts',
               title: 'Properties of orthogonal matrices',
-              prompt:
-                'Let $Q$ be $n \\times n$ with $Q^TQ = I$. Prove that $QQ^T = I$, that $\\|Qx\\| = \\|x\\|$ for all $x$, that the product of two orthogonal matrices is orthogonal, and that $\\det Q = \\pm 1$. Give an example of a $3 \\times 2$ matrix $Q$ with $Q^TQ = I$ but $QQ^T \\ne I$, and identify $QQ^T$ geometrically.',
+              prompt: `Let $Q$ be $n \\times n$ with $Q^TQ = I$.`,
               kind: 'derivation',
               difficulty: 2,
-              hint: 'For a tall $Q$ with orthonormal columns, $QQ^T$ is the projection onto its column space.',
+              parts: [
+                { prompt: `Prove that $QQ^T = I$.`, answer: `$Q^TQ = I$ makes $Q^T$ a left inverse of the square matrix $Q$. For square matrices a one-sided inverse is the inverse, so $Q^{-1} = Q^T$ and $QQ^T = I$.` },
+                { prompt: `Prove that $\\|Qx\\| = \\|x\\|$ for all $x$.`, answer: `$\\|Qx\\|^2 = (Qx)^T(Qx) = x^TQ^TQx = x^Tx = \\|x\\|^2$.` },
+                { prompt: `Prove that the product of two orthogonal matrices is orthogonal.`, answer: `$(Q_1Q_2)^T(Q_1Q_2) = Q_2^T(Q_1^TQ_1)Q_2 = Q_2^TQ_2 = I$.` },
+                { prompt: `Prove that $\\det Q = \\pm 1$.`, answer: `$1 = \\det(Q^TQ) = \\det Q^T\\det Q = (\\det Q)^2$.` },
+                { prompt: `Give an example of a $3 \\times 2$ matrix $Q$ with $Q^TQ = I$ but $QQ^T \\ne I$, and identify $QQ^T$ geometrically.`, answer: `Take the columns $e_1$ and $e_2$. Then $Q^TQ = I_2$, but $QQ^T = \\operatorname{diag}(1, 1, 0)$, which is the projection onto the $xy$-plane. In general, for a tall $Q$ with orthonormal columns, $QQ^T$ is the projection onto its column space.` },
+              ],
             },
             {
               slug: 'classical-vs-modified',
               title: 'Classical against modified Gram-Schmidt',
-              prompt:
-                'Implement classical and modified Gram-Schmidt in NumPy. Apply both to the $10 \\times 10$ Hilbert matrix $H_{ij} = 1/(i + j - 1)$ and report $\\|Q^TQ - I\\|_2$ for each and for numpy.linalg.qr. Explain the difference in one paragraph.',
+              prompt: `Compare two versions of Gram-Schmidt in NumPy on the $10 \\times 10$ Hilbert matrix $H_{ij} = 1/(i + j - 1)$ (scipy.linalg.hilbert(10)).`,
               kind: 'coding',
               difficulty: 3,
-              hint: 'Expect classical Gram-Schmidt to lose orthogonality completely (an error of order $1$), modified to keep about five digits (an error near $10^{-5}$), and Householder QR to stay near $10^{-15}$. The condition number of this matrix is about $1.6 \\times 10^{13}$.',
+              parts: [
+                { prompt: `Implement classical and modified Gram-Schmidt in NumPy.`, answer: `Classical: for each column $a_j$, set $v = a_j - \\sum_{i<j}(q_i^Ta_j)q_i$, every coefficient computed from the original $a_j$, then $q_j = v/\\|v\\|$. Modified: subtract the projections one at a time from the current vector, $v \\leftarrow v - (q_i^Tv)q_i$, so each coefficient uses the already updated $v$. On the worked example both should reproduce $q_1$, $q_2$, $q_3$ from the text.` },
+                { prompt: `Apply both to the Hilbert matrix and report $\\|Q^TQ - I\\|_2$ for each and for numpy.linalg.qr.`, answer: `You should see roughly $3$ for classical Gram-Schmidt (orthogonality lost completely), about $4 \\times 10^{-5}$ for modified, and about $10^{-15}$ for numpy.linalg.qr. The condition number of this matrix is about $1.6 \\times 10^{13}$.` },
+                { prompt: `Explain the difference in one paragraph.`, answer: `A good explanation says: rounding errors make the early $q_i$ slightly non-orthogonal, and classical Gram-Schmidt projects against them using the original column, so the errors compound; its loss of orthogonality grows like $\\kappa(A)^2$ times machine precision, which exceeds $1$ here. Modified Gram-Schmidt removes each component from the updated vector, which corrects earlier errors, and its loss is bounded by a multiple of $\\kappa(A)$ times machine precision. Householder QR builds $Q$ from reflections that are orthogonal to working precision, so its $Q$ stays orthogonal whatever $\\kappa(A)$ is.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -1490,6 +1831,20 @@ The same steps work in any inner product space. Applied to $1, t, t^2$ with $\\i
             {
               question: 'In Gram-Schmidt, what is subtracted from $a_k$ at step $k$?',
               answerOutline: 'Its projections $\\langle a_k, q_i\\rangle q_i$ onto all previously found $q_i$, $i < k$.',
+            },
+          ],
+          quiz: [
+            {
+              question: `Gram-Schmidt is applied to $a_1 = (3, 4)$ and $a_2 = (1, 0)$, normalising as it goes. What is $q_2$?`,
+              options: [`$(\\tfrac45, -\\tfrac35)$`, `$(\\tfrac{16}{25}, -\\tfrac{12}{25})$`, `$(1, 0)$`, `$(\\tfrac35, \\tfrac45)$`],
+              answer: 0,
+              explanation: `$q_1 = (3, 4)/5$ and $a_2 \\cdot q_1 = \\tfrac35$, so $v_2 = (1, 0) - \\tfrac35(\\tfrac35, \\tfrac45) = (\\tfrac{16}{25}, -\\tfrac{12}{25})$. Its length is $\\tfrac{20}{25}$, so $q_2 = (\\tfrac45, -\\tfrac35)$. The second option forgets to normalise, $(1, 0)$ is $a_2$ unchanged (it is a unit vector but not orthogonal to $q_1$), and $(\\tfrac35, \\tfrac45)$ is $q_1$.`,
+            },
+            {
+              question: `$Q$ is a $4 \\times 2$ matrix with orthonormal columns. Which statement is true?`,
+              options: [`$QQ^T = I_4$`, `$Q^{-1} = Q^T$`, `$\\det Q = \\pm 1$`, `$Q^TQ = I_2$, and $QQ^T$ is the projection onto $C(Q)$`],
+              answer: 3,
+              explanation: `Orthonormal columns mean exactly $Q^TQ = I_2$. The $4 \\times 4$ matrix $QQ^T$ has rank $2$, so it cannot be $I_4$; it is the projection onto the plane spanned by the columns. A non-square $Q$ has no inverse and no determinant, so the other two options do not even make sense. $QQ^T = I$ holds only when $Q$ is square.`,
             },
           ],
         },
@@ -1555,28 +1910,37 @@ Then $Ha = (-5, 0)$, as promised.
             {
               slug: 'qr-of-three-columns',
               title: 'QR of a 3 by 3 matrix',
-              prompt:
-                'Use the Gram-Schmidt worked example to write $A = QR$ for $A$ with columns $(1, 1, 0)$, $(1, 0, 1)$, $(0, 1, 1)$. Give all six nonzero entries of $R$ exactly and check $QR = A$ in NumPy.',
+              prompt: `Use the Gram-Schmidt worked example to write $A = QR$ for $A$ with columns $(1, 1, 0)$, $(1, 0, 1)$, $(0, 1, 1)$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: '$R = \\begin{pmatrix} \\sqrt2 & 1/\\sqrt2 & 1/\\sqrt2\\\\ 0 & \\sqrt{3/2} & 1/\\sqrt6\\\\ 0 & 0 & 2/\\sqrt3 \\end{pmatrix}$.',
+              parts: [
+                { prompt: `Write down $Q$.`, answer: `Its columns are $q_1 = (1, 1, 0)/\\sqrt2$, $q_2 = (1, -1, 2)/\\sqrt6$ and $q_3 = (-1, 1, 1)/\\sqrt3$.` },
+                { prompt: `Give all six nonzero entries of $R$ exactly.`, answer: `$r_{ij} = q_i^Ta_j$ above the diagonal and $r_{jj} = \\|v_j\\|$: $R = \\begin{pmatrix} \\sqrt2 & 1/\\sqrt2 & 1/\\sqrt2\\\\ 0 & \\sqrt{3/2} & 1/\\sqrt6\\\\ 0 & 0 & 2/\\sqrt3 \\end{pmatrix}$.` },
+                { prompt: `Check $QR = A$ in NumPy.`, answer: `Q @ R reproduces $A$ to about $10^{-16}$. If you compare with numpy.linalg.qr, expect some columns of $Q$ and the matching rows of $R$ to have the opposite sign: NumPy does not force a positive diagonal.` },
+              ],
             },
             {
               slug: 'householder-by-hand',
               title: 'A Householder reflection in three dimensions',
-              prompt:
-                'For $a = (1, 2, 2)$, build the Householder vector $u = a + \\|a\\|e_1$ and verify by hand that $Ha = (-3, 0, 0)$. Show that $H$ is symmetric and that $H^2 = I$ for any nonzero $u$.',
+              prompt: `Let $a = (1, 2, 2)$ and $H = I - 2uu^T/u^Tu$.`,
               kind: 'problem',
               difficulty: 2,
-              hint: '$u = (4, 2, 2)$, $u^Tu = 24$ and $u^Ta = 12$, so $Ha = a - u$.',
+              parts: [
+                { prompt: `Build the Householder vector $u = a + \\|a\\|e_1$.`, answer: `$\\|a\\| = 3$, so $u = (1 + 3, 2, 2) = (4, 2, 2)$.` },
+                { prompt: `Verify by hand that $Ha = (-3, 0, 0)$.`, answer: `$u^Tu = 24$ and $u^Ta = 4 + 4 + 4 = 12$, so $Ha = a - 2\\cdot\\tfrac{12}{24}u = a - u = (-3, 0, 0)$.` },
+                { prompt: `Show that $H$ is symmetric and that $H^2 = I$ for any nonzero $u$.`, answer: `$(uu^T)^T = uu^T$, so $H^T = H$. Then $H^2 = I - \\dfrac{4uu^T}{u^Tu} + \\dfrac{4u(u^Tu)u^T}{(u^Tu)^2} = I$. Geometrically, reflecting twice across the plane orthogonal to $u$ changes nothing.` },
+              ],
             },
             {
               slug: 'qr-uniqueness',
               title: 'Existence and uniqueness of QR',
-              prompt:
-                'Prove that if $A$ has independent columns, then Gram-Schmidt never divides by zero, and so $A = QR$ with $R$ invertible. Then prove uniqueness: if $Q_1R_1 = Q_2R_2$ with both $R$ upper triangular with positive diagonal, show $Q_2^TQ_1 = R_2R_1^{-1}$ is both orthogonal and upper triangular with positive diagonal, hence the identity.',
+              prompt: `Let $A$ have independent columns.`,
               kind: 'derivation',
               difficulty: 3,
+              parts: [
+                { prompt: `Prove that Gram-Schmidt never divides by zero, and so $A = QR$ with $R$ invertible.`, answer: `At step $j$, $v_j = a_j - \\sum_{i<j}(q_i^Ta_j)q_i$. If $v_j = 0$, then $a_j$ would lie in the span of $q_1, \\dots, q_{j-1}$, which is the span of $a_1, \\dots, a_{j-1}$, contradicting independence. So every $r_{jj} = \\|v_j\\| > 0$, and an upper triangular $R$ with nonzero diagonal is invertible.` },
+                { prompt: `Prove uniqueness: if $Q_1R_1 = Q_2R_2$ with both $R$ upper triangular with positive diagonal, show $Q_2^TQ_1 = R_2R_1^{-1}$ is both orthogonal and upper triangular with positive diagonal, hence the identity.`, answer: `Multiply $Q_1R_1 = Q_2R_2$ by $Q_2^T$ on the left and $R_1^{-1}$ on the right: $X = Q_2^TQ_1 = R_2R_1^{-1}$. The right side is upper triangular with positive diagonal. Since $A^TA = R_1^TR_1 = R_2^TR_2$, $X^TX = R_1^{-T}R_2^TR_2R_1^{-1} = I$, so $X$ is orthogonal. Then $X^{-1} = X^T$ is lower triangular, but the inverse of an upper triangular matrix is upper triangular, so $X$ is diagonal with entries $\\pm1$; positivity makes $X = I$. Hence $R_1 = R_2$ and $Q_1 = Q_2$.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -1591,6 +1955,20 @@ Then $Ha = (-5, 0)$, as promised.
             {
               question: 'How is a least-squares problem solved once $A = QR$ is known?',
               answerOutline: 'Solve the triangular system $R\\hat x = Q^Tb$ by back substitution.',
+            },
+          ],
+          quiz: [
+            {
+              question: `$A$ has columns $a_1 = (0, 3, 4)$ and $a_2 = (1, 1, 2)$. In $A = QR$ with positive diagonal, what are $r_{11}$ and $r_{12}$?`,
+              options: [`$r_{11} = 25$, $r_{12} = 11$`, `$r_{11} = 5$, $r_{12} = 11$`, `$r_{11} = 5$, $r_{12} = \\tfrac{11}{5}$`, `$r_{11} = 5$, $r_{12} = \\tfrac{11}{25}$`],
+              answer: 2,
+              explanation: `$r_{11} = \\|a_1\\| = 5$ and $q_1 = (0, 3, 4)/5$, so $r_{12} = q_1^Ta_2 = (0 + 3 + 8)/5 = \\tfrac{11}{5}$. $11$ is $a_1^Ta_2$, the dot product with the unnormalised column, and $\\tfrac{11}{25}$ is the projection coefficient $a_1^Ta_2/a_1^Ta_1$ used in unnormalised Gram-Schmidt, which multiplies $a_1$ rather than $q_1$.`,
+            },
+            {
+              question: `Why do libraries compute QR with Householder reflections rather than classical Gram-Schmidt?`,
+              options: [`Gram-Schmidt only works for square matrices`, `The computed $Q$ stays orthogonal to machine precision, even when $A$ is ill-conditioned`, `Gram-Schmidt cannot produce the matrix $R$`, `Householder reflections need no square roots`],
+              answer: 1,
+              explanation: `Each Householder reflection is orthogonal to working precision, so their product is too, whatever the condition number of $A$. Classical Gram-Schmidt loses orthogonality as $\\kappa(A)$ grows, completely on the $10 \\times 10$ Hilbert matrix. Gram-Schmidt does produce $R$ (its coefficients are the entries $r_{ij}$) and works for tall matrices, and each Householder vector needs a norm, which is a square root.`,
             },
           ],
         },
@@ -1645,38 +2023,51 @@ least-squares
             {
               slug: 'line-fit',
               title: 'Fit a line by hand',
-              prompt:
-                'Fit $y = c_0 + c_1x$ to the points $(0, 1)$, $(1, 2)$, $(2, 2)$, $(3, 4)$ by the normal equations. Compute the residuals and check both orthogonality conditions. Confirm with numpy.linalg.lstsq.',
+              prompt: `Fit $y = c_0 + c_1x$ to the points $(0, 1)$, $(1, 2)$, $(2, 2)$, $(3, 4)$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: '$c_0 = c_1 = 0.9$; the residuals are $0.1, 0.2, -0.7, 0.4$.',
+              parts: [
+                { prompt: `Solve the normal equations.`, answer: `$A^TA = \\begin{pmatrix} 4 & 6\\\\ 6 & 14 \\end{pmatrix}$ and $A^Tb = (9, 18)$. With determinant $20$, $c_0 = (14 \\cdot 9 - 6 \\cdot 18)/20 = 0.9$ and $c_1 = (4 \\cdot 18 - 6 \\cdot 9)/20 = 0.9$.` },
+                { prompt: `Compute the residuals and check both orthogonality conditions.`, answer: `$r = b - A\\hat c = (0.1, 0.2, -0.7, 0.4)$. They sum to $0$ (orthogonal to the column of ones), and $\\sum x_ir_i = 0 + 0.2 - 1.4 + 1.2 = 0$ (orthogonal to the column of $x$ values).` },
+                { prompt: `Confirm with numpy.linalg.lstsq.`, answer: `numpy.linalg.lstsq(A, b, rcond=None)[0] returns [0.9, 0.9].` },
+              ],
             },
             {
               slug: 'projection-matrix',
               title: 'Projection matrices',
-              prompt:
-                'Prove that $P = A(A^TA)^{-1}A^T$ satisfies $P^2 = P$ and $P^T = P$, and that $I - P$ projects onto $N(A^T)$. Compute $P$ when $A$ is the single column $(1, 1, 1)$ and describe $Pb$ in words.',
+              prompt: `Let $A$ have independent columns and $P = A(A^TA)^{-1}A^T$.`,
               kind: 'derivation',
               difficulty: 2,
-              hint: 'For $A = (1, 1, 1)^T$, $P$ is the $3 \\times 3$ matrix with every entry $\\tfrac13$, and $Pb$ replaces each entry of $b$ by the mean.',
+              parts: [
+                { prompt: `Prove that $P^2 = P$ and $P^T = P$.`, answer: `$P^2 = A(A^TA)^{-1}(A^TA)(A^TA)^{-1}A^T = A(A^TA)^{-1}A^T = P$. Since $A^TA$ is symmetric, so is its inverse, and $P^T = A((A^TA)^{-1})^TA^T = P$.` },
+                { prompt: `Prove that $I - P$ projects onto $N(A^T)$.`, answer: `$A^T(I - P) = A^T - A^TA(A^TA)^{-1}A^T = 0$, so every output of $I - P$ lies in $N(A^T)$. If $y \\in N(A^T)$ then $Py = 0$ and $(I - P)y = y$. And $(I - P)^2 = I - 2P + P^2 = I - P$.` },
+                { prompt: `Compute $P$ when $A$ is the single column $(1, 1, 1)$, and describe $Pb$ in words.`, answer: `$A^TA = 3$, so $P = \\tfrac13\\begin{pmatrix} 1 & 1 & 1\\\\ 1 & 1 & 1\\\\ 1 & 1 & 1 \\end{pmatrix}$. $Pb$ replaces every entry of $b$ by the mean of the entries: the best constant fit.` },
+              ],
             },
             {
               slug: 'weighted-fit',
               title: 'A weighted fit',
-              prompt:
-                'In the spring example, suppose the last measurement came from a worse ruler with twice the standard deviation of the others. Set up the weighted normal equations with weights $1, 1, 1, \\tfrac14$, solve them, and compare $c_0$ and $c_1$ with the unweighted fit. Derive the weighted normal equations by minimising $\\sum w_i r_i^2$.',
+              prompt: `In the spring example, suppose the last measurement came from a worse ruler with twice the standard deviation of the others.`,
               kind: 'problem',
               difficulty: 2,
-              hint: '$A^TCA = \\begin{pmatrix} 3.25 & 3.75\\\\ 3.75 & 7.25 \\end{pmatrix}$ and $A^TCb = (34.65, 41.65)$, giving $c_0 \\approx 10.003$ and $c_1 \\approx 0.571$.',
+              parts: [
+                { prompt: `Set up the weighted normal equations with weights $1, 1, 1, \\tfrac14$ and solve them.`, answer: `Weights are $1/\\sigma^2$, so doubling $\\sigma$ gives $\\tfrac14$. With $C = \\operatorname{diag}(1, 1, 1, \\tfrac14)$: $A^TCA = \\begin{pmatrix} 3.25 & 3.75\\\\ 3.75 & 7.25 \\end{pmatrix}$ and $A^TCb = (34.65, 41.65)$, giving $c_0 \\approx 10.003$ and $c_1 \\approx 0.571$.` },
+                { prompt: `Compare $c_0$ and $c_1$ with the unweighted fit.`, answer: `The unweighted fit was $c_0 = 9.99$, $c_1 = 0.59$. The last point, $11.8$ at $F = 3$, lay above the unweighted line, so trusting it less lowers the slope to about $0.571$ and raises the intercept slightly to about $10.003$.` },
+                { prompt: `Derive the weighted normal equations by minimising $\\sum w_i r_i^2$.`, answer: `$E(c) = \\sum w_ir_i^2 = (b - Ac)^TC(b - Ac)$. Its gradient is $-2A^TC(b - Ac)$, and setting it to zero gives $A^TCA\\,\\hat c = A^TCb$.` },
+              ],
             },
             {
               slug: 'normal-equations-fail',
               title: 'When the normal equations fail',
-              prompt:
-                'Generate $x_i = i/20$ for $i = 0, \\dots, 20$ and $y_i = \\cos(4x_i)$. Fit polynomials of degree $5$, $10$ and $15$ by (a) solving the normal equations with numpy.linalg.solve, (b) numpy.linalg.qr, (c) numpy.linalg.lstsq. Report the residual norm and the condition numbers of $A$ and $A^TA$ for each degree, and explain the pattern.',
+              prompt: `Generate $x_i = i/20$ for $i = 0, \\dots, 20$ and $y_i = \\cos(4x_i)$. For each degree below, fit a polynomial by (a) solving the normal equations with numpy.linalg.solve, (b) numpy.linalg.qr, (c) numpy.linalg.lstsq, and report the residual norm and the condition numbers of $A$ and $A^TA$.`,
               kind: 'coding',
               difficulty: 3,
-              hint: 'The condition number of $A^TA$ is the square of that of $A$; once it nears $10^{16}$ the normal-equation solution degrades.',
+              parts: [
+                { prompt: `Degree $5$.`, answer: `All three methods agree, with residual norm about $3.6 \\times 10^{-3}$. $\\kappa(A) \\approx 3 \\times 10^3$ and $\\kappa(A^TA) \\approx 10^7$.` },
+                { prompt: `Degree $10$.`, answer: `The residual is about $1.09 \\times 10^{-7}$ for all three, with the normal equations already slightly worse in the third digit. $\\kappa(A) \\approx 2 \\times 10^7$ and $\\kappa(A^TA) \\approx 5 \\times 10^{14}$.` },
+                { prompt: `Degree $15$.`, answer: `QR and lstsq reach a residual of about $3 \\times 10^{-14}$, but the normal equations stall near $3 \\times 10^{-8}$ (solve may warn about an ill-conditioned matrix). $\\kappa(A) \\approx 4 \\times 10^{11}$, while $\\kappa(A^TA)$ is beyond $10^{16}$; NumPy reports a value near $10^{17}$, itself unreliable. Exact digits vary a little by machine.` },
+                { prompt: `Explain the pattern.`, answer: `$\\kappa(A^TA) = \\kappa(A)^2$, and solving a system loses roughly $\\log_{10}\\kappa$ digits of the $16$ that doubles carry. Once $\\kappa(A)^2$ nears $10^{16}$, forming $A^TA$ has already thrown the answer away, while QR and lstsq work with $A$ itself and only pay $\\kappa(A)$.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -1695,6 +2086,20 @@ least-squares
             {
               question: 'Why can the normal equations be inaccurate in floating point?',
               answerOutline: 'Forming $A^TA$ squares the condition number, so digits are lost that QR would keep.',
+            },
+          ],
+          quiz: [
+            {
+              question: `Fit a line through the origin, $y = cx$, to the points $(1, 2)$, $(2, 3)$, $(3, 7)$ by least squares. What is $c$?`,
+              options: [`$2$`, `$\\tfrac{29}{14}$`, `$\\tfrac{35}{18}$`, `$\\tfrac{29}{6}$`],
+              answer: 1,
+              explanation: `With the single column $a = (1, 2, 3)$, the normal equation is $(a^Ta)c = a^Tb$: $14c = 2 + 6 + 21 = 29$. $2 = \\sum y/\\sum x$ and $\\tfrac{35}{18}$ (the mean of the ratios $y_i/x_i$) are reasonable-looking averages that do not minimise the squared error, and $\\tfrac{29}{6}$ divides by $\\sum x_i$ instead of $\\sum x_i^2$.`,
+            },
+            {
+              question: `$\\hat x$ is the least-squares solution of $Ax = b$, and $r = b - A\\hat x$. Which statement is always true?`,
+              options: [`$r = 0$ whenever $A$ has independent columns`, `$r$ is orthogonal to $b$`, `$A^Tr = 0$: $r$ is orthogonal to every column of $A$`, `$r$ lies in the column space of $A$`],
+              answer: 2,
+              explanation: `The normal equations $A^TA\\hat x = A^Tb$ say exactly $A^T(b - A\\hat x) = 0$: the residual lies in $N(A^T)$, perpendicular to $C(A)$. It is in $C(A)$ only when it is $0$, which happens when $b$ is already in $C(A)$, not because the columns are independent. $r$ is orthogonal to the projection $A\\hat x$, not to $b$ itself.`,
             },
           ],
         },
@@ -1781,37 +2186,50 @@ matrix-transform
             {
               slug: 'which-are-definite',
               title: 'Which are positive definite?',
-              prompt:
-                'Classify each symmetric matrix as positive definite, positive semidefinite or indefinite, using two different tests for each: $\\begin{pmatrix} 4 & 2\\\\ 2 & 3 \\end{pmatrix}$, $\\begin{pmatrix} 1 & 2\\\\ 2 & 4 \\end{pmatrix}$, $\\begin{pmatrix} 2 & -1 & 0\\\\ -1 & 2 & -1\\\\ 0 & -1 & 1 \\end{pmatrix}$, $\\begin{pmatrix} 1 & 2 & 0\\\\ 2 & 1 & 0\\\\ 0 & 0 & 3 \\end{pmatrix}$.',
+              prompt: `Classify each symmetric matrix as positive definite, positive semidefinite or indefinite, using two different tests for each.`,
               kind: 'problem',
               difficulty: 1,
-              hint: 'Leading minors: $4, 8$; $1, 0$ (semidefinite); $2, 3, 1$; $1, -3, -9$ (indefinite).',
+              parts: [
+                { prompt: `$\\begin{pmatrix} 4 & 2\\\\ 2 & 3 \\end{pmatrix}$`, answer: `Positive definite. Leading minors $4, 8$; pivots $4, 2$; eigenvalues $(7 \\pm \\sqrt{17})/2 \\approx 5.56, 1.44$.` },
+                { prompt: `$\\begin{pmatrix} 1 & 2\\\\ 2 & 4 \\end{pmatrix}$`, answer: `Positive semidefinite. Leading minors $1, 0$; eigenvalues $5$ and $0$. Equivalently $x^TKx = (x_1 + 2x_2)^2$, which is zero along $(-2, 1)$.` },
+                { prompt: `$\\begin{pmatrix} 2 & -1 & 0\\\\ -1 & 2 & -1\\\\ 0 & -1 & 1 \\end{pmatrix}$`, answer: `Positive definite. Leading minors $2, 3, 1$; pivots $2, \\tfrac32, \\tfrac13$, all positive.` },
+                { prompt: `$\\begin{pmatrix} 1 & 2 & 0\\\\ 2 & 1 & 0\\\\ 0 & 0 & 3 \\end{pmatrix}$`, answer: `Indefinite. Leading minors $1, -3, -9$; eigenvalues $3, 3, -1$. For example $x = (1, -1, 0)$ gives $x^TKx = -2$.` },
+              ],
             },
             {
               slug: 'parameter-range',
               title: 'A parameter range',
-              prompt:
-                'For which real $b$ is $\\begin{pmatrix} 1 & b\\\\ b & 9 \\end{pmatrix}$ positive definite? Sketch the level curve $x^TKx = 1$ for $b = 0$, $b = 2$ and $b = 3$ and describe how it changes as $b$ approaches the boundary of the range.',
+              prompt: `Let $K = \\begin{pmatrix} 1 & b\\\\ b & 9 \\end{pmatrix}$ with $b$ real.`,
               kind: 'problem',
               difficulty: 1,
-              hint: 'Positive definite iff $|b| < 3$. At $|b| = 3$ the ellipse opens into two parallel lines.',
+              parts: [
+                { prompt: `For which $b$ is $K$ positive definite?`, answer: `The leading minors are $1$ and $9 - b^2$, so $K$ is positive definite exactly when $|b| < 3$.` },
+                { prompt: `Sketch the level curve $x^TKx = 1$ for $b = 0$, $b = 2$ and $b = 3$, and describe how it changes as $b$ approaches the boundary of the range.`, answer: `$b = 0$: the ellipse $x^2 + 9y^2 = 1$, semi-axes $1$ and $\\tfrac13$ along the axes. $b = 2$: a tilted ellipse; the eigenvalues $5 \\pm 2\\sqrt5 \\approx 9.47, 0.53$ give semi-axes about $0.33$ and $1.37$. As $b \\to 3$ the small eigenvalue goes to $0$ and the long axis grows without bound. At $b = 3$, $x^TKx = (x + 3y)^2$ and the ellipse opens into the two parallel lines $x + 3y = \\pm1$.` },
+              ],
             },
             {
               slug: 'cholesky-by-hand',
               title: 'Cholesky by hand',
-              prompt:
-                'Find the Cholesky factor $G$ (lower triangular, positive diagonal) with $GG^T = \\begin{pmatrix} 4 & 2\\\\ 2 & 3 \\end{pmatrix}$. Use it to solve $Kx = (2, 3)$ by two triangular solves. Check with numpy.linalg.cholesky.',
+              prompt: `Let $K = \\begin{pmatrix} 4 & 2\\\\ 2 & 3 \\end{pmatrix}$.`,
               kind: 'problem',
               difficulty: 2,
-              hint: '$G = \\begin{pmatrix} 2 & 0\\\\ 1 & \\sqrt2 \\end{pmatrix}$ and $x = (0, 1)$.',
+              parts: [
+                { prompt: `Find the Cholesky factor $G$ (lower triangular, positive diagonal) with $GG^T = K$.`, answer: `$g_{11} = \\sqrt4 = 2$, $g_{21} = 2/2 = 1$ and $g_{22} = \\sqrt{3 - 1} = \\sqrt2$, so $G = \\begin{pmatrix} 2 & 0\\\\ 1 & \\sqrt2 \\end{pmatrix}$.` },
+                { prompt: `Use it to solve $Kx = (2, 3)$ by two triangular solves.`, answer: `$Gc = (2, 3)$ gives $c = (1, \\sqrt2)$. $G^Tx = c$ gives $x_2 = \\sqrt2/\\sqrt2 = 1$ and $x_1 = (1 - 1)/2 = 0$. So $x = (0, 1)$; check $K(0, 1) = (2, 3)$.` },
+                { prompt: `Check with numpy.linalg.cholesky.`, answer: `numpy.linalg.cholesky(K) returns [[2, 0], [1, 1.41421356]], the same $G$.` },
+              ],
             },
             {
               slug: 'gram-is-definite',
               title: 'When the stiffness matrix is definite',
-              prompt:
-                'Let $A$ be $m \\times n$ and $C$ diagonal with positive entries. Prove that $A^TCA$ is symmetric positive semidefinite, that its null space equals $N(A)$, and hence that it is positive definite if and only if $A$ has independent columns. Then prove the minimum principle identity $P(u) - P(u^*) = \\tfrac12(u - u^*)^TK(u - u^*)$.',
+              prompt: `Let $A$ be $m \\times n$, $C$ diagonal with positive entries, and $K = A^TCA$.`,
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                { prompt: `Prove that $K$ is symmetric positive semidefinite.`, answer: `$K^T = A^TC^TA = A^TCA$ because $C$ is diagonal. For any $x$, $x^TKx = (Ax)^TC(Ax) = \\sum_i c_i(Ax)_i^2 \\ge 0$.` },
+                { prompt: `Prove that its null space equals $N(A)$, and hence that it is positive definite if and only if $A$ has independent columns.`, answer: `If $Ax = 0$ then $Kx = 0$. If $Kx = 0$ then $x^TKx = \\sum c_i(Ax)_i^2 = 0$, and positive $c_i$ force $Ax = 0$. So $x^TKx > 0$ for every $x \\ne 0$ exactly when $N(A) = \\{0\\}$, that is, when the columns of $A$ are independent.` },
+                { prompt: `Prove the minimum principle identity $P(u) - P(u^*) = \\tfrac12(u - u^*)^TK(u - u^*)$, where $P(u) = \\tfrac12u^TKu - u^Tf$ and $Ku^* = f$.`, answer: `Expand the right side: $\\tfrac12u^TKu - u^TKu^* + \\tfrac12u^{*T}Ku^*$, using the symmetry of $K$. Replace $Ku^*$ by $f$: this is $\\tfrac12u^TKu - u^Tf + \\tfrac12u^{*T}f$. And $P(u^*) = \\tfrac12u^{*T}f - u^{*T}f = -\\tfrac12u^{*T}f$, so the expression equals $P(u) - P(u^*)$. For positive definite $K$ it is positive unless $u = u^*$.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -1826,6 +2244,20 @@ matrix-transform
             {
               question: 'What does a null vector of a semidefinite stiffness matrix represent physically?',
               answerOutline: 'A displacement that stretches no spring or bar: a rigid-body motion or a mechanism, costing zero energy.',
+            },
+          ],
+          quiz: [
+            {
+              question: `For which values of $c$ is $\\begin{pmatrix} 2 & 4\\\\ 4 & c \\end{pmatrix}$ positive definite?`,
+              options: [`$c > 0$`, `$c > 4$`, `$c \\ge 8$`, `$c > 8$`],
+              answer: 3,
+              explanation: `The leading minors are $2 > 0$ and $2c - 16$, which is positive exactly when $c > 8$; equivalently the second pivot $c - 8$ must be positive. Positive diagonal entries are necessary but not enough, so $c > 0$ fails (for example $c = 4$ gives determinant $-8$). At $c = 8$ the matrix is only semidefinite: $x = (2, -1)$ gives $x^TKx = 0$.`,
+            },
+            {
+              question: `A symmetric $K$ is positive semidefinite but not positive definite. What follows for $Ku = f$?`,
+              options: [`$K$ is singular: $Ku = f$ is solvable only when $f$ is orthogonal to $N(K)$, and then solutions are not unique`, `$K$ is invertible, since none of its eigenvalues is negative`, `$Ku = f$ has a unique solution, the minimiser of $\\tfrac12u^TKu - u^Tf$`, `$\\tfrac12u^TKu - u^Tf$ has a minimum for every $f$`],
+              answer: 0,
+              explanation: `Not definite means some $x \\ne 0$ has $x^TKx = 0$, and for semidefinite $K$ that forces $Kx = 0$: an eigenvalue is $0$ and $K$ is singular. Since $K$ is symmetric, $C(K) = N(K)^\\perp$, which gives the solvability condition, and any null vector can be added to a solution. If $f$ has a component along $N(K)$, the energy decreases without bound along that direction, so there is no minimum. This is the free-free spring chain.`,
             },
           ],
         },
@@ -1882,36 +2314,52 @@ Because $A$ is invertible, solve $A^Ty = f$ from the bottom up. The bottom sprin
             {
               slug: 'fixed-fixed-chain',
               title: 'A fixed-fixed chain under gravity',
-              prompt:
-                'Three equal masses $m$ hang between a ceiling and a floor, connected by four equal springs of stiffness $c$. Write $A$ ($4 \\times 3$), form $K = A^TCA$, and solve $Ku = mg(1, 1, 1)$. Find all four spring forces and say which springs are stretched and which compressed. Check that the support reactions add up to $3mg$.',
+              prompt: `Three equal masses $m$ hang between a ceiling and a floor, connected by four equal springs of stiffness $c$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: '$u = \\tfrac{mg}{c}(\\tfrac32, 2, \\tfrac32)$ and $y = mg(\\tfrac32, \\tfrac12, -\\tfrac12, -\\tfrac32)$.',
+              parts: [
+                { prompt: `Write $A$ ($4 \\times 3$) and form $K = A^TCA$.`, answer: `$e_1 = u_1$, $e_2 = u_2 - u_1$, $e_3 = u_3 - u_2$, $e_4 = -u_3$, so $A = \\begin{pmatrix} 1 & 0 & 0\\\\ -1 & 1 & 0\\\\ 0 & -1 & 1\\\\ 0 & 0 & -1 \\end{pmatrix}$ and $K = c\\begin{pmatrix} 2 & -1 & 0\\\\ -1 & 2 & -1\\\\ 0 & -1 & 2 \\end{pmatrix}$.` },
+                { prompt: `Solve $Ku = mg(1, 1, 1)$.`, answer: `With $K^{-1}$ from the inverse lesson, $u = \\tfrac{mg}{c}(\\tfrac32, 2, \\tfrac32)$.` },
+                { prompt: `Find all four spring forces and say which springs are stretched and which compressed.`, answer: `$y = cAu = mg(\\tfrac32, \\tfrac12, -\\tfrac12, -\\tfrac32)$. The top two springs are stretched (tension) and the bottom two compressed.` },
+                { prompt: `Check that the support reactions add up to $3mg$.`, answer: `The top spring pulls down on the ceiling with $\\tfrac32mg$ and the bottom spring pushes down on the floor with $\\tfrac32mg$: together $3mg$, the total weight.` },
+              ],
             },
             {
               slug: 'free-free-chain',
               title: 'A free-free chain',
-              prompt:
-                'Three masses are joined by two unit springs with both ends free. Write $A$ and $K$, find $N(K)$, and state the condition on $f$ for $Ku = f$ to be solvable. Solve for $f = (-1, 0, 1)$ and describe the complete solution physically.',
+              prompt: `Three masses are joined by two unit springs with both ends free.`,
               kind: 'problem',
               difficulty: 2,
-              hint: '$K = \\begin{pmatrix} 1 & -1 & 0\\\\ -1 & 2 & -1\\\\ 0 & -1 & 1 \\end{pmatrix}$, solvable iff $f_1 + f_2 + f_3 = 0$, and $u = (-1, 0, 1) + \\alpha(1, 1, 1)$.',
+              parts: [
+                { prompt: `Write $A$ and $K$.`, answer: `$e_1 = u_2 - u_1$ and $e_2 = u_3 - u_2$, so $A = \\begin{pmatrix} -1 & 1 & 0\\\\ 0 & -1 & 1 \\end{pmatrix}$ and $K = A^TA = \\begin{pmatrix} 1 & -1 & 0\\\\ -1 & 2 & -1\\\\ 0 & -1 & 1 \\end{pmatrix}$.` },
+                { prompt: `Find $N(K)$.`, answer: `$N(K) = N(A)$, spanned by $(1, 1, 1)$: the whole chain translating rigidly.` },
+                { prompt: `State the condition on $f$ for $Ku = f$ to be solvable.`, answer: `$f$ must be orthogonal to $(1, 1, 1)$: $f_1 + f_2 + f_3 = 0$, so the loads balance.` },
+                { prompt: `Solve for $f = (-1, 0, 1)$ and describe the complete solution physically.`, answer: `$u = (-1, 0, 1) + \\alpha(1, 1, 1)$ for any $\\alpha$. The end masses are pulled apart, each spring stretches by $1$ (tension $1$), and the position of the whole chain is undetermined, since a rigid shift costs no energy.` },
+              ],
             },
             {
               slug: 'determinate-chain',
               title: 'Why fixed-free is determinate',
-              prompt:
-                'Prove that for a fixed-free chain with $n$ springs, $A$ is invertible, and that the spring forces are $y_i = f_i + f_{i+1} + \\cdots + f_n$ regardless of the stiffnesses. Then show that $K^{-1} = A^{-1}C^{-1}A^{-T}$ has all entries positive, and interpret that physically.',
+              prompt: `Consider a fixed-free chain with $n$ springs of stiffnesses $c_1, \\dots, c_n$ and loads $f_1, \\dots, f_n$.`,
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                { prompt: `Prove that $A$ is invertible.`, answer: `$e_1 = u_1$ and $e_i = u_i - u_{i-1}$, so $A$ is lower triangular with ones on the diagonal and $-1$ below it. Its determinant is $1$.` },
+                { prompt: `Prove that the spring forces are $y_i = f_i + f_{i+1} + \\cdots + f_n$ regardless of the stiffnesses.`, answer: `$A^Ty = f$ reads $f_j = y_j - y_{j+1}$ with $y_{n+1} = 0$. Solving from the bottom up gives $y_n = f_n$, $y_{n-1} = f_{n-1} + f_n$, and in general $y_i = f_i + \\cdots + f_n$. No $c_i$ appears: each spring carries everything hanging below it.` },
+                { prompt: `Show that $K^{-1} = A^{-1}C^{-1}A^{-T}$ has all entries positive, and interpret that physically.`, answer: `$A^{-1}$ is the running-sum matrix (ones on and below the diagonal), so $(K^{-1})_{ij} = \\sum_{k \\le \\min(i, j)} 1/c_k > 0$. Pushing any single mass down moves every mass down, by the combined compliance of the springs above both of them.` },
+              ],
             },
             {
               slug: 'long-chain',
               title: 'A long chain and its continuum limit',
-              prompt:
-                'For a fixed-fixed chain of $n$ equal masses and $n + 1$ equal springs under gravity, prove that $u_j = \\frac{mg}{c}\\cdot\\frac{j(n + 1 - j)}{2}$ by substituting into $Ku = f$. Check it numerically for $n = 100$, and compare the shape with the parabola $u(x) \\propto x(L - x)$ of a hanging elastic bar.',
+              prompt: `Take a fixed-fixed chain of $n$ equal masses and $n + 1$ equal springs under gravity.`,
               kind: 'problem',
               difficulty: 3,
+              parts: [
+                { prompt: `Prove that $u_j = \\frac{mg}{c}\\cdot\\frac{j(n + 1 - j)}{2}$ by substituting into $Ku = f$.`, answer: `$K = c\\,K_n$ and $f = mg(1, \\dots, 1)$. The formula vanishes at $j = 0$ and $j = n + 1$, matching the fixed ends. The second difference of the quadratic $q_j = j(n + 1 - j)/2$ is $q_{j-1} - 2q_j + q_{j+1} = -1$, so $-q_{j-1} + 2q_j - q_{j+1} = 1$ for every $j$ and $Ku = c \\cdot \\tfrac{mg}{c} \\cdot 1 = mg$ in each row.` },
+                { prompt: `Check it numerically for $n = 100$.`, answer: `numpy.linalg.solve on $K_{100}$ with right-hand side all ones agrees with $j(101 - j)/2$ to about $10^{-11}$. The middle masses $j = 50, 51$ move most, $1275\\,mg/c$.` },
+                { prompt: `Compare the shape with the parabola $u(x) \\propto x(L - x)$ of a hanging elastic bar.`, answer: `With spacing $h$, $x = jh$ and $L = (n + 1)h$, so $j(n + 1 - j) = x(L - x)/h^2$: the discrete displacements are exactly the parabola sampled at the masses. The second difference is the discrete form of $-u'' = $ constant.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -1926,6 +2374,20 @@ Because $A$ is invertible, solve $A^Ty = f$ from the bottom up. The bottom sprin
             {
               question: 'When does a free-free chain have a static solution, and how unique is it?',
               answerOutline: 'Only if the loads sum to zero ($f \\perp (1, \\dots, 1)$); the solution is unique up to adding a rigid translation.',
+            },
+          ],
+          quiz: [
+            {
+              question: `A fixed-free chain hangs two masses: $10$ N on top and $5$ N below. The top spring has $c_1 = 100$ N/m and the lower one $c_2 = 50$ N/m. How far does the bottom mass move?`,
+              options: [`$0.25$ m`, `$0.10$ m`, `$0.20$ m`, `$0.15$ m`],
+              answer: 0,
+              explanation: `The chain is determinate, so the forces come from balance: the lower spring carries $5$ N and the top spring carries both weights, $15$ N. The elongations are $15/100 = 0.15$ m and $5/50 = 0.10$ m, and the bottom mass moves by their sum, $0.25$ m. Giving the top spring only its own $10$ N gives $0.20$ m; $0.10$ and $0.15$ m are single elongations.`,
+            },
+            {
+              question: `Which support arrangement makes a line of masses and springs statically determinate?`,
+              options: [`Fixed-fixed, because both ends hold the chain`, `Free-free, because no support forces are unknown`, `Fixed-free, because $A$ is square and invertible, so $A^Ty = f$ gives the spring forces without the stiffnesses`, `All three, since force balance holds in each`],
+              answer: 2,
+              explanation: `Determinate means the forces follow from balance alone, which needs $A^Ty = f$ to have exactly one solution: $A$ square and invertible. Fixed-fixed has one spring more than masses, so balance leaves a free parameter and you must solve $Ku = f$ first; that is indeterminate. Free-free has one spring fewer, $A^Ty = f$ is solvable only for balanced loads, and the chain has a rigid motion.`,
             },
           ],
         },
@@ -1987,36 +2449,50 @@ That last check is general. With no batteries, the power dissipated is $y^TC^{-1
             {
               slug: 'unbalanced-bridge',
               title: 'Unbalance the bridge',
-              prompt:
-                'In the worked example, change the conductance of edge $1 \\to 2$ to $2$ S (resistance $\\tfrac12\\ \\Omega$), keeping the others at $1$ S. Solve for the potentials with the same source and ground, find all five currents, the current through the bridge edge, and the effective resistance between nodes 1 and 4. Verify Kirchhoff\'s current law at every node.',
+              prompt: `In the worked example, change the conductance of edge $1 \\to 2$ to $2$ S (resistance $\\tfrac12\\ \\Omega$), keeping the others at $1$ S, with the same source and ground.`,
               kind: 'problem',
               difficulty: 2,
-              hint: '$u = (\\tfrac{11}{13}, \\tfrac{7}{13}, \\tfrac{6}{13}, 0)$, the bridge carries $\\tfrac1{13}$ A from node 2 to node 3, and $R_{\\text{eff}} = \\tfrac{11}{13}\\ \\Omega$.',
+              parts: [
+                { prompt: `Solve for the potentials.`, answer: `$A^TCA = \\begin{pmatrix} 3 & -2 & -1 & 0\\\\ -2 & 4 & -1 & -1\\\\ -1 & -1 & 3 & -1\\\\ 0 & -1 & -1 & 2 \\end{pmatrix}$. Deleting node 4 and solving with $s = (1, 0, 0)$ gives $u = (\\tfrac{11}{13}, \\tfrac{7}{13}, \\tfrac{6}{13}, 0)$ V.` },
+                { prompt: `Find all five currents and the current through the bridge edge.`, answer: `$y = -CAu = (\\tfrac{8}{13}, \\tfrac{5}{13}, \\tfrac{1}{13}, \\tfrac{7}{13}, \\tfrac{6}{13})$ A for edges $1 \\to 2$, $1 \\to 3$, $2 \\to 3$, $2 \\to 4$, $3 \\to 4$. The bridge carries $\\tfrac{1}{13}$ A from node 2 to node 3.` },
+                { prompt: `Find the effective resistance between nodes 1 and 4.`, answer: `$R_{\\text{eff}} = u_1/(1\\text{ A}) = \\tfrac{11}{13}\\ \\Omega$, less than $1\\ \\Omega$ because one resistor got smaller.` },
+                { prompt: `Verify Kirchhoff's current law at every node.`, answer: `Node 1: $\\tfrac{8}{13} + \\tfrac{5}{13} = 1$ A leaves, matching the source. Node 2: $\\tfrac{8}{13}$ in, $\\tfrac{1}{13} + \\tfrac{7}{13}$ out. Node 3: $\\tfrac{5}{13} + \\tfrac{1}{13}$ in, $\\tfrac{6}{13}$ out. Node 4: $\\tfrac{7}{13} + \\tfrac{6}{13} = 1$ A in, leaving through the sink.` },
+              ],
             },
             {
               slug: 'series-and-parallel',
               title: 'Series and parallel from the Laplacian',
-              prompt:
-                'Using $A^TCA$, derive the effective resistance of (a) two resistors $R_1$, $R_2$ in series (three nodes, two edges) and (b) the same two in parallel (two nodes, two edges). Ground one end and inject $1$ A at the other.',
+              prompt: `Using $A^TCA$, derive the effective resistance of two resistors $R_1$, $R_2$. In each case ground one end and inject $1$ A at the other. Write $c_k = 1/R_k$.`,
               kind: 'derivation',
               difficulty: 1,
+              parts: [
+                { prompt: `In series (three nodes, two edges).`, answer: `Edges $1 \\to 2$ and $2 \\to 3$; ground node 3. The reduced system is $\\begin{pmatrix} c_1 & -c_1\\\\ -c_1 & c_1 + c_2 \\end{pmatrix}u = (1, 0)$. The first row gives $u_1 - u_2 = R_1$, and adding the rows gives $c_2u_2 = 1$, so $u_2 = R_2$ and $R_{\\text{eff}} = u_1 = R_1 + R_2$.` },
+                { prompt: `In parallel (two nodes, two edges).`, answer: `Both edges run $1 \\to 2$, so $A^TCA = (c_1 + c_2)\\begin{pmatrix} 1 & -1\\\\ -1 & 1 \\end{pmatrix}$. Grounding node 2 leaves $(c_1 + c_2)u_1 = 1$, so $R_{\\text{eff}} = \\dfrac{1}{1/R_1 + 1/R_2} = \\dfrac{R_1R_2}{R_1 + R_2}$.` },
+              ],
             },
             {
               slug: 'laplacian-properties',
               title: 'Properties of the weighted Laplacian',
-              prompt:
-                'Prove that for a connected network with positive conductances, $K = A^TCA$ is positive semidefinite with null space spanned by $(1, \\dots, 1)$, and that deleting the row and column of any one node leaves a positive definite matrix. Then prove $u^TKu = \\sum_k c_k(u_{\\text{end}(k)} - u_{\\text{start}(k)})^2$.',
+              prompt: `Let $K = A^TCA$ for a connected network with positive conductances.`,
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                { prompt: `Prove $u^TKu = \\sum_k c_k(u_{\\text{end}(k)} - u_{\\text{start}(k)})^2$.`, answer: `$u^TKu = (Au)^TC(Au) = \\sum_k c_k(Au)_k^2$, and row $k$ of $A$ gives $(Au)_k = u_{\\text{end}(k)} - u_{\\text{start}(k)}$.` },
+                { prompt: `Prove that $K$ is positive semidefinite with null space spanned by $(1, \\dots, 1)$.`, answer: `By the formula, $u^TKu \\ge 0$, with equality iff every edge has equal potentials at its ends. For a connected network that means $u$ is constant (follow paths), and $Ku = 0$ iff $u^TKu = 0$ for semidefinite $K$.` },
+                { prompt: `Prove that deleting the row and column of any one node leaves a positive definite matrix.`, answer: `For $x$ in the smaller space, extend it by $0$ at the deleted node to get $u$; then $x^TK_{\\text{red}}x = u^TKu \\ge 0$. Equality forces $u$ constant, and a constant vector with one entry $0$ is zero, so $x = 0$.` },
+              ],
             },
             {
               slug: 'resistor-grid',
               title: 'Effective resistance of a grid',
-              prompt:
-                'Build the incidence matrix of a square grid of unit resistors with $N$ nodes on each side ($N^2$ nodes) in NumPy. Ground one corner, inject $1$ A at the opposite corner, and compute the effective resistance for $N = 2, 4, 8, 16, 32$. Check $N = 2$ (a single square) by hand, and describe how the resistance grows with $N$.',
+              prompt: `Build the incidence matrix of a square grid of unit resistors with $N$ nodes on each side ($N^2$ nodes) in NumPy. Ground one corner and inject $1$ A at the opposite corner.`,
               kind: 'coding',
               difficulty: 3,
-              hint: 'For a single square, the two paths of $2\\ \\Omega$ in parallel give $1\\ \\Omega$. The growth for large $N$ is logarithmic.',
+              parts: [
+                { prompt: `Check $N = 2$ (a single square) by hand.`, answer: `Two paths of two $1\\ \\Omega$ resistors each, $2\\ \\Omega$ apiece, in parallel give $1\\ \\Omega$.` },
+                { prompt: `Compute the effective resistance for $N = 2, 4, 8, 16, 32$.`, answer: `You should get about $1.000$, $1.857$, $2.729$, $3.609$ and $4.490\\ \\Omega$. The value for $N = 4$ is exactly $\\tfrac{13}{7}$.` },
+                { prompt: `Describe how the resistance grows with $N$.`, answer: `Logarithmically: each doubling of $N$ adds almost the same amount, approaching $(4/\\pi)\\ln2 \\approx 0.88\\ \\Omega$, so $R \\approx (4/\\pi)\\ln N$ plus a constant for large $N$.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -2031,6 +2507,20 @@ That last check is general. With no batteries, the power dissipated is $y^TC^{-1
             {
               question: 'How do you get the effective resistance between two nodes from the solution?',
               answerOutline: 'Inject 1 A at one node with the other grounded; the effective resistance is the potential at the injection node.',
+            },
+          ],
+          quiz: [
+            {
+              question: `Resistors of $2\\ \\Omega$ and $3\\ \\Omega$ in parallel are connected in series with a $1\\ \\Omega$ resistor. What is the effective resistance?`,
+              options: [`$6\\ \\Omega$`, `$\\tfrac{6}{11}\\ \\Omega$`, `$\\tfrac{11}{6}\\ \\Omega$`, `$2.2\\ \\Omega$`],
+              answer: 3,
+              explanation: `In parallel, conductances add: $\\tfrac12 + \\tfrac13 = \\tfrac56$ S, so the pair is $\\tfrac65 = 1.2\\ \\Omega$. In series, resistances add: $1.2 + 1 = 2.2\\ \\Omega$. $\\tfrac{11}{6}$ adds the conductance $\\tfrac56$ to the resistance $1$ without inverting it, $6\\ \\Omega$ treats everything as series and $\\tfrac{6}{11}$ treats everything as parallel.`,
+            },
+            {
+              question: `Why must you ground a node before solving $A^TCA\\,u = s$ for a resistor network?`,
+              options: [`Grounding is what makes the currents satisfy Kirchhoff's current law`, `The Laplacian is singular, with the constants as its null space; fixing one potential removes that freedom and leaves a positive definite system`, `Grounding removes the current source, so the system becomes homogeneous`, `Without a ground the conductance matrix $C$ would not be diagonal`],
+              answer: 1,
+              explanation: `Adding a constant to every potential changes no current, so $A^TCA$ has the null space $(1, \\dots, 1)$ and cannot be inverted. Setting one potential to $0$ deletes a row and column and leaves a positive definite matrix. Kirchhoff's law is already built into $A^TCA\\,u = s$, and the sources stay in $s$.`,
             },
           ],
         },
@@ -2088,36 +2578,53 @@ The tip moves left, as the compressed bar shortens, and down. Check the second r
             {
               slug: 'v-truss',
               title: 'A symmetric V truss',
-              prompt:
-                'Joint $P$ at the origin hangs from pins at $(-1, 1)$ and $(1, 1)$ by two bars of stiffness $k$ and carries a load $W$ downward. Write $A$, find the bar forces from $A^Ty = f$, show that $K = A^TCA = kI$, and find the displacement of $P$.',
+              prompt: `Joint $P$ at the origin hangs from pins at $(-1, 1)$ and $(1, 1)$ by two bars of stiffness $k$ and carries a load $W$ downward.`,
               kind: 'problem',
               difficulty: 1,
-              hint: 'Both bars carry $W/\\sqrt2$ in tension and $u = (0, -W/k)$.',
+              parts: [
+                { prompt: `Write $A$.`, answer: `The unit directions from the pins toward $P$ are $(1, -1)/\\sqrt2$ and $(-1, -1)/\\sqrt2$, so $A = \\tfrac{1}{\\sqrt2}\\begin{pmatrix} 1 & -1\\\\ -1 & -1 \\end{pmatrix}$.` },
+                { prompt: `Find the bar forces from $A^Ty = f$.`, answer: `With $f = (0, -W)$: the $x$ row gives $(y_1 - y_2)/\\sqrt2 = 0$ and the $y$ row gives $-(y_1 + y_2)/\\sqrt2 = -W$. So $y_1 = y_2 = W/\\sqrt2$, both in tension.` },
+                { prompt: `Show that $K = A^TCA = kI$.`, answer: `$A^TA = \\tfrac12\\begin{pmatrix} 1 + 1 & -1 + 1\\\\ -1 + 1 & 1 + 1 \\end{pmatrix} = I$, so $K = kA^TA = kI$.` },
+                { prompt: `Find the displacement of $P$.`, answer: `$u = K^{-1}f = (0, -W/k)$: straight down, by symmetry.` },
+              ],
             },
             {
               slug: 'find-the-mechanism',
               title: 'Find and remove a mechanism',
-              prompt:
-                'Joints 1 at $(0, 0)$ and 2 at $(1, 0)$ are pinned. Free joints 3 at $(0, 1)$ and 4 at $(1, 1)$ are connected by bars 1-3, 2-4 and 3-4. Write the $3 \\times 4$ matrix $A$, find $N(A)$, and describe the mechanism. Add the diagonal 1-4, show the new $A$ is invertible, and find the bar forces for a horizontal load $H$ at joint 3.',
+              prompt: `Joints 1 at $(0, 0)$ and 2 at $(1, 0)$ are pinned. Free joints 3 at $(0, 1)$ and 4 at $(1, 1)$ are connected by bars 1-3, 2-4 and 3-4. Order the unknowns as $(u_{3x}, u_{3y}, u_{4x}, u_{4y})$.`,
               kind: 'problem',
               difficulty: 2,
-              hint: 'The mechanism is $u = (1, 0, 1, 0)$. With the diagonal, it carries $\\sqrt2 H$ in tension, bar 2-4 carries $H$ in compression, bar 3-4 carries $H$ in compression and bar 1-3 carries nothing.',
+              parts: [
+                { prompt: `Write the $3 \\times 4$ matrix $A$.`, answer: `Bars 1-3 and 2-4 point straight up and bar 3-4 points in $+x$: $A = \\begin{pmatrix} 0 & 1 & 0 & 0\\\\ 0 & 0 & 0 & 1\\\\ -1 & 0 & 1 & 0 \\end{pmatrix}$.` },
+                { prompt: `Find $N(A)$ and describe the mechanism.`, answer: `$Au = 0$ needs $u_{3y} = u_{4y} = 0$ and $u_{3x} = u_{4x}$, so $N(A)$ is spanned by $(1, 0, 1, 0)$: the top bar sways sideways while the two vertical bars tilt, and no bar stretches to first order.` },
+                { prompt: `Add the diagonal 1-4 and show the new $A$ is invertible.`, answer: `The new row is $(0, 0, \\tfrac{1}{\\sqrt2}, \\tfrac{1}{\\sqrt2})$, and the $4 \\times 4$ matrix has determinant $\\tfrac{1}{\\sqrt2} \\ne 0$. The diagonal stretches under the sway, so the mechanism is gone and the truss is determinate.` },
+                { prompt: `Find the bar forces for a horizontal load $H$ at joint 3.`, answer: `Solving $A^Ty = (H, 0, 0, 0)$: the diagonal carries $\\sqrt2H$ in tension, bar 2-4 carries $H$ in compression, bar 3-4 carries $H$ in compression and bar 1-3 carries nothing.` },
+              ],
             },
             {
               slug: 'collinear-bars',
               title: 'Counting is not enough',
-              prompt:
-                'A free joint at the origin is held by two bars to pins at $(-1, 0)$ and $(1, 0)$. Show that $A$ is $2 \\times 2$ with rank $1$, find the infinitesimal mechanism, and explain physically why a real taut cable in this position can still carry a vertical load only by sagging (a nonlinear effect the linear model misses).',
+              prompt: `A free joint at the origin is held by two bars to pins at $(-1, 0)$ and $(1, 0)$.`,
               kind: 'writing',
               difficulty: 2,
+              parts: [
+                { prompt: `Show that $A$ is $2 \\times 2$ with rank $1$.`, answer: `The directions toward the joint are $(1, 0)$ and $(-1, 0)$, so $A = \\begin{pmatrix} 1 & 0\\\\ -1 & 0 \\end{pmatrix}$: two bars and two unknowns, but the rows are parallel and the rank is $1$.` },
+                { prompt: `Find the infinitesimal mechanism.`, answer: `$N(A)$ is spanned by $(0, 1)$. A vertical displacement $\\delta$ stretches each bar by $\\sqrt{1 + \\delta^2} - 1 \\approx \\delta^2/2$, which is zero to first order.` },
+                { prompt: `Explain physically why a real taut cable in this position can still carry a vertical load only by sagging (a nonlinear effect the linear model misses).`, answer: `A good answer says: in the straight position both bars are horizontal and cannot push up at all. After a sag $\\delta$, each bar with tension $T$ has vertical component about $T\\delta$, so balance needs $2T\\delta \\approx W$. The vertical stiffness comes from the tension and the changed geometry, which are second-order effects that $e = Au$ drops.` },
+              ],
             },
             {
               slug: 'warren-truss',
               title: 'A small bridge truss in code',
-              prompt:
-                'Model a three-panel Warren truss of span $3$ m and height $1$ m (equilateral or isosceles triangles, your choice) pinned at one end and on a roller at the other. Assemble $A$ in NumPy, check its rank, and solve $A^Ty = f$ for a $10$ kN load at the middle bottom joint. Verify the force in one bar by the method of joints by hand, and report which bars are in tension.',
+              prompt: `Model a three-panel Warren truss of span $3$ m and height $1$ m (equilateral or isosceles triangles, your choice) pinned at one end and on a roller at the other, with a $10$ kN load at the middle bottom joint.`,
               kind: 'coding',
               difficulty: 3,
+              parts: [
+                { prompt: `Assemble $A$ in NumPy and check its rank.`, answer: `For example, take bottom joints at $x = 0, 1.5, 3$ and top joints at $(0.75, 1)$ and $(2.25, 1)$: three triangles and seven bars. The pin removes two unknowns and the roller one, leaving $7$, so $A$ is $7 \\times 7$. Its rank should be $7$: the truss is determinate.` },
+                { prompt: `Solve $A^Ty = f$ for the $10$ kN load.`, answer: `For the layout above: bottom chord $3.75$ kN tension in each bar, the two inner diagonals $6.25$ kN tension, the two end diagonals $6.25$ kN compression, and the top chord $7.5$ kN compression. Another layout gives other numbers but the same pattern.` },
+                { prompt: `Verify the force in one bar by the method of joints by hand.`, answer: `At the pinned support the reaction is $5$ kN upward, by symmetry. The end diagonal has length $1.25$ m and direction $(0.6, 0.8)$, so vertical balance gives $5 + 0.8y = 0$, $y = -6.25$ kN (compression). Horizontal balance then gives the bottom bar $-0.6y = 3.75$ kN tension.` },
+                { prompt: `Report which bars are in tension.`, answer: `The bottom chord and the diagonals that slope down toward the load are in tension; the top chord and the end diagonals are in compression, as in a simply supported beam whose bottom fibres stretch.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -2132,6 +2639,20 @@ The tip moves left, as the compressed bar shortens, and down. Check the second r
             {
               question: 'Why is $m \\ge n$ bars necessary but not sufficient for a stable truss?',
               answerOutline: 'Fewer bars than unknowns forces a null space; but even with enough bars, a bad geometry (e.g. collinear bars) can make the columns of $A$ dependent.',
+            },
+          ],
+          quiz: [
+            {
+              question: `Joint $P$ at the origin carries $10$ kN downward. Bar 1 runs horizontally to a wall pin at $(-1, 0)$, and bar 2 runs to a wall pin at $(-3, 4)$. What are the bar forces?`,
+              options: [`Bar 2: $12.5$ kN compression; bar 1: $7.5$ kN tension`, `Bar 2: $12.5$ kN tension; bar 1: $7.5$ kN compression`, `Bar 2: $10$ kN tension; bar 1: $0$`, `Bar 2: $8$ kN tension; bar 1: $6$ kN compression`],
+              answer: 1,
+              explanation: `The directions toward $P$ are $(1, 0)$ and $(3, -4)/5$. The vertical row of $A^Ty = (0, -10)$ gives $-\\tfrac45y_2 = -10$, so $y_2 = 12.5$ kN (tension), and the horizontal row gives $y_1 + \\tfrac35(12.5) = 0$, so $y_1 = -7.5$ kN (compression). $8$ and $6$ kN come from multiplying by $\\tfrac45$ and $\\tfrac35$ instead of dividing, and the diagonal cannot carry the load alone because it also pulls sideways.`,
+            },
+            {
+              question: `A plane truss has $6$ displacement unknowns and $6$ bars. What can you conclude?`,
+              options: [`Nothing yet: it is determinate only if the $6 \\times 6$ matrix $A$ is invertible, and a rank-deficient $A$ means a mechanism`, `It is statically determinate`, `It is a mechanism`, `It is statically indeterminate`],
+              answer: 0,
+              explanation: `Matching counts make $A$ square, which is necessary for determinacy but not sufficient. If the bars are badly placed, as with two collinear bars at a joint, $A$ has a null vector: a mechanism, even with $m = n$. You must check the rank. An indeterminate truss needs more bars than unknowns.`,
             },
           ],
         },
@@ -2216,36 +2737,52 @@ Eigenvectors for distinct eigenvalues are independent. For two, suppose $c_1x_1 
             {
               slug: 'two-by-two-eigen',
               title: 'Eigenpairs of a symmetric 2 by 2',
-              prompt:
-                'Find the eigenvalues and eigenvectors of $\\begin{pmatrix} 2 & 1\\\\ 1 & 2 \\end{pmatrix}$, check the trace and determinant, and show that the eigenvectors are orthogonal. What are the eigenvalues of $A^2$, $A^{-1}$ and $A + 5I$, and why?',
+              prompt: `Let $A = \\begin{pmatrix} 2 & 1\\\\ 1 & 2 \\end{pmatrix}$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: '$\\lambda = 3$ with $(1, 1)$ and $\\lambda = 1$ with $(1, -1)$; then $9, 1$; $\\tfrac13, 1$; $8, 6$.',
+              parts: [
+                { prompt: `Find the eigenvalues and eigenvectors of $A$.`, answer: `$\\det(A - \\lambda I) = \\lambda^2 - 4\\lambda + 3 = (\\lambda - 3)(\\lambda - 1)$. $\\lambda = 3$ has eigenvector $(1, 1)$ and $\\lambda = 1$ has $(1, -1)$.` },
+                { prompt: `Check the trace and determinant.`, answer: `$3 + 1 = 4 = \\operatorname{tr}A$ and $3 \\cdot 1 = 3 = \\det A$.` },
+                { prompt: `Show that the eigenvectors are orthogonal.`, answer: `$(1, 1) \\cdot (1, -1) = 0$.` },
+                { prompt: `What are the eigenvalues of $A^2$, $A^{-1}$ and $A + 5I$, and why?`, answer: `$9, 1$; $\\tfrac13, 1$; $8, 6$, with the same eigenvectors. If $Ax = \\lambda x$ then $A^2x = \\lambda^2x$, $A^{-1}x = \\lambda^{-1}x$ and $(A + 5I)x = (\\lambda + 5)x$.` },
+              ],
             },
             {
               slug: 'second-difference-eigen',
               title: 'Eigenvalues of the spring-chain matrix',
-              prompt:
-                'Show that $K = \\begin{pmatrix} 2 & -1 & 0\\\\ -1 & 2 & -1\\\\ 0 & -1 & 2 \\end{pmatrix}$ has eigenvalues $2 - \\sqrt2$, $2$, $2 + \\sqrt2$ with eigenvectors $(1, \\sqrt2, 1)$, $(1, 0, -1)$, $(1, -\\sqrt2, 1)$. Check the sum and product against the trace and the determinant from the determinants lesson. Then check that eigenvector $k$ has entries proportional to $\\sin(jk\\pi/4)$, $j = 1, 2, 3$.',
+              prompt: `Let $K = \\begin{pmatrix} 2 & -1 & 0\\\\ -1 & 2 & -1\\\\ 0 & -1 & 2 \\end{pmatrix}$.`,
               kind: 'problem',
               difficulty: 2,
+              parts: [
+                { prompt: `Show that $K$ has eigenvalues $2 - \\sqrt2$, $2$, $2 + \\sqrt2$ with eigenvectors $(1, \\sqrt2, 1)$, $(1, 0, -1)$, $(1, -\\sqrt2, 1)$.`, answer: `Multiply out: $K(1, \\sqrt2, 1) = (2 - \\sqrt2,\\ 2\\sqrt2 - 2,\\ 2 - \\sqrt2) = (2 - \\sqrt2)(1, \\sqrt2, 1)$; $K(1, 0, -1) = (2, 0, -2)$; and $K(1, -\\sqrt2, 1) = (2 + \\sqrt2,\\ -2\\sqrt2 - 2,\\ 2 + \\sqrt2) = (2 + \\sqrt2)(1, -\\sqrt2, 1)$.` },
+                { prompt: `Check the sum and product against the trace and the determinant from the determinants lesson.`, answer: `Sum: $(2 - \\sqrt2) + 2 + (2 + \\sqrt2) = 6 = \\operatorname{tr}K$. Product: $(4 - 2) \\cdot 2 = 4 = \\det K$.` },
+                { prompt: `Check that eigenvector $k$ has entries proportional to $\\sin(jk\\pi/4)$, $j = 1, 2, 3$.`, answer: `$k = 1$: $(\\tfrac{\\sqrt2}{2}, 1, \\tfrac{\\sqrt2}{2}) \\propto (1, \\sqrt2, 1)$. $k = 2$: $(1, 0, -1)$. $k = 3$: $(\\tfrac{\\sqrt2}{2}, -1, \\tfrac{\\sqrt2}{2}) \\propto (1, -\\sqrt2, 1)$. The eigenvalues are $2 - 2\\cos(k\\pi/4)$ in the same order.` },
+              ],
             },
             {
               slug: 'geometric-eigenvalues',
               title: 'Eigenvalues you can see',
-              prompt:
-                'Without computing a determinant, give the eigenvalues and eigenvectors of: (a) projection onto the line through $(1, 2)$; (b) reflection across that line; (c) rotation by $90^\\circ$ (complex). Then confirm (a) and (b) with characteristic polynomials and find the complex eigenvectors in (c).',
+              prompt: `Without computing a determinant, give the eigenvalues and eigenvectors of each map; then confirm by algebra.`,
               kind: 'problem',
               difficulty: 2,
-              hint: 'For the rotation, $\\lambda = i$ has eigenvector $(1, -i)$.',
+              parts: [
+                { prompt: `Projection onto the line through $(1, 2)$.`, answer: `Vectors on the line are kept: $\\lambda = 1$ with $(1, 2)$. Vectors perpendicular to it go to zero: $\\lambda = 0$ with $(-2, 1)$.` },
+                { prompt: `Reflection across that line.`, answer: `$\\lambda = 1$ with $(1, 2)$, which stays put, and $\\lambda = -1$ with $(-2, 1)$, which is flipped.` },
+                { prompt: `Rotation by $90^\\circ$ (complex).`, answer: `No real direction is preserved, so there is no real eigenvector. The eigenvalues are $\\pm i$, of size $1$ because rotation keeps lengths.` },
+                { prompt: `Confirm the projection and reflection answers with characteristic polynomials.`, answer: `$P = \\tfrac15\\begin{pmatrix} 1 & 2\\\\ 2 & 4 \\end{pmatrix}$ has trace $1$ and determinant $0$, so $\\lambda^2 - \\lambda = 0$ and $\\lambda = 0, 1$. $H = 2P - I$ has trace $0$ and determinant $-1$, so $\\lambda^2 - 1 = 0$ and $\\lambda = \\pm1$.` },
+                { prompt: `Find the complex eigenvectors for the rotation.`, answer: `$R = \\begin{pmatrix} 0 & -1\\\\ 1 & 0 \\end{pmatrix}$ has $\\lambda^2 + 1 = 0$. For $\\lambda = i$ the eigenvector is $(1, -i)$, since $R(1, -i) = (i, 1) = i(1, -i)$. For $\\lambda = -i$ it is the conjugate $(1, i)$.` },
+              ],
             },
             {
               slug: 'independence-of-eigenvectors',
               title: 'Distinct eigenvalues give independent eigenvectors',
-              prompt:
-                'Prove by induction on $k$ that eigenvectors $x_1, \\dots, x_k$ belonging to distinct eigenvalues are linearly independent. Then show that $\\begin{pmatrix} 3 & 1\\\\ 0 & 3 \\end{pmatrix}$ has algebraic multiplicity $2$ but geometric multiplicity $1$ for $\\lambda = 3$.',
+              prompt: `Relate distinct eigenvalues to independent eigenvectors, and see what can go wrong with a repeated one.`,
               kind: 'derivation',
               difficulty: 3,
+              parts: [
+                { prompt: `Prove by induction on $k$ that eigenvectors $x_1, \\dots, x_k$ belonging to distinct eigenvalues are linearly independent.`, answer: `One nonzero vector is independent. Suppose the claim holds for $k - 1$ and $c_1x_1 + \\cdots + c_kx_k = 0$. Apply $A$ and subtract $\\lambda_k$ times the original: $c_1(\\lambda_1 - \\lambda_k)x_1 + \\cdots + c_{k-1}(\\lambda_{k-1} - \\lambda_k)x_{k-1} = 0$. By induction each $c_i(\\lambda_i - \\lambda_k) = 0$, and distinctness gives $c_1 = \\cdots = c_{k-1} = 0$. Then $c_kx_k = 0$ forces $c_k = 0$.` },
+                { prompt: `Show that $\\begin{pmatrix} 3 & 1\\\\ 0 & 3 \\end{pmatrix}$ has algebraic multiplicity $2$ but geometric multiplicity $1$ for $\\lambda = 3$.`, answer: `The characteristic polynomial is $(\\lambda - 3)^2$, so the algebraic multiplicity is $2$. But $A - 3I = \\begin{pmatrix} 0 & 1\\\\ 0 & 0 \\end{pmatrix}$ has rank $1$, so its null space, spanned by $(1, 0)$, has dimension $1$.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -2260,6 +2797,20 @@ Eigenvectors for distinct eigenvalues are independent. For two, suppose $c_1x_1 
             {
               question: 'What is a defective matrix? Give an example.',
               answerOutline: 'One with fewer independent eigenvectors than its size; e.g. $\\begin{pmatrix} 3 & 1\\\\ 0 & 3 \\end{pmatrix}$.',
+            },
+          ],
+          quiz: [
+            {
+              question: `What are the eigenvalues of $\\begin{pmatrix} 1 & 4\\\\ 2 & 3 \\end{pmatrix}$?`,
+              options: [`$1$ and $3$`, `$-5$ and $1$`, `$5$ and $-1$`, `$4$ and $-5$`],
+              answer: 2,
+              explanation: `The trace is $4$ and the determinant is $3 - 8 = -5$, so $\\lambda^2 - 4\\lambda - 5 = (\\lambda - 5)(\\lambda + 1) = 0$. Check: $5 + (-1) = 4$ and $5 \\cdot (-1) = -5$. The diagonal entries are eigenvalues only for triangular matrices, $-5$ and $1$ come from the wrong sign on the trace term, and $4$ and $-5$ are the trace and determinant themselves.`,
+            },
+            {
+              question: `$A$ is $3 \\times 3$ and upper triangular with diagonal entries $2, 2, 5$. Which statement must be true?`,
+              options: [`$A$ has two independent eigenvectors for $\\lambda = 2$`, `$A$ is diagonalisable`, `$\\det A = 9$`, `$\\lambda = 2$ has algebraic multiplicity $2$, but its geometric multiplicity may be $1$ or $2$`],
+              answer: 3,
+              explanation: `The eigenvalues of a triangular matrix are its diagonal entries, so $2$ appears twice in the characteristic polynomial. How many independent eigenvectors it has depends on the entries above the diagonal: $\\begin{pmatrix} 2 & 1\\\\ 0 & 2 \\end{pmatrix}$ in the top corner gives only one. So neither two eigenvectors nor diagonalisability is guaranteed. $\\det A = 2 \\cdot 2 \\cdot 5 = 20$; $9$ is the trace.`,
             },
           ],
         },
@@ -2314,36 +2865,54 @@ matrix-transform
             {
               slug: 'tenth-power',
               title: 'A tenth power by hand',
-              prompt:
-                'Diagonalise $A = \\begin{pmatrix} 1 & 2\\\\ 2 & 1 \\end{pmatrix}$ and use the result to write $A^{10}$ exactly. Check with NumPy using exact integers (numpy.linalg.matrix_power on an integer array).',
+              prompt: `Let $A = \\begin{pmatrix} 1 & 2\\\\ 2 & 1 \\end{pmatrix}$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: '$A^{10} = \\tfrac12\\begin{pmatrix} 3^{10} + 1 & 3^{10} - 1\\\\ 3^{10} - 1 & 3^{10} + 1 \\end{pmatrix} = \\begin{pmatrix} 29525 & 29524\\\\ 29524 & 29525 \\end{pmatrix}$.',
+              parts: [
+                { prompt: `Diagonalise $A$.`, answer: `$\\lambda = 3$ with $(1, 1)$ and $\\lambda = -1$ with $(1, -1)$. So $A = S\\Lambda S^{-1}$ with $S = \\begin{pmatrix} 1 & 1\\\\ 1 & -1 \\end{pmatrix}$, $\\Lambda = \\operatorname{diag}(3, -1)$ and $S^{-1} = \\tfrac12\\begin{pmatrix} 1 & 1\\\\ 1 & -1 \\end{pmatrix}$.` },
+                { prompt: `Use the result to write $A^{10}$ exactly.`, answer: `$A^{10} = S\\Lambda^{10}S^{-1}$ with $(-1)^{10} = 1$: $A^{10} = \\tfrac12\\begin{pmatrix} 3^{10} + 1 & 3^{10} - 1\\\\ 3^{10} - 1 & 3^{10} + 1 \\end{pmatrix} = \\begin{pmatrix} 29525 & 29524\\\\ 29524 & 29525 \\end{pmatrix}$.` },
+                { prompt: `Check with NumPy using exact integers (numpy.linalg.matrix_power on an integer array).`, answer: `numpy.linalg.matrix_power(np.array([[1, 2], [2, 1]]), 10) returns [[29525, 29524], [29524, 29525]].` },
+              ],
             },
             {
               slug: 'fibonacci-closed-form',
               title: 'Fibonacci numbers from eigenvalues',
-              prompt:
-                'Write the Fibonacci recurrence $F_{k+2} = F_{k+1} + F_k$ as $u_{k+1} = Au_k$ with $u_k = (F_{k+1}, F_k)$ and $A = \\begin{pmatrix} 1 & 1\\\\ 1 & 0 \\end{pmatrix}$. Diagonalise $A$ and derive $F_k = (\\varphi^k - \\psi^k)/\\sqrt5$ with $\\varphi, \\psi = (1 \\pm \\sqrt5)/2$. Explain why $F_{k+1}/F_k \\to \\varphi$.',
+              prompt: `Use matrices to find a closed form for the Fibonacci numbers $F_{k+2} = F_{k+1} + F_k$, $F_0 = 0$, $F_1 = 1$.`,
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                { prompt: `Write the recurrence as $u_{k+1} = Au_k$ with $u_k = (F_{k+1}, F_k)$ and $A = \\begin{pmatrix} 1 & 1\\\\ 1 & 0 \\end{pmatrix}$.`, answer: `$Au_k = (F_{k+1} + F_k,\\ F_{k+1}) = (F_{k+2}, F_{k+1}) = u_{k+1}$, starting from $u_0 = (1, 0)$.` },
+                { prompt: `Diagonalise $A$.`, answer: `$\\lambda^2 - \\lambda - 1 = 0$ gives $\\varphi, \\psi = (1 \\pm \\sqrt5)/2$. Each eigenvalue $\\lambda$ has eigenvector $(\\lambda, 1)$, since $A(\\lambda, 1) = (\\lambda + 1, \\lambda) = (\\lambda^2, \\lambda)$.` },
+                { prompt: `Derive $F_k = (\\varphi^k - \\psi^k)/\\sqrt5$ with $\\varphi, \\psi = (1 \\pm \\sqrt5)/2$.`, answer: `$u_0 = (1, 0) = \\dfrac{(\\varphi, 1) - (\\psi, 1)}{\\varphi - \\psi}$ with $\\varphi - \\psi = \\sqrt5$. So $u_k = \\dfrac{\\varphi^k(\\varphi, 1) - \\psi^k(\\psi, 1)}{\\sqrt5}$, and the second component is $F_k = (\\varphi^k - \\psi^k)/\\sqrt5$.` },
+                { prompt: `Explain why $F_{k+1}/F_k \\to \\varphi$.`, answer: `$|\\psi| \\approx 0.618 < 1$, so $\\psi^k \\to 0$ and $F_k \\approx \\varphi^k/\\sqrt5$. The ratio of consecutive terms tends to $\\varphi^{k+1}/\\varphi^k = \\varphi \\approx 1.618$: the dominant eigenvalue wins.` },
+              ],
             },
             {
               slug: 'diagonalisable-or-not',
               title: 'Diagonalisable or not?',
-              prompt:
-                'For each matrix, decide whether it is diagonalisable over $\\mathbb{R}$, over $\\mathbb{C}$, or neither, and justify: $\\begin{pmatrix} 2 & 0\\\\ 0 & 2 \\end{pmatrix}$, $\\begin{pmatrix} 2 & 1\\\\ 0 & 2 \\end{pmatrix}$, $\\begin{pmatrix} 0 & -1\\\\ 1 & 0 \\end{pmatrix}$, $\\begin{pmatrix} 1 & 1 & 0\\\\ 0 & 2 & 0\\\\ 0 & 0 & 3 \\end{pmatrix}$, $\\begin{pmatrix} 1 & 1\\\\ 0 & 0 \\end{pmatrix}$.',
+              prompt: `For each matrix, decide whether it is diagonalisable over $\\mathbb{R}$, over $\\mathbb{C}$, or neither, and justify.`,
               kind: 'problem',
               difficulty: 2,
-              hint: 'Only the second is not diagonalisable over either field. The third is diagonalisable over $\\mathbb{C}$ but not $\\mathbb{R}$.',
+              parts: [
+                { prompt: `$\\begin{pmatrix} 2 & 0\\\\ 0 & 2 \\end{pmatrix}$`, answer: `Diagonalisable over both: it is already diagonal. A repeated eigenvalue is no obstacle when there are enough eigenvectors.` },
+                { prompt: `$\\begin{pmatrix} 2 & 1\\\\ 0 & 2 \\end{pmatrix}$`, answer: `Neither. $\\lambda = 2$ is double, but $A - 2I$ has rank $1$, so there is only one independent eigenvector, $(1, 0)$, over either field.` },
+                { prompt: `$\\begin{pmatrix} 0 & -1\\\\ 1 & 0 \\end{pmatrix}$`, answer: `Over $\\mathbb{C}$ but not $\\mathbb{R}$. The eigenvalues $\\pm i$ are distinct, so there are two complex eigenvectors, $(1, \\mp i)$, but no real ones.` },
+                { prompt: `$\\begin{pmatrix} 1 & 1 & 0\\\\ 0 & 2 & 0\\\\ 0 & 0 & 3 \\end{pmatrix}$`, answer: `Over both. The eigenvalues $1, 2, 3$ are real and distinct, with eigenvectors $(1, 0, 0)$, $(1, 1, 0)$, $(0, 0, 1)$.` },
+                { prompt: `$\\begin{pmatrix} 1 & 1\\\\ 0 & 0 \\end{pmatrix}$`, answer: `Over both. The eigenvalues $1$ and $0$ are distinct, with eigenvectors $(1, 0)$ and $(1, -1)$. A singular matrix can be diagonalisable.` },
+              ],
             },
             {
               slug: 'power-method',
               title: 'The power method',
-              prompt:
-                'Implement the power method $x_{k+1} = Ax_k/\\|Ax_k\\|$ and run it on $A = \\begin{pmatrix} 4 & 1\\\\ 2 & 3 \\end{pmatrix}$ from $x_0 = (1, 0)$. Show that the error in direction shrinks by about the factor $2/5$ per step, and explain this with the closed form for $A^k$. What goes wrong if $|\\lambda_1| = |\\lambda_2|$?',
+              prompt: `Implement the power method $x_{k+1} = Ax_k/\\|Ax_k\\|$ and run it on $A = \\begin{pmatrix} 4 & 1\\\\ 2 & 3 \\end{pmatrix}$ from $x_0 = (1, 0)$.`,
               kind: 'coding',
               difficulty: 3,
+              parts: [
+                { prompt: `Run the iteration and report where it goes.`, answer: `A few lines suffice: x = A @ x; x /= np.linalg.norm(x) in a loop. The iterates approach $(1, 1)/\\sqrt2$, the eigenvector for $\\lambda_1 = 5$, and $x^TAx$ approaches $5$.` },
+                { prompt: `Show that the error in direction shrinks by about the factor $2/5$ per step.`, answer: `The distance from $(1, 1)/\\sqrt2$ is about $0.32, 0.124, 0.049, 0.019, 0.0077, \\dots$, and successive ratios are $0.388, 0.392, 0.396, 0.3985, \\dots$, approaching $0.4$.` },
+                { prompt: `Explain this with the closed form for $A^k$.`, answer: `$x_0 = \\tfrac23(1, 1) + \\tfrac13(1, -2)$, so $A^kx_0 = \\tfrac23 5^k(1, 1) + \\tfrac13 2^k(1, -2)$. Relative to the dominant part, the other component is $\\tfrac12(2/5)^k$, so the direction error shrinks by $|\\lambda_2/\\lambda_1| = 2/5$ each step.` },
+                { prompt: `What goes wrong if $|\\lambda_1| = |\\lambda_2|$?`, answer: `No eigenvalue dominates, so neither component dies out. With $\\lambda = \\pm1$, for example, the iterates jump between two directions forever; with a complex pair they rotate. The method converges only if the start happens to have no component along the competing eigenvector.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -2358,6 +2927,20 @@ matrix-transform
             {
               question: 'Is every invertible matrix diagonalisable? Is every diagonalisable matrix invertible?',
               answerOutline: 'No to both: $\\begin{pmatrix} 1 & 1\\\\ 0 & 1 \\end{pmatrix}$ is invertible but defective; $\\operatorname{diag}(1, 0)$ is diagonal but singular.',
+            },
+          ],
+          quiz: [
+            {
+              question: `$A$ has eigenvector $(1, 1)$ with $\\lambda = 2$ and eigenvector $(1, -1)$ with $\\lambda = -1$. What is $A^4(3, 1)$?`,
+              options: [`$(33, 31)$`, `$(48, 16)$`, `$(31, 33)$`, `$(17, 15)$`],
+              answer: 0,
+              explanation: `Expand first: $(3, 1) = 2(1, 1) + 1(1, -1)$. Then $A^4(3, 1) = 2 \\cdot 2^4(1, 1) + 1 \\cdot (-1)^4(1, -1) = (32, 32) + (1, -1) = (33, 31)$. $(48, 16) = 16(3, 1)$ treats $(3, 1)$ as an eigenvector, $(31, 33)$ uses $(-1)^4 = -1$, and $(17, 15)$ drops the coefficient $2$.`,
+            },
+            {
+              question: `Which matrix cannot be diagonalised, even over $\\mathbb{C}$?`,
+              options: [`$\\begin{pmatrix} 3 & 0\\\\ 0 & 3 \\end{pmatrix}$`, `$\\begin{pmatrix} 1 & 2\\\\ 0 & 3 \\end{pmatrix}$`, `$\\begin{pmatrix} 0 & 1\\\\ -1 & 0 \\end{pmatrix}$`, `$\\begin{pmatrix} 3 & 1\\\\ 0 & 3 \\end{pmatrix}$`],
+              answer: 3,
+              explanation: `$\\begin{pmatrix} 3 & 1\\\\ 0 & 3 \\end{pmatrix}$ has the double eigenvalue $3$ but $A - 3I$ has rank $1$, so only one eigenvector: it is defective. $3I$ also has a repeated eigenvalue but is already diagonal, so repetition alone is not the problem. The second matrix has distinct eigenvalues $1, 3$, and the rotation has distinct eigenvalues $\\pm i$, so it diagonalises over $\\mathbb{C}$.`,
             },
           ],
         },
@@ -2417,37 +3000,51 @@ The same computation gives **principal stresses**. A plane stress state is a sym
             {
               slug: 'principal-stresses',
               title: 'Principal stresses',
-              prompt:
-                'A plane stress state has $\\sigma_x = 50$ MPa, $\\sigma_y = -30$ MPa and $\\tau = 30$ MPa. Find the principal stresses and the angle of the first principal direction from the $x$-axis. Verify that the trace (the sum of normal stresses) is unchanged, and write the stress matrix as $Q\\Lambda Q^T$.',
+              prompt: `A plane stress state has $\\sigma_x = 50$ MPa, $\\sigma_y = -30$ MPa and $\\tau = 30$ MPa, so the stress matrix is $\\begin{pmatrix} 50 & 30\\\\ 30 & -30 \\end{pmatrix}$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: 'Principal stresses $60$ and $-40$ MPa; the $60$ MPa direction is $(3, 1)$, at about $18.4^\\circ$.',
+              parts: [
+                { prompt: `Find the principal stresses.`, answer: `The trace is $20$ and the determinant $-1500 - 900 = -2400$, so $\\lambda^2 - 20\\lambda - 2400 = (\\lambda - 60)(\\lambda + 40) = 0$: $60$ MPa and $-40$ MPa.` },
+                { prompt: `Find the angle of the first principal direction from the $x$-axis.`, answer: `$S - 60I = \\begin{pmatrix} -10 & 30\\\\ 30 & -90 \\end{pmatrix}$ gives the direction $(3, 1)$, at $\\arctan\\tfrac13 \\approx 18.4^\\circ$. The textbook formula agrees: $\\tan2\\theta = 2\\tau/(\\sigma_x - \\sigma_y) = 0.75$.` },
+                { prompt: `Verify that the trace (the sum of normal stresses) is unchanged.`, answer: `$50 + (-30) = 20 = 60 + (-40)$.` },
+                { prompt: `Write the stress matrix as $Q\\Lambda Q^T$.`, answer: `$Q = \\tfrac{1}{\\sqrt{10}}\\begin{pmatrix} 3 & -1\\\\ 1 & 3 \\end{pmatrix}$ and $\\Lambda = \\operatorname{diag}(60, -40)$; the second column $(-1, 3)$ is the $-40$ MPa direction, perpendicular to the first.` },
+              ],
             },
             {
               slug: 'symmetric-proofs',
               title: 'Why symmetric matrices behave',
-              prompt:
-                'Write out carefully the proofs that a real symmetric matrix has real eigenvalues and that eigenvectors for distinct eigenvalues are orthogonal. Then show by example that a real non-symmetric matrix can have real eigenvalues with non-orthogonal eigenvectors, using $\\begin{pmatrix} 4 & 1\\\\ 2 & 3 \\end{pmatrix}$.',
+              prompt: `Let $A$ be a real symmetric matrix.`,
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                { prompt: `Prove carefully that $A$ has real eigenvalues.`, answer: `Let $Ax = \\lambda x$ with $x \\ne 0$, possibly complex, and $\\bar x$ its conjugate. Then $\\bar x^TAx = \\lambda\\,\\bar x^Tx$. The number $\\bar x^TAx$ is real: its conjugate is $x^TA\\bar x = (x^TA\\bar x)^T = \\bar x^TA^Tx = \\bar x^TAx$. And $\\bar x^Tx = \\sum|x_i|^2 > 0$. So $\\lambda$ is a ratio of real numbers.` },
+                { prompt: `Prove that eigenvectors for distinct eigenvalues are orthogonal.`, answer: `If $Ax = \\lambda_1x$ and $Ay = \\lambda_2y$, then $\\lambda_1x^Ty = (Ax)^Ty = x^TAy = \\lambda_2x^Ty$, so $(\\lambda_1 - \\lambda_2)x^Ty = 0$ and $x^Ty = 0$.` },
+                { prompt: `Show by example that a real non-symmetric matrix can have real eigenvalues with non-orthogonal eigenvectors, using $\\begin{pmatrix} 4 & 1\\\\ 2 & 3 \\end{pmatrix}$.`, answer: `Its eigenvalues are $5$ and $2$ with eigenvectors $(1, 1)$ and $(1, -2)$, whose dot product is $-1 \\ne 0$: they meet at about $108^\\circ$, not $90^\\circ$.` },
+              ],
             },
             {
               slug: 'rayleigh-bound',
               title: 'Rayleigh quotient bounds',
-              prompt:
-                'For $K$, the $3 \\times 3$ second-difference matrix, compute $R(x)$ for $x = (1, 1, 1)$ and $x = (1, 1.4, 1)$, and compare both with $\\lambda_{\\min} = 2 - \\sqrt2 \\approx 0.586$. Prove that $R(x) \\ge \\lambda_{\\min}$ for all $x \\ne 0$ by expanding $x$ in the eigenvector basis.',
+              prompt: `Let $K$ be the $3 \\times 3$ second-difference matrix and $R(x) = x^TKx/x^Tx$, with $\\lambda_{\\min} = 2 - \\sqrt2 \\approx 0.586$.`,
               kind: 'problem',
               difficulty: 2,
-              hint: '$R(1, 1, 1) = \\tfrac23$. The closer the trial vector is to $(1, \\sqrt2, 1)$, the closer $R$ is to $\\lambda_{\\min}$.',
+              parts: [
+                { prompt: `Compute $R(x)$ for $x = (1, 1, 1)$ and compare it with $\\lambda_{\\min}$.`, answer: `$Kx = (1, 0, 1)$, so $x^TKx = 2$ and $R = \\tfrac23 \\approx 0.667$, above $\\lambda_{\\min}$.` },
+                { prompt: `Compute $R(x)$ for $x = (1, 1.4, 1)$ and compare it with $\\lambda_{\\min}$.`, answer: `$Kx = (0.6, 0.8, 0.6)$, so $x^TKx = 2.32$ and $x^Tx = 3.96$, giving $R \\approx 0.5859$, within $10^{-4}$ of $\\lambda_{\\min}$. The closer the trial vector is to $(1, \\sqrt2, 1)$, the closer $R$ is to $\\lambda_{\\min}$.` },
+                { prompt: `Prove that $R(x) \\ge \\lambda_{\\min}$ for all $x \\ne 0$ by expanding $x$ in the eigenvector basis.`, answer: `With orthonormal eigenvectors $q_i$, write $x = \\sum c_iq_i$. Then $x^TKx = \\sum\\lambda_ic_i^2$ and $x^Tx = \\sum c_i^2$, so $R(x) = \\dfrac{\\sum\\lambda_ic_i^2}{\\sum c_i^2} \\ge \\lambda_{\\min}$, a weighted average of the eigenvalues.` },
+              ],
             },
             {
               slug: 'inertia-tensor',
               title: 'Principal axes of a rigid body',
-              prompt:
-                'Point masses of $1$ kg sit at $(1, 0, 0)$, $(0, 1, 0)$, $(0, 0, 1)$ and $(1, 1, 0)$ m. Compute the inertia tensor $I_{jk} = \\sum m(|r|^2\\delta_{jk} - r_jr_k)$ by hand, find its principal moments and axes with numpy.linalg.eigh, and check that the axes are orthonormal.',
+              prompt: `Point masses of $1$ kg sit at $(1, 0, 0)$, $(0, 1, 0)$, $(0, 0, 1)$ and $(1, 1, 0)$ m.`,
               kind: 'problem',
               difficulty: 3,
-              hint: 'The tensor is $\\begin{pmatrix} 3 & -1 & 0\\\\ -1 & 3 & 0\\\\ 0 & 0 & 4 \\end{pmatrix}$ kg m$^2$, with principal moments $2, 4, 4$. The moment $4$ is repeated, so any orthonormal pair in its eigenspace is a valid choice of axes.',
+              parts: [
+                { prompt: `Compute the inertia tensor $I_{jk} = \\sum m(|r|^2\\delta_{jk} - r_jr_k)$ by hand.`, answer: `$I_{xx} = \\sum(y^2 + z^2) = 3$, $I_{yy} = \\sum(x^2 + z^2) = 3$, $I_{zz} = \\sum(x^2 + y^2) = 4$ and $I_{xy} = -\\sum xy = -1$, the other products being $0$: $I = \\begin{pmatrix} 3 & -1 & 0\\\\ -1 & 3 & 0\\\\ 0 & 0 & 4 \\end{pmatrix}$ kg m$^2$.` },
+                { prompt: `Find its principal moments and axes with numpy.linalg.eigh.`, answer: `The principal moments are $2, 4, 4$ kg m$^2$. The moment $2$ is about the axis $(1, 1, 0)/\\sqrt2$. The moment $4$ is repeated, with eigenspace spanned by $(1, -1, 0)/\\sqrt2$ and $(0, 0, 1)$, so any orthonormal pair in that plane is a valid choice of axes, and eigh may return a different pair.` },
+                { prompt: `Check that the axes are orthonormal.`, answer: `With V the matrix of eigenvectors from eigh, V.T @ V equals the identity to rounding error, as the spectral theorem promises for a symmetric matrix.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -2462,6 +3059,20 @@ The same computation gives **principal stresses**. A plane stress state is a sym
             {
               question: 'What is the Rayleigh quotient used for?',
               answerOutline: '$x^TAx/x^Tx$ lies in $[\\lambda_{\\min}, \\lambda_{\\max}]$; a trial vector gives an upper bound on the lowest eigenvalue (e.g. lowest vibration frequency).',
+            },
+          ],
+          quiz: [
+            {
+              question: `What are the eigenvalues and orthonormal eigenvectors of $\\begin{pmatrix} 3 & 4\\\\ 4 & -3 \\end{pmatrix}$?`,
+              options: [`$3$ and $-3$, with eigenvectors $(1, 0)$ and $(0, 1)$`, `$5$ and $-5$, with eigenvectors $(1, 2)/\\sqrt5$ and $(2, -1)/\\sqrt5$`, `$5$ and $-5$, with eigenvectors $(2, 1)/\\sqrt5$ and $(1, -2)/\\sqrt5$`, `$5$ and $-5$, with eigenvectors $(2, 1)/\\sqrt5$ and $(1, 2)/\\sqrt5$`],
+              answer: 2,
+              explanation: `The trace is $0$ and the determinant $-25$, so $\\lambda = \\pm5$. Check: $A(2, 1) = (10, 5) = 5(2, 1)$ and $A(1, -2) = (-5, 10) = -5(1, -2)$. $(1, 2)$ is not an eigenvector ($A(1, 2) = (11, -2)$), and $(2, 1)$ and $(1, 2)$ are not orthogonal, which eigenvectors of a symmetric matrix for different eigenvalues must be. The diagonal entries are not eigenvalues of a non-diagonal matrix.`,
+            },
+            {
+              question: `$A$ is symmetric with eigenvalues $1$, $4$ and $9$. Which values can the Rayleigh quotient $x^TAx/x^Tx$ take for $x \\ne 0$?`,
+              options: [`Only $1$, $4$ and $9$`, `Every value in $[1, 9]$`, `Every value in $[1, 81]$`, `Any real number, since $x$ is arbitrary`],
+              answer: 1,
+              explanation: `In the eigenvector basis the quotient is $\\sum\\lambda_ic_i^2/\\sum c_i^2$, a weighted average of $1$, $4$ and $9$ with nonnegative weights. It equals each eigenvalue at its eigenvector and moves continuously between them, so it covers $[1, 9]$ and nothing outside. It reaches eigenvalues only at eigenvectors, and squares of eigenvalues belong to $\\|Ax\\|^2/\\|x\\|^2$, not to this quotient.`,
             },
           ],
         },
@@ -2525,37 +3136,52 @@ matrix-transform
             {
               slug: 'rank-one-svd',
               title: 'SVD of a rank-one matrix',
-              prompt:
-                'Find the SVD of $A = \\begin{pmatrix} 2 & 2\\\\ 1 & 1 \\end{pmatrix}$ by hand: singular values, $v_1$, $u_1$, and choices of $v_2$ and $u_2$ completing orthonormal bases. Write $A = \\sigma_1u_1v_1^T$ and identify the four fundamental subspaces from the singular vectors.',
+              prompt: `Find the SVD of $A = \\begin{pmatrix} 2 & 2\\\\ 1 & 1 \\end{pmatrix}$ by hand.`,
               kind: 'problem',
               difficulty: 1,
-              hint: '$\\sigma_1 = \\sqrt{10}$, $\\sigma_2 = 0$, $v_1 = (1, 1)/\\sqrt2$, $u_1 = (2, 1)/\\sqrt5$.',
+              parts: [
+                { prompt: `Find the singular values.`, answer: `$A^TA = \\begin{pmatrix} 5 & 5\\\\ 5 & 5 \\end{pmatrix}$ has eigenvalues $10$ and $0$, so $\\sigma_1 = \\sqrt{10}$ and $\\sigma_2 = 0$.` },
+                { prompt: `Find $v_1$ and $u_1$.`, answer: `$v_1 = (1, 1)/\\sqrt2$, the eigenvector of $A^TA$ for $10$, and $u_1 = Av_1/\\sigma_1 = (4, 2)/(\\sqrt2\\sqrt{10}) = (2, 1)/\\sqrt5$.` },
+                { prompt: `Choose $v_2$ and $u_2$ completing orthonormal bases.`, answer: `$v_2 = (1, -1)/\\sqrt2$ and $u_2 = (1, -2)/\\sqrt5$, either up to sign. Since $\\sigma_2 = 0$, $u_2$ is not fixed by $A$; it only has to be orthogonal to $u_1$.` },
+                { prompt: `Write $A = \\sigma_1u_1v_1^T$.`, answer: `$\\sqrt{10}\\cdot\\dfrac{(2, 1)}{\\sqrt5}\\cdot\\dfrac{(1, 1)^T}{\\sqrt2} = \\begin{pmatrix} 2\\\\ 1 \\end{pmatrix}\\begin{pmatrix} 1 & 1 \\end{pmatrix} = A$.` },
+                { prompt: `Identify the four fundamental subspaces from the singular vectors.`, answer: `$C(A)$ is spanned by $u_1$, $N(A^T)$ by $u_2$, $C(A^T)$ by $v_1$ and $N(A)$ by $v_2$.` },
+              ],
             },
             {
               slug: 'two-norm-is-sigma-one',
               title: 'The 2-norm is the largest singular value',
-              prompt:
-                'Prove that $\\max_{\\|x\\| = 1}\\|Ax\\|_2 = \\sigma_1$ by writing $x = Vy$ and computing $\\|Ax\\|^2 = \\sum \\sigma_i^2y_i^2$. Deduce that for invertible $A$, $\\|A^{-1}\\|_2 = 1/\\sigma_n$ and $\\kappa(A) = \\sigma_1/\\sigma_n$. Compute $\\kappa$ for $\\begin{pmatrix} 1 & 1\\\\ 1 & 1.0001 \\end{pmatrix}$ and explain what it says about solving $Ax = b$.',
+              prompt: `Let $A = U\\Sigma V^T$ with singular values $\\sigma_1 \\ge \\cdots \\ge \\sigma_n$.`,
               kind: 'derivation',
               difficulty: 2,
-              hint: 'The condition number is about $4 \\times 10^4$.',
+              parts: [
+                { prompt: `Prove that $\\max_{\\|x\\| = 1}\\|Ax\\|_2 = \\sigma_1$ by writing $x = Vy$ and computing $\\|Ax\\|^2 = \\sum \\sigma_i^2y_i^2$.`, answer: `$V$ is orthogonal, so $\\|y\\| = \\|x\\| = 1$. Then $\\|Ax\\| = \\|U\\Sigma y\\| = \\|\\Sigma y\\|$, and $\\|\\Sigma y\\|^2 = \\sum\\sigma_i^2y_i^2 \\le \\sigma_1^2\\sum y_i^2 = \\sigma_1^2$, with equality at $y = e_1$, that is $x = v_1$.` },
+                { prompt: `Deduce that for invertible $A$, $\\|A^{-1}\\|_2 = 1/\\sigma_n$ and $\\kappa(A) = \\sigma_1/\\sigma_n$.`, answer: `$A^{-1} = V\\Sigma^{-1}U^T$ is an SVD with singular values $1/\\sigma_i$, the largest being $1/\\sigma_n$. So $\\kappa(A) = \\|A\\|_2\\|A^{-1}\\|_2 = \\sigma_1/\\sigma_n$.` },
+                { prompt: `Compute $\\kappa$ for $\\begin{pmatrix} 1 & 1\\\\ 1 & 1.0001 \\end{pmatrix}$ and explain what it says about solving $Ax = b$.`, answer: `$\\sigma_1 \\approx 2.00005$ and $\\sigma_2 \\approx 5.0 \\times 10^{-5}$, so $\\kappa \\approx 4 \\times 10^4$. A relative error in $b$ can grow by that factor in $x$, so you lose about $4$ to $5$ of the $16$ digits. Geometrically the two equations are nearly parallel lines.` },
+              ],
             },
             {
               slug: 'principal-stretches',
               title: 'Principal stretches of a simple shear',
-              prompt:
-                'A simple shear has deformation gradient $F = \\begin{pmatrix} 1 & 0.5\\\\ 0 & 1 \\end{pmatrix}$. Compute the principal stretches (singular values of $F$) by hand from $F^TF$, find the material directions that are stretched most and least, and check that the product of the stretches is $\\det F = 1$.',
+              prompt: `A simple shear has deformation gradient $F = \\begin{pmatrix} 1 & 0.5\\\\ 0 & 1 \\end{pmatrix}$.`,
               kind: 'problem',
               difficulty: 2,
-              hint: 'The stretches are about $1.281$ and $0.781$.',
+              parts: [
+                { prompt: `Compute the principal stretches (singular values of $F$) by hand from $F^TF$.`, answer: `$F^TF = \\begin{pmatrix} 1 & 0.5\\\\ 0.5 & 1.25 \\end{pmatrix}$ with trace $2.25$ and determinant $1$, so its eigenvalues are $(9 \\pm \\sqrt{17})/8 \\approx 1.640, 0.610$. The stretches are their square roots, about $1.281$ and $0.781$.` },
+                { prompt: `Find the material directions that are stretched most and least.`, answer: `The eigenvectors of $F^TF$: most stretched along about $(0.615, 0.788)$, roughly $52^\\circ$ from the $x$-axis; least along the perpendicular direction, about $(-0.788, 0.615)$.` },
+                { prompt: `Check that the product of the stretches is $\\det F = 1$.`, answer: `$1.2808 \\times 0.7808 \\approx 1.000$; exactly, the product is $\\sqrt{\\det(F^TF)} = \\sqrt1 = |\\det F|$. Shear preserves area.` },
+              ],
             },
             {
               slug: 'low-rank-image',
               title: 'Low-rank approximation of an image',
-              prompt:
-                'Load any greyscale image as a matrix, compute its SVD with numpy.linalg.svd, and reconstruct rank-$k$ approximations for $k = 1, 5, 20, 50$. Plot the singular values on a log scale, report the relative 2-norm error for each $k$, and confirm that it equals $\\sigma_{k+1}/\\sigma_1$.',
+              prompt: `Load any greyscale image as a matrix $X$ and compute its SVD with numpy.linalg.svd.`,
               kind: 'coding',
               difficulty: 2,
+              parts: [
+                { prompt: `Reconstruct rank-$k$ approximations for $k = 1, 5, 20, 50$.`, answer: `With U, s, Vt = np.linalg.svd(X, full_matrices=False), the rank-$k$ image is (U[:, :k] * s[:k]) @ Vt[:k]. You should see $k = 1$ as a blur of horizontal and vertical bands, and the image becoming recognisable somewhere around $k = 20$ to $50$.` },
+                { prompt: `Plot the singular values on a log scale.`, answer: `Expect a steep drop over the first few values followed by a long, slowly decaying tail; the steepness shows how compressible the image is.` },
+                { prompt: `Report the relative 2-norm error for each $k$, and confirm that it equals $\\sigma_{k+1}/\\sigma_1$.`, answer: `np.linalg.norm(X - Xk, 2) / np.linalg.norm(X, 2) should match s[k] / s[0] (zero-based indexing) to rounding error. This is the Eckart-Young theorem: the truncated SVD is the best rank-$k$ approximation, and its 2-norm error is the first singular value it drops.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -2570,6 +3196,20 @@ matrix-transform
             {
               question: 'Are the singular values of a square matrix its eigenvalues? When are they?',
               answerOutline: 'Not in general. For symmetric positive semidefinite $A$ they coincide; for symmetric $A$ the singular values are $|\\lambda_i|$.',
+            },
+          ],
+          quiz: [
+            {
+              question: `What are the singular values of $A = \\begin{pmatrix} 3 & 0\\\\ 4 & 5 \\end{pmatrix}$?`,
+              options: [`$3$ and $5$`, `$3\\sqrt5$ and $\\sqrt5$`, `$45$ and $5$`, `$5$ and $5$, the lengths of the columns`],
+              answer: 1,
+              explanation: `$A^TA = \\begin{pmatrix} 25 & 20\\\\ 20 & 25 \\end{pmatrix}$ has eigenvalues $45$ and $5$, and the singular values are their square roots, $3\\sqrt5 \\approx 6.71$ and $\\sqrt5 \\approx 2.24$. Check: $\\sigma_1\\sigma_2 = 15 = |\\det A|$. $3$ and $5$ are the eigenvalues of $A$, which differ from the singular values for a non-symmetric matrix, and $45$ and $5$ forget the square root.`,
+            },
+            {
+              question: `For a square matrix that is not symmetric, how are its singular values related to its eigenvalues?`,
+              options: [`They are the absolute values of the eigenvalues`, `They are the same numbers`, `They are the square roots of the eigenvalues of $A^TA$ and usually differ from $|\\lambda|$, though both products equal $|\\det A|$`, `They are the diagonal entries of $A$`],
+              answer: 2,
+              explanation: `Singular values come from $A^TA$, eigenvalues from $A$ itself. For $\\begin{pmatrix} 3 & 0\\\\ 4 & 5 \\end{pmatrix}$ the eigenvalues are $3, 5$ and the singular values $6.71, 2.24$. They agree up to sign only for symmetric (more generally normal) matrices. What always matches is the product: $\\prod\\sigma_i = |\\det A| = \\prod|\\lambda_i|$.`,
             },
           ],
         },
@@ -2635,28 +3275,38 @@ matrix-transform
             {
               slug: 'population-from-adults',
               title: 'Start with adults only',
-              prompt:
-                'For the population matrix $T$ of the worked example, start from $u_0 = (0, 9)$. Expand $u_0$ in the eigenvectors, write $u_k$ in closed form, and give the limit. Compute $u_1$ and $u_2$ directly and from your formula.',
+              prompt: `For the population matrix $T$ of the worked example, start from $u_0 = (0, 9)$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: '$u_0 = 4.5(2, 1) - 4.5(2, -1)$, so $u_k \\to (9, 4.5)$.',
+              parts: [
+                { prompt: `Expand $u_0$ in the eigenvectors.`, answer: `$(0, 9) = 4.5(2, 1) - 4.5(2, -1)$.` },
+                { prompt: `Write $u_k$ in closed form and give the limit.`, answer: `$u_k = 4.5(2, 1) - 4.5(0.2)^k(2, -1)$, which tends to $(9, 4.5)$: the same 2:1 ratio as before, at a level set by the start.` },
+                { prompt: `Compute $u_1$ and $u_2$ directly and from your formula.`, answer: `Directly, $u_1 = T(0, 9) = (7.2, 5.4)$ and $u_2 = T(7.2, 5.4) = (8.64, 4.68)$. The formula gives $(9, 4.5) - 0.9(2, -1) = (7.2, 5.4)$ and $(9, 4.5) - 0.18(2, -1) = (8.64, 4.68)$.` },
+              ],
             },
             {
               slug: 'jacobi-rate',
               title: 'How fast does Jacobi converge?',
-              prompt:
-                'For $K = \\begin{pmatrix} 2 & -1 & 0\\\\ -1 & 2 & -1\\\\ 0 & -1 & 2 \\end{pmatrix}$, find the Jacobi iteration matrix $B = I - D^{-1}K$ and its eigenvalues. Estimate how many iterations reduce the error by a factor of $10^6$. Then run Jacobi in Python from $u_0 = 0$ with $f = (1, 1, 1)$ and confirm the observed rate.',
+              prompt: `Let $K = \\begin{pmatrix} 2 & -1 & 0\\\\ -1 & 2 & -1\\\\ 0 & -1 & 2 \\end{pmatrix}$ and apply the Jacobi iteration to $Ku = f$.`,
               kind: 'problem',
               difficulty: 2,
-              hint: 'The eigenvalues are $0$ and $\\pm\\sqrt2/2$, so about $40$ iterations.',
+              parts: [
+                { prompt: `Find the Jacobi iteration matrix $B = I - D^{-1}K$ and its eigenvalues.`, answer: `$D = 2I$, so $B = \\tfrac12\\begin{pmatrix} 0 & 1 & 0\\\\ 1 & 0 & 1\\\\ 0 & 1 & 0 \\end{pmatrix}$, with eigenvalues $0$ and $\\pm\\sqrt2/2 \\approx \\pm0.707$.` },
+                { prompt: `Estimate how many iterations reduce the error by a factor of $10^6$.`, answer: `The error shrinks by $\\rho(B) = \\sqrt2/2$ per step, so you need $k$ with $(\\sqrt2/2)^k = 10^{-6}$: $k = \\ln(10^{-6})/\\ln(0.707) \\approx 40$ iterations.` },
+                { prompt: `Run Jacobi in Python from $u_0 = 0$ with $f = (1, 1, 1)$ and confirm the observed rate.`, answer: `The iterates approach $u = (\\tfrac32, 2, \\tfrac32)$. The error halves every two steps (a factor $0.707$ per step), and it drops below $10^{-6}$ of the solution's size after about $40$ iterations.` },
+              ],
             },
             {
               slug: 'stability-proof',
               title: 'Stability and the spectral radius',
-              prompt:
-                'Prove that if $T$ is diagonalisable and $\\rho(T) < 1$, then $T^ku_0 \\to 0$ for every $u_0$, and that if $\\rho(T) > 1$ there is a $u_0$ with $\\|T^ku_0\\| \\to \\infty$. Show by computing powers of $\\begin{pmatrix} 0.5 & 10\\\\ 0 & 0.5 \\end{pmatrix}$ that $\\|T^k\\|_2$ rises to about $10$ and stays above $1$ for several steps before it decays, even though $\\rho < 1$.',
+              prompt: `Relate the long-run behaviour of $u_{k+1} = Tu_k$ to the spectral radius $\\rho(T)$.`,
               kind: 'derivation',
               difficulty: 3,
+              parts: [
+                { prompt: `Prove that if $T$ is diagonalisable and $\\rho(T) < 1$, then $T^ku_0 \\to 0$ for every $u_0$.`, answer: `Write $u_0 = \\sum c_ix_i$ in eigenvectors. Then $T^ku_0 = \\sum c_i\\lambda_i^kx_i$, and $|\\lambda_i^k| \\le \\rho^k \\to 0$ for each term, so the finite sum tends to $0$.` },
+                { prompt: `Prove that if $\\rho(T) > 1$ there is a $u_0$ with $\\|T^ku_0\\| \\to \\infty$.`, answer: `Take $u_0 = x$, an eigenvector with $|\\lambda| = \\rho > 1$. Then $\\|T^kx\\| = |\\lambda|^k\\|x\\| \\to \\infty$. (If $\\lambda$ is complex, the real or imaginary part of $x$ works as a real start.)` },
+                { prompt: `Show by computing powers of $\\begin{pmatrix} 0.5 & 10\\\\ 0 & 0.5 \\end{pmatrix}$ that $\\|T^k\\|_2$ rises to about $10$ and stays above $1$ for several steps before it decays, even though $\\rho < 1$.`, answer: `$T^k = \\begin{pmatrix} 0.5^k & 20k\\,0.5^k\\\\ 0 & 0.5^k \\end{pmatrix}$. The norms for $k = 1, 2, \\dots, 8$ are about $10.0, 10.0, 7.5, 5.0, 3.1, 1.9, 1.09, 0.63$, so the norm first drops below $1$ at $k = 8$ and then decays like $k\\,0.5^k$. The matrix is defective, so the eigenvalues only control the eventual rate.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -2671,6 +3321,20 @@ matrix-transform
             {
               question: 'When does the Jacobi method converge for every starting vector?',
               answerOutline: 'Exactly when $\\rho(I - D^{-1}K) < 1$.',
+            },
+          ],
+          quiz: [
+            {
+              question: `The iteration $u_{k+1} = Tu_k$ has $T = \\begin{pmatrix} 0.5 & 0.2\\\\ 0.3 & 0.4 \\end{pmatrix}$. About how many steps reduce a typical error by a factor of $1000$?`,
+              options: [`About $5$`, `About $10$`, `About $3$`, `About $20$`],
+              answer: 3,
+              explanation: `The trace is $0.9$ and the determinant $0.14$, so $\\lambda = 0.7$ and $0.2$, and $\\rho(T) = 0.7$. The slowest component shrinks by $0.7$ per step, and $0.7^k = 10^{-3}$ needs $k = \\ln 1000/\\ln(1/0.7) \\approx 19.4$. Using the smaller eigenvalue $0.2$ gives about $5$, which only describes the fast component, and using the largest entry $0.5$ gives about $10$.`,
+            },
+            {
+              question: `Which condition makes the discrete system $u_{k+1} = Tu_k$ asymptotically stable?`,
+              options: [`Every eigenvalue of $T$ satisfies $|\\lambda| < 1$`, `Every eigenvalue of $T$ has negative real part`, `Every entry of $T$ is less than $1$ in absolute value`, `$|\\det T| < 1$`],
+              answer: 0,
+              explanation: `Solutions are combinations of $\\lambda^kx$, which decay exactly when $|\\lambda| < 1$. Negative real parts is the test for $u' = Au$, where solutions are $e^{\\lambda t}x$; for powers, $\\lambda = -2$ explodes. Small entries are not enough ($\\begin{pmatrix} 0.9 & 0.9\\\\ 0.9 & 0.9 \\end{pmatrix}$ has $\\lambda = 1.8$), and a small determinant can hide one large eigenvalue.`,
             },
           ],
         },
@@ -2729,35 +3393,48 @@ markov-chain
             {
               slug: 'three-station-steady-state',
               title: 'Three stations',
-              prompt:
-                'Bikes move between three stations with column-stochastic matrix $P = \\begin{pmatrix} 0.8 & 0.1 & 0.2\\\\ 0.1 & 0.7 & 0.3\\\\ 0.1 & 0.2 & 0.5 \\end{pmatrix}$. Find the steady state exactly by elimination on $P - I$. Find the other two eigenvalues from the trace and determinant (or the characteristic polynomial), and estimate how many days it takes for any start to be within $0.01$ of the steady state in each component.',
+              prompt: `Bikes move between three stations with column-stochastic matrix $P = \\begin{pmatrix} 0.8 & 0.1 & 0.2\\\\ 0.1 & 0.7 & 0.3\\\\ 0.1 & 0.2 & 0.5 \\end{pmatrix}$.`,
               kind: 'problem',
               difficulty: 2,
-              hint: '$q = (\\tfrac{9}{22}, \\tfrac{8}{22}, \\tfrac{5}{22})$; the other eigenvalues are $0.5 \\pm \\sqrt3/10 \\approx 0.673, 0.327$. Every column of $P^k$ is within $0.01$ of $q$ from $k = 11$ on.',
+              parts: [
+                { prompt: `Find the steady state exactly by elimination on $P - I$.`, answer: `The null space of $P - I$ is spanned by $(\\tfrac95, \\tfrac85, 1)$, that is $(9, 8, 5)$. Scaling to sum $1$: $q = (\\tfrac{9}{22}, \\tfrac{8}{22}, \\tfrac{5}{22}) \\approx (0.409, 0.364, 0.227)$.` },
+                { prompt: `Find the other two eigenvalues from the trace and determinant (or the characteristic polynomial).`, answer: `They sum to $\\operatorname{tr}P - 1 = 1$, and their product is $\\det P = 0.22$. So $\\lambda^2 - \\lambda + 0.22 = 0$ and $\\lambda = 0.5 \\pm \\sqrt3/10 \\approx 0.673, 0.327$.` },
+                { prompt: `Estimate how many days it takes for any start to be within $0.01$ of the steady state in each component.`, answer: `The error decays roughly like $0.673^k$. Computing powers, every column of $P^k$ is within $0.01$ of $q$ from $k = 11$ on (at $k = 10$ the worst entry is still off by about $0.011$). So about $11$ days.` },
+              ],
             },
             {
               slug: 'eigenvalue-bounds',
               title: 'Eigenvalues of stochastic matrices',
-              prompt:
-                'Prove that every column-stochastic matrix has $1$ as an eigenvalue and that all its eigenvalues satisfy $|\\lambda| \\le 1$. (Use $\\mathbf{1}^TP = \\mathbf{1}^T$, and for the bound take an eigenvector of $P^T$ and look at its largest entry in absolute value.)',
+              prompt: `Let $P$ be column-stochastic: nonnegative entries, each column summing to $1$.`,
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                { prompt: `Prove that $1$ is an eigenvalue of $P$. (Use $\\mathbf{1}^TP = \\mathbf{1}^T$.)`, answer: `$\\mathbf{1}^TP = \\mathbf{1}^T$ says $P^T\\mathbf{1} = \\mathbf{1}$, so $1$ is an eigenvalue of $P^T$. A matrix and its transpose have the same characteristic polynomial, so $1$ is an eigenvalue of $P$.` },
+                { prompt: `Prove that all its eigenvalues satisfy $|\\lambda| \\le 1$. (Take an eigenvector of $P^T$ and look at its largest entry in absolute value.)`, answer: `Let $P^Ty = \\lambda y$ and $|y_i|$ be the largest entry. Row $i$ gives $\\lambda y_i = \\sum_j p_{ji}y_j$, so $|\\lambda||y_i| \\le \\sum_j p_{ji}|y_j| \\le |y_i|\\sum_j p_{ji} = |y_i|$. Hence $|\\lambda| \\le 1$, and $P$ has the same eigenvalues as $P^T$.` },
+              ],
             },
             {
               slug: 'non-regular-chains',
               title: 'When convergence fails',
-              prompt:
-                'For $P_1 = \\begin{pmatrix} 0 & 1\\\\ 1 & 0 \\end{pmatrix}$ and $P_2 = \\begin{pmatrix} 1 & 0.5 & 0\\\\ 0 & 0 & 0\\\\ 0 & 0.5 & 1 \\end{pmatrix}$, find the eigenvalues, all steady states, and $\\lim P^k p_0$ when it exists. Interpret $P_2$ as a walk with two absorbing ends.',
+              prompt: `Consider $P_1 = \\begin{pmatrix} 0 & 1\\\\ 1 & 0 \\end{pmatrix}$ and $P_2 = \\begin{pmatrix} 1 & 0.5 & 0\\\\ 0 & 0 & 0\\\\ 0 & 0.5 & 1 \\end{pmatrix}$.`,
               kind: 'problem',
               difficulty: 2,
+              parts: [
+                { prompt: `For $P_1$, find the eigenvalues, all steady states, and $\\lim P_1^k p_0$ when it exists.`, answer: `Eigenvalues $1$ and $-1$. The only steady state is $(\\tfrac12, \\tfrac12)$. $P_1$ swaps the two entries, so $P_1^kp_0$ alternates between $p_0$ and its swap; the limit exists only when $p_0 = (\\tfrac12, \\tfrac12)$. The eigenvalue $-1$ has size $1$, so it never dies out.` },
+                { prompt: `For $P_2$, find the eigenvalues, all steady states, and $\\lim P_2^k p_0$.`, answer: `Eigenvalues $1, 1, 0$. Every $(a, 0, 1 - a)$ with $0 \\le a \\le 1$ is a steady state. After one step, $p_0 = (p_1, p_2, p_3)$ becomes $(p_1 + \\tfrac12p_2,\\ 0,\\ p_3 + \\tfrac12p_2)$ and stays there, so that is the limit.` },
+                { prompt: `Interpret $P_2$ as a walk with two absorbing ends.`, answer: `States 1 and 3 are absorbing: once there, you stay. From the middle state you step to either end with probability $\\tfrac12$. The limit depends on the start because there are two absorbing states, so the steady state is not unique.` },
+              ],
             },
             {
               slug: 'simulate-a-chain',
               title: 'Simulate and compare',
-              prompt:
-                'Simulate $10^5$ steps of the three-station chain for a single bike with numpy.random and compare the fraction of time spent at each station with the steady state. Also compute $P^{50}$ and comment on its columns.',
+              prompt: `Use the three-station chain from the first exercise.`,
               kind: 'simulation',
               difficulty: 1,
+              parts: [
+                { prompt: `Simulate $10^5$ steps for a single bike with numpy.random and compare the fraction of time spent at each station with the steady state.`, answer: `At each step draw the next station from the current column of $P$, for example with rng.choice(3, p=P[:, s]). The fractions should come out near $(0.409, 0.364, 0.227)$; one run gave $(0.408, 0.367, 0.225)$. Differences of a few thousandths are expected because successive steps are correlated.` },
+                { prompt: `Compute $P^{50}$ and comment on its columns.`, answer: `numpy.linalg.matrix_power(P, 50) has all three columns equal to $q \\approx (0.40909, 0.36364, 0.22727)$ to many digits: wherever a bike starts, after $50$ days the distribution has forgotten it, because $0.673^{50} \\approx 3 \\times 10^{-9}$.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -2772,6 +3449,20 @@ markov-chain
             {
               question: 'How do you compute the steady state by hand?',
               answerOutline: 'Find the null space of $P - I$ and scale the vector so its entries sum to $1$.',
+            },
+          ],
+          quiz: [
+            {
+              question: `A two-state chain has column-stochastic matrix $P = \\begin{pmatrix} 0.7 & 0.4\\\\ 0.3 & 0.6 \\end{pmatrix}$. What is its steady state?`,
+              options: [`$(\\tfrac47, \\tfrac37)$`, `$(\\tfrac37, \\tfrac47)$`, `$(\\tfrac12, \\tfrac12)$`, `$(0.7, 0.3)$`],
+              answer: 0,
+              explanation: `$Pq = q$ gives $0.7q_1 + 0.4q_2 = q_1$, so $0.3q_1 = 0.4q_2$ and $q \\propto (4, 3)$; normalising gives $(\\tfrac47, \\tfrac37)$. Check: $0.7 \\cdot \\tfrac47 + 0.4 \\cdot \\tfrac37 = \\tfrac{4}{7}$. Balancing the flows the wrong way round gives the swapped vector, and the first column is just where state 1 goes in one step.`,
+            },
+            {
+              question: `A regular column-stochastic matrix has eigenvalues $1$, $0.9$ and $0.2$. Which statement is true?`,
+              options: [`The distance to the steady state eventually shrinks by a factor of about $0.2$ per step`, `It shrinks by a factor of about $0.9$ per step, so convergence is slow`, `$P^k$ does not converge, because $0.9$ is close to $1$`, `The steady state is the eigenvector for $0.9$`],
+              answer: 1,
+              explanation: `$P^kp_0 = q + c_2(0.9)^kx_2 + c_3(0.2)^kx_3$. The $0.2$ part vanishes quickly, but the $0.9$ part survives longest and sets the rate: about $22$ steps per factor of $10$. Any $|\\lambda| < 1$ still dies out, so $P^k$ converges. The steady state is always the eigenvector for $\\lambda = 1$.`,
             },
           ],
         },
@@ -2829,36 +3520,51 @@ The difference between the rooms decays at rate $3$, while the common temperatur
             {
               slug: 'saddle-solution',
               title: 'Solve a saddle',
-              prompt:
-                'Solve $u\' = \\begin{pmatrix} 1 & 2\\\\ 2 & 1 \\end{pmatrix}u$ with $u(0) = (1, 0)$. Classify the origin, sketch the phase portrait with the two eigen-directions, and find all initial conditions for which $u(t) \\to 0$.',
+              prompt: `Solve $u' = \\begin{pmatrix} 1 & 2\\\\ 2 & 1 \\end{pmatrix}u$ with $u(0) = (1, 0)$.`,
               kind: 'problem',
               difficulty: 1,
-              hint: '$u = \\tfrac12e^{3t}(1, 1) + \\tfrac12e^{-t}(1, -1)$; only starts on the line through $(1, -1)$ decay.',
+              parts: [
+                { prompt: `Find $u(t)$.`, answer: `$\\lambda = 3$ with $(1, 1)$ and $\\lambda = -1$ with $(1, -1)$. Since $(1, 0) = \\tfrac12(1, 1) + \\tfrac12(1, -1)$, $u(t) = \\tfrac12e^{3t}(1, 1) + \\tfrac12e^{-t}(1, -1)$.` },
+                { prompt: `Classify the origin and sketch the phase portrait with the two eigen-directions.`, answer: `Real eigenvalues of opposite signs: a saddle. Trajectories come in along the line through $(1, -1)$ and leave along the line through $(1, 1)$; all others are hyperbola-like curves that bend from the first direction to the second.` },
+                { prompt: `Find all initial conditions for which $u(t) \\to 0$.`, answer: `Only starts with no $(1, 1)$ component, that is, starts on the line through $(1, -1)$ (where $u_1 + u_2 = 0$). Every other start grows like $e^{3t}$.` },
+              ],
             },
             {
               slug: 'damped-oscillator-system',
               title: 'A damped oscillator as a system',
-              prompt:
-                'Solve $x\'\' + 2x\' + 5x = 0$, $x(0) = 1$, $x\'(0) = 0$ by writing it as $u\' = Au$ and using the complex eigenvalues of $A$. Show $x(t) = e^{-t}(\\cos 2t + \\tfrac12\\sin 2t)$ and check it by substitution.',
+              prompt: `Solve $x'' + 2x' + 5x = 0$, $x(0) = 1$, $x'(0) = 0$ as a first-order system.`,
               kind: 'problem',
               difficulty: 2,
+              parts: [
+                { prompt: `Write it as $u' = Au$ and find the complex eigenvalues of $A$.`, answer: `With $u = (x, x')$, $A = \\begin{pmatrix} 0 & 1\\\\ -5 & -2 \\end{pmatrix}$. Then $\\lambda^2 + 2\\lambda + 5 = 0$, so $\\lambda = -1 \\pm 2i$, with eigenvectors $(1, \\lambda)$.` },
+                { prompt: `Show $x(t) = e^{-t}(\\cos 2t + \\tfrac12\\sin 2t)$.`, answer: `Write $u = c(1, \\lambda)e^{\\lambda t} + \\bar c(1, \\bar\\lambda)e^{\\bar\\lambda t}$ with $\\lambda = -1 + 2i$. The initial conditions give $2\\operatorname{Re}c = 1$ and $2\\operatorname{Re}(c\\lambda) = 0$, so $c = \\tfrac12 - \\tfrac14i$. Then $x = 2\\operatorname{Re}\\big(c\\,e^{-t}(\\cos2t + i\\sin2t)\\big) = e^{-t}(\\cos2t + \\tfrac12\\sin2t)$.` },
+                { prompt: `Check it by substitution.`, answer: `$x(0) = 1$ and $x'(0) = -1 + \\tfrac12 \\cdot 2 = 0$. Differentiating twice gives $x' = -\\tfrac52e^{-t}\\sin2t$ and $x'' = e^{-t}(\\tfrac52\\sin2t - 5\\cos2t)$, so $x'' + 2x' + 5x = e^{-t}\\big(\\tfrac52\\sin2t - 5\\cos2t - 5\\sin2t + 5\\cos2t + \\tfrac52\\sin2t\\big) = 0$.` },
+              ],
             },
             {
               slug: 'rlc-circuit',
               title: 'An RLC circuit',
-              prompt:
-                'A series RLC circuit with charge $q$ and current $i = q\'$ satisfies $Li\' + Ri + q/C = 0$. Write it as a first-order system in $(q, i)$. For $L = 1$ H and $C = 0.25$ F, find the eigenvalues for $R = 2\\ \\Omega$, and find the value of $R$ at which the circuit is critically damped. Classify the phase portrait for $R$ below and above that value.',
+              prompt: `A series RLC circuit with charge $q$ and current $i = q'$ satisfies $Li' + Ri + q/C = 0$. Take $L = 1$ H and $C = 0.25$ F.`,
               kind: 'problem',
               difficulty: 2,
-              hint: 'For $R = 2$, $\\lambda = -1 \\pm i\\sqrt3$. Critical damping at $R = 2\\sqrt{L/C} = 4\\ \\Omega$.',
+              parts: [
+                { prompt: `Write it as a first-order system in $(q, i)$.`, answer: `$\\begin{pmatrix} q\\\\ i \\end{pmatrix}' = \\begin{pmatrix} 0 & 1\\\\ -1/(LC) & -R/L \\end{pmatrix}\\begin{pmatrix} q\\\\ i \\end{pmatrix} = \\begin{pmatrix} 0 & 1\\\\ -4 & -R \\end{pmatrix}\\begin{pmatrix} q\\\\ i \\end{pmatrix}$.` },
+                { prompt: `Find the eigenvalues for $R = 2\\ \\Omega$.`, answer: `$\\lambda^2 + 2\\lambda + 4 = 0$, so $\\lambda = -1 \\pm i\\sqrt3$.` },
+                { prompt: `Find the value of $R$ at which the circuit is critically damped.`, answer: `The discriminant $R^2 - 16$ vanishes at $R = 4\\ \\Omega$, which is $2\\sqrt{L/C}$.` },
+                { prompt: `Classify the phase portrait for $R$ below and above that value.`, answer: `For $0 < R < 4\\ \\Omega$: complex eigenvalues with negative real part, a stable spiral (underdamped ringing). For $R > 4\\ \\Omega$: two negative real eigenvalues, a stable node (overdamped, no oscillation).` },
+              ],
             },
             {
               slug: 'trace-determinant-proof',
               title: 'Stability from trace and determinant',
-              prompt:
-                'Prove that a real $2 \\times 2$ system $u\' = Au$ is asymptotically stable if and only if $\\operatorname{tr}A < 0$ and $\\det A > 0$. Treat real and complex eigenvalues separately. Show by example that "$\\operatorname{tr}A < 0$" alone is not enough.',
+              prompt: `Prove that a real $2 \\times 2$ system $u' = Au$ is asymptotically stable if and only if $\\operatorname{tr}A < 0$ and $\\det A > 0$.`,
               kind: 'derivation',
               difficulty: 3,
+              parts: [
+                { prompt: `Treat the case of real eigenvalues.`, answer: `Stability means $\\lambda_1, \\lambda_2 < 0$. If both are negative, their sum $\\operatorname{tr}A$ is negative and their product $\\det A$ is positive. Conversely, $\\det A > 0$ means they have the same sign, and $\\operatorname{tr}A < 0$ makes that sign negative.` },
+                { prompt: `Treat the case of complex eigenvalues.`, answer: `$\\lambda = a \\pm bi$ with $b \\ne 0$. Then $\\det A = a^2 + b^2 > 0$ automatically and $\\operatorname{tr}A = 2a$, so stability ($a < 0$) is equivalent to $\\operatorname{tr}A < 0$, and both conditions hold.` },
+                { prompt: `Show by example that "$\\operatorname{tr}A < 0$" alone is not enough.`, answer: `$A = \\operatorname{diag}(1, -3)$ has trace $-2$ but determinant $-3$: eigenvalues of opposite signs, a saddle, and $e^{t}$ grows.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -2873,6 +3579,20 @@ The difference between the rooms decays at rate $3$, while the common temperatur
             {
               question: 'How do you turn $x\'\' + bx\' + cx = 0$ into a first-order system?',
               answerOutline: 'Let $u = (x, x\')$; then $u\' = \\begin{pmatrix} 0 & 1\\\\ -c & -b \\end{pmatrix}u$.',
+            },
+          ],
+          quiz: [
+            {
+              question: `Written as $u' = Au$ with $u = (x, x')$, the equation $x'' + 5x' + 6x = 0$ has $A = \\begin{pmatrix} 0 & 1\\\\ -6 & -5 \\end{pmatrix}$. What are the eigenvalues and the type of the origin?`,
+              options: [`$\\lambda = 2$ and $3$: an unstable node`, `$\\lambda = -5$ and $-6$: a stable node`, `$\\lambda = -2$ and $-3$: a stable node, decaying without oscillation`, `$\\lambda = -\\tfrac52 \\pm \\tfrac12i$: a stable spiral`],
+              answer: 2,
+              explanation: `$\\det(A - \\lambda I) = \\lambda^2 + 5\\lambda + 6 = (\\lambda + 2)(\\lambda + 3)$. Two negative real eigenvalues give a stable node: the solutions are combinations of $e^{-2t}$ and $e^{-3t}$, with no oscillation. Getting $2$ and $3$ drops the signs; the discriminant is $25 - 24 = 1 > 0$, so the roots are real, not complex; and $-5$, $-6$ are entries of $A$, not eigenvalues.`,
+            },
+            {
+              question: `A real $2 \\times 2$ matrix has $\\operatorname{tr}A = -1$ and $\\det A = -2$. What is the origin for $u' = Au$?`,
+              options: [`Stable, because the trace is negative`, `A stable spiral`, `A centre, neutrally stable`, `Unstable: a negative determinant means real eigenvalues of opposite signs, a saddle`],
+              answer: 3,
+              explanation: `The eigenvalues solve $\\lambda^2 + \\lambda - 2 = 0$: $\\lambda = 1$ and $-2$. Their product $\\det A$ is negative, so they have opposite signs, and the $e^t$ mode grows: a saddle. A negative trace is necessary for stability but not sufficient; you also need $\\det A > 0$.`,
             },
           ],
         },
@@ -2937,37 +3657,50 @@ With constant $f = b$ and invertible $A$, the integral evaluates to $u(t) = e^{A
             {
               slug: 'exp-by-diagonalising',
               title: 'Exponential by diagonalisation',
-              prompt:
-                'Compute $e^{At}$ for $A = \\begin{pmatrix} -2 & 1\\\\ 1 & -2 \\end{pmatrix}$ by diagonalisation and use it to re-derive the two-room solution from the previous lesson. Check $\\det e^{At} = e^{t\\operatorname{tr}A}$, and check your matrix against scipy.linalg.expm at $t = 0.5$.',
+              prompt: `Let $A = \\begin{pmatrix} -2 & 1\\\\ 1 & -2 \\end{pmatrix}$, the two-room matrix.`,
               kind: 'problem',
               difficulty: 1,
-              hint: '$e^{At} = \\tfrac12\\begin{pmatrix} e^{-t} + e^{-3t} & e^{-t} - e^{-3t}\\\\ e^{-t} - e^{-3t} & e^{-t} + e^{-3t} \\end{pmatrix}$.',
+              parts: [
+                { prompt: `Compute $e^{At}$ by diagonalisation.`, answer: `$\\lambda = -1$ with $(1, 1)$ and $\\lambda = -3$ with $(1, -1)$, so $e^{At} = Se^{\\Lambda t}S^{-1} = \\tfrac12\\begin{pmatrix} e^{-t} + e^{-3t} & e^{-t} - e^{-3t}\\\\ e^{-t} - e^{-3t} & e^{-t} + e^{-3t} \\end{pmatrix}$.` },
+                { prompt: `Use it to re-derive the two-room solution from the previous lesson.`, answer: `$u(t) = e^{At}(1, 0)$ is the first column: $\\tfrac12(e^{-t} + e^{-3t},\\ e^{-t} - e^{-3t}) = \\tfrac12e^{-t}(1, 1) + \\tfrac12e^{-3t}(1, -1)$, as before.` },
+                { prompt: `Check $\\det e^{At} = e^{t\\operatorname{tr}A}$.`, answer: `$\\det e^{At} = \\tfrac14\\big[(e^{-t} + e^{-3t})^2 - (e^{-t} - e^{-3t})^2\\big] = e^{-4t}$, and $\\operatorname{tr}A = -4$.` },
+                { prompt: `Check your matrix against scipy.linalg.expm at $t = 0.5$.`, answer: `Both give approximately [[0.41483, 0.19170], [0.19170, 0.41483]].` },
+              ],
             },
             {
               slug: 'jordan-exponential',
               title: 'A Jordan block',
-              prompt:
-                'Show directly from the series that $e^{At} = e^{2t}\\begin{pmatrix} 1 & t\\\\ 0 & 1 \\end{pmatrix}$ for $A = \\begin{pmatrix} 2 & 1\\\\ 0 & 2 \\end{pmatrix}$, by writing $A = 2I + N$. Verify that $\\frac{d}{dt}e^{At} = Ae^{At}$ by differentiating your answer.',
+              prompt: `Let $A = \\begin{pmatrix} 2 & 1\\\\ 0 & 2 \\end{pmatrix}$.`,
               kind: 'derivation',
               difficulty: 2,
+              parts: [
+                { prompt: `Show directly from the series that $e^{At} = e^{2t}\\begin{pmatrix} 1 & t\\\\ 0 & 1 \\end{pmatrix}$, by writing $A = 2I + N$.`, answer: `$N = \\begin{pmatrix} 0 & 1\\\\ 0 & 0 \\end{pmatrix}$ has $N^2 = 0$, so its series stops: $e^{Nt} = I + Nt$. Since $2I$ commutes with $N$, $e^{At} = e^{2It}e^{Nt} = e^{2t}(I + Nt)$.` },
+                { prompt: `Verify that $\\frac{d}{dt}e^{At} = Ae^{At}$ by differentiating your answer.`, answer: `$\\dfrac{d}{dt}\\Big[e^{2t}\\begin{pmatrix} 1 & t\\\\ 0 & 1 \\end{pmatrix}\\Big] = e^{2t}\\begin{pmatrix} 2 & 2t + 1\\\\ 0 & 2 \\end{pmatrix}$, and $Ae^{At} = e^{2t}\\begin{pmatrix} 2 & 1\\\\ 0 & 2 \\end{pmatrix}\\begin{pmatrix} 1 & t\\\\ 0 & 1 \\end{pmatrix} = e^{2t}\\begin{pmatrix} 2 & 2t + 1\\\\ 0 & 2 \\end{pmatrix}$.` },
+              ],
             },
             {
               slug: 'non-commuting',
               title: 'When exponentials do not multiply',
-              prompt:
-                'Let $A = \\begin{pmatrix} 0 & 1\\\\ 0 & 0 \\end{pmatrix}$ and $B = \\begin{pmatrix} 0 & 0\\\\ 1 & 0 \\end{pmatrix}$. Compute $e^A$, $e^B$, $e^Ae^B$ and $e^{A+B}$ exactly, and show $e^Ae^B \\ne e^{A+B}$. Then prove $e^{A+B} = e^Ae^B$ when $AB = BA$, by multiplying the series.',
+              prompt: `Let $A = \\begin{pmatrix} 0 & 1\\\\ 0 & 0 \\end{pmatrix}$ and $B = \\begin{pmatrix} 0 & 0\\\\ 1 & 0 \\end{pmatrix}$.`,
               kind: 'derivation',
               difficulty: 2,
-              hint: '$e^Ae^B = \\begin{pmatrix} 2 & 1\\\\ 1 & 1 \\end{pmatrix}$ while $e^{A+B} = \\begin{pmatrix} \\cosh 1 & \\sinh 1\\\\ \\sinh 1 & \\cosh 1 \\end{pmatrix}$.',
+              parts: [
+                { prompt: `Compute $e^A$, $e^B$ and $e^Ae^B$ exactly.`, answer: `$A^2 = B^2 = 0$, so $e^A = I + A = \\begin{pmatrix} 1 & 1\\\\ 0 & 1 \\end{pmatrix}$ and $e^B = \\begin{pmatrix} 1 & 0\\\\ 1 & 1 \\end{pmatrix}$, giving $e^Ae^B = \\begin{pmatrix} 2 & 1\\\\ 1 & 1 \\end{pmatrix}$.` },
+                { prompt: `Compute $e^{A+B}$ exactly and show $e^Ae^B \\ne e^{A+B}$.`, answer: `$A + B = \\begin{pmatrix} 0 & 1\\\\ 1 & 0 \\end{pmatrix}$ squares to $I$, so the series splits into even and odd terms: $e^{A+B} = \\cosh1\\,I + \\sinh1\\,(A + B) = \\begin{pmatrix} \\cosh 1 & \\sinh 1\\\\ \\sinh 1 & \\cosh 1 \\end{pmatrix} \\approx \\begin{pmatrix} 1.543 & 1.175\\\\ 1.175 & 1.543 \\end{pmatrix}$, not $e^Ae^B$. Here $AB \\ne BA$.` },
+                { prompt: `Prove $e^{A+B} = e^Ae^B$ when $AB = BA$, by multiplying the series.`, answer: `$e^Ae^B = \\sum_j\\sum_k \\dfrac{A^jB^k}{j!\\,k!}$. Group the terms with $j + k = n$: $\\dfrac{1}{n!}\\sum_{j}\\binom{n}{j}A^jB^{n-j}$. When $A$ and $B$ commute, the binomial theorem says this is $(A + B)^n/n!$, so the sum is $e^{A+B}$. Without commuting, $(A + B)^2 = A^2 + AB + BA + B^2 \\ne A^2 + 2AB + B^2$.` },
+              ],
             },
             {
               slug: 'forced-system',
               title: 'A forced system',
-              prompt:
-                'Derive $u(t) = e^{At}(u_0 + A^{-1}b) - A^{-1}b$ for $u\' = Au + b$ with constant $b$ and invertible $A$. For the two-room matrix with $b = (1, 0)$ (a heater in room 1) and $u_0 = (0, 1)$, find the long-run temperatures and check the formula against scipy.integrate.solve_ivp at $t = 0.7$.',
+              prompt: `Consider $u' = Au + b$ with constant $b$ and invertible $A$.`,
               kind: 'coding',
               difficulty: 3,
-              hint: 'The equilibrium is $-A^{-1}b = (\\tfrac23, \\tfrac13)$.',
+              parts: [
+                { prompt: `Derive $u(t) = e^{At}(u_0 + A^{-1}b) - A^{-1}b$.`, answer: `The equilibrium $u^* = -A^{-1}b$ satisfies $Au^* + b = 0$. Then $w = u - u^*$ solves $w' = Aw$, so $w = e^{At}w(0)$ and $u = e^{At}(u_0 + A^{-1}b) - A^{-1}b$.` },
+                { prompt: `For the two-room matrix with $b = (1, 0)$ (a heater in room 1) and $u_0 = (0, 1)$, find the long-run temperatures.`, answer: `$A^{-1} = -\\tfrac13\\begin{pmatrix} 2 & 1\\\\ 1 & 2 \\end{pmatrix}$, so $u^* = -A^{-1}b = (\\tfrac23, \\tfrac13)$. Both eigenvalues are negative, so $e^{At} \\to 0$ and $u(t) \\to (\\tfrac23, \\tfrac13)$.` },
+                { prompt: `Check the formula against scipy.integrate.solve_ivp at $t = 0.7$.`, answer: `The formula with scipy.linalg.expm gives about $(0.58503, 0.41497)$ at $t = 0.7$, and solve_ivp with tight tolerances agrees to many digits.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -2986,6 +3719,20 @@ With constant $f = b$ and invertible $A$, the integral evaluates to $u(t) = e^{A
             {
               question: 'When is $e^{A+B} = e^Ae^B$?',
               answerOutline: 'When $A$ and $B$ commute; in general it fails.',
+            },
+          ],
+          quiz: [
+            {
+              question: `What is $e^{Nt}$ for $N = \\begin{pmatrix} 0 & 3\\\\ 0 & 0 \\end{pmatrix}$?`,
+              options: [`$\\begin{pmatrix} 1 & e^{3t}\\\\ 1 & 1 \\end{pmatrix}$`, `$\\begin{pmatrix} 1 & 3t\\\\ 0 & 1 \\end{pmatrix}$`, `$\\begin{pmatrix} e^{t} & 3te^{t}\\\\ 0 & e^{t} \\end{pmatrix}$`, `$I$, since every eigenvalue of $N$ is $0$`],
+              answer: 1,
+              explanation: `$N^2 = 0$, so the series stops after two terms: $e^{Nt} = I + Nt$. Exponentiating entry by entry is not the matrix exponential (it even turns the zeros into ones), and the third option is $e^{(I + N)t}$, which has eigenvalue $1$. Zero eigenvalues make $\\det e^{Nt} = 1$, but $e^{Nt}$ is not $I$ because $N$ is not $0$.`,
+            },
+            {
+              question: `When is $e^{A+B} = e^Ae^B$ guaranteed for square matrices $A$ and $B$?`,
+              options: [`When $AB = BA$`, `Always, just as for numbers`, `When $A$ and $B$ are both invertible`, `When $A$ and $B$ are both symmetric`],
+              answer: 0,
+              explanation: `Multiplying the series and collecting terms of degree $n$ gives $(A + B)^n$ only if you can reorder $A$s and $B$s, which needs $AB = BA$. It fails in general: $A = \\begin{pmatrix} 0 & 1\\\\ 0 & 0 \\end{pmatrix}$ and its transpose give different answers. Symmetric matrices need not commute ($\\operatorname{diag}(1, 0)$ and $\\begin{pmatrix} 0 & 1\\\\ 1 & 0 \\end{pmatrix}$ do not), and invertibility is irrelevant.`,
             },
           ],
         },
@@ -3053,46 +3800,62 @@ normal-modes
             {
               slug: 'three-mass-modes',
               title: 'Three masses, four springs',
-              prompt:
-                'Three equal masses $m$ between two walls are joined by four equal springs $k$. Using the eigenvalues of the $3 \\times 3$ second-difference matrix, give the three natural frequencies and mode shapes, describe each mode in words, and check that the modes are mutually orthogonal.',
+              prompt: `Three equal masses $m$ between two walls are joined by four equal springs $k$, so $M = mI$ and $K = k$ times the $3 \\times 3$ second-difference matrix.`,
               kind: 'problem',
               difficulty: 1,
-              hint: '$\\omega^2 = (2 - \\sqrt2)k/m$, $2k/m$, $(2 + \\sqrt2)k/m$ with modes $(1, \\sqrt2, 1)$, $(1, 0, -1)$, $(1, -\\sqrt2, 1)$.',
+              parts: [
+                { prompt: `Using the eigenvalues of the $3 \\times 3$ second-difference matrix, give the three natural frequencies and mode shapes.`, answer: `$\\omega^2 = (2 - \\sqrt2)k/m$, $2k/m$ and $(2 + \\sqrt2)k/m$, so $\\omega \\approx 0.765\\sqrt{k/m}$, $1.414\\sqrt{k/m}$ and $1.848\\sqrt{k/m}$, with modes $(1, \\sqrt2, 1)$, $(1, 0, -1)$ and $(1, -\\sqrt2, 1)$.` },
+                { prompt: `Describe each mode in words.`, answer: `Lowest: all three masses move together, the middle one most. Middle: the outer masses move oppositely while the middle one stays still. Highest: neighbours move oppositely, the middle mass against the two outer ones.` },
+                { prompt: `Check that the modes are mutually orthogonal.`, answer: `$(1, \\sqrt2, 1) \\cdot (1, 0, -1) = 0$, $(1, \\sqrt2, 1) \\cdot (1, -\\sqrt2, 1) = 1 - 2 + 1 = 0$ and $(1, 0, -1) \\cdot (1, -\\sqrt2, 1) = 0$, as for any symmetric $K$ with $M = mI$.` },
+              ],
             },
             {
               slug: 'unequal-masses',
               title: 'Unequal masses',
-              prompt:
-                'In the two-mass example, let the first mass be $2m$ and the second $m$, with the same three springs $k$. Solve $\\det(K - \\omega^2M) = 0$ for $\\omega^2$ and find both mode shapes. Check that they are $M$-orthogonal but not orthogonal in the ordinary sense.',
+              prompt: `In the two-mass example, let the first mass be $2m$ and the second $m$, with the same three springs $k$.`,
               kind: 'problem',
               difficulty: 2,
-              hint: 'With $x = m\\omega^2/k$, $2x^2 - 6x + 3 = 0$, so $x = (3 \\pm \\sqrt3)/2 \\approx 0.634, 2.366$.',
+              parts: [
+                { prompt: `Solve $\\det(K - \\omega^2M) = 0$ for $\\omega^2$.`, answer: `With $x = m\\omega^2/k$, $(2 - 2x)(2 - x) - 1 = 0$, that is $2x^2 - 6x + 3 = 0$, so $x = (3 \\pm \\sqrt3)/2 \\approx 0.634, 2.366$ and $\\omega^2 \\approx 0.634\\,k/m$ and $2.366\\,k/m$.` },
+                { prompt: `Find both mode shapes.`, answer: `The first row gives $v_2 = (2 - 2x)v_1$. For $x = 0.634$: $v = (1, \\sqrt3 - 1) \\approx (1, 0.732)$, the masses moving together. For $x = 2.366$: $v = (1, -1 - \\sqrt3) \\approx (1, -2.732)$, moving oppositely with the light mass moving more.` },
+                { prompt: `Check that they are $M$-orthogonal but not orthogonal in the ordinary sense.`, answer: `$v_1^TMv_2 = m\\big[2 + (\\sqrt3 - 1)(-1 - \\sqrt3)\\big] = m(2 - 2) = 0$, while $v_1^Tv_2 = 1 - 2 = -1 \\ne 0$.` },
+              ],
             },
             {
               slug: 'linear-triatomic',
               title: 'A linear triatomic molecule',
-              prompt:
-                'Model a linear molecule such as CO$_2$ as masses $m$, $M$, $m$ in a line joined by two springs $k$, with both ends free. Set up $K$ and $M$, and show that the squared frequencies are $0$, $k/m$ and $(k/m)(1 + 2m/M)$. Describe each mode. With $m = 16$ and $M = 12$ (atomic mass units), compute the ratio of the two nonzero frequencies.',
+              prompt: `Model a linear molecule such as CO$_2$ as masses $m$, $M$, $m$ in a line joined by two springs $k$, with both ends free.`,
               kind: 'derivation',
               difficulty: 2,
-              hint: 'The ratio is $\\sqrt{1 + 2m/M} = \\sqrt{11/3} \\approx 1.91$.',
+              parts: [
+                { prompt: `Set up $K$ and $M$.`, answer: `$K = k\\begin{pmatrix} 1 & -1 & 0\\\\ -1 & 2 & -1\\\\ 0 & -1 & 1 \\end{pmatrix}$ (the free-free chain) and $M = \\operatorname{diag}(m, M, m)$.` },
+                { prompt: `Show that the squared frequencies are $0$, $k/m$ and $(k/m)(1 + 2m/M)$.`, answer: `Check three vectors in $Kv = \\omega^2Mv$. $(1, 1, 1)$: $Kv = 0$, so $\\omega^2 = 0$. $(1, 0, -1)$: $Kv = k(1, 0, -1) = (k/m)Mv$. $(1, -2m/M, 1)$: $Kv = k(1 + 2m/M,\\ -2 - 4m/M,\\ 1 + 2m/M) = k(1 + 2m/M)(1, -2, 1)$ and $Mv = m(1, -2, 1)$, so $\\omega^2 = (k/m)(1 + 2m/M)$.` },
+                { prompt: `Describe each mode.`, answer: `$\\omega = 0$: the whole molecule translates. $k/m$: symmetric stretch, the end atoms move oppositely and the centre atom stays still. $(k/m)(1 + 2m/M)$: asymmetric stretch, the end atoms move together and the centre atom moves the other way, keeping the centre of mass fixed.` },
+                { prompt: `With $m = 16$ and $M = 12$ (atomic mass units), compute the ratio of the two nonzero frequencies.`, answer: `$\\sqrt{1 + 2m/M} = \\sqrt{1 + 32/12} = \\sqrt{11/3} \\approx 1.91$.` },
+              ],
             },
             {
               slug: 'shear-building',
               title: 'Free vibration of a three-storey building',
-              prompt:
-                'Model a three-storey shear building as three floor masses $m$ with storey stiffnesses $k$ (the ground is fixed, the roof is free). Write $M$ and $K$, compute the natural frequencies and modes for $m = 2 \\times 10^4$ kg and $k = 4 \\times 10^7$ N/m with numpy.linalg.eigh, and simulate the free response to a $1$ cm roof displacement two ways: by modal superposition, and by scipy.linalg.expm applied to the first-order system. Plot both and confirm they agree.',
+              prompt: `Model a three-storey shear building as three floor masses $m$ with storey stiffnesses $k$ (the ground is fixed, the roof is free), with $m = 2 \\times 10^4$ kg and $k = 4 \\times 10^7$ N/m.`,
               kind: 'simulation',
               difficulty: 3,
+              parts: [
+                { prompt: `Write $M$ and $K$.`, answer: `$M = mI$ and $K = k\\begin{pmatrix} 2 & -1 & 0\\\\ -1 & 2 & -1\\\\ 0 & -1 & 1 \\end{pmatrix}$, with floors numbered from the ground up; the roof row has a single spring.` },
+                { prompt: `Compute the natural frequencies and modes with numpy.linalg.eigh.`, answer: `$\\omega^2 \\approx 396, 3110, 6494$ s$^{-2}$, so $\\omega \\approx 19.9, 55.8, 80.6$ rad/s, or about $3.17, 8.88, 12.83$ Hz. Scaled to $1$ at the first floor, the modes are about $(1, 1.80, 2.25)$, $(1, 0.445, -0.802)$ and $(1, -1.247, 0.555)$.` },
+                { prompt: `Simulate the free response to a $1$ cm roof displacement two ways, by modal superposition and by scipy.linalg.expm applied to the first-order system, and plot both.`, answer: `Modal: $u(t) = \\sum_i a_i\\cos(\\omega_it)\\,v_i$ with $a_i = v_i^TMu(0)/(v_i^TMv_i)$ and $u(0) = (0, 0, 0.01)$ m, released from rest. First-order: $z = (u, u')$, $z' = \\begin{pmatrix} 0 & I\\\\ -M^{-1}K & 0 \\end{pmatrix}z$, and $z(t) = e^{tA}z(0)$. The two curves should overlap to rounding error. At the roof, the first mode (period about $0.32$ s) supplies about half of the initial displacement, the second about a third and the third the rest, so the motion is visibly not a single sine wave.` },
+              ],
             },
             {
               slug: 'm-orthogonality',
               title: 'Modes are M-orthogonal',
-              prompt:
-                'Prove that if $Kv_i = \\omega_i^2Mv_i$ and $Kv_j = \\omega_j^2Mv_j$ with $\\omega_i \\ne \\omega_j$, and $K$, $M$ symmetric, then $v_i^TMv_j = 0$ and $v_i^TKv_j = 0$. Use this to derive a formula for the modal coefficients $a_i$ from $u(0)$.',
+              prompt: `Let $Kv_i = \\omega_i^2Mv_i$ and $Kv_j = \\omega_j^2Mv_j$ with $\\omega_i \\ne \\omega_j$, and $K$, $M$ symmetric.`,
               kind: 'derivation',
               difficulty: 2,
-              hint: '$a_i = v_i^TMu(0)/(v_i^TMv_i)$.',
+              parts: [
+                { prompt: `Prove that $v_i^TMv_j = 0$ and $v_i^TKv_j = 0$.`, answer: `Multiply the first equation by $v_j^T$ and the second by $v_i^T$: $v_j^TKv_i = \\omega_i^2v_j^TMv_i$ and $v_i^TKv_j = \\omega_j^2v_i^TMv_j$. By symmetry the left sides are equal, and so are $v_j^TMv_i = v_i^TMv_j$. Subtracting gives $(\\omega_i^2 - \\omega_j^2)v_i^TMv_j = 0$, so $v_i^TMv_j = 0$, and then $v_i^TKv_j = \\omega_j^2 \\cdot 0 = 0$.` },
+                { prompt: `Use this to derive a formula for the modal coefficients $a_i$ from $u(0)$.`, answer: `Write $u(0) = \\sum_j a_jv_j$ and multiply by $v_i^TM$. Every term with $j \\ne i$ vanishes, leaving $v_i^TMu(0) = a_iv_i^TMv_i$, so $a_i = \\dfrac{v_i^TMu(0)}{v_i^TMv_i}$.` },
+              ],
             },
           ],
           selfAssessment: [
@@ -3111,6 +3874,20 @@ normal-modes
             {
               question: 'How are the modal amplitudes found from initial conditions?',
               answerOutline: 'Expand $u(0)$ and $u\'(0)$ in the modes, using $M$-orthogonality: $a_i = v_i^TMu(0)/v_i^TMv_i$ and $b_i\\omega_i = v_i^TMu\'(0)/v_i^TMv_i$.',
+            },
+          ],
+          quiz: [
+            {
+              question: `Two masses $m$ are joined by one spring $k$ and float freely, with no walls. What are the natural frequencies?`,
+              options: [`$\\sqrt{k/m}$ and $\\sqrt{3k/m}$`, `$\\sqrt{k/m}$ only`, `$\\sqrt{k/m}$ and $\\sqrt{2k/m}$`, `$0$ and $\\sqrt{2k/m}$`],
+              answer: 3,
+              explanation: `$K = k\\begin{pmatrix} 1 & -1\\\\ -1 & 1 \\end{pmatrix}$ and $M = mI$, so $\\omega^2$ is an eigenvalue of $K/m$: $0$ for $(1, 1)$, a rigid translation, and $2k/m$ for $(1, -1)$, the masses moving oppositely. $\\sqrt{k/m}$ and $\\sqrt{3k/m}$ belong to the version with walls, and forgetting the zero-frequency mode is the usual slip with free-free systems.`,
+            },
+            {
+              question: `For $Kv = \\omega^2Mv$ with symmetric $K$ and a diagonal $M$ that is not a multiple of $I$, which orthogonality do modes with different frequencies satisfy?`,
+              options: [`$v_i^Tv_j = 0$`, `None: with unequal masses the modes are not orthogonal in any sense`, `$v_i^TMv_j = 0$, and also $v_i^TKv_j = 0$`, `$v_i^TM^{-1}v_j = 0$`],
+              answer: 2,
+              explanation: `Subtracting $v_j^TKv_i = \\omega_i^2v_j^TMv_i$ from $v_i^TKv_j = \\omega_j^2v_i^TMv_j$ leaves $(\\omega_i^2 - \\omega_j^2)v_i^TMv_j = 0$. The ordinary dot product is not zero in general: the $2m$, $m$ example has $v_1^Tv_2 = -1$. Ordinary orthogonality returns only when $M$ is a multiple of $I$.`,
             },
           ],
         },

@@ -187,6 +187,25 @@ export function LessonPage() {
         </ul>
       </section>
 
+      {lesson.quiz.length > 0 && (
+        <section aria-labelledby="quiz">
+          <div className="mb-1 flex items-end justify-between">
+            <h2 id="quiz" className="text-xl font-semibold tracking-tight">
+              Quiz
+            </h2>
+            <span className="text-xs tabular-nums text-ink-3">
+              {lesson.quiz.filter((q) => quizAnswers[q.id] === q.answer).length}/{lesson.quiz.length} correct
+            </span>
+          </div>
+          <p className="mb-3 text-sm text-ink-2">Choose an answer to check it. The explanation appears once you answer.</p>
+          <ol className="space-y-3">
+            {lesson.quiz.map((q, i) => (
+              <QuizItem key={q.id} q={q} n={i + 1} chosen={quizAnswers[q.id]} onChoose={(v) => setQuizAnswer(q.id, v)} />
+            ))}
+          </ol>
+        </section>
+      )}
+
       <section aria-labelledby="exercises">
         <div className="mb-3 flex items-end justify-between">
           <h2 id="exercises" className="text-xl font-semibold tracking-tight">
@@ -214,25 +233,6 @@ export function LessonPage() {
           ))}
         </ol>
       </section>
-
-      {lesson.quiz.length > 0 && (
-        <section aria-labelledby="quiz">
-          <div className="mb-1 flex items-end justify-between">
-            <h2 id="quiz" className="text-xl font-semibold tracking-tight">
-              Quiz
-            </h2>
-            <span className="text-xs tabular-nums text-ink-3">
-              {lesson.quiz.filter((q) => quizAnswers[q.id] === q.answer).length}/{lesson.quiz.length} correct
-            </span>
-          </div>
-          <p className="mb-3 text-sm text-ink-2">Choose an answer to check it. The explanation appears once you answer.</p>
-          <ol className="space-y-3">
-            {lesson.quiz.map((q, i) => (
-              <QuizItem key={q.id} q={q} n={i + 1} chosen={quizAnswers[q.id]} onChoose={(v) => setQuizAnswer(q.id, v)} />
-            ))}
-          </ol>
-        </section>
-      )}
 
       <section aria-labelledby="notes">
         <h2 id="notes" className="mb-2 text-xl font-semibold tracking-tight">
@@ -331,6 +331,20 @@ function ExerciseItem({ ex, n, checked, onToggle }: { ex: Exercise; n: number; c
             </span>
           </div>
           <Markdown className="mt-1 text-sm">{ex.prompt}</Markdown>
+          {ex.parts && ex.parts.length > 0 && (
+            <ol className="mt-2 space-y-2">
+              {ex.parts.map((p, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm">
+                  <span className="shrink-0 font-medium text-ink-3">({String.fromCharCode(97 + i)})</span>
+                  <div className="min-w-0 flex-1">
+                    <Markdown className="text-sm [&>p:first-child]:mt-0 [&>p:last-child]:mb-0">{p.prompt}</Markdown>
+                    {p.answer && <RevealAnswer answer={p.answer} />}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          )}
+          {ex.answer && <RevealAnswer answer={ex.answer} />}
           {ex.hint && (
             <div className="mt-2">
               <button type="button" onClick={() => setShowHint((s) => !s)} className="text-xs text-accent hover:underline" aria-expanded={showHint}>
@@ -342,6 +356,18 @@ function ExerciseItem({ ex, n, checked, onToggle }: { ex: Exercise; n: number; c
         </div>
       </div>
     </li>
+  );
+}
+
+function RevealAnswer({ answer }: { answer: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="mt-1">
+      <button type="button" onClick={() => setOpen((o) => !o)} className="relative z-10 text-xs text-accent hover:underline" aria-expanded={open}>
+        {open ? 'Hide answer' : 'Reveal answer'}
+      </button>
+      {open && <Markdown className="mt-1 rounded-lg bg-surface-2 p-2 text-sm animate-fade [&>p:first-child]:mt-0 [&>p:last-child]:mb-0">{answer}</Markdown>}
+    </div>
   );
 }
 

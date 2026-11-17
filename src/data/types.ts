@@ -66,7 +66,25 @@ export interface ExerciseInput {
   kind: ExerciseKind;
   /** 1 = warm-up, 2 = core, 3 = challenge */
   difficulty: 1 | 2 | 3;
+  /**
+   * A nudge toward the method. Use it only where there is no single answer to reveal (a proof,
+   * an essay, an open data task); when there is an answer, use `answer` or `parts` instead.
+   */
   hint?: string;
+  /** The answer to a one-question exercise, revealed on request. Markdown + LaTeX. */
+  answer?: string;
+  /**
+   * Separate sections of a multi-part exercise, shown as a list under `prompt` (which then
+   * reads as the lead-in, e.g. "Differentiate the following."). Each part has its own answer.
+   */
+  parts?: ExercisePart[];
+}
+
+export interface ExercisePart {
+  /** The sub-question, Markdown + LaTeX. */
+  prompt: string;
+  /** Its answer, revealed on request. Omit only when the part has no single answer. */
+  answer?: string;
 }
 
 export interface Exercise extends ExerciseInput {
